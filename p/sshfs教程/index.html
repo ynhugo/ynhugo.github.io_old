@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 安装SSHFS 在Ubuntu / Debian上安装 SSHFS是基于Linux的软件，需要安装在本地计算机上。在基于Ubuntu和Debian的系统上，它可以通过apt-get安装。\n1 sudo apt-get install sshfs 在Mac OSX上安装 您可以在Mac OSX上安装SSHFS。您需要从这里下载FUSE和SSHFS\n在Windows上安装 要在Windows中安装SSHFS，您需要从google代码存储库中获取最新的win-sshfs软件包。可以在下面找到下载链接。下载软件包后，双击以启动安装程序。系统可能会提示您下载其他文件，如果是这样，安装程序将下载.NETFramework 4.0并安装。\n下载地址：https://github.com/feo-cz/win-sshfs/releases\nLinux 挂载远程文件系统 以下说明适用于Ubuntu/Debian和OSX。有关Windows系统的说明，请参阅本教程的结尾。\n首先，我们需要创建一个本地目录来安装服务器的文件系统。\n1 sudo mkdir /mnt/droplet &lt;--replace &#34;droplet&#34; whatever you prefer 现在我们可以使用sshfs命令在本地挂载文件系统。如果您的VPS是使用密码登录创建的，则以下命令将执行此操作。在此步骤中，系统将要求您提供虚拟服务器的root密码。\n1 sudo sshfs -o allow_other,defer_permissions root@xxx.xxx.xxx.xxx:/ /mnt/droplet 如果您的服务器配置为通过ssh密钥授权进行登录，则需要告诉sshfs命令使用您的公钥。系统会要求您输入在使用ssh-keygen创建密钥期间使用的密码。\n1 sudo sshfs -o allow_other,defer_permissions,IdentityFile=~/.ssh/id_rsa root@xxx.xxx.xxx.xxx:/ /mnt/droplet 现在，您可以使用服务器上的文件，就好像它是连接到本地计算机的物理设备一样。例如，如果移动到本地计算机上的/mnt /droplet目录，在本地创建文件，该文件将同步显示在虚拟服务器上。同样，您可以将文件复制到/mnt/droplet文件夹中，它们将在后台上传到您的服务器。\n请务必注意，此过程仅为您的服务器提供临时挂载点。如果虚拟服务器或本地计算机已关闭或重新启动，则需要使用相同的过程再次挂载它。\n卸载远程文件系统 当您不再需要安装点时，您只需使用该命令卸载它即可\n">
+<title>sshfs教程</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/sshfs%E6%95%99%E7%A8%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="sshfs教程">
+<meta property='og:description' content=" 安装SSHFS 在Ubuntu / Debian上安装 SSHFS是基于Linux的软件，需要安装在本地计算机上。在基于Ubuntu和Debian的系统上，它可以通过apt-get安装。\n1 sudo apt-get install sshfs 在Mac OSX上安装 您可以在Mac OSX上安装SSHFS。您需要从这里下载FUSE和SSHFS\n在Windows上安装 要在Windows中安装SSHFS，您需要从google代码存储库中获取最新的win-sshfs软件包。可以在下面找到下载链接。下载软件包后，双击以启动安装程序。系统可能会提示您下载其他文件，如果是这样，安装程序将下载.NETFramework 4.0并安装。\n下载地址：https://github.com/feo-cz/win-sshfs/releases\nLinux 挂载远程文件系统 以下说明适用于Ubuntu/Debian和OSX。有关Windows系统的说明，请参阅本教程的结尾。\n首先，我们需要创建一个本地目录来安装服务器的文件系统。\n1 sudo mkdir /mnt/droplet &lt;--replace &#34;droplet&#34; whatever you prefer 现在我们可以使用sshfs命令在本地挂载文件系统。如果您的VPS是使用密码登录创建的，则以下命令将执行此操作。在此步骤中，系统将要求您提供虚拟服务器的root密码。\n1 sudo sshfs -o allow_other,defer_permissions root@xxx.xxx.xxx.xxx:/ /mnt/droplet 如果您的服务器配置为通过ssh密钥授权进行登录，则需要告诉sshfs命令使用您的公钥。系统会要求您输入在使用ssh-keygen创建密钥期间使用的密码。\n1 sudo sshfs -o allow_other,defer_permissions,IdentityFile=~/.ssh/id_rsa root@xxx.xxx.xxx.xxx:/ /mnt/droplet 现在，您可以使用服务器上的文件，就好像它是连接到本地计算机的物理设备一样。例如，如果移动到本地计算机上的/mnt /droplet目录，在本地创建文件，该文件将同步显示在虚拟服务器上。同样，您可以将文件复制到/mnt/droplet文件夹中，它们将在后台上传到您的服务器。\n请务必注意，此过程仅为您的服务器提供临时挂载点。如果虚拟服务器或本地计算机已关闭或重新启动，则需要使用相同的过程再次挂载它。\n卸载远程文件系统 当您不再需要安装点时，您只需使用该命令卸载它即可\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/sshfs%E6%95%99%E7%A8%8B/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='sshfs' /><meta property='article:published_time' content='2024-03-26T00:24:22&#43;08:00'/><meta property='article:modified_time' content='2024-03-26T00:24:22&#43;08:00'/>
+<meta name="twitter:title" content="sshfs教程">
+<meta name="twitter:description" content=" 安装SSHFS 在Ubuntu / Debian上安装 SSHFS是基于Linux的软件，需要安装在本地计算机上。在基于Ubuntu和Debian的系统上，它可以通过apt-get安装。\n1 sudo apt-get install sshfs 在Mac OSX上安装 您可以在Mac OSX上安装SSHFS。您需要从这里下载FUSE和SSHFS\n在Windows上安装 要在Windows中安装SSHFS，您需要从google代码存储库中获取最新的win-sshfs软件包。可以在下面找到下载链接。下载软件包后，双击以启动安装程序。系统可能会提示您下载其他文件，如果是这样，安装程序将下载.NETFramework 4.0并安装。\n下载地址：https://github.com/feo-cz/win-sshfs/releases\nLinux 挂载远程文件系统 以下说明适用于Ubuntu/Debian和OSX。有关Windows系统的说明，请参阅本教程的结尾。\n首先，我们需要创建一个本地目录来安装服务器的文件系统。\n1 sudo mkdir /mnt/droplet &lt;--replace &#34;droplet&#34; whatever you prefer 现在我们可以使用sshfs命令在本地挂载文件系统。如果您的VPS是使用密码登录创建的，则以下命令将执行此操作。在此步骤中，系统将要求您提供虚拟服务器的root密码。\n1 sudo sshfs -o allow_other,defer_permissions root@xxx.xxx.xxx.xxx:/ /mnt/droplet 如果您的服务器配置为通过ssh密钥授权进行登录，则需要告诉sshfs命令使用您的公钥。系统会要求您输入在使用ssh-keygen创建密钥期间使用的密码。\n1 sudo sshfs -o allow_other,defer_permissions,IdentityFile=~/.ssh/id_rsa root@xxx.xxx.xxx.xxx:/ /mnt/droplet 现在，您可以使用服务器上的文件，就好像它是连接到本地计算机的物理设备一样。例如，如果移动到本地计算机上的/mnt /droplet目录，在本地创建文件，该文件将同步显示在虚拟服务器上。同样，您可以将文件复制到/mnt/droplet文件夹中，它们将在后台上传到您的服务器。\n请务必注意，此过程仅为您的服务器提供临时挂载点。如果虚拟服务器或本地计算机已关闭或重新启动，则需要使用相同的过程再次挂载它。\n卸载远程文件系统 当您不再需要安装点时，您只需使用该命令卸载它即可\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">安装SSHFS</a>
+<ul>
+<li><a href="#headline-2">在Ubuntu / Debian上安装</a>
+</li>
+<li><a href="#headline-3">在Mac OSX上安装</a>
+</li>
+<li><a href="#headline-4">在Windows上安装</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-5">Linux</a>
+<ul>
+<li><a href="#headline-6">挂载远程文件系统</a>
+</li>
+<li><a href="#headline-7">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-8">windows</a>
+<ul>
+<li><a href="#headline-9">方式一：winfsp + sshfs-win （推荐）</a>
+<ul>
+<li><a href="#headline-10">下载</a>
+</li>
+<li><a href="#headline-11">快速使用</a>
+<ul>
+<li><a href="#headline-12">方式A：使用GUI（推荐）</a>
+</li>
+<li><a href="#headline-13">方式B：手动挂载</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#headline-14">方式二：win-sshfs + Dokan（旧，不推荐）</a>
+<ul>
+<li><a href="#headline-15">下载</a>
+</li>
+<li><a href="#headline-16">使用</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-17">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/sshfs%E6%95%99%E7%A8%8B/">sshfs教程</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 26, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+安装SSHFS
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+在Ubuntu / Debian上安装
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>SSHFS是基于Linux的软件，需要安装在本地计算机上。在基于Ubuntu和Debian的系统上，它可以通过apt-get安装。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo apt-get install sshfs</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+在Mac OSX上安装
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>您可以在Mac OSX上安装SSHFS。您需要从这里下载FUSE和SSHFS</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+在Windows上安装
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>要在Windows中安装SSHFS，您需要从google代码存储库中获取最新的win-sshfs软件包。可以在下面找到下载链接。下载软件包后，双击以启动安装程序。系统可能会提示您下载其他文件，如果是这样，安装程序将下载.NETFramework 4.0并安装。</p>
+<p>
+下载地址：<a href="https://github.com/feo-cz/win-sshfs/releases">https://github.com/feo-cz/win-sshfs/releases</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-2">
+<h2 id="headline-5">
+Linux
+</h2>
+<div id="outline-text-headline-5" class="outline-text-2">
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+挂载远程文件系统
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<p>以下说明适用于Ubuntu/Debian和OSX。有关Windows系统的说明，请参阅本教程的结尾。</p>
+<p>
+首先，我们需要创建一个本地目录来安装服务器的文件系统。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo mkdir /mnt/droplet &lt;--replace <span class="s2">&#34;droplet&#34;</span> whatever you prefer</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+现在我们可以使用sshfs命令在本地挂载文件系统。如果您的VPS是使用密码登录创建的，则以下命令将执行此操作。在此步骤中，系统将要求您提供虚拟服务器的root密码。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo sshfs -o allow_other,defer_permissions root@xxx.xxx.xxx.xxx:/ /mnt/droplet</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+如果您的服务器配置为通过ssh密钥授权进行登录，则需要告诉sshfs命令使用您的公钥。系统会要求您输入在使用ssh-keygen创建密钥期间使用的密码。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo sshfs -o allow_other,defer_permissions,IdentityFile<span class="o">=</span>~/.ssh/id_rsa root@xxx.xxx.xxx.xxx:/ /mnt/droplet</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+现在，您可以使用服务器上的文件，就好像它是连接到本地计算机的物理设备一样。例如，如果移动到本地计算机上的/mnt /droplet目录，在本地创建文件，该文件将同步显示在虚拟服务器上。同样，您可以将文件复制到/mnt/droplet文件夹中，它们将在后台上传到您的服务器。</p>
+<p>
+请务必注意，此过程仅为您的服务器提供临时挂载点。如果虚拟服务器或本地计算机已关闭或重新启动，则需要使用相同的过程再次挂载它。</p>
+<p>
+卸载远程文件系统
+当您不再需要安装点时，您只需使用该命令卸载它即可</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo umount /mnt/droplet</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+永久挂载远程文件系统
+SSHFS还允许为远程文件系统设置永久挂载点。这将设置一个挂载点，就算你重新启动本地计算机和服务器它也持续存在。为了设置永久挂载点，我们需要编辑本地计算机上/etc/fstab文件，以便在每次启动系统时自动挂载文件系统。</p>
+<p>
+首先，我们需要用文本编辑器编辑/etc/fstab文件。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo nano /etc/fstab</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+添加以下条目</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sshfs#root@xxx.xxx.xxx.xxx:/ /mnt/droplet</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+保存对/etc/fstab文件的更改并在重新启动。</p>
+<p>
+应该注意的是，在本地永久安装VPS文件系统存在潜在的安全风险。如果您的本地计算机受到攻击，它可能会直接感染到您的服务器。因此，建议不要在生产服务器上设置永久挂载。</p>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+参考链接
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<p>
+<a href="https://cloud.tencent.com/developer/article/1168897">通过SSHFS远程挂载文件夹，方便远程coding！原创</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-2">
+<h2 id="headline-8">
+windows
+</h2>
+<div id="outline-text-headline-8" class="outline-text-2">
+<div id="outline-container-headline-9" class="outline-3">
+<h3 id="headline-9">
+方式一：winfsp + sshfs-win （推荐）
+</h3>
+<div id="outline-text-headline-9" class="outline-text-3">
+<div id="outline-container-headline-10" class="outline-4">
+<h4 id="headline-10">
+下载
+</h4>
+<div id="outline-text-headline-10" class="outline-text-4">
+<p>
+直接前往 github 对应项目的 release 中下载最新版本即可，需注意 sshfs-win 对 winfsp 的最低版本依赖（下载最新版本一般即可满足），另外有GUI（用户图形操作界面）可供下载，建议下载。</p>
+<p>
+sshfs-win：<a href="https://github.com/billziss-gh/sshfs-win/releases">https://github.com/billziss-gh/sshfs-win/releases</a>
+winfsp：<a href="https://github.com/billziss-gh/winfsp/releases">https://github.com/billziss-gh/winfsp/releases</a>
+SSHFS-Win Manager：<a href="https://github.com/evsar3/sshfs-win-manager/releases">https://github.com/evsar3/sshfs-win-manager/releases</a> (GUI，可选)</p>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-4">
+<h4 id="headline-11">
+快速使用
+</h4>
+<div id="outline-text-headline-11" class="outline-text-4">
+<p>
+可使用GUI图形界面（方式A），亦可手动挂载（方式B），建议使用GUI图形界面。</p>
+<div id="outline-container-headline-12" class="outline-5">
+<h5 id="headline-12">
+方式A：使用GUI（推荐）
+</h5>
+<div id="outline-text-headline-12" class="outline-text-5">
+<p>新建连接
+安装好上述3个软件后，打开 GUI 界面添加连接，点击 Add Connection：</p>
+<p>
+依次填写每一项内容：</p>
+<p>
+NAME：给远程服务器取个名字
+Connection：远程服务器配置，如IP、端口、远程用户名、验证方式（密码，或密钥[参考：SSH密钥管理及免密码登陆]）
+Remote：远程目录配置，挂载后将成为本地对应盘符的根目录
+Local：本地盘符设置（注意不要与现有盘符冲突）</p>
+<p>
+点击 Save 保存。</p>
+<p>
+挂载远程目录
+在主界面中点击连接按钮，即可将远程目录挂在到本地</p>
+<p>
+此时远程目录已经出现在了本地资源管理器中，未出现可刷新一下，或直接点击GUI主界面连接按钮左边的打开文件夹按钮即可进入目录。</p>
+<p>
+长期使用建议在主界面的设置中打开开机自启</p>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-5">
+<h5 id="headline-13">
+方式B：手动挂载
+</h5>
+<div id="outline-text-headline-13" class="outline-text-5">
+<p>挂载路径</p>
+<ol>
+<li>SSH 使用默认端口（22）</li>
+</ol>
+<p>此时，对应的 ssh 登陆命令为 ssh username@remote_ip，那么使用 sshfs-win 挂载远程服务器根目录和 home 目录的地址为：</p>
+<div class="src src-txt">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl"># 根目录
+</span></span><span class="line"><span class="cl">\\sshfs.r\username@remote_ip\
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># home 目录
+</span></span><span class="line"><span class="cl">\\sshfs\username@remote_ip\
+</span></span><span class="line"><span class="cl"># 或者 \\sshfs.r\username@remote_ip\home\username\
+</span></span><span class="line"><span class="cl">例如：\\sshfs.r\xieqk@10.168.9.87\，注意路径里面的分隔符为 windows 使用的反斜杠 \。</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<ol>
+<li>SSH 使用其它端口（外网端口转发连接内网服务器）</li>
+</ol>
+<p>此时，ssh 登陆命令为 ssh -p port username@remote_ip，对应的 sshfs-win 挂载远程服务器根目录和 home 目录的地址在之前的 remote_ip 后加上 !port 即可：</p>
+<div class="src src-txt">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl"># 根目录
+</span></span><span class="line"><span class="cl">\\sshfs.r\username@remote_ip!port\
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># home 目录
+</span></span><span class="line"><span class="cl">\\sshfs\username@remote_ip!port\
+</span></span><span class="line"><span class="cl"># 或者：\\sshfs.r\username@remote_ip!port\home\username\
+</span></span><span class="line"><span class="cl">例如：\\sshfs.r\xieqk@168.10.9.87!34567\。</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+登陆挂载远程目录
+将上述 sshfs 路径输入 windows 文件资源管理器地址栏，输入密码即可进入。（注意：弹窗中的账号显示的为 windows 的本地账号，不用修改。远程服务器的用户名已经包含在之前的 sshfs 路径之中，所以此处只需正常输入远程用户对应的密码即可。）</p>
+<p>
+对于常用的远程目录，建议通过 映射网络驱动器 长期挂载于本地。</p>
+<p>
+在 映射网络驱动器 中，可自行分配驱动器盘号，然后在 文件夹 处输入上述 sshfs 路径，点击完成后在弹出的登录框处输入密码即可完成挂载。</p>
+<p>
+之后，可在 windows 文件浏览器的网络位置中看到已经挂载的所有远程目录：</p>
+<p>
+详细参数（可跳过，需要时再查看）
+sshfs-win 具体语法形式如下，其中 [] 中的内容为选填项，若为默认值可不填：</p>
+<div class="src src-txt">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">\\sshfs\[LOCUSER=]REMUSER@HOST[!PORT][\PATH]
+</span></span><span class="line"><span class="cl">\\sshfs.r\[LOCUSER=]REMUSER@HOST[!PORT][\PATH]
+</span></span><span class="line"><span class="cl">\\sshfs.k\[LOCUSER=]REMUSER@HOST[!PORT][\PATH]</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+REMUSER: 即 remote user，指 SSH 登陆远程主机时的用户名。</p>
+<p>
+HOST：远程服务器，如 IP 地址，DNS 服务器名称 或 DNS 服务器 IP 地址</p>
+<p>
+PORT：SSH 登陆所使用的端口号 (选填，默认为 SSH(22) 端口).</p>
+<p>
+PATH：进入的远程服务器路径，可按照如下设置:</p>
+<p>
+前缀 sshfs 对应为 HOST:~REMUSER/PATH，即远程服务器上相对于该用户 home 目录的相对路径：/home/remote_user/PATH。
+前缀 sshfs.r 对应为 HOST:/PATH 即远程服务器上相对于根(root)目录的路径：/PATH。
+前缀 sshfs.k 与第一项相同，对应为 HOST:~REMUSER/PATH，但它使用 Windows 本地当前用户位于 %USERPROFILE%/.ssh/id_rsa 下的 SSH 密钥进行认证（需进行远程服务器配置，可参靠SSH 密钥管理及免密码登陆），不需要输入密码。（备注：使用前两项连接时，windows 也会提醒记住密码，所以只需要第一次输入密码并记住即可）
+LOCUSER windows本地用户名，可不填。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-3">
+<h3 id="headline-14">
+方式二：win-sshfs + Dokan（旧，不推荐）
+</h3>
+<div id="outline-text-headline-14" class="outline-text-3">
+<div id="outline-container-headline-15" class="outline-4">
+<h4 id="headline-15">
+下载
+</h4>
+<div id="outline-text-headline-15" class="outline-text-4">
+<p>
+win-sshfs 依赖 Dokan，所以先安装 Dokan 再正常安装 win-sshfs 即可：</p>
+<p>
+Dokan：<a href="https://github.com/dokan-dev/dokany/releases">https://github.com/dokan-dev/dokany/releases</a>
+win-sshfs：<a href="https://github.com/dokan-dev/dokany/releases">https://github.com/dokan-dev/dokany/releases</a></p>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-4">
+<h4 id="headline-16">
+使用
+</h4>
+<div id="outline-text-headline-16" class="outline-text-4">
+<p>
+打开win-sshfs，点击Add，在界面输入要链接的服务器的地址、端口号和用户名密码等信息，并设置好要挂载的目录，点击save，在确保可以通过ssh链接的情况下，点击mount，就可以将该目录挂载到本地了，如下图所示：</p>
+<p>
+查看我的电脑，发现在 设备和驱动器 中多了一个存储设备（与方式一显示在网络位置中不同）</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-17" class="outline-3">
+<h3 id="headline-17">
+参考链接
+</h3>
+<div id="outline-text-headline-17" class="outline-text-3">
+<p>
+<a href="https://blog.xieqiaokang.com/posts/505416489.html">Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录</a></p>
+<p>
+<a href="https://blog.csdn.net/xieqiaokang/article/details/109557482">Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/sshfs/">Sshfs</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 基于 ARM64 的 Ubuntu 20.04.4 根文件系统定制与 Linux 5.4.52 内核编译及 QEMU 启动实践 操作步骤 ARM64的ubuntu-20.04镜像下载链接：https://old-releases.ubuntu.com/releases/20.04.4/ubuntu-20.04.4-live-server-arm64.iso\nLinux内核源码下载链接： https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.52.tar.xz\nvmware网络设置桥接模式，桥接模式可以分配网络，并且局域网可以ping通，也能ping通外网，nat模式待验证\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 # 在root权限下操作 apt install -y qemu-user-static # 准备定制根文件系统 mkdir -p ~/temp; cd ~/temp # 进入超级用户下 wget https://old-releases.ubuntu.com/releases/20.04.4/ubuntu-20.04.4-live-server-arm64.iso mount ubuntu-20.04.4-live-server-arm64.iso /mnt cp /mnt/casper/filesystem.squashfs ./ umount /mnt unsquashfs filesystem.squashfs echo &#39;nameserver 8.8.8.8&#39; &gt;&gt; squashfs-root/etc/resolv.conf echo &#39;nameserver 8.8.4.4&#39; &gt;&gt; squashfs-root/etc/resolv.conf # 如果提示失败： # chroot: failed to run command ‘/bin/bash’: No such file or directory # 拷贝 qemu-aarch64-static 到 rootfs sudo cp /usr/bin/qemu-aarch64-static squashfs-root/usr/bin/ chroot squashfs-root # 创建root密码（用于板卡登录根文件系统） passwd root apt-get update apt-get install -y unzip vim git openssh-server python3-pip sysstat libnuma1 dmidecode rsync net-tools psmisc parted arping ntpdate iproute2 iputils-ping mawk cracklib-runtime ethtool ntp fdisk libssl-dev libpam-cracklib logrotate # 配置ssh &lt;&lt;&#39;CONTENT&#39; Port 22 PermitRootLogin yes PubkeyAuthentication yes AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2 PasswordAuthentication yes CONTENT sed -i &#39;s/^[[:space:]]*#\\?Port.*/Port 22/&#39; /etc/ssh/sshd_config sed -i &#39;s/^[[:space:]]*#\\?PermitRootLogin.*/PermitRootLogin yes/&#39; /etc/ssh/sshd_config sed -i &#39;s/^[[:space:]]*#\\?PubkeyAuthentication.*/PubkeyAuthentication yes/&#39; /etc/ssh/sshd_config sed -i &#39;s|^[[:space:]]*#\\?AuthorizedKeysFile.*|AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2|&#39; /etc/ssh/sshd_config sed -i &#39;s/^[[:space:]]*#\\?PasswordAuthentication.*/PasswordAuthentication yes/&#39; /etc/ssh/sshd_config # 重启ssh服务 /etc/init.d/ssh restart # 配置以太网共享，前提是需要通过网络连接电脑，然后电脑共享的有网络的网卡到以太网 cat &gt; /etc/netplan/01-netcfg.yaml &lt;&lt; EOF network: version: 2 renderer: networkd ethernets: eth0: dhcp4: no addresses: - 192.168.137.50/24 gateway4: 192.168.137.1 nameservers: addresses: [8.8.8.8, 8.8.4.4] EOF # # 应用网络配置，在板卡操作系统中操作（基本上用不上） # netplan apply # 板卡系统打印异常错误推荐根本解决方案（嵌入式必做） # 在构建 rootfs 或 live-build 之前： # 1）禁用 snap（嵌入式 Linux 基本上都禁用它） apt purge -y snapd rm -rf /snap /var/snap /var/lib/snapd # 2）禁用 multipathd apt purge -y multipath-tools # 3）清理 systemd 单元防止镜像启动时报乱七八糟的错误 rm -f /etc/systemd/system/multi-user.target.wants/multipathd.service rm -f /etc/systemd/system/*.wants/snap*.service exit cd squashfs-root # find . | cpio -o -H newc | gzip &gt; ../Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.img find . | cpio -H newc -o | gzip &gt; ../Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz # find . | cpio -H newc -o | gzip &gt; ../ai-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz # find . | cpio -H newc -o | gzip &gt; ../ubuntu20.04.4_rootfs.cpio.gz # # 制作 squashfs（用于 ISO） # sudo mksquashfs rootfs filesystem.squashfs -comp xz -wildcards # 交叉编译Linux内核源码 # 步骤 1：安装 ARM64 交叉编译工具链 sudo apt install -y gcc-aarch64-linux-gnu make git bc flex bison libssl-dev # 步骤 2：下载 Linux Kernel 5.4.52 源码 wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.52.tar.xz tar xf linux-5.4.52.tar.xz cd linux-5.4.52 # 拷贝默认内核配置文件内核源码根目录下并重命名为.config，如果有其他来源的内核配置也是同样的方式拷贝到内核源码根目录下 make ARCH=arm64 defconfig # cp arch/arm64/configs/defconfig ./.config # # 根据现有的.config 文件更新内核配置 # make ARCH=arm64 oldconfig # 你要确保你的内核支持： &lt;&lt;&#39;CONTENT&#39; CONFIG_SERIAL_AMBA_PL011=y CONFIG_SERIAL_AMBA_PL011_CONSOLE=y CONTENT # 查看你内核编译的 .config： grep PL011 .config # 如果没有这两个控制台驱动 → QEMU不会有任何输出，Linux 内核运行但你看不见！ sudo apt install -y libncurses5-dev libncursesw5-dev # 你需要重新配置内核，把 PL011 打开： # 添加PL011和virtio-blk驱动 &lt;&lt;&#39;CONTENT&#39; Device Drivers ---&gt; Character devices ---&gt; Serial drivers ---&gt; &lt;*&gt; ARM AMBA PL011 serial port [*] Support for console on PL011 serial port Block devices ---&gt; &lt;*&gt; Virtio block driver [*] Virtualization drivers ---- Virtio drivers &lt;*&gt; Platform bus driver for memory mapped virtio devices [*] Memory mapped virtio devices parameter parsing CONTENT # 打开内核配置 make ARCH=arm64 menuconfig # 搜索并添加PL011，以及配置virtio-blk： /PL011 # 开启： &lt;&lt;&#39;CONTENT&#39; CONFIG_SERIAL_AMBA_PL011=y CONFIG_SERIAL_AMBA_PL011_CONSOLE=y CONFIG_VIRTIO=y CONFIG_VIRTIO_BLK=y CONFIG_VIRTIO_MMIO=y CONTENT # 如果想跳过 ncurses，也可以使用 非图形化配置： sed -i &#39;s/# CONFIG_SERIAL_AMBA_PL011 is not set/CONFIG_SERIAL_AMBA_PL011=y/&#39; .config sed -i &#39;s/# CONFIG_SERIAL_AMBA_PL011_CONSOLE is not set/CONFIG_SERIAL_AMBA_PL011_CONSOLE=y/&#39; .config # 保证依赖配置也自动生效，否则可能缺少 Virtio 驱动依赖。 make ARCH=arm64 oldconfig # # 然后重新编译内核： # make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc) # 步骤 3：准备 kernel headers（用于编译外部模块） # 必须准备 .config 和 modules 依赖，否则无法构建 modules。 # 如果你没有目标板的内核配置，建议使用通用 defconfig。 # 3.1 使用通用 ARM64 配置： # make ARCH=arm64 defconfig # make ARCH=arm64 oldconfig # 3.2 编译内核（只需要生成 headers，不需要整机镜像） make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc) # 3.3 生成 modules（构建模块依赖） # make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules -j$(nproc) make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules_prepare # 3.4 安装 headers（关键步骤） make ARCH=arm64 headers_install # 如果需要从内核编译环境复制全套 modules 目录（最干净） make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules_install INSTALL_MOD_PATH=./modout # 把这个目录复制进你的 rootfs sudo cp -r modout/lib/modules/5.4.52 ../squashfs-root/lib/modules/ # 生成模块依赖，进入 rootfs chroot 或直接： sudo depmod -a -b ../squashfs-root 5.4.52 # 如果是在板卡根文件系统可直接运行下面命令 depmod -a # 步骤 4（可选，可略过）：下载 udmabuf 源码 cd ../ git clone https://github.com/ikwzm/udmabuf.git cd udmabuf # 步骤 5：交叉编译 udmabuf（ARM64） # 关键是指定： # ARCH=arm64 # CROSS_COMPILE=aarch64-linux-gnu- # KERNEL_SRC=你的内核路径 # 假设内核路径是： # /home/you/linux-5.4.52 # 编译： make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KERNEL_SRC=../linux-5.4.52 # 编译成功后会得到： &lt;&lt;&#39;CONTENT&#39; udmabuf.ko CONTENT cd - # 之后，内核源码目录即可作为 KERNEL_SRC。 # 准备QEMU启动文件 sudo apt install -y qemu-system-arm # 创建20GB的磁盘 dd if=/dev/zero of=rootfs.img bs=1M count=20480 mkfs.ext4 rootfs.img mkdir mnt sudo mount -o loop rootfs.img mnt cd mnt gunzip -c Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz | cpio -idm # ARM 默认 ttyAMA0串口需要 ,Ubuntu 需要同时使能 ttyAMA0 and default tty1 ， 在Ubuntu 根文件系统根目录中执行 sudo ln -s lib/systemd/system/getty@.service etc/systemd/system/getty.target.wants/getty@ttyAMA0.service cd - sudo umount mnt # QEMU 启动命令 sudo qemu-system-aarch64 \\ -machine virt \\ -cpu cortex-a57 \\ -m 4096 \\ -nographic \\ -kernel linux-5.4.52/arch/arm64/boot/Image \\ -append &#34;console=ttyAMA0,115200 root=/dev/vda rw rootwait systemd.mask=getty@ttyAMA0.service,getty@ttyPS0.service,rc-local.service&#34; \\ -drive file=rootfs.img,format=raw,if=none,id=hd0 \\ -device virtio-blk-device,drive=hd0 # 导出内核配置文件（比如使用的是别人制作好的根文件系统，可以用此方式导出内核配置后替换内核源码根目录下的.config） zcat /proc/config.gz &gt; config-$(uname -r) # zcat /proc/config.gz &gt; config-5.4.52 # Ctrl+a，x，退出qemu，然后挂载根文件系统并拷贝出config-5.4.52 参考链接 终端打印异常错误原因分析\n">
+<title>基于 ARM64 的 Ubuntu 20.04.4 根文件系统定制与 Linux 5.4.52 内核编译及 QEMU 启动实践</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/%E5%9F%BA%E4%BA%8E-arm64-%E7%9A%84-ubuntu-20.04.4-%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9A%E5%88%B6%E4%B8%8E-linux-5.4.52-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%8F%8A-qemu-%E5%90%AF%E5%8A%A8%E5%AE%9E%E8%B7%B5/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="基于 ARM64 的 Ubuntu 20.04.4 根文件系统定制与 Linux 5.4.52 内核编译及 QEMU 启动实践">
+<meta property='og:description' content=" 基于 ARM64 的 Ubuntu 20.04.4 根文件系统定制与 Linux 5.4.52 内核编译及 QEMU 启动实践 操作步骤 ARM64的ubuntu-20.04镜像下载链接：https://old-releases.ubuntu.com/releases/20.04.4/ubuntu-20.04.4-live-server-arm64.iso\nLinux内核源码下载链接： https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.52.tar.xz\nvmware网络设置桥接模式，桥接模式可以分配网络，并且局域网可以ping通，也能ping通外网，nat模式待验证\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 # 在root权限下操作 apt install -y qemu-user-static # 准备定制根文件系统 mkdir -p ~/temp; cd ~/temp # 进入超级用户下 wget https://old-releases.ubuntu.com/releases/20.04.4/ubuntu-20.04.4-live-server-arm64.iso mount ubuntu-20.04.4-live-server-arm64.iso /mnt cp /mnt/casper/filesystem.squashfs ./ umount /mnt unsquashfs filesystem.squashfs echo &#39;nameserver 8.8.8.8&#39; &gt;&gt; squashfs-root/etc/resolv.conf echo &#39;nameserver 8.8.4.4&#39; &gt;&gt; squashfs-root/etc/resolv.conf # 如果提示失败： # chroot: failed to run command ‘/bin/bash’: No such file or directory # 拷贝 qemu-aarch64-static 到 rootfs sudo cp /usr/bin/qemu-aarch64-static squashfs-root/usr/bin/ chroot squashfs-root # 创建root密码（用于板卡登录根文件系统） passwd root apt-get update apt-get install -y unzip vim git openssh-server python3-pip sysstat libnuma1 dmidecode rsync net-tools psmisc parted arping ntpdate iproute2 iputils-ping mawk cracklib-runtime ethtool ntp fdisk libssl-dev libpam-cracklib logrotate # 配置ssh &lt;&lt;&#39;CONTENT&#39; Port 22 PermitRootLogin yes PubkeyAuthentication yes AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2 PasswordAuthentication yes CONTENT sed -i &#39;s/^[[:space:]]*#\\?Port.*/Port 22/&#39; /etc/ssh/sshd_config sed -i &#39;s/^[[:space:]]*#\\?PermitRootLogin.*/PermitRootLogin yes/&#39; /etc/ssh/sshd_config sed -i &#39;s/^[[:space:]]*#\\?PubkeyAuthentication.*/PubkeyAuthentication yes/&#39; /etc/ssh/sshd_config sed -i &#39;s|^[[:space:]]*#\\?AuthorizedKeysFile.*|AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2|&#39; /etc/ssh/sshd_config sed -i &#39;s/^[[:space:]]*#\\?PasswordAuthentication.*/PasswordAuthentication yes/&#39; /etc/ssh/sshd_config # 重启ssh服务 /etc/init.d/ssh restart # 配置以太网共享，前提是需要通过网络连接电脑，然后电脑共享的有网络的网卡到以太网 cat &gt; /etc/netplan/01-netcfg.yaml &lt;&lt; EOF network: version: 2 renderer: networkd ethernets: eth0: dhcp4: no addresses: - 192.168.137.50/24 gateway4: 192.168.137.1 nameservers: addresses: [8.8.8.8, 8.8.4.4] EOF # # 应用网络配置，在板卡操作系统中操作（基本上用不上） # netplan apply # 板卡系统打印异常错误推荐根本解决方案（嵌入式必做） # 在构建 rootfs 或 live-build 之前： # 1）禁用 snap（嵌入式 Linux 基本上都禁用它） apt purge -y snapd rm -rf /snap /var/snap /var/lib/snapd # 2）禁用 multipathd apt purge -y multipath-tools # 3）清理 systemd 单元防止镜像启动时报乱七八糟的错误 rm -f /etc/systemd/system/multi-user.target.wants/multipathd.service rm -f /etc/systemd/system/*.wants/snap*.service exit cd squashfs-root # find . | cpio -o -H newc | gzip &gt; ../Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.img find . | cpio -H newc -o | gzip &gt; ../Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz # find . | cpio -H newc -o | gzip &gt; ../ai-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz # find . | cpio -H newc -o | gzip &gt; ../ubuntu20.04.4_rootfs.cpio.gz # # 制作 squashfs（用于 ISO） # sudo mksquashfs rootfs filesystem.squashfs -comp xz -wildcards # 交叉编译Linux内核源码 # 步骤 1：安装 ARM64 交叉编译工具链 sudo apt install -y gcc-aarch64-linux-gnu make git bc flex bison libssl-dev # 步骤 2：下载 Linux Kernel 5.4.52 源码 wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.52.tar.xz tar xf linux-5.4.52.tar.xz cd linux-5.4.52 # 拷贝默认内核配置文件内核源码根目录下并重命名为.config，如果有其他来源的内核配置也是同样的方式拷贝到内核源码根目录下 make ARCH=arm64 defconfig # cp arch/arm64/configs/defconfig ./.config # # 根据现有的.config 文件更新内核配置 # make ARCH=arm64 oldconfig # 你要确保你的内核支持： &lt;&lt;&#39;CONTENT&#39; CONFIG_SERIAL_AMBA_PL011=y CONFIG_SERIAL_AMBA_PL011_CONSOLE=y CONTENT # 查看你内核编译的 .config： grep PL011 .config # 如果没有这两个控制台驱动 → QEMU不会有任何输出，Linux 内核运行但你看不见！ sudo apt install -y libncurses5-dev libncursesw5-dev # 你需要重新配置内核，把 PL011 打开： # 添加PL011和virtio-blk驱动 &lt;&lt;&#39;CONTENT&#39; Device Drivers ---&gt; Character devices ---&gt; Serial drivers ---&gt; &lt;*&gt; ARM AMBA PL011 serial port [*] Support for console on PL011 serial port Block devices ---&gt; &lt;*&gt; Virtio block driver [*] Virtualization drivers ---- Virtio drivers &lt;*&gt; Platform bus driver for memory mapped virtio devices [*] Memory mapped virtio devices parameter parsing CONTENT # 打开内核配置 make ARCH=arm64 menuconfig # 搜索并添加PL011，以及配置virtio-blk： /PL011 # 开启： &lt;&lt;&#39;CONTENT&#39; CONFIG_SERIAL_AMBA_PL011=y CONFIG_SERIAL_AMBA_PL011_CONSOLE=y CONFIG_VIRTIO=y CONFIG_VIRTIO_BLK=y CONFIG_VIRTIO_MMIO=y CONTENT # 如果想跳过 ncurses，也可以使用 非图形化配置： sed -i &#39;s/# CONFIG_SERIAL_AMBA_PL011 is not set/CONFIG_SERIAL_AMBA_PL011=y/&#39; .config sed -i &#39;s/# CONFIG_SERIAL_AMBA_PL011_CONSOLE is not set/CONFIG_SERIAL_AMBA_PL011_CONSOLE=y/&#39; .config # 保证依赖配置也自动生效，否则可能缺少 Virtio 驱动依赖。 make ARCH=arm64 oldconfig # # 然后重新编译内核： # make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc) # 步骤 3：准备 kernel headers（用于编译外部模块） # 必须准备 .config 和 modules 依赖，否则无法构建 modules。 # 如果你没有目标板的内核配置，建议使用通用 defconfig。 # 3.1 使用通用 ARM64 配置： # make ARCH=arm64 defconfig # make ARCH=arm64 oldconfig # 3.2 编译内核（只需要生成 headers，不需要整机镜像） make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc) # 3.3 生成 modules（构建模块依赖） # make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules -j$(nproc) make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules_prepare # 3.4 安装 headers（关键步骤） make ARCH=arm64 headers_install # 如果需要从内核编译环境复制全套 modules 目录（最干净） make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules_install INSTALL_MOD_PATH=./modout # 把这个目录复制进你的 rootfs sudo cp -r modout/lib/modules/5.4.52 ../squashfs-root/lib/modules/ # 生成模块依赖，进入 rootfs chroot 或直接： sudo depmod -a -b ../squashfs-root 5.4.52 # 如果是在板卡根文件系统可直接运行下面命令 depmod -a # 步骤 4（可选，可略过）：下载 udmabuf 源码 cd ../ git clone https://github.com/ikwzm/udmabuf.git cd udmabuf # 步骤 5：交叉编译 udmabuf（ARM64） # 关键是指定： # ARCH=arm64 # CROSS_COMPILE=aarch64-linux-gnu- # KERNEL_SRC=你的内核路径 # 假设内核路径是： # /home/you/linux-5.4.52 # 编译： make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KERNEL_SRC=../linux-5.4.52 # 编译成功后会得到： &lt;&lt;&#39;CONTENT&#39; udmabuf.ko CONTENT cd - # 之后，内核源码目录即可作为 KERNEL_SRC。 # 准备QEMU启动文件 sudo apt install -y qemu-system-arm # 创建20GB的磁盘 dd if=/dev/zero of=rootfs.img bs=1M count=20480 mkfs.ext4 rootfs.img mkdir mnt sudo mount -o loop rootfs.img mnt cd mnt gunzip -c Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz | cpio -idm # ARM 默认 ttyAMA0串口需要 ,Ubuntu 需要同时使能 ttyAMA0 and default tty1 ， 在Ubuntu 根文件系统根目录中执行 sudo ln -s lib/systemd/system/getty@.service etc/systemd/system/getty.target.wants/getty@ttyAMA0.service cd - sudo umount mnt # QEMU 启动命令 sudo qemu-system-aarch64 \\ -machine virt \\ -cpu cortex-a57 \\ -m 4096 \\ -nographic \\ -kernel linux-5.4.52/arch/arm64/boot/Image \\ -append &#34;console=ttyAMA0,115200 root=/dev/vda rw rootwait systemd.mask=getty@ttyAMA0.service,getty@ttyPS0.service,rc-local.service&#34; \\ -drive file=rootfs.img,format=raw,if=none,id=hd0 \\ -device virtio-blk-device,drive=hd0 # 导出内核配置文件（比如使用的是别人制作好的根文件系统，可以用此方式导出内核配置后替换内核源码根目录下的.config） zcat /proc/config.gz &gt; config-$(uname -r) # zcat /proc/config.gz &gt; config-5.4.52 # Ctrl+a，x，退出qemu，然后挂载根文件系统并拷贝出config-5.4.52 参考链接 终端打印异常错误原因分析\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/%E5%9F%BA%E4%BA%8E-arm64-%E7%9A%84-ubuntu-20.04.4-%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9A%E5%88%B6%E4%B8%8E-linux-5.4.52-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%8F%8A-qemu-%E5%90%AF%E5%8A%A8%E5%AE%9E%E8%B7%B5/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='rootfs' /><meta property='article:tag' content='arm64' /><meta property='article:tag' content='qemu' /><meta property='article:published_time' content='2025-11-20T21:06:00&#43;08:00'/><meta property='article:modified_time' content='2025-11-20T21:06:00&#43;08:00'/>
+<meta name="twitter:title" content="基于 ARM64 的 Ubuntu 20.04.4 根文件系统定制与 Linux 5.4.52 内核编译及 QEMU 启动实践">
+<meta name="twitter:description" content=" 基于 ARM64 的 Ubuntu 20.04.4 根文件系统定制与 Linux 5.4.52 内核编译及 QEMU 启动实践 操作步骤 ARM64的ubuntu-20.04镜像下载链接：https://old-releases.ubuntu.com/releases/20.04.4/ubuntu-20.04.4-live-server-arm64.iso\nLinux内核源码下载链接： https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.52.tar.xz\nvmware网络设置桥接模式，桥接模式可以分配网络，并且局域网可以ping通，也能ping通外网，nat模式待验证\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 # 在root权限下操作 apt install -y qemu-user-static # 准备定制根文件系统 mkdir -p ~/temp; cd ~/temp # 进入超级用户下 wget https://old-releases.ubuntu.com/releases/20.04.4/ubuntu-20.04.4-live-server-arm64.iso mount ubuntu-20.04.4-live-server-arm64.iso /mnt cp /mnt/casper/filesystem.squashfs ./ umount /mnt unsquashfs filesystem.squashfs echo &#39;nameserver 8.8.8.8&#39; &gt;&gt; squashfs-root/etc/resolv.conf echo &#39;nameserver 8.8.4.4&#39; &gt;&gt; squashfs-root/etc/resolv.conf # 如果提示失败： # chroot: failed to run command ‘/bin/bash’: No such file or directory # 拷贝 qemu-aarch64-static 到 rootfs sudo cp /usr/bin/qemu-aarch64-static squashfs-root/usr/bin/ chroot squashfs-root # 创建root密码（用于板卡登录根文件系统） passwd root apt-get update apt-get install -y unzip vim git openssh-server python3-pip sysstat libnuma1 dmidecode rsync net-tools psmisc parted arping ntpdate iproute2 iputils-ping mawk cracklib-runtime ethtool ntp fdisk libssl-dev libpam-cracklib logrotate # 配置ssh &lt;&lt;&#39;CONTENT&#39; Port 22 PermitRootLogin yes PubkeyAuthentication yes AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2 PasswordAuthentication yes CONTENT sed -i &#39;s/^[[:space:]]*#\\?Port.*/Port 22/&#39; /etc/ssh/sshd_config sed -i &#39;s/^[[:space:]]*#\\?PermitRootLogin.*/PermitRootLogin yes/&#39; /etc/ssh/sshd_config sed -i &#39;s/^[[:space:]]*#\\?PubkeyAuthentication.*/PubkeyAuthentication yes/&#39; /etc/ssh/sshd_config sed -i &#39;s|^[[:space:]]*#\\?AuthorizedKeysFile.*|AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2|&#39; /etc/ssh/sshd_config sed -i &#39;s/^[[:space:]]*#\\?PasswordAuthentication.*/PasswordAuthentication yes/&#39; /etc/ssh/sshd_config # 重启ssh服务 /etc/init.d/ssh restart # 配置以太网共享，前提是需要通过网络连接电脑，然后电脑共享的有网络的网卡到以太网 cat &gt; /etc/netplan/01-netcfg.yaml &lt;&lt; EOF network: version: 2 renderer: networkd ethernets: eth0: dhcp4: no addresses: - 192.168.137.50/24 gateway4: 192.168.137.1 nameservers: addresses: [8.8.8.8, 8.8.4.4] EOF # # 应用网络配置，在板卡操作系统中操作（基本上用不上） # netplan apply # 板卡系统打印异常错误推荐根本解决方案（嵌入式必做） # 在构建 rootfs 或 live-build 之前： # 1）禁用 snap（嵌入式 Linux 基本上都禁用它） apt purge -y snapd rm -rf /snap /var/snap /var/lib/snapd # 2）禁用 multipathd apt purge -y multipath-tools # 3）清理 systemd 单元防止镜像启动时报乱七八糟的错误 rm -f /etc/systemd/system/multi-user.target.wants/multipathd.service rm -f /etc/systemd/system/*.wants/snap*.service exit cd squashfs-root # find . | cpio -o -H newc | gzip &gt; ../Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.img find . | cpio -H newc -o | gzip &gt; ../Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz # find . | cpio -H newc -o | gzip &gt; ../ai-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz # find . | cpio -H newc -o | gzip &gt; ../ubuntu20.04.4_rootfs.cpio.gz # # 制作 squashfs（用于 ISO） # sudo mksquashfs rootfs filesystem.squashfs -comp xz -wildcards # 交叉编译Linux内核源码 # 步骤 1：安装 ARM64 交叉编译工具链 sudo apt install -y gcc-aarch64-linux-gnu make git bc flex bison libssl-dev # 步骤 2：下载 Linux Kernel 5.4.52 源码 wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.52.tar.xz tar xf linux-5.4.52.tar.xz cd linux-5.4.52 # 拷贝默认内核配置文件内核源码根目录下并重命名为.config，如果有其他来源的内核配置也是同样的方式拷贝到内核源码根目录下 make ARCH=arm64 defconfig # cp arch/arm64/configs/defconfig ./.config # # 根据现有的.config 文件更新内核配置 # make ARCH=arm64 oldconfig # 你要确保你的内核支持： &lt;&lt;&#39;CONTENT&#39; CONFIG_SERIAL_AMBA_PL011=y CONFIG_SERIAL_AMBA_PL011_CONSOLE=y CONTENT # 查看你内核编译的 .config： grep PL011 .config # 如果没有这两个控制台驱动 → QEMU不会有任何输出，Linux 内核运行但你看不见！ sudo apt install -y libncurses5-dev libncursesw5-dev # 你需要重新配置内核，把 PL011 打开： # 添加PL011和virtio-blk驱动 &lt;&lt;&#39;CONTENT&#39; Device Drivers ---&gt; Character devices ---&gt; Serial drivers ---&gt; &lt;*&gt; ARM AMBA PL011 serial port [*] Support for console on PL011 serial port Block devices ---&gt; &lt;*&gt; Virtio block driver [*] Virtualization drivers ---- Virtio drivers &lt;*&gt; Platform bus driver for memory mapped virtio devices [*] Memory mapped virtio devices parameter parsing CONTENT # 打开内核配置 make ARCH=arm64 menuconfig # 搜索并添加PL011，以及配置virtio-blk： /PL011 # 开启： &lt;&lt;&#39;CONTENT&#39; CONFIG_SERIAL_AMBA_PL011=y CONFIG_SERIAL_AMBA_PL011_CONSOLE=y CONFIG_VIRTIO=y CONFIG_VIRTIO_BLK=y CONFIG_VIRTIO_MMIO=y CONTENT # 如果想跳过 ncurses，也可以使用 非图形化配置： sed -i &#39;s/# CONFIG_SERIAL_AMBA_PL011 is not set/CONFIG_SERIAL_AMBA_PL011=y/&#39; .config sed -i &#39;s/# CONFIG_SERIAL_AMBA_PL011_CONSOLE is not set/CONFIG_SERIAL_AMBA_PL011_CONSOLE=y/&#39; .config # 保证依赖配置也自动生效，否则可能缺少 Virtio 驱动依赖。 make ARCH=arm64 oldconfig # # 然后重新编译内核： # make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc) # 步骤 3：准备 kernel headers（用于编译外部模块） # 必须准备 .config 和 modules 依赖，否则无法构建 modules。 # 如果你没有目标板的内核配置，建议使用通用 defconfig。 # 3.1 使用通用 ARM64 配置： # make ARCH=arm64 defconfig # make ARCH=arm64 oldconfig # 3.2 编译内核（只需要生成 headers，不需要整机镜像） make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc) # 3.3 生成 modules（构建模块依赖） # make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules -j$(nproc) make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules_prepare # 3.4 安装 headers（关键步骤） make ARCH=arm64 headers_install # 如果需要从内核编译环境复制全套 modules 目录（最干净） make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules_install INSTALL_MOD_PATH=./modout # 把这个目录复制进你的 rootfs sudo cp -r modout/lib/modules/5.4.52 ../squashfs-root/lib/modules/ # 生成模块依赖，进入 rootfs chroot 或直接： sudo depmod -a -b ../squashfs-root 5.4.52 # 如果是在板卡根文件系统可直接运行下面命令 depmod -a # 步骤 4（可选，可略过）：下载 udmabuf 源码 cd ../ git clone https://github.com/ikwzm/udmabuf.git cd udmabuf # 步骤 5：交叉编译 udmabuf（ARM64） # 关键是指定： # ARCH=arm64 # CROSS_COMPILE=aarch64-linux-gnu- # KERNEL_SRC=你的内核路径 # 假设内核路径是： # /home/you/linux-5.4.52 # 编译： make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- KERNEL_SRC=../linux-5.4.52 # 编译成功后会得到： &lt;&lt;&#39;CONTENT&#39; udmabuf.ko CONTENT cd - # 之后，内核源码目录即可作为 KERNEL_SRC。 # 准备QEMU启动文件 sudo apt install -y qemu-system-arm # 创建20GB的磁盘 dd if=/dev/zero of=rootfs.img bs=1M count=20480 mkfs.ext4 rootfs.img mkdir mnt sudo mount -o loop rootfs.img mnt cd mnt gunzip -c Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz | cpio -idm # ARM 默认 ttyAMA0串口需要 ,Ubuntu 需要同时使能 ttyAMA0 and default tty1 ， 在Ubuntu 根文件系统根目录中执行 sudo ln -s lib/systemd/system/getty@.service etc/systemd/system/getty.target.wants/getty@ttyAMA0.service cd - sudo umount mnt # QEMU 启动命令 sudo qemu-system-aarch64 \\ -machine virt \\ -cpu cortex-a57 \\ -m 4096 \\ -nographic \\ -kernel linux-5.4.52/arch/arm64/boot/Image \\ -append &#34;console=ttyAMA0,115200 root=/dev/vda rw rootwait systemd.mask=getty@ttyAMA0.service,getty@ttyPS0.service,rc-local.service&#34; \\ -drive file=rootfs.img,format=raw,if=none,id=hd0 \\ -device virtio-blk-device,drive=hd0 # 导出内核配置文件（比如使用的是别人制作好的根文件系统，可以用此方式导出内核配置后替换内核源码根目录下的.config） zcat /proc/config.gz &gt; config-$(uname -r) # zcat /proc/config.gz &gt; config-5.4.52 # Ctrl+a，x，退出qemu，然后挂载根文件系统并拷贝出config-5.4.52 参考链接 终端打印异常错误原因分析\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">基于 ARM64 的 Ubuntu 20.04.4 根文件系统定制与 Linux 5.4.52 内核编译及 QEMU 启动实践</a>
+<ul>
+<li><a href="#headline-2">操作步骤</a>
+</li>
+<li><a href="#headline-3">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%9F%BA%E4%BA%8E-arm64-%E7%9A%84-ubuntu-20.04.4-%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9A%E5%88%B6%E4%B8%8E-linux-5.4.52-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%8F%8A-qemu-%E5%90%AF%E5%8A%A8%E5%AE%9E%E8%B7%B5/">基于 ARM64 的 Ubuntu 20.04.4 根文件系统定制与 Linux 5.4.52 内核编译及 QEMU 启动实践</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 20, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+基于 ARM64 的 Ubuntu 20.04.4 根文件系统定制与 Linux 5.4.52 内核编译及 QEMU 启动实践
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+操作步骤
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>
+ARM64的ubuntu-20.04镜像下载链接：<a href="https://old-releases.ubuntu.com/releases/20.04.4/ubuntu-20.04.4-live-server-arm64.iso">https://old-releases.ubuntu.com/releases/20.04.4/ubuntu-20.04.4-live-server-arm64.iso</a></p>
+<p>
+Linux内核源码下载链接： <a href="https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.52.tar.xz">https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.52.tar.xz</a></p>
+<p>
+vmware网络设置桥接模式，桥接模式可以分配网络，并且局域网可以ping通，也能ping通外网，nat模式待验证</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在root权限下操作</span>
+</span></span><span class="line"><span class="cl">apt install -y qemu-user-static
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 准备定制根文件系统</span>
+</span></span><span class="line"><span class="cl">mkdir -p ~/temp<span class="p">;</span> <span class="nb">cd</span> ~/temp
+</span></span><span class="line"><span class="cl"><span class="c1"># 进入超级用户下</span>
+</span></span><span class="line"><span class="cl">wget https://old-releases.ubuntu.com/releases/20.04.4/ubuntu-20.04.4-live-server-arm64.iso
+</span></span><span class="line"><span class="cl">mount ubuntu-20.04.4-live-server-arm64.iso /mnt
+</span></span><span class="line"><span class="cl">cp /mnt/casper/filesystem.squashfs ./
+</span></span><span class="line"><span class="cl">umount /mnt
+</span></span><span class="line"><span class="cl">unsquashfs filesystem.squashfs
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;nameserver 8.8.8.8&#39;</span> &gt;&gt; squashfs-root/etc/resolv.conf
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;nameserver 8.8.4.4&#39;</span> &gt;&gt; squashfs-root/etc/resolv.conf
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果提示失败：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># chroot: failed to run command ‘/bin/bash’: No such file or directory</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 拷贝 qemu-aarch64-static 到 rootfs</span>
+</span></span><span class="line"><span class="cl">sudo cp /usr/bin/qemu-aarch64-static squashfs-root/usr/bin/
+</span></span><span class="line"><span class="cl">chroot squashfs-root
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建root密码（用于板卡登录根文件系统）</span>
+</span></span><span class="line"><span class="cl">passwd root
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">apt-get update
+</span></span><span class="line"><span class="cl">apt-get install -y unzip vim  git openssh-server python3-pip sysstat  libnuma1  dmidecode  rsync  net-tools  psmisc  parted  arping  ntpdate  iproute2  iputils-ping  mawk  cracklib-runtime  ethtool  ntp  fdisk  libssl-dev  libpam-cracklib  logrotate
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置ssh</span>
+</span></span><span class="line"><span class="cl"><span class="s">&lt;&lt;&#39;CONTENT&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">Port 22
+</span></span></span><span class="line"><span class="cl"><span class="s">PermitRootLogin yes
+</span></span></span><span class="line"><span class="cl"><span class="s">PubkeyAuthentication yes
+</span></span></span><span class="line"><span class="cl"><span class="s">AuthorizedKeysFile      .ssh/authorized_keys .ssh/authorized_keys2
+</span></span></span><span class="line"><span class="cl"><span class="s">PasswordAuthentication yes
+</span></span></span><span class="line"><span class="cl"><span class="s">CONTENT</span>
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;s/^[[:space:]]*#\?Port.*/Port 22/&#39;</span> /etc/ssh/sshd_config
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;s/^[[:space:]]*#\?PermitRootLogin.*/PermitRootLogin yes/&#39;</span> /etc/ssh/sshd_config
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;s/^[[:space:]]*#\?PubkeyAuthentication.*/PubkeyAuthentication yes/&#39;</span> /etc/ssh/sshd_config
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;s|^[[:space:]]*#\?AuthorizedKeysFile.*|AuthorizedKeysFile    .ssh/authorized_keys .ssh/authorized_keys2|&#39;</span> /etc/ssh/sshd_config
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;s/^[[:space:]]*#\?PasswordAuthentication.*/PasswordAuthentication yes/&#39;</span> /etc/ssh/sshd_config
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启ssh服务</span>
+</span></span><span class="line"><span class="cl">/etc/init.d/ssh restart
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 配置以太网共享，前提是需要通过网络连接电脑，然后电脑共享的有网络的网卡到以太网</span>
+</span></span><span class="line"><span class="cl">cat &gt; /etc/netplan/01-netcfg.yaml <span class="s">&lt;&lt; EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">network:
+</span></span></span><span class="line"><span class="cl"><span class="s">  version: 2
+</span></span></span><span class="line"><span class="cl"><span class="s">  renderer: networkd
+</span></span></span><span class="line"><span class="cl"><span class="s">  ethernets:
+</span></span></span><span class="line"><span class="cl"><span class="s">    eth0:
+</span></span></span><span class="line"><span class="cl"><span class="s">      dhcp4: no
+</span></span></span><span class="line"><span class="cl"><span class="s">      addresses:
+</span></span></span><span class="line"><span class="cl"><span class="s">        - 192.168.137.50/24
+</span></span></span><span class="line"><span class="cl"><span class="s">      gateway4: 192.168.137.1
+</span></span></span><span class="line"><span class="cl"><span class="s">      nameservers:
+</span></span></span><span class="line"><span class="cl"><span class="s">        addresses: [8.8.8.8, 8.8.4.4]
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># # 应用网络配置，在板卡操作系统中操作（基本上用不上）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># netplan apply</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 板卡系统打印异常错误推荐根本解决方案（嵌入式必做）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 在构建 rootfs 或 live-build 之前：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 1）禁用 snap（嵌入式 Linux 基本上都禁用它）</span>
+</span></span><span class="line"><span class="cl">apt purge -y snapd
+</span></span><span class="line"><span class="cl">rm -rf /snap /var/snap /var/lib/snapd
+</span></span><span class="line"><span class="cl"><span class="c1"># 2）禁用 multipathd</span>
+</span></span><span class="line"><span class="cl">apt purge -y multipath-tools
+</span></span><span class="line"><span class="cl"><span class="c1"># 3）清理 systemd 单元防止镜像启动时报乱七八糟的错误</span>
+</span></span><span class="line"><span class="cl">rm -f /etc/systemd/system/multi-user.target.wants/multipathd.service
+</span></span><span class="line"><span class="cl">rm -f /etc/systemd/system/*.wants/snap*.service
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">exit</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> squashfs-root
+</span></span><span class="line"><span class="cl"><span class="c1"># find . | cpio -o -H newc | gzip &gt; ../Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.img</span>
+</span></span><span class="line"><span class="cl">find . <span class="p">|</span> cpio -H newc -o <span class="p">|</span> gzip &gt; ../Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz
+</span></span><span class="line"><span class="cl"><span class="c1"># find . | cpio -H newc -o | gzip &gt; ../ai-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># find . | cpio -H newc -o | gzip &gt; ../ubuntu20.04.4_rootfs.cpio.gz</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># # 制作 squashfs（用于 ISO）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># sudo mksquashfs rootfs filesystem.squashfs -comp xz -wildcards</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 交叉编译Linux内核源码</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 步骤 1：安装 ARM64 交叉编译工具链</span>
+</span></span><span class="line"><span class="cl">sudo apt install -y gcc-aarch64-linux-gnu make git bc flex bison libssl-dev
+</span></span><span class="line"><span class="cl"><span class="c1"># 步骤 2：下载 Linux Kernel 5.4.52 源码</span>
+</span></span><span class="line"><span class="cl">wget https://mirrors.edge.kernel.org/pub/linux/kernel/v5.x/linux-5.4.52.tar.xz
+</span></span><span class="line"><span class="cl">tar xf linux-5.4.52.tar.xz
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> linux-5.4.52
+</span></span><span class="line"><span class="cl"><span class="c1"># 拷贝默认内核配置文件内核源码根目录下并重命名为.config，如果有其他来源的内核配置也是同样的方式拷贝到内核源码根目录下</span>
+</span></span><span class="line"><span class="cl">make <span class="nv">ARCH</span><span class="o">=</span>arm64 defconfig
+</span></span><span class="line"><span class="cl"><span class="c1"># cp arch/arm64/configs/defconfig ./.config</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># # 根据现有的.config 文件更新内核配置</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># make ARCH=arm64 oldconfig</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 你要确保你的内核支持：</span>
+</span></span><span class="line"><span class="cl"><span class="s">&lt;&lt;&#39;CONTENT&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">CONFIG_SERIAL_AMBA_PL011=y
+</span></span></span><span class="line"><span class="cl"><span class="s">CONFIG_SERIAL_AMBA_PL011_CONSOLE=y
+</span></span></span><span class="line"><span class="cl"><span class="s">CONTENT</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看你内核编译的 .config：</span>
+</span></span><span class="line"><span class="cl">grep PL011 .config
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果没有这两个控制台驱动 → QEMU不会有任何输出，Linux 内核运行但你看不见！</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sudo apt install -y libncurses5-dev libncursesw5-dev
+</span></span><span class="line"><span class="cl"><span class="c1"># 你需要重新配置内核，把 PL011 打开：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加PL011和virtio-blk驱动</span>
+</span></span><span class="line"><span class="cl"><span class="s">&lt;&lt;&#39;CONTENT&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">Device Drivers  ---&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s">    Character devices  ---&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s">        Serial drivers  ---&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s">            &lt;*&gt; ARM AMBA PL011 serial port
+</span></span></span><span class="line"><span class="cl"><span class="s">            [*] Support for console on PL011 serial port
+</span></span></span><span class="line"><span class="cl"><span class="s">    Block devices  ---&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s">        &lt;*&gt; Virtio block driver
+</span></span></span><span class="line"><span class="cl"><span class="s">    [*] Virtualization drivers  ----
+</span></span></span><span class="line"><span class="cl"><span class="s">    Virtio drivers
+</span></span></span><span class="line"><span class="cl"><span class="s">        &lt;*&gt;   Platform bus driver for memory mapped virtio devices  
+</span></span></span><span class="line"><span class="cl"><span class="s">        [*]     Memory mapped virtio devices parameter parsing
+</span></span></span><span class="line"><span class="cl"><span class="s">CONTENT</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 打开内核配置</span>
+</span></span><span class="line"><span class="cl">make <span class="nv">ARCH</span><span class="o">=</span>arm64 menuconfig
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 搜索并添加PL011，以及配置virtio-blk：</span>
+</span></span><span class="line"><span class="cl">/PL011
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 开启：</span>
+</span></span><span class="line"><span class="cl"><span class="s">&lt;&lt;&#39;CONTENT&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">CONFIG_SERIAL_AMBA_PL011=y
+</span></span></span><span class="line"><span class="cl"><span class="s">CONFIG_SERIAL_AMBA_PL011_CONSOLE=y
+</span></span></span><span class="line"><span class="cl"><span class="s">CONFIG_VIRTIO=y
+</span></span></span><span class="line"><span class="cl"><span class="s">CONFIG_VIRTIO_BLK=y
+</span></span></span><span class="line"><span class="cl"><span class="s">CONFIG_VIRTIO_MMIO=y
+</span></span></span><span class="line"><span class="cl"><span class="s">CONTENT</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果想跳过 ncurses，也可以使用 非图形化配置：</span>
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;s/# CONFIG_SERIAL_AMBA_PL011 is not set/CONFIG_SERIAL_AMBA_PL011=y/&#39;</span> .config
+</span></span><span class="line"><span class="cl">sed -i <span class="s1">&#39;s/# CONFIG_SERIAL_AMBA_PL011_CONSOLE is not set/CONFIG_SERIAL_AMBA_PL011_CONSOLE=y/&#39;</span> .config
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 保证依赖配置也自动生效，否则可能缺少 Virtio 驱动依赖。</span>
+</span></span><span class="line"><span class="cl">make <span class="nv">ARCH</span><span class="o">=</span>arm64 oldconfig
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># # 然后重新编译内核：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j$(nproc)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 步骤 3：准备 kernel headers（用于编译外部模块）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 必须准备 .config 和 modules 依赖，否则无法构建 modules。</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果你没有目标板的内核配置，建议使用通用 defconfig。</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 3.1 使用通用 ARM64 配置：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># make ARCH=arm64 defconfig</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># make ARCH=arm64 oldconfig</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3.2 编译内核（只需要生成 headers，不需要整机镜像）</span>
+</span></span><span class="line"><span class="cl">make <span class="nv">ARCH</span><span class="o">=</span>arm64 <span class="nv">CROSS_COMPILE</span><span class="o">=</span>aarch64-linux-gnu- -j<span class="k">$(</span>nproc<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3.3 生成 modules（构建模块依赖）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- modules -j$(nproc)</span>
+</span></span><span class="line"><span class="cl">make <span class="nv">ARCH</span><span class="o">=</span>arm64 <span class="nv">CROSS_COMPILE</span><span class="o">=</span>aarch64-linux-gnu- modules_prepare
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3.4 安装 headers（关键步骤）</span>
+</span></span><span class="line"><span class="cl">make <span class="nv">ARCH</span><span class="o">=</span>arm64 headers_install
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果需要从内核编译环境复制全套 modules 目录（最干净）</span>
+</span></span><span class="line"><span class="cl">make <span class="nv">ARCH</span><span class="o">=</span>arm64 <span class="nv">CROSS_COMPILE</span><span class="o">=</span>aarch64-linux-gnu- modules_install <span class="nv">INSTALL_MOD_PATH</span><span class="o">=</span>./modout
+</span></span><span class="line"><span class="cl"><span class="c1"># 把这个目录复制进你的 rootfs</span>
+</span></span><span class="line"><span class="cl">sudo cp -r modout/lib/modules/5.4.52 ../squashfs-root/lib/modules/
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成模块依赖，进入 rootfs chroot 或直接：</span>
+</span></span><span class="line"><span class="cl">sudo depmod -a -b ../squashfs-root 5.4.52
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果是在板卡根文件系统可直接运行下面命令</span>
+</span></span><span class="line"><span class="cl">depmod -a
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 步骤 4（可选，可略过）：下载 udmabuf 源码</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> ../
+</span></span><span class="line"><span class="cl">git clone https://github.com/ikwzm/udmabuf.git
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> udmabuf
+</span></span><span class="line"><span class="cl"><span class="c1"># 步骤 5：交叉编译 udmabuf（ARM64）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 关键是指定：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ARCH=arm64</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># CROSS_COMPILE=aarch64-linux-gnu-</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># KERNEL_SRC=你的内核路径</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 假设内核路径是：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># /home/you/linux-5.4.52</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 编译：</span>
+</span></span><span class="line"><span class="cl">make <span class="nv">ARCH</span><span class="o">=</span>arm64 <span class="nv">CROSS_COMPILE</span><span class="o">=</span>aarch64-linux-gnu- <span class="nv">KERNEL_SRC</span><span class="o">=</span>../linux-5.4.52
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 编译成功后会得到：</span>
+</span></span><span class="line"><span class="cl"><span class="s">&lt;&lt;&#39;CONTENT&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">udmabuf.ko
+</span></span></span><span class="line"><span class="cl"><span class="s">CONTENT</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> -
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 之后，内核源码目录即可作为 KERNEL_SRC。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 准备QEMU启动文件</span>
+</span></span><span class="line"><span class="cl">sudo apt install -y qemu-system-arm
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建20GB的磁盘</span>
+</span></span><span class="line"><span class="cl">dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>rootfs.img <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">20480</span>
+</span></span><span class="line"><span class="cl">mkfs.ext4 rootfs.img
+</span></span><span class="line"><span class="cl">mkdir mnt
+</span></span><span class="line"><span class="cl">sudo mount -o loop rootfs.img mnt
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> mnt
+</span></span><span class="line"><span class="cl">gunzip -c Sample-root-filesystem-soc_ubuntu-20.04.4-aarch64.cpio.gz <span class="p">|</span> cpio -idm
+</span></span><span class="line"><span class="cl"><span class="c1"># ARM 默认 ttyAMA0串口需要 ,Ubuntu 需要同时使能 ttyAMA0 and default tty1 ， 在Ubuntu 根文件系统根目录中执行</span>
+</span></span><span class="line"><span class="cl">sudo ln -s lib/systemd/system/getty@.service etc/systemd/system/getty.target.wants/getty@ttyAMA0.service
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> -
+</span></span><span class="line"><span class="cl">sudo umount mnt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># QEMU 启动命令</span>
+</span></span><span class="line"><span class="cl">sudo qemu-system-aarch64 <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -machine virt <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -cpu cortex-a57 <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -m <span class="m">4096</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -nographic <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -kernel linux-5.4.52/arch/arm64/boot/Image <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -append <span class="s2">&#34;console=ttyAMA0,115200 root=/dev/vda rw rootwait systemd.mask=getty@ttyAMA0.service,getty@ttyPS0.service,rc-local.service&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -drive <span class="nv">file</span><span class="o">=</span>rootfs.img,format<span class="o">=</span>raw,if<span class="o">=</span>none,id<span class="o">=</span>hd0 <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -device virtio-blk-device,drive<span class="o">=</span>hd0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 导出内核配置文件（比如使用的是别人制作好的根文件系统，可以用此方式导出内核配置后替换内核源码根目录下的.config）</span>
+</span></span><span class="line"><span class="cl">zcat /proc/config.gz &gt; config-<span class="k">$(</span>uname -r<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># zcat /proc/config.gz &gt; config-5.4.52</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Ctrl+a，x，退出qemu，然后挂载根文件系统并拷贝出config-5.4.52</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+参考链接
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>
+<a href="https://chatgpt.com/share/691d24b5-8b14-8013-945f-a61ba9b05fb5">终端打印异常错误原因分析</a></p>
+<p>
+<a href="https://chatgpt.com/share/691d330d-34fc-8013-9378-53f88a57de8b">去掉ssh配置注释</a></p>
+<p>
+<a href="https://chatgpt.com/share/691d3d8b-27e0-8013-89ec-1b81fe8cf51f">配置网络状态方法</a></p>
+<p>
+<a href="https://chatgpt.com/share/691e7976-6b80-8013-9c8f-15b80dfc4cac">u-dma-buf交叉编译教程</a></p>
+<p>
+<a href="https://chatgpt.com/share/691ee1e2-77c0-8013-84cf-be19f8b23626">QEMU 启动 ARM64 系统</a></p>
+<p>
+<a href="https://blog.csdn.net/leacock1991/article/details/113704225">从0开始使用QEMU模拟ARM开发环境之uboot通过tftp加载uImage并指定nfs挂载根文件系统</a></p>
+<p>
+<a href="https://chatgpt.com/s/t_6928007bf6b48191917bc8c3f29882ff">从内核编译环境复制全套 modules 目录</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/rootfs/">Rootfs</a>
+        
+            <a href="/tags/arm64/">Arm64</a>
+        
+            <a href="/tags/qemu/">Qemu</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/docker%E6%9E%84%E5%BB%BAarm64%E4%B8%8Earm32%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Docker构建ARM64与ARM32交叉编译环境</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E8%AE%B0%E5%BD%95%E5%AE%9A%E5%88%B6ubuntu22.04%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">记录定制Ubuntu22.04文件系统</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/jq%E7%94%A8%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">jq用法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/qemu%E5%90%AF%E5%8A%A8arm-linux%E5%86%85%E6%A0%B8-edu/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">QEMU启动arm-Linux内核&#43;edu</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/qemu%E5%90%AF%E5%8A%A8x86-linux%E5%86%85%E6%A0%B8/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">QEMU启动x86-Linux内核</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

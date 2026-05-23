@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Vmware_android on Example Site</title>
+        <link>https://ynhugo.github.io/tags/vmware_android/</link>
+        <description>Recent content in Vmware_android on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 08 Jul 2025 18:57:42 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/vmware_android/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>vmware安装android系统教程</title>
+        <link>https://ynhugo.github.io/p/vmware%E5%AE%89%E8%A3%85android%E7%B3%BB%E7%BB%9F%E6%95%99%E7%A8%8B/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/vmware%E5%AE%89%E8%A3%85android%E7%B3%BB%E7%BB%9F%E6%95%99%E7%A8%8B/</guid>
+        <description>&lt;p&gt;参考链接：&lt;a class=&#34;link&#34; href=&#34;https://www.jianshu.com/p/375bdee19239&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;在VMware上体验了一把Android x86 9&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;下载安卓90映像文件&#34;&gt;下载安卓9.0映像文件
+&lt;/h2&gt;&lt;p&gt;我是在这个网站下载的&lt;a class=&#34;link&#34; href=&#34;https://www.fosshub.com/Android-x86.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.fosshub.com/Android-x86.html&lt;/a&gt;，选择的是&lt;code&gt;Android-x86 64-bit ISO file&lt;/code&gt;，对应版本是&lt;code&gt;9.0-r2-k49&lt;/code&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;打开vmware进行安装&#34;&gt;打开vmware进行安装
+&lt;/h2&gt;&lt;p&gt;1.点击文件，接着点击创建虚拟机；&lt;/p&gt;
+&lt;p&gt;2.选择自定义，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;3.硬件兼容性默认，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;4.点击稍后安装操作系统，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;5.客户机系统选择&lt;code&gt;Linux&lt;/code&gt;，版本选择&lt;code&gt;其他Linux 5.x 内核64位&lt;/code&gt;，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;6.虚拟机名称自定义，选择安装位置，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;7.内核数量根据自己电脑硬件情况自定义，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;8.内存选择2GB或者4GB，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;9.网络类型选择&lt;code&gt;使用网络地址转换(NAT)&lt;/code&gt;，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;10.IO控制器类型默认，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;11.磁盘类型默认，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;12.创建新虚拟磁盘，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;13.&lt;code&gt;最大磁盘大小&lt;/code&gt;这里我分配了40GB，可以自由分配，并且我选择了&lt;code&gt;将虚拟磁盘拆分成多个文件&lt;/code&gt;，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;14.在&lt;code&gt;指定磁盘文件&lt;/code&gt;这里，我的做法是在安卓系统的安装位置中再建一个用来存放磁盘文件的子目录，作为磁盘文 件的目录，然后点击&lt;code&gt;下一步&lt;/code&gt;；&lt;/p&gt;
+&lt;p&gt;15.在这一步中，先点击&lt;code&gt;自定义硬件&lt;/code&gt;，然后点击&lt;code&gt;新CD/DVD(IDE)&lt;/code&gt;，在右侧点击&lt;code&gt;使用ISO映像文件&lt;/code&gt;，接着点击&lt;code&gt;浏览&lt;/code&gt;到下载的安卓映像文件所在的目录选择安卓映像文件，然后点击&lt;code&gt;打开&lt;/code&gt;，点击&lt;code&gt;关闭&lt;/code&gt;，最后点击&lt;code&gt;完成&lt;/code&gt;;&lt;/p&gt;
+&lt;p&gt;16.为保险起见，我为安卓系统做一个快照，在安卓系统的标签鼠标右键点击，在弹出的菜单中点击&lt;code&gt;快照&lt;/code&gt;，点击&lt;code&gt;拍摄快照&lt;/code&gt;，快照的&lt;code&gt;名称&lt;/code&gt;和&lt;code&gt;描述&lt;/code&gt;可以自定义，再次点击&lt;code&gt;拍摄快照&lt;/code&gt;，一秒到两秒钟的时间快照就制作完成了，未开 机状态下的快照制作过程花费时间是最短的；&lt;/p&gt;
+&lt;p&gt;17.点击&lt;code&gt;开启此虚拟机&lt;/code&gt;，底部弹窗可以叉掉，点进安卓系统的界面的时候鼠标消失了，可以通过快捷键&lt;code&gt;ctrl+alt&lt;/code&gt; 恢复鼠标，不过目前要安装安卓系统，因此先不恢复鼠标，在安卓系统的启动界面通过上下方向键选择第三个&lt;code&gt;Installation - Install Android-x86 to harddisk&lt;/code&gt;选项后敲回车，加载后进入选择分区界面，用上下方向键选择第一个&lt;code&gt;Create/Modify partitions&lt;/code&gt;后，默认选择&lt;code&gt;OK&lt;/code&gt;，然后敲回车，再次弹出窗口，默认选择&lt;code&gt;No&lt;/code&gt;，再次敲回车，进入创建分区界面，将光标通过左右方向键移到&lt;code&gt;New&lt;/code&gt;后敲回车，选择&lt;code&gt;primary&lt;/code&gt;后敲回车，在设置分区空间大小界面什么都不要做，再次敲回车，在分区界面默认选中了sda1，将移动光标选中&lt;code&gt;write&lt;/code&gt;，然后敲回车，接着分区界面提示&lt;code&gt;yes or no&lt;/code&gt;，输入&lt;code&gt;yes&lt;/code&gt;，然后敲回车，加载之后选中&lt;code&gt;Quit&lt;/code&gt;，然后敲回车，在&lt;code&gt;Choose filesystem&lt;/code&gt;界面中默认选中了&lt;code&gt;sda1&lt;/code&gt;，光标默认选中&lt;code&gt;OK&lt;/code&gt;，其他什么都不做，直接敲回车，在下一个界面中选&lt;code&gt;ext4&lt;/code&gt;，然后敲回车，在&lt;code&gt;Confirm&lt;/code&gt;界 面选中&lt;code&gt;Yes&lt;/code&gt;，然后敲回车，加载后再次在&lt;code&gt;Confirm&lt;/code&gt;界面选中&lt;code&gt;Yes&lt;/code&gt;，然后敲回车，接下来进入到了&lt;code&gt;Question&lt;/code&gt;界面 ，依然是选中&lt;code&gt;Yes&lt;/code&gt;，然后敲回车开始了安卓系统安装的过程，加载后先什么都不要做，鼠标右键点击当前安卓系统 的标签，在&lt;code&gt;可移动设备&lt;/code&gt;的列表中把&lt;code&gt;CD/DVD(IDE)&lt;/code&gt;的连接断开，在进行下一步操作之前如果想保险一点可以先将安 卓系统关机并做一个快照然后重新启动，系统在加载后进入到了GRUB启动模式选择界面，选择第二个模式&lt;code&gt;Android-x86 9.0-r2（Debug mode）&lt;/code&gt;，然后敲回车，系统开始加载，耐心等待一会儿后，尝试敲回车，如果没有反应就继续加载过程，然后再次尝试敲回车，出现一行只有&lt;code&gt;:/android #&lt;/code&gt;，并且旁边有光标在来回闪烁，意味着进入到了安卓系 统的终端环境中，接下来要做几个操作，在命令行界面输入&lt;code&gt;mount -o remount,rw /mnt&lt;/code&gt;后回车，执行该命令后在下一行返回一行字符串，不用管，输入下一条命令&lt;code&gt;vi /mnt/grub/ment.lst&lt;/code&gt;后敲回车，修改&lt;code&gt;ment.lst&lt;/code&gt;文件，进入这 个文件后点击键盘的字母&lt;code&gt;i&lt;/code&gt;进入编辑模式，然后将光标通过方向键移动到需要修改的位置在这个文件中有四个&lt;code&gt;title&lt;/code&gt;，分别是&lt;code&gt;Android-x86 9.0-r2&lt;/code&gt;、&lt;code&gt;Android-x86 9.0-r2（Debug mode）&lt;/code&gt;、&lt;code&gt;Android-x86 9.0-r2（Debug nomodeset）&lt;/code&gt;和&lt;code&gt;Android-x86 9.0-r2（Debug video=LVDS-1 :d）&lt;/code&gt;，需要修改语句是的是第一个title&lt;code&gt;Android-x86 9.0-r2&lt;/code&gt;下边的&lt;code&gt;kernel /android-9.0-r2/kernel quiet root=/dev/ram0 SRC=/android-9.0-r2&lt;/code&gt;，将该条语句中的&lt;code&gt;root&lt;/code&gt; 改为&lt;code&gt;nomodeset_root&lt;/code&gt;，然后点击按键&lt;code&gt;esc&lt;/code&gt;退出编辑模式，再执行快捷键&lt;code&gt;shift+;&lt;/code&gt;，这个快捷键由按键&lt;code&gt;shift&lt;/code&gt;和 标点符号&lt;code&gt;;&lt;/code&gt;组成，执行快捷键后进入底行模式，输入字母&lt;code&gt;wq&lt;/code&gt;后回车便退出该文件，接下来在系统标签右击展开 菜单，点击&lt;code&gt;电源&lt;/code&gt;列表的&lt;code&gt;重新启动客户机&lt;/code&gt;，在模式选择界面选中第一个模式后回车，或者你也可以什么都不做，系统会自动默认选择第一个模式并运行，耐心等待一会儿进入安卓系统。&lt;/p&gt;
+&lt;h2 id=&#34;配置安卓系统&#34;&gt;配置安卓系统
+&lt;/h2&gt;&lt;p&gt;第一次启动进行安卓系统开机时需要设置语言，把语言设置成简体中文，然后点击开始，跳过网络设置，一些隐私设置能不勾选就不要勾选，屏幕锁定也不设置，点击&lt;code&gt;以后再说&lt;/code&gt;，主屏幕应用选择&lt;code&gt;Quickstep&lt;/code&gt;并设置始终选择，至此 安卓系统就配置完成了。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

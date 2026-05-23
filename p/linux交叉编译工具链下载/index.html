@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 开篇赘述 ARM 架构主要有两种不同的位数变体：ARM32 和 ARM64。\nARM32：也称为 ARMv7 架构，通常用于较旧的嵌入式系统和移动设备。ARM32 架构有 32 位寻址空间和指令集，适用于需要较低功耗和资源占用的场景。 ARM64：也称为 ARMv8 架构，是较新的 ARM 架构版本，提供了更高性能、更大内存寻址范围和更多的寄存器。ARM64 架构支持 64 位寻址空间和指令集，适用于需要更高性能和更大内存支持的系统，比如现代的智能手机、平板电脑和服务器等设备。 因此，当选择交叉编译工具链时，需要确保选用的工具链与目标设备的架构兼容，以确保生成的可执行文件能够在目标设备上正确运行。对于 ARM32 和 ARM64 架构，你会发现相应的工具链，比如 `gcc-arm-linux-gnueabi` 用于 ARM32 架构，而 `gcc-aarch64-linux-gnu` 则用于 ARM64 架构。\n方法一 官网页面：https://www.linaro.org/downloads/\n以下访问官网子页面\nARM-Linux交叉编译工具链下载 下载页面：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/\n下载链接：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/gcc-linaro-14.0.0-2023.06-x86_64_arm-linux-gnueabihf.tar.xz\naarch64-Linux交叉编译工具链下载 下载页面：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/\n下载链接：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/gcc-linaro-14.0.0-2023.06-x86_64_aarch64-linux-gnu.tar.xz\n方法二 如果要使用aarch64-linux-gnu-gcc 交叉编译器编译程序，且没有ARM 交叉编译环境，则使用如下命令安装：\n1 2 sudo apt-get install gcc-9-aarch64-linux-gnu sudo apt-get install gcc-aarch64-linux-gnu 查看aarch64-linux-gnu-gcc版本号\n1 aarch64-linux-gnu-gcc -v 不同的系统架构对应不同版本的gcc for arm编译工具 multiarch name syscall ABI instruction set endian\u00adness word size description spec documents aarch64-linux-gnu linux ARMv8 little 64 aarch64 Linux Platform AAPCS64 (ARM IHI 005A)1\\\\ ELF for the ARM 64-bit Architecture2 aarch64_be-linux-gnu linux ARMv8 big 64 aarch64 Linux Platform AAPCS64 (ARM IHI 005A)1\\\\ ELF for the ARM 64-bit Architecture2 aarch64-linux-gnu_ilp32 linux ARMv8 little 32 aarch64 Linux Platform aarch64_be-linux-gnu_ilp32 linux ARMv8 big 32 aarch64 Linux Platform arm-linux-gnu linux ARMv7 little 32 Old ARM ABI APCS (ARM DUI 0041 chapter 9)4 arm-linux-gnueabi linux ARMv7 little 32 ARM EABI, soft-float AAPCS (ARM IHI 0042D)5\\\\ ARM GNU/Linux ABI Supplement6 arm-linux-gnueabihf linux ARMv7 little 32 ARM EABI, hard-float AAPCS (ARM IHI 0042D)5\u00a0and\\\\ XXXXX (TBD) armeb-linux-gnueabi linux ARMv7 big 32 ARM EABI, soft-float AAPCS (ARM IHI 0042D)5\\\\ ARM GNU/Linux ABI Supplement6 armeb-linux-gnueabihf linux ARMv7 big 32 ARM EABI, hard-float AAPCS (ARM IHI 0042D)5\u00a0and\\\\ XXXXX (TBD) armv8l-linux-gnueabihf linux ARMv8 little 32 ARMv8 EABI, hard-float arm-eabi Bare-Metal ARMv7 little 32 ARM EABI, soft-float armeb-eabi Bare-Metal ARMv7 big 32 ARM EABI, soft-float aarch64-elf Bare-Metal ARMv8 little 64 ARMv8 EABI, hard-float aarch64_be-elf Bare-Metal ARMv8 big 64 ARMv8 EABI, hard-float 参考链接 ARM-Linux 交叉编译工具链安装\n">
+<title>linux交叉编译工具链下载</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/linux%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE%E4%B8%8B%E8%BD%BD/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="linux交叉编译工具链下载">
+<meta property='og:description' content=" 开篇赘述 ARM 架构主要有两种不同的位数变体：ARM32 和 ARM64。\nARM32：也称为 ARMv7 架构，通常用于较旧的嵌入式系统和移动设备。ARM32 架构有 32 位寻址空间和指令集，适用于需要较低功耗和资源占用的场景。 ARM64：也称为 ARMv8 架构，是较新的 ARM 架构版本，提供了更高性能、更大内存寻址范围和更多的寄存器。ARM64 架构支持 64 位寻址空间和指令集，适用于需要更高性能和更大内存支持的系统，比如现代的智能手机、平板电脑和服务器等设备。 因此，当选择交叉编译工具链时，需要确保选用的工具链与目标设备的架构兼容，以确保生成的可执行文件能够在目标设备上正确运行。对于 ARM32 和 ARM64 架构，你会发现相应的工具链，比如 `gcc-arm-linux-gnueabi` 用于 ARM32 架构，而 `gcc-aarch64-linux-gnu` 则用于 ARM64 架构。\n方法一 官网页面：https://www.linaro.org/downloads/\n以下访问官网子页面\nARM-Linux交叉编译工具链下载 下载页面：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/\n下载链接：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/gcc-linaro-14.0.0-2023.06-x86_64_arm-linux-gnueabihf.tar.xz\naarch64-Linux交叉编译工具链下载 下载页面：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/\n下载链接：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/gcc-linaro-14.0.0-2023.06-x86_64_aarch64-linux-gnu.tar.xz\n方法二 如果要使用aarch64-linux-gnu-gcc 交叉编译器编译程序，且没有ARM 交叉编译环境，则使用如下命令安装：\n1 2 sudo apt-get install gcc-9-aarch64-linux-gnu sudo apt-get install gcc-aarch64-linux-gnu 查看aarch64-linux-gnu-gcc版本号\n1 aarch64-linux-gnu-gcc -v 不同的系统架构对应不同版本的gcc for arm编译工具 multiarch name syscall ABI instruction set endian\u00adness word size description spec documents aarch64-linux-gnu linux ARMv8 little 64 aarch64 Linux Platform AAPCS64 (ARM IHI 005A)1\\\\ ELF for the ARM 64-bit Architecture2 aarch64_be-linux-gnu linux ARMv8 big 64 aarch64 Linux Platform AAPCS64 (ARM IHI 005A)1\\\\ ELF for the ARM 64-bit Architecture2 aarch64-linux-gnu_ilp32 linux ARMv8 little 32 aarch64 Linux Platform aarch64_be-linux-gnu_ilp32 linux ARMv8 big 32 aarch64 Linux Platform arm-linux-gnu linux ARMv7 little 32 Old ARM ABI APCS (ARM DUI 0041 chapter 9)4 arm-linux-gnueabi linux ARMv7 little 32 ARM EABI, soft-float AAPCS (ARM IHI 0042D)5\\\\ ARM GNU/Linux ABI Supplement6 arm-linux-gnueabihf linux ARMv7 little 32 ARM EABI, hard-float AAPCS (ARM IHI 0042D)5\u00a0and\\\\ XXXXX (TBD) armeb-linux-gnueabi linux ARMv7 big 32 ARM EABI, soft-float AAPCS (ARM IHI 0042D)5\\\\ ARM GNU/Linux ABI Supplement6 armeb-linux-gnueabihf linux ARMv7 big 32 ARM EABI, hard-float AAPCS (ARM IHI 0042D)5\u00a0and\\\\ XXXXX (TBD) armv8l-linux-gnueabihf linux ARMv8 little 32 ARMv8 EABI, hard-float arm-eabi Bare-Metal ARMv7 little 32 ARM EABI, soft-float armeb-eabi Bare-Metal ARMv7 big 32 ARM EABI, soft-float aarch64-elf Bare-Metal ARMv8 little 64 ARMv8 EABI, hard-float aarch64_be-elf Bare-Metal ARMv8 big 64 ARMv8 EABI, hard-float 参考链接 ARM-Linux 交叉编译工具链安装\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/linux%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE%E4%B8%8B%E8%BD%BD/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='程序员' /><meta property='article:published_time' content='2023-12-19T00:27:56&#43;08:00'/><meta property='article:modified_time' content='2023-12-19T00:27:56&#43;08:00'/>
+<meta name="twitter:title" content="linux交叉编译工具链下载">
+<meta name="twitter:description" content=" 开篇赘述 ARM 架构主要有两种不同的位数变体：ARM32 和 ARM64。\nARM32：也称为 ARMv7 架构，通常用于较旧的嵌入式系统和移动设备。ARM32 架构有 32 位寻址空间和指令集，适用于需要较低功耗和资源占用的场景。 ARM64：也称为 ARMv8 架构，是较新的 ARM 架构版本，提供了更高性能、更大内存寻址范围和更多的寄存器。ARM64 架构支持 64 位寻址空间和指令集，适用于需要更高性能和更大内存支持的系统，比如现代的智能手机、平板电脑和服务器等设备。 因此，当选择交叉编译工具链时，需要确保选用的工具链与目标设备的架构兼容，以确保生成的可执行文件能够在目标设备上正确运行。对于 ARM32 和 ARM64 架构，你会发现相应的工具链，比如 `gcc-arm-linux-gnueabi` 用于 ARM32 架构，而 `gcc-aarch64-linux-gnu` 则用于 ARM64 架构。\n方法一 官网页面：https://www.linaro.org/downloads/\n以下访问官网子页面\nARM-Linux交叉编译工具链下载 下载页面：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/\n下载链接：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/gcc-linaro-14.0.0-2023.06-x86_64_arm-linux-gnueabihf.tar.xz\naarch64-Linux交叉编译工具链下载 下载页面：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/\n下载链接：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/gcc-linaro-14.0.0-2023.06-x86_64_aarch64-linux-gnu.tar.xz\n方法二 如果要使用aarch64-linux-gnu-gcc 交叉编译器编译程序，且没有ARM 交叉编译环境，则使用如下命令安装：\n1 2 sudo apt-get install gcc-9-aarch64-linux-gnu sudo apt-get install gcc-aarch64-linux-gnu 查看aarch64-linux-gnu-gcc版本号\n1 aarch64-linux-gnu-gcc -v 不同的系统架构对应不同版本的gcc for arm编译工具 multiarch name syscall ABI instruction set endian\u00adness word size description spec documents aarch64-linux-gnu linux ARMv8 little 64 aarch64 Linux Platform AAPCS64 (ARM IHI 005A)1\\\\ ELF for the ARM 64-bit Architecture2 aarch64_be-linux-gnu linux ARMv8 big 64 aarch64 Linux Platform AAPCS64 (ARM IHI 005A)1\\\\ ELF for the ARM 64-bit Architecture2 aarch64-linux-gnu_ilp32 linux ARMv8 little 32 aarch64 Linux Platform aarch64_be-linux-gnu_ilp32 linux ARMv8 big 32 aarch64 Linux Platform arm-linux-gnu linux ARMv7 little 32 Old ARM ABI APCS (ARM DUI 0041 chapter 9)4 arm-linux-gnueabi linux ARMv7 little 32 ARM EABI, soft-float AAPCS (ARM IHI 0042D)5\\\\ ARM GNU/Linux ABI Supplement6 arm-linux-gnueabihf linux ARMv7 little 32 ARM EABI, hard-float AAPCS (ARM IHI 0042D)5\u00a0and\\\\ XXXXX (TBD) armeb-linux-gnueabi linux ARMv7 big 32 ARM EABI, soft-float AAPCS (ARM IHI 0042D)5\\\\ ARM GNU/Linux ABI Supplement6 armeb-linux-gnueabihf linux ARMv7 big 32 ARM EABI, hard-float AAPCS (ARM IHI 0042D)5\u00a0and\\\\ XXXXX (TBD) armv8l-linux-gnueabihf linux ARMv8 little 32 ARMv8 EABI, hard-float arm-eabi Bare-Metal ARMv7 little 32 ARM EABI, soft-float armeb-eabi Bare-Metal ARMv7 big 32 ARM EABI, soft-float aarch64-elf Bare-Metal ARMv8 little 64 ARMv8 EABI, hard-float aarch64_be-elf Bare-Metal ARMv8 big 64 ARMv8 EABI, hard-float 参考链接 ARM-Linux 交叉编译工具链安装\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">开篇赘述</a>
+</li>
+<li><a href="#headline-2">方法一</a>
+<ul>
+<li><a href="#headline-3">ARM-Linux交叉编译工具链下载</a>
+</li>
+<li><a href="#headline-4">aarch64-Linux交叉编译工具链下载</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-5">方法二</a>
+</li>
+<li><a href="#headline-6">不同的系统架构对应不同版本的gcc for arm编译工具</a>
+</li>
+<li><a href="#headline-7">参考链接</a>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/linux%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE%E4%B8%8B%E8%BD%BD/">linux交叉编译工具链下载</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 19, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+开篇赘述
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>
+ARM 架构主要有两种不同的位数变体：ARM32 和 ARM64。</p>
+<ol>
+<li>ARM32：也称为 ARMv7 架构，通常用于较旧的嵌入式系统和移动设备。ARM32 架构有 32 位寻址空间和指令集，适用于需要较低功耗和资源占用的场景。</li>
+<li>ARM64：也称为 ARMv8 架构，是较新的 ARM 架构版本，提供了更高性能、更大内存寻址范围和更多的寄存器。ARM64 架构支持 64 位寻址空间和指令集，适用于需要更高性能和更大内存支持的系统，比如现代的智能手机、平板电脑和服务器等设备。</li>
+</ol>
+<p>因此，当选择交叉编译工具链时，需要确保选用的工具链与目标设备的架构兼容，以确保生成的可执行文件能够在目标设备上正确运行。对于 ARM32 和 ARM64 架构，你会发现相应的工具链，比如 `gcc-arm-linux-gnueabi` 用于 ARM32 架构，而 `gcc-aarch64-linux-gnu` 则用于 ARM64 架构。</p>
+</div>
+</div>
+<div id="outline-container-headline-2" class="outline-2">
+<h2 id="headline-2">
+方法一
+</h2>
+<div id="outline-text-headline-2" class="outline-text-2">
+<p>
+官网页面：<a href="https://www.linaro.org/downloads/">https://www.linaro.org/downloads/</a></p>
+<p>
+以下访问官网子页面</p>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+ARM-Linux交叉编译工具链下载
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>
+下载页面：<a href="https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/">https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/</a></p>
+<p>
+下载链接：<a href="https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/gcc-linaro-14.0.0-2023.06-x86_64_arm-linux-gnueabihf.tar.xz">https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/gcc-linaro-14.0.0-2023.06-x86_64_arm-linux-gnueabihf.tar.xz</a></p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+aarch64-Linux交叉编译工具链下载
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>
+下载页面：<a href="https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/">https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/</a></p>
+<p>
+下载链接：<a href="https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/gcc-linaro-14.0.0-2023.06-x86_64_aarch64-linux-gnu.tar.xz">https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/gcc-linaro-14.0.0-2023.06-x86_64_aarch64-linux-gnu.tar.xz</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-2">
+<h2 id="headline-5">
+方法二
+</h2>
+<div id="outline-text-headline-5" class="outline-text-2">
+<p>
+如果要使用aarch64-linux-gnu-gcc 交叉编译器编译程序，且没有ARM 交叉编译环境，则使用如下命令安装：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo apt-get install gcc-9-aarch64-linux-gnu
+</span></span><span class="line"><span class="cl">  sudo apt-get install gcc-aarch64-linux-gnu</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+查看aarch64-linux-gnu-gcc版本号</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  aarch64-linux-gnu-gcc -v</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-2">
+<h2 id="headline-6">
+不同的系统架构对应不同版本的gcc for arm编译工具
+</h2>
+<div id="outline-text-headline-6" class="outline-text-2">
+<div class="table-wrapper"><table>
+<thead>
+</thead>
+<tbody>
+<tr>
+<td class="align-left">multiarch name</td>
+<td class="align-left">syscall ABI</td>
+<td class="align-left">instruction set</td>
+<td class="align-left">endian­ness</td>
+<td class="align-left">word size</td>
+<td class="align-left">description</td>
+<td class="align-left">spec documents</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">aarch64-linux-gnu</td>
+<td class="align-left">linux</td>
+<td class="align-left">ARMv8</td>
+<td class="align-left">little</td>
+<td class="align-left">64</td>
+<td class="align-left">aarch64 Linux Platform</td>
+<td class="align-left">AAPCS64 (ARM IHI 005A)<a href="https://wiki.debian.org/Multiarch/Tuples#fnref-c7e3f48bab06503cfad11314b1aea053fd6f075f">1</a>\\</td>
+</tr>
+<tr>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left">ELF for the ARM 64-bit Architecture<a href="https://wiki.debian.org/Multiarch/Tuples#fnref-8063f3fadbf6d71cb0805d7124d5606eda4f3ce0">2</a></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">aarch64_be-linux-gnu</td>
+<td class="align-left">linux</td>
+<td class="align-left">ARMv8</td>
+<td class="align-left">big</td>
+<td class="align-left">64</td>
+<td class="align-left">aarch64 Linux Platform</td>
+<td class="align-left">AAPCS64 (ARM IHI 005A)<a href="https://wiki.debian.org/Multiarch/Tuples#fnref-c7e3f48bab06503cfad11314b1aea053fd6f075f">1</a>\\</td>
+</tr>
+<tr>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left">ELF for the ARM 64-bit Architecture<a href="https://wiki.debian.org/Multiarch/Tuples#fnref-8063f3fadbf6d71cb0805d7124d5606eda4f3ce0">2</a></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">aarch64-linux-gnu_ilp32</td>
+<td class="align-left">linux</td>
+<td class="align-left">ARMv8</td>
+<td class="align-left">little</td>
+<td class="align-left">32</td>
+<td class="align-left">aarch64 Linux Platform</td>
+<td class="align-left"></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">aarch64_be-linux-gnu_ilp32</td>
+<td class="align-left">linux</td>
+<td class="align-left">ARMv8</td>
+<td class="align-left">big</td>
+<td class="align-left">32</td>
+<td class="align-left">aarch64 Linux Platform</td>
+<td class="align-left"></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">arm-linux-gnu</td>
+<td class="align-left">linux</td>
+<td class="align-left">ARMv7</td>
+<td class="align-left">little</td>
+<td class="align-left">32</td>
+<td class="align-left">Old ARM ABI</td>
+<td class="align-left">APCS (ARM DUI 0041 chapter 9)<a href="https://wiki.debian.org/Multiarch/Tuples#fnref-f460c72c3b0aef74f365b695986ecda40eaf37ec">4</a></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">arm-linux-gnueabi</td>
+<td class="align-left">linux</td>
+<td class="align-left">ARMv7</td>
+<td class="align-left">little</td>
+<td class="align-left">32</td>
+<td class="align-left">ARM EABI, soft-float</td>
+<td class="align-left">AAPCS (ARM IHI 0042D)<a href="https://wiki.debian.org/Multiarch/Tuples#fnref-1afc7a5c6e3b1f4f78fe36071dd1eebc87925aed">5</a>\\</td>
+</tr>
+<tr>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left">ARM GNU/Linux ABI Supplement<a href="https://wiki.debian.org/Multiarch/Tuples#fnref-cd2c0ea0679f5d05c6d3f9ffd9cc6ef49f7ea0a2">6</a></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">arm-linux-gnueabihf</td>
+<td class="align-left">linux</td>
+<td class="align-left">ARMv7</td>
+<td class="align-left">little</td>
+<td class="align-left">32</td>
+<td class="align-left">ARM EABI, hard-float</td>
+<td class="align-left">AAPCS (ARM IHI 0042D)<a href="https://wiki.debian.org/Multiarch/Tuples#fnref-1afc7a5c6e3b1f4f78fe36071dd1eebc87925aed">5</a> and\\</td>
+</tr>
+<tr>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left">XXXXX (TBD)</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">armeb-linux-gnueabi</td>
+<td class="align-left">linux</td>
+<td class="align-left">ARMv7</td>
+<td class="align-left">big</td>
+<td class="align-left">32</td>
+<td class="align-left">ARM EABI, soft-float</td>
+<td class="align-left">AAPCS (ARM IHI 0042D)<a href="https://wiki.debian.org/Multiarch/Tuples#fnref-1afc7a5c6e3b1f4f78fe36071dd1eebc87925aed">5</a>\\</td>
+</tr>
+<tr>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left">ARM GNU/Linux ABI Supplement<a href="https://wiki.debian.org/Multiarch/Tuples#fnref-cd2c0ea0679f5d05c6d3f9ffd9cc6ef49f7ea0a2">6</a></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">armeb-linux-gnueabihf</td>
+<td class="align-left">linux</td>
+<td class="align-left">ARMv7</td>
+<td class="align-left">big</td>
+<td class="align-left">32</td>
+<td class="align-left">ARM EABI, hard-float</td>
+<td class="align-left">AAPCS (ARM IHI 0042D)<a href="https://wiki.debian.org/Multiarch/Tuples#fnref-1afc7a5c6e3b1f4f78fe36071dd1eebc87925aed">5</a> and\\</td>
+</tr>
+<tr>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left"></td>
+<td class="align-left">XXXXX (TBD)</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">armv8l-linux-gnueabihf</td>
+<td class="align-left">linux</td>
+<td class="align-left">ARMv8</td>
+<td class="align-left">little</td>
+<td class="align-left">32</td>
+<td class="align-left">ARMv8 EABI, hard-float</td>
+<td class="align-left"></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">arm-eabi</td>
+<td class="align-left">Bare-Metal</td>
+<td class="align-left">ARMv7</td>
+<td class="align-left">little</td>
+<td class="align-left">32</td>
+<td class="align-left">ARM EABI, soft-float</td>
+<td class="align-left"></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">armeb-eabi</td>
+<td class="align-left">Bare-Metal</td>
+<td class="align-left">ARMv7</td>
+<td class="align-left">big</td>
+<td class="align-left">32</td>
+<td class="align-left">ARM EABI, soft-float</td>
+<td class="align-left"></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">aarch64-elf</td>
+<td class="align-left">Bare-Metal</td>
+<td class="align-left">ARMv8</td>
+<td class="align-left">little</td>
+<td class="align-left">64</td>
+<td class="align-left">ARMv8 EABI, hard-float</td>
+<td class="align-left"></td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-left">aarch64_be-elf</td>
+<td class="align-left">Bare-Metal</td>
+<td class="align-left">ARMv8</td>
+<td class="align-left">big</td>
+<td class="align-left">64</td>
+<td class="align-left">ARMv8 EABI, hard-float</td>
+<td class="align-left"></td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-2">
+<h2 id="headline-7">
+参考链接
+</h2>
+<div id="outline-text-headline-7" class="outline-text-2">
+<p>
+<a href="https://blog.csdn.net/Qiuhongim/article/details/124137192">ARM-Linux 交叉编译工具链安装</a></p>
+<p>
+<a href="https://blog.csdn.net/Namcodream521/article/details/88379307">arm-linux-gnueabihf、aarch64-linux-gnu等ARM交叉编译GCC的区别</a></p>
+<p>
+<a href="https://blog.csdn.net/qq_44705488/article/details/127650048">FPGA Zynq MPSOC ZU5EV 下CAN 应用编程</a></p>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/jq%E7%94%A8%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">jq用法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/socket-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86%E7%9A%84%E7%BB%93%E5%90%88-deepseek/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Socket 服务端与线程管理的结合-Deepseek</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%A6%82%E4%BD%95%E6%A0%B9%E6%8D%AEflag%E7%BB%93%E6%9D%9F%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%88%9B%E5%BB%BA%E6%96%B0%E7%BA%BF%E7%A8%8B-deepseek/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">如何根据flag结束线程并创建新线程-Deepseek</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/bc%E8%AE%A1%E7%AE%97%E5%99%A8/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">bc计算器</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/acme%E8%84%9A%E6%9C%AC%E7%94%B3%E8%AF%B7%E8%AF%81%E4%B9%A6%E6%95%99%E7%A8%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">acme脚本申请证书教程</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

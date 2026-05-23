@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 安装termux termux的下载安装及使用教程 termux官网\ntermux教程\n初始化操作 termux-setup-storage #给访问权限\napt update &amp;&amp; apt upgrade -y &amp;&amp; pkg update &amp;&amp; pkg upgrade -y #检查更新并升\npkg install vim #文本编辑工具\n其它工具的安装 pkg install git #根据个人需要选择性安装\npkg install nodejs-lts -g #用来安装各种插件，根据个人需要选择性安装\nnpm install hexo-cli -g #必须先安装nodejs再执行，用来搭建博客，根据个人需要选择性安装\npkg install proot-distro #可用来安装linux系统，根据个人需要选择性安装\ntermux-openssh 安装好termux之后，想尝试一下termux的ssh，以我为例，做一个总结。\n注意：以下操作需要保证电脑跟手机保持在同一个局域网，且是电脑连接手机。\npkg install openssh #安装openssh\npasswd #电脑在连接termux时会提示输入密码，所以需要在termux中提前设置，执行passwd后会提示设置密码并确认密码。\nwhoami #查看termux的用户名。\nifconfig #查看termux的ip，我的是wlan1部分，看inet的后的ip地址。\nssh -p user@ip #user为termux执行whoami后看到的用户名，ip为执行ifconfig后看到的wlan1部分inet对应的ip。\n接下来会询问&#34;yes or no&#34;,输入yes，输入密码，然后连接成功。\n">
+<title>termux_study</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/termux_study/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="termux_study">
+<meta property='og:description' content=" 安装termux termux的下载安装及使用教程 termux官网\ntermux教程\n初始化操作 termux-setup-storage #给访问权限\napt update &amp;&amp; apt upgrade -y &amp;&amp; pkg update &amp;&amp; pkg upgrade -y #检查更新并升\npkg install vim #文本编辑工具\n其它工具的安装 pkg install git #根据个人需要选择性安装\npkg install nodejs-lts -g #用来安装各种插件，根据个人需要选择性安装\nnpm install hexo-cli -g #必须先安装nodejs再执行，用来搭建博客，根据个人需要选择性安装\npkg install proot-distro #可用来安装linux系统，根据个人需要选择性安装\ntermux-openssh 安装好termux之后，想尝试一下termux的ssh，以我为例，做一个总结。\n注意：以下操作需要保证电脑跟手机保持在同一个局域网，且是电脑连接手机。\npkg install openssh #安装openssh\npasswd #电脑在连接termux时会提示输入密码，所以需要在termux中提前设置，执行passwd后会提示设置密码并确认密码。\nwhoami #查看termux的用户名。\nifconfig #查看termux的ip，我的是wlan1部分，看inet的后的ip地址。\nssh -p user@ip #user为termux执行whoami后看到的用户名，ip为执行ifconfig后看到的wlan1部分inet对应的ip。\n接下来会询问&#34;yes or no&#34;,输入yes，输入密码，然后连接成功。\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/termux_study/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='termux' /><meta property='article:published_time' content='2024-03-31T16:11:45&#43;08:00'/><meta property='article:modified_time' content='2024-03-31T16:11:45&#43;08:00'/>
+<meta name="twitter:title" content="termux_study">
+<meta name="twitter:description" content=" 安装termux termux的下载安装及使用教程 termux官网\ntermux教程\n初始化操作 termux-setup-storage #给访问权限\napt update &amp;&amp; apt upgrade -y &amp;&amp; pkg update &amp;&amp; pkg upgrade -y #检查更新并升\npkg install vim #文本编辑工具\n其它工具的安装 pkg install git #根据个人需要选择性安装\npkg install nodejs-lts -g #用来安装各种插件，根据个人需要选择性安装\nnpm install hexo-cli -g #必须先安装nodejs再执行，用来搭建博客，根据个人需要选择性安装\npkg install proot-distro #可用来安装linux系统，根据个人需要选择性安装\ntermux-openssh 安装好termux之后，想尝试一下termux的ssh，以我为例，做一个总结。\n注意：以下操作需要保证电脑跟手机保持在同一个局域网，且是电脑连接手机。\npkg install openssh #安装openssh\npasswd #电脑在连接termux时会提示输入密码，所以需要在termux中提前设置，执行passwd后会提示设置密码并确认密码。\nwhoami #查看termux的用户名。\nifconfig #查看termux的ip，我的是wlan1部分，看inet的后的ip地址。\nssh -p user@ip #user为termux执行whoami后看到的用户名，ip为执行ifconfig后看到的wlan1部分inet对应的ip。\n接下来会询问&#34;yes or no&#34;,输入yes，输入密码，然后连接成功。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">安装termux</a>
+<ul>
+<li><a href="#headline-2">termux的下载安装及使用教程</a>
+</li>
+<li><a href="#headline-3">初始化操作</a>
+</li>
+<li><a href="#headline-4">其它工具的安装</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-5">termux-openssh</a>
+</li>
+<li><a href="#headline-6">通过Termux和VNC实现以手机为服务器的桌面办公</a>
+<ul>
+<li><a href="#headline-7">参考链接</a>
+</li>
+<li><a href="#headline-8">安装ubuntu和图形界面</a>
+</li>
+<li><a href="#headline-9">连接VNC图形化操作</a>
+</li>
+<li><a href="#headline-10">中文语言设置</a>
+</li>
+<li><a href="#headline-11">如果安装过程中发现一些缺失的东东</a>
+</li>
+<li><a href="#headline-12">关于中文输入法</a>
+<ul>
+<li><a href="#headline-13">如果通过VNC或别的XDSL进入XFCE，有fcitx图标，也能看到拼音，五笔输入法，但是却输入不了中文</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-14">如果要一进入桌面就有fcitx，则可</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-15">termux使用技巧</a>
+<ul>
+<li><a href="#headline-16">在termux查看手机内置存储</a>
+</li>
+<li><a href="#headline-17">热键</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-18">Termux设置——服务自启动</a>
+<ul>
+<li><a href="#headline-19">安装：</a>
+</li>
+<li><a href="#headline-20">原生支持的服务</a>
+</li>
+<li><a href="#headline-21">相关命令</a>
+</li>
+<li><a href="#headline-22">自己编写一个自启动服务</a>
+<ul>
+<li><a href="#headline-23">自启动脚本创建</a>
+</li>
+<li><a href="#headline-24">配置服务的输出日志</a>
+</li>
+<li><a href="#headline-25">自启动服务测试</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-26">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/termux_study/">termux_study</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 31, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+安装termux
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+termux的下载安装及使用教程
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>
+<a href="https://termux.com/">termux官网</a></p>
+<p>
+<a href="https://www.sqlsec.com/2018/05/termux.html">termux教程</a></p>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+初始化操作
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>
+termux-setup-storage #给访问权限</p>
+<p>
+apt update &amp;&amp; apt upgrade -y &amp;&amp; pkg update &amp;&amp; pkg upgrade -y #检查更新并升</p>
+<p>
+pkg install vim #文本编辑工具</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+其它工具的安装
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>
+pkg install git #根据个人需要选择性安装</p>
+<p>
+pkg install nodejs-lts -g #用来安装各种插件，根据个人需要选择性安装</p>
+<p>
+npm install hexo-cli -g #必须先安装nodejs再执行，用来搭建博客，根据个人需要选择性安装</p>
+<p>
+pkg install proot-distro #可用来安装linux系统，根据个人需要选择性安装</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-2">
+<h2 id="headline-5">
+termux-openssh
+</h2>
+<div id="outline-text-headline-5" class="outline-text-2">
+<p>
+安装好termux之后，想尝试一下termux的ssh，以我为例，做一个总结。</p>
+<p>
+注意：以下操作需要保证电脑跟手机保持在同一个局域网，且是电脑连接手机。</p>
+<p>
+pkg install openssh #安装openssh</p>
+<p>
+passwd #电脑在连接termux时会提示输入密码，所以需要在termux中提前设置，执行passwd后会提示设置密码并确认密码。</p>
+<p>
+whoami #查看termux的用户名。</p>
+<p>
+ifconfig #查看termux的ip，我的是wlan1部分，看inet的后的ip地址。</p>
+<p>
+ssh -p user@ip #user为termux执行whoami后看到的用户名，ip为执行ifconfig后看到的wlan1部分inet对应的ip。</p>
+<p>
+接下来会询问&#34;yes or no&#34;,输入yes，输入密码，然后连接成功。</p>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-2">
+<h2 id="headline-6">
+通过Termux和VNC实现以手机为服务器的桌面办公
+</h2>
+<div id="outline-text-headline-6" class="outline-text-2">
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+参考链接
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/phaste/article/details/123616645">通过Termux和VNC实现以手机为服务器的桌面办公</a></p>
+<p>
+<a href="https://superigbt_superigbt.gitee.io/2020/09/28/termux-proot-distro/">termux利用工作proot-distro安装linux</a></p>
+<p>
+解决了termux安装ubuntu系统和安装系统的中文支持问题</p>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
+安装ubuntu和图形界面
+</h3>
+<div id="outline-text-headline-8" class="outline-text-3">
+<p>
+现在安装ubuntu，我是通过proot-distro来安装的</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  apt install proot-distro</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+然后键入proot-distro list来显示可安装包，这个方法不但可以方便的安装ubuntu可以看到你还可以用它来安装其它linux的发行版。
+这里我们安装ubuntu</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  proot-distro install ubuntu</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+这时候会从外网下载几十M的大文件(没听错几十兆而已，但很慢)，有时候网络不好，多试几次。
+显示安装成功后就可以登入了</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  proot-distro login ubuntu</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+当然你也可以把这条命令加入到自启动项里面，每次就可以自动登陆了。</p>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-3">
+<h3 id="headline-9">
+连接VNC图形化操作
+</h3>
+<div id="outline-text-headline-9" class="outline-text-3">
+<p>
+进入ubuntu后先更新软件源</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  apt update</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+然后安装需要用到的图形化服务软件</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt install xfce4 xfce4-goodies</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+会安装xfc4轻量级图形界面服务，这一步大概会消耗1G的空间，当然也可以试着去安装其他的图形界面服务如gnome</p>
+<p>
+安装xfc4参考：<a href="https://blog.csdn.net/cunchi4221/article/details/107471665">https://blog.csdn.net/cunchi4221/article/details/107471665</a></p>
+<p>
+然后安装tigervnc。tigervnc感觉比tightvnc要配置简单一些</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  apt install tigervnc-standalone-server tigervnc-common</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+然后做一下简单的配置</p>
+<p>
+运行</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  vncserver</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+来设置密码</p>
+<p>
+然后创建启动脚本：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  nano .vnc/xstartup</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+如上命令就是用文本编辑器nano(当然你可以用其他文本编辑器)编辑用户文件夹下的.vnc文件夹下的xstartup文件(如果没有就创建一个)内容如下：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="c1">#!/usr/bin/bash</span>
+</span></span><span class="line"><span class="cl">  xfce4-session</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+注意xfce4-session后面不要跟&amp;号，不然会在运行vncserver时提示过早退出，然后记得给它加执行的权限。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  chmod +x .vnc/xstartup</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+首次设置VNC时，它将在端口5901上启动默认服务器实例。</p>
+<p>
+如下是一个启动vnc服务器的例子：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  vncserver :1 -localhost no -geometry 1920x1080</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+然后就可以通过vnc的客户端登陆了，为了能够远端登陆不仅仅是本机登陆，设置-localhost no 是必要的。由于VNC是不加密的，会在登陆时提示如下，当然也可以自行百度实现在此基础上的外加SSH通道的加密。</p>
+<p>
+输入刚才设置的密码就可以登陆了</p>
+<p>
+之后就是熟悉的ubuntu界面了，可以自由安装自己喜欢的程序了</p>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-3">
+<h3 id="headline-10">
+中文语言设置
+</h3>
+<div id="outline-text-headline-10" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  apt install language-pack-zh-hans* 安装中文包
+</span></span><span class="line"><span class="cl">  apt install language-pack-gnome-zh-hans* 安装中文包
+</span></span><span class="line"><span class="cl">  apt install fonts-wqy-*
+</span></span><span class="line"><span class="cl">  <span class="c1"># $ apt install fonts-wqy-microhei 安装中文字体</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># $ apt install fronts-wqy-zenhei 另一个中文字体</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  vim /etc/default/locale</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+更改内容如下：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nv">LANG</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">LANGUAGE</span><span class="o">=</span><span class="s2">&#34;zh_CN:en_US:en&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">LC_NUMERIC</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">LC_TIME</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">LC_MONETARY</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">LC_PAPER</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">LC_IDENTIFICATION</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">LC_NAME</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">LC_ADDRESS</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">LC_TELEPHONE</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">LC_MEASUREMENT</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+保存后执行</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  fc-cache -fv  <span class="c1">#最好进行这一步后再安装fcitx，否则有可能输入法不起做用。</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+则控制台终端己经会出现中文了</p>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-3">
+<h3 id="headline-11">
+如果安装过程中发现一些缺失的东东
+</h3>
+<div id="outline-text-headline-11" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  apt install dialog
+</span></span><span class="line"><span class="cl">  apt install apt-utils</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-3">
+<h3 id="headline-12">
+关于中文输入法
+</h3>
+<div id="outline-text-headline-12" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  apt install fcitx
+</span></span><span class="line"><span class="cl">  apt install fcitx-config-*
+</span></span><span class="line"><span class="cl">  apt install fcitx-table-wbpy <span class="c1"># 五笔拼音</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-4">
+<h4 id="headline-13">
+如果通过VNC或别的XDSL进入XFCE，有fcitx图标，也能看到拼音，五笔输入法，但是却输入不了中文
+</h4>
+<div id="outline-text-headline-13" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  vim ~/.profile</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+在结尾加入</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="c1">#fcitx</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">export</span> <span class="nv">GTK_IM_MODULE</span><span class="o">=</span>fcitx
+</span></span><span class="line"><span class="cl">  <span class="nb">export</span> <span class="nv">QT_IM_MODULE</span><span class="o">=</span>fcitx
+</span></span><span class="line"><span class="cl">  <span class="nb">export</span> <span class="nv">XMODIFIERS</span><span class="o">=</span>”@im<span class="o">=</span>fcitx”</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+然后退出图形界面后，重启动。中文输入法可用了。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-3">
+<h3 id="headline-14">
+如果要一进入桌面就有fcitx，则可
+</h3>
+<div id="outline-text-headline-14" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  cp /usr/share/applications/fcitx.desktop /etc/xdg/autostart/</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-2">
+<h2 id="headline-15">
+termux使用技巧
+</h2>
+<div id="outline-text-headline-15" class="outline-text-2">
+<div id="outline-container-headline-16" class="outline-3">
+<h3 id="headline-16">
+在termux查看手机内置存储
+</h3>
+<div id="outline-text-headline-16" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ls <span class="nv">$EXTERNAL_STORAGE</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-17" class="outline-3">
+<h3 id="headline-17">
+热键
+</h3>
+<div id="outline-text-headline-17" class="outline-text-3">
+<p>
+创建新的标签页：Ctrl+Alt+c</p>
+<p>
+切换到下一个标签页：Ctrl+Alt+n</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-18" class="outline-2">
+<h2 id="headline-18">
+Termux设置——服务自启动
+</h2>
+<div id="outline-text-headline-18" class="outline-text-2">
+<p>
+首先奉上官方Wilki: <a href="https://wiki.termux.com/wiki/Termux-services">https://wiki.termux.com/wiki/Termux-services</a></p>
+<p>
+用过Linux的朋友应该对runit并不陌生，runit是一个用于服务监控的UNIX软件，它提供以下两种服务：</p>
+<p>
+当服务器启动的时候启动定义好的服务。
+监控运行的服务，当服务发生意外中断的时候，自动重启服务。
+而termux-services就是基于runit封装的，至此大部分runit功能及命令，并专门针对Termux特殊结构做了优化。</p>
+<p>
+termux-services会主动监视$PREFIX/var/service/目录，会自动未目录下服务生成守护程序，当服务意外崩溃时，会第一时间将服务重新启动。</p>
+<p>
+同时termux-services默认会后台启动服务，并将服务的输出流做重定向。</p>
+<div id="outline-container-headline-19" class="outline-3">
+<h3 id="headline-19">
+安装：
+</h3>
+<div id="outline-text-headline-19" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  pkg install termux-services -y</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+安装完成后会随软件开启自动运行。</p>
+</div>
+</div>
+<div id="outline-container-headline-20" class="outline-3">
+<h3 id="headline-20">
+原生支持的服务
+</h3>
+<div id="outline-text-headline-20" class="outline-text-3">
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>包名</th>
+<th>进程服务名</th>
+<th class="align-right">默认使用端口</th>
+<th>服务描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>apache2</td>
+<td>httpd</td>
+<td class="align-right">8080</td>
+<td>Apache Web Server HTTP Web Server</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>at</td>
+<td>atd</td>
+<td class="align-right"></td>
+<td>AT and batch delayed command scheduling utility and daemon at</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>bitcoin</td>
+<td>bitcoind</td>
+<td class="align-right"></td>
+<td>Bitcoin Core</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>busybox</td>
+<td>telnetd</td>
+<td class="align-right">8023</td>
+<td>Remote terminal service Telnet</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>busybox</td>
+<td>ftpd</td>
+<td class="align-right">8021</td>
+<td>FTP (File Transfer Protocol) FTP</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>cronie</td>
+<td>crond</td>
+<td class="align-right"></td>
+<td>Daemon that runs specified programs at scheduled times cron</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>emacs</td>
+<td>emacsd</td>
+<td class="align-right"></td>
+<td>Extensible, customizable text editor-and more EMACS</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>ipfs</td>
+<td>ipfs</td>
+<td class="align-right"></td>
+<td>A peer-to-peer hypermedia distribution protocol IPFS</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>libmosquitto</td>
+<td>mosquitto</td>
+<td class="align-right">1883</td>
+<td>MQTT is a lightweight, publish-subscribe network protocol MQTT</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>lighttpd</td>
+<td>lighttpd</td>
+<td class="align-right">8080</td>
+<td>Lighttpd Small webserver HTTP Web Server</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>lnd</td>
+<td>lnd</td>
+<td class="align-right"></td>
+<td>Lightning Network Daemon</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>mariadb</td>
+<td>mysqld</td>
+<td class="align-right">3306</td>
+<td>MariaDB Community-developed fork of the MySQL from its original authors</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>mpd</td>
+<td>mpd</td>
+<td class="align-right"></td>
+<td>Music Player Daemon (MPD)</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>mpdscribble</td>
+<td>mpdscribble</td>
+<td class="align-right"></td>
+<td>MPD client which submits tracks being played</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>nginx</td>
+<td>nginx</td>
+<td class="align-right">8080</td>
+<td>NGINX Web server HTTP Web Server</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>openssh</td>
+<td>sshd</td>
+<td class="align-right">8022</td>
+<td>OpenSSH SSH</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>postgresql</td>
+<td>postgres</td>
+<td class="align-right">5432</td>
+<td>PostgreSQL database PostgreSQL</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>privoxy</td>
+<td>privoxy</td>
+<td class="align-right"></td>
+<td>Privoxy is non-caching web proxy with advanced filtering capabilities HTTP Proxy</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>tor</td>
+<td>tor</td>
+<td class="align-right"></td>
+<td>The Onion Router anonymizing overlay network Tor</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>transmission</td>
+<td>transmission</td>
+<td class="align-right"></td>
+<td>BitTorrent client BitTorrent</td>
+</tr>
+</tbody>
+</table></div>
+<p>
+上表中的服务安装时就会自动在$PREFIX/var/service/下生成自己的服务文件夹：</p>
+</div>
+</div>
+<div id="outline-container-headline-21" class="outline-3">
+<h3 id="headline-21">
+相关命令
+</h3>
+<div id="outline-text-headline-21" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sv-enable sshd		<span class="c1">#sshd服务设为自启动</span>
+</span></span><span class="line"><span class="cl">  sv-disable sshd		<span class="c1">#取消sshd自启动</span>
+</span></span><span class="line"><span class="cl">  sv down sshd		<span class="c1">#停止sshd服务，并使本次Termux运行期间sshd自启动服务失效</span>
+</span></span><span class="line"><span class="cl">  sv up sshd			<span class="c1">#启动sshd服务</span>
+</span></span><span class="line"><span class="cl">  sv status sshd		<span class="c1">#查看sshd服务运行状态</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-22" class="outline-3">
+<h3 id="headline-22">
+自己编写一个自启动服务
+</h3>
+<div id="outline-text-headline-22" class="outline-text-3">
+<div id="outline-container-headline-23" class="outline-4">
+<h4 id="headline-23">
+自启动脚本创建
+</h4>
+<div id="outline-text-headline-23" class="outline-text-4">
+<p>
+在$PREFIX/var/service/下创建子目录，子目录名即为自启动服务名,这里使用test_ato作为自启动服务名：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  mkdir -p <span class="nv">$PREFIX</span>/var/service/test_ato</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+接下来创建执行脚本run:</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  vim <span class="nv">$PREFIX</span>/var/service/test_ato/run</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+脚本内容：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="c1">#!/data/data/com.termux/files/usr/bin/sh</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">exec</span> 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">exec</span> ~/test/test.sh 2&gt;<span class="p">&amp;</span><span class="m">1</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+保存，赋予其执行权限：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  chmod +x <span class="nv">$PREFIX</span>/var/service/test_ato/log/run</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-24" class="outline-4">
+<h4 id="headline-24">
+配置服务的输出日志
+</h4>
+<div id="outline-text-headline-24" class="outline-text-4">
+<p>
+log/run中内容：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="c1">#!/data/data/com.termux/files/usr/bin/sh</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">svlogger</span><span class="o">=</span><span class="s2">&#34;/data/data/com.termux/files/usr/share/termux-services/svlogger&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">exec</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">svlogger</span><span class="si">}</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+保存，赋予其执行权限：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  chmod +x <span class="nv">$PREFIX</span>/var/service/test_ato/log/run</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+此时，日志文件被重定向到了目录$PREFIX/var/log/sv/&lt;服务名&gt;中</p>
+</div>
+</div>
+<div id="outline-container-headline-25" class="outline-4">
+<h4 id="headline-25">
+自启动服务测试
+</h4>
+<div id="outline-text-headline-25" class="outline-text-4">
+<p>
+将test.sh设为自启动：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sv-enable test_ato</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+重启Termux应用，此时test.sh已经开始运行，查看日志文件$PREFIX/var/log/sv/test_ato/current已经开始稳定输出日志信息了。</p>
+<p>
+一个简单的模板服务就写好了，可以根据这个模板来编写自己需要的服务。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-26" class="outline-3">
+<h3 id="headline-26">
+参考链接
+</h3>
+<div id="outline-text-headline-26" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/YiBYiH/article/details/127294017">Termux设置——服务自启动</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/termux/">Termux</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

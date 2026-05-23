@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>驱动 on Example Site</title>
+        <link>https://ynhugo.github.io/tags/%E9%A9%B1%E5%8A%A8/</link>
+        <description>Recent content in 驱动 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Wed, 25 Dec 2024 23:26:30 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/%E9%A9%B1%E5%8A%A8/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>通过CMD或bat批处理启用或禁用设备</title>
+        <link>https://ynhugo.github.io/p/%E9%80%9A%E8%BF%87cmd%E6%88%96bat%E6%89%B9%E5%A4%84%E7%90%86%E5%90%AF%E7%94%A8%E6%88%96%E7%A6%81%E7%94%A8%E8%AE%BE%E5%A4%87/</link>
+        <pubDate>Wed, 25 Dec 2024 23:26:30 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E9%80%9A%E8%BF%87cmd%E6%88%96bat%E6%89%B9%E5%A4%84%E7%90%86%E5%90%AF%E7%94%A8%E6%88%96%E7%A6%81%E7%94%A8%E8%AE%BE%E5%A4%87/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+通过CMD或bat批处理启用或禁用设备
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+在闲鱼买了一个二手的GPD Win Max2，用了几天后发现触摸屏有一些问题，于是写了一个禁用/启用设备的脚本。&lt;/p&gt;
+&lt;p&gt;
+在设备管理器中查看目标设备的属性-&amp;gt;事件_已配置设备的信息下紧跟着&amp;#34;已配置设备&amp;#34;的字符串，然后通过bat脚本禁用/启用目标设备。&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-2&#34;&gt;
+禁用触摸屏设备驱动
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pnputil /disable-device &lt;span class=&#34;s2&#34;&gt;&amp;#34;HID\GXTP7385&amp;amp;Col01\4&amp;amp;36625b9a&amp;amp;0&amp;amp;0000&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-3&#34;&gt;
+启用触摸屏设备驱动
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;pnputil /enable-device &lt;span class=&#34;s2&#34;&gt;&amp;#34;HID\GXTP7385&amp;amp;Col01\4&amp;amp;36625b9a&amp;amp;0&amp;amp;0000&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-4&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-4&#34;&gt;
+参考链接
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-4&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.bilibili.com/opus/739533836035031059&#34;&gt;通过CMD或bat批处理启用/禁用设备&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

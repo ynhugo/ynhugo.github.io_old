@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>网页操作 on Example Site</title>
+        <link>https://ynhugo.github.io/tags/%E7%BD%91%E9%A1%B5%E6%93%8D%E4%BD%9C/</link>
+        <description>Recent content in 网页操作 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sun, 31 Mar 2024 15:39:23 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/%E7%BD%91%E9%A1%B5%E6%93%8D%E4%BD%9C/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>网页操作</title>
+        <link>https://ynhugo.github.io/p/%E7%BD%91%E9%A1%B5%E6%93%8D%E4%BD%9C/</link>
+        <pubDate>Sun, 31 Mar 2024 15:39:23 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E7%BD%91%E9%A1%B5%E6%93%8D%E4%BD%9C/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+获取链接来源
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+关键字 &lt;code class=&#34;verbatim&#34;&gt;javascript&lt;/code&gt; 需要自己手动输入，然后加一个冒号，后边跟上要执行的代码&lt;/p&gt;
+&lt;div class=&#34;src src-html&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  javascript:alert(document.referrer)&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-2&#34;&gt;
+网页音视频的一些基本操作技巧
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+控制视频倍速示例：document.querySelector(&amp;#34;video&amp;#34;).playbackRate=&amp;#39;8&amp;#39;;&lt;/p&gt;
+&lt;p&gt;
+音视频自动播放示例：document.querySelector(&amp;#34;audio&amp;#34;).play();&lt;/p&gt;
+&lt;p&gt;
+音视频暂停示例：document.querySelector(&amp;#34;audio&amp;#34;).pause();&lt;/p&gt;
+&lt;p&gt;
+音视频进度跳转示例：document.querySelector(&amp;#34;audio&amp;#34;).currentTime=0;&lt;/p&gt;
+&lt;p&gt;
+音视频后退进度示例：document.querySelector(&amp;#34;video&amp;#34;).currentTime-=5;&lt;/p&gt;
+&lt;p&gt;
+音视频前进进度示例：document.querySelector(&amp;#34;video&amp;#34;).currentTime+=5;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://blog.csdn.net/kaikai4/article/details/51776581&#34;&gt;HTML5使用JavaScript控制＜audio&amp;gt;音频的播放&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://blog.csdn.net/qmdweb/article/details/80776494&#34;&gt;Js控制页面刷新（局部刷新&amp;amp;全页面刷新）&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

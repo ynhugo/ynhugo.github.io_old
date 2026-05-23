@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>华为 on Example Site</title>
+        <link>https://ynhugo.github.io/tags/%E5%8D%8E%E4%B8%BA/</link>
+        <description>Recent content in 华为 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Mon, 28 Apr 2025 19:21:38 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/%E5%8D%8E%E4%B8%BA/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>华为昇腾开发套件Ubuntu22.04环境配置</title>
+        <link>https://ynhugo.github.io/p/%E5%8D%8E%E4%B8%BA%E6%98%87%E8%85%BE%E5%BC%80%E5%8F%91%E5%A5%97%E4%BB%B6ubuntu22.04%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</link>
+        <pubDate>Mon, 28 Apr 2025 19:21:38 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E5%8D%8E%E4%B8%BA%E6%98%87%E8%85%BE%E5%BC%80%E5%8F%91%E5%A5%97%E4%BB%B6ubuntu22.04%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-1&#34;&gt;
+华为昇腾开发套件Ubuntu22.04环境配置
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo groupadd HwHiAiUser
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo useradd -g HwHiAiUser -d /home/HwHiAiUser -m HwHiAiUser -s /bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo passwd HwHiAiUser
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  usermod -a -G sudo HwHiAiUser
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo userdel -rf hwhiaiuser  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;# su HwHiAiUser&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  reboot
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  su - root
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;HwHiAiUser    ALL=(ALL)       ALL&amp;#39;&lt;/span&gt; &amp;gt;&amp;gt; /etc/sudoers
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo apt install -y net-tools git emacs openssh-server vim fcitx5 fcitx5-*
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;# 确保语言安装了中文简体并且中设置默认输入法为fcitx，然后重启&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  reboot&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-2&#34;&gt;
+参考链接
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.hiascend.com/document/detail/zh/Atlas%20200I%20A2/24.1.0/ep/installationguide/Install_06.html&#34;&gt;创建运行用户&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://bbs.huaweicloud.com/blogs/349995&#34;&gt;如何让HwHiAiUser用户sudo —-小白入门知识汇总4&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.cnblogs.com/mq0036/p/18604106&#34;&gt;Linux 完全删除用户&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://blog.csdn.net/lookwind09/article/details/128379045&#34;&gt;Debian11.5和Ubuntu22.04安装fcitx5中文输入法(五笔拼音)&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,2872 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="参考链接：如何在hugo生成的网页中插入嵌入式视频-使用Hugo建立静态网站教程（进阶） 播放音乐测试 这里以网易云音乐为例，在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建netease.html文件，在该文件中加入如下代码定义：\n1 2 3 4 5 6 7 8 &lt;iframe frameborder=&#34;no&#34; border=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; width=330 height=86 src=&#34;//music.163.com/outchain/player?type=2&amp;id={{.Get 0}}&amp;auto=0&amp;height=66&#34;&gt; &lt;/iframe&gt; 然后就可以在博客中按照如下方式添加音频了。\n测试文字属性 在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建align.html文件，在该文件中加入如下代码定义：\n1 &lt;p style=&#34;text-align:{{ index .Params 0 }}&#34;&gt;{{ index .Params 1 | markdownify }}&lt;/p&gt; 然后就可以在博客中按照如下方式设置文字属性了。\n文字居中\n测试插入github仓库 test 播放图片测试 播放视频测试 这里以B站为例，在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建bilibili.html文件，在该文件中加入如下代码定义：\n1 2 3 4 5 6 7 8 9 &lt;iframe src=&#34;//player.bilibili.com/player.html?bvid={{.Get 0 }}&amp;page={{ if .Get 1 }}{{.Get 1}}{{ else }}1{{end}}&amp;as_wide=1&amp;high_quality=1&#34; scrolling=&#34;no&#34; border=&#34;0&#34; frameborder=&#34;no&#34; framespacing=&#34;0&#34; allowfullscreen=&#34;true&#34; &gt; &lt;/iframe&gt; 然后就可以在博客中按照如下方式添加视频了。\n">
+<title>hugo博客增强篇</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/hugo%E5%8D%9A%E5%AE%A2%E5%A2%9E%E5%BC%BA%E7%AF%87/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="hugo博客增强篇">
+<meta property='og:description' content="参考链接：如何在hugo生成的网页中插入嵌入式视频-使用Hugo建立静态网站教程（进阶） 播放音乐测试 这里以网易云音乐为例，在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建netease.html文件，在该文件中加入如下代码定义：\n1 2 3 4 5 6 7 8 &lt;iframe frameborder=&#34;no&#34; border=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; width=330 height=86 src=&#34;//music.163.com/outchain/player?type=2&amp;id={{.Get 0}}&amp;auto=0&amp;height=66&#34;&gt; &lt;/iframe&gt; 然后就可以在博客中按照如下方式添加音频了。\n测试文字属性 在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建align.html文件，在该文件中加入如下代码定义：\n1 &lt;p style=&#34;text-align:{{ index .Params 0 }}&#34;&gt;{{ index .Params 1 | markdownify }}&lt;/p&gt; 然后就可以在博客中按照如下方式设置文字属性了。\n文字居中\n测试插入github仓库 test 播放图片测试 播放视频测试 这里以B站为例，在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建bilibili.html文件，在该文件中加入如下代码定义：\n1 2 3 4 5 6 7 8 9 &lt;iframe src=&#34;//player.bilibili.com/player.html?bvid={{.Get 0 }}&amp;page={{ if .Get 1 }}{{.Get 1}}{{ else }}1{{end}}&amp;as_wide=1&amp;high_quality=1&#34; scrolling=&#34;no&#34; border=&#34;0&#34; frameborder=&#34;no&#34; framespacing=&#34;0&#34; allowfullscreen=&#34;true&#34; &gt; &lt;/iframe&gt; 然后就可以在博客中按照如下方式添加视频了。\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/hugo%E5%8D%9A%E5%AE%A2%E5%A2%9E%E5%BC%BA%E7%AF%87/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='hugo' /><meta property='article:published_time' content='2025-07-08T19:01:41&#43;08:00'/><meta property='article:modified_time' content='2025-07-08T19:01:41&#43;08:00'/>
+<meta name="twitter:title" content="hugo博客增强篇">
+<meta name="twitter:description" content="参考链接：如何在hugo生成的网页中插入嵌入式视频-使用Hugo建立静态网站教程（进阶） 播放音乐测试 这里以网易云音乐为例，在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建netease.html文件，在该文件中加入如下代码定义：\n1 2 3 4 5 6 7 8 &lt;iframe frameborder=&#34;no&#34; border=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; width=330 height=86 src=&#34;//music.163.com/outchain/player?type=2&amp;id={{.Get 0}}&amp;auto=0&amp;height=66&#34;&gt; &lt;/iframe&gt; 然后就可以在博客中按照如下方式添加音频了。\n测试文字属性 在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建align.html文件，在该文件中加入如下代码定义：\n1 &lt;p style=&#34;text-align:{{ index .Params 0 }}&#34;&gt;{{ index .Params 1 | markdownify }}&lt;/p&gt; 然后就可以在博客中按照如下方式设置文字属性了。\n文字居中\n测试插入github仓库 test 播放图片测试 播放视频测试 这里以B站为例，在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建bilibili.html文件，在该文件中加入如下代码定义：\n1 2 3 4 5 6 7 8 9 &lt;iframe src=&#34;//player.bilibili.com/player.html?bvid={{.Get 0 }}&amp;page={{ if .Get 1 }}{{.Get 1}}{{ else }}1{{end}}&amp;as_wide=1&amp;high_quality=1&#34; scrolling=&#34;no&#34; border=&#34;0&#34; frameborder=&#34;no&#34; framespacing=&#34;0&#34; allowfullscreen=&#34;true&#34; &gt; &lt;/iframe&gt; 然后就可以在博客中按照如下方式添加视频了。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#安装主题">安装主题</a></li>
+    <li><a href="#配置主题-1">配置主题</a>
+      <ol>
+        <li><a href="#站点配置文件的修改">站点配置文件的修改</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#参考链接">参考链接</a></li>
+    <li><a href="#要使用其他图标你以按照以下步骤获取对应的-svg-代码">要使用其他图标，你��以按照以下步骤获取对应的 SVG 代码：</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/hugo%E5%8D%9A%E5%AE%A2%E5%A2%9E%E5%BC%BA%E7%AF%87/">hugo博客增强篇</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 08, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 24 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="参考链接如何在hugo生成的网页中插入嵌入式视频-使用hugo建立静态网站教程进阶">参考链接：<a class="link" href="https://www.bilibili.com/video/BV1SS4y1n7Fc/?spm_id_from=333.788&amp;vd_source=e7de88f963dcdcb94847fceb0e821942"  target="_blank" rel="noopener"
+    >如何在hugo生成的网页中插入嵌入式视频-使用Hugo建立静态网站教程（进阶）</a>
+</h1><h1 id="播放音乐测试">播放音乐测试
+</h1><p>这里以网易云音乐为例，在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建netease.html文件，在该文件中加入如下代码定义：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;iframe
+</span></span><span class="line"><span class="cl">  frameborder=&#34;no&#34;
+</span></span><span class="line"><span class="cl">  border=&#34;0&#34;
+</span></span><span class="line"><span class="cl">  marginwidth=&#34;0&#34;
+</span></span><span class="line"><span class="cl">  marginheight=&#34;0&#34;
+</span></span><span class="line"><span class="cl">  width=330 height=86
+</span></span><span class="line"><span class="cl">  src=&#34;//music.163.com/outchain/player?type=2&amp;id={{.Get 0}}&amp;auto=0&amp;height=66&#34;&gt;
+</span></span><span class="line"><span class="cl">&lt;/iframe&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后就可以在博客中按照如下方式添加音频了。</p>
+<iframe
+  frameborder="no"
+  border="0"
+  marginwidth="0"
+  marginheight="0"
+  width=330 height=86
+  src="//music.163.com/outchain/player?type=2&id=1304708603&auto=0&height=66">
+</iframe>
+
+<h1 id="测试文字属性">测试文字属性
+</h1><p>在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建align.html文件，在该文件中加入如下代码定义：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;p style=&#34;text-align:{{ index .Params 0 }}&#34;&gt;{{ index .Params 1 | markdownify }}&lt;/p&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后就可以在博客中按照如下方式设置文字属性了。</p>
+<p style="text-align:center">文字居中</p>
+
+<h1 id="测试插入github仓库">测试插入github仓库
+</h1><div class="github">
+    <div class="logo">
+        
+        <a class="name" href=https://github.com/ynhugo/ynhugo.github.io target="_blank">test</a>
+    </div>
+    <div class="description"></div> 
+    <div class="language">
+        <span class="language-color" style="background-color: "></span>
+        <span class="language-name"></span>
+    </div>
+</div>
+
+<h1 id="播放图片测试">播放图片测试
+</h1><p><img src="/images/1DM&#43;/%e6%8d%95%e8%8e%b71.PNG"
+	
+	
+	
+	loading="lazy"
+	
+		alt="捕获1.PNG"
+	
+	
+></p>
+<h1 id="播放视频测试">播放视频测试
+</h1><p>这里以B站为例，在网站根目录的layouts/下创建shortcodes/目录，然后在layouts/shortcodes/目录下创建bilibili.html文件，在该文件中加入如下代码定义：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;iframe
+</span></span><span class="line"><span class="cl">     src=&#34;//player.bilibili.com/player.html?bvid={{.Get 0 }}&amp;page={{ if .Get 1 }}{{.Get 1}}{{ else }}1{{end}}&amp;as_wide=1&amp;high_quality=1&#34;
+</span></span><span class="line"><span class="cl">     scrolling=&#34;no&#34;
+</span></span><span class="line"><span class="cl">     border=&#34;0&#34;
+</span></span><span class="line"><span class="cl">     frameborder=&#34;no&#34;
+</span></span><span class="line"><span class="cl">     framespacing=&#34;0&#34;
+</span></span><span class="line"><span class="cl">     allowfullscreen=&#34;true&#34;
+</span></span><span class="line"><span class="cl"> &gt;
+</span></span><span class="line"><span class="cl"> &lt;/iframe&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后就可以在博客中按照如下方式添加视频了。</p>
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe
+    src="//player.bilibili.com/player.html?bvid=BV1SS4y1n7Fc&page=1"
+    scrolling="no"
+    border="0"
+    frameborder="no"
+    framespacing="0"
+    allowfullscreen="true"
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+  </iframe>
+</div>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe
+    src="//player.bilibili.com/player.html?bvid=BV1SS4y1n7Fc&page=1"
+    scrolling="no"
+    border="0"
+    frameborder="no"
+    framespacing="0"
+    allowfullscreen="true"
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+  </iframe>
+</div>
+
+<h1 id="添加多标签">添加多标签
+</h1><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">	title: &#34;测试&#34;
+</span></span><span class="line"><span class="cl">	tags: [&#34;hugo&#34;, &#34;blog&#34;]
+</span></span><span class="line"><span class="cl">	categories: [&#34;博客测试&#34;]
+</span></span><span class="line"><span class="cl">	draft: false
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="配置主题">配置主题
+</h1><h2 id="安装主题">安装主题
+</h2><p>把这个主题克隆到 themes 目录:</p>
+<p>git clone <a class="link" href="https://github.com/dillonzq/LoveIt.git"  target="_blank" rel="noopener"
+    >https://github.com/dillonzq/LoveIt.git</a> themes/LoveIt</p>
+<h2 id="配置主题-1">配置主题
+</h2><h3 id="站点配置文件的修改">站点配置文件的修改
+</h3><p>将根目录\themes\LoveIt\exampleSite路径下的config.toml文件复制到根目录下，覆盖掉根目录下的hugo.toml文件。然后，我们在notepad++中打开并对其作一定的修改就可以直接使用，具体可以修改的内容如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
+</span><span class="lnt">264
+</span><span class="lnt">265
+</span><span class="lnt">266
+</span><span class="lnt">267
+</span><span class="lnt">268
+</span><span class="lnt">269
+</span><span class="lnt">270
+</span><span class="lnt">271
+</span><span class="lnt">272
+</span><span class="lnt">273
+</span><span class="lnt">274
+</span><span class="lnt">275
+</span><span class="lnt">276
+</span><span class="lnt">277
+</span><span class="lnt">278
+</span><span class="lnt">279
+</span><span class="lnt">280
+</span><span class="lnt">281
+</span><span class="lnt">282
+</span><span class="lnt">283
+</span><span class="lnt">284
+</span><span class="lnt">285
+</span><span class="lnt">286
+</span><span class="lnt">287
+</span><span class="lnt">288
+</span><span class="lnt">289
+</span><span class="lnt">290
+</span><span class="lnt">291
+</span><span class="lnt">292
+</span><span class="lnt">293
+</span><span class="lnt">294
+</span><span class="lnt">295
+</span><span class="lnt">296
+</span><span class="lnt">297
+</span><span class="lnt">298
+</span><span class="lnt">299
+</span><span class="lnt">300
+</span><span class="lnt">301
+</span><span class="lnt">302
+</span><span class="lnt">303
+</span><span class="lnt">304
+</span><span class="lnt">305
+</span><span class="lnt">306
+</span><span class="lnt">307
+</span><span class="lnt">308
+</span><span class="lnt">309
+</span><span class="lnt">310
+</span><span class="lnt">311
+</span><span class="lnt">312
+</span><span class="lnt">313
+</span><span class="lnt">314
+</span><span class="lnt">315
+</span><span class="lnt">316
+</span><span class="lnt">317
+</span><span class="lnt">318
+</span><span class="lnt">319
+</span><span class="lnt">320
+</span><span class="lnt">321
+</span><span class="lnt">322
+</span><span class="lnt">323
+</span><span class="lnt">324
+</span><span class="lnt">325
+</span><span class="lnt">326
+</span><span class="lnt">327
+</span><span class="lnt">328
+</span><span class="lnt">329
+</span><span class="lnt">330
+</span><span class="lnt">331
+</span><span class="lnt">332
+</span><span class="lnt">333
+</span><span class="lnt">334
+</span><span class="lnt">335
+</span><span class="lnt">336
+</span><span class="lnt">337
+</span><span class="lnt">338
+</span><span class="lnt">339
+</span><span class="lnt">340
+</span><span class="lnt">341
+</span><span class="lnt">342
+</span><span class="lnt">343
+</span><span class="lnt">344
+</span><span class="lnt">345
+</span><span class="lnt">346
+</span><span class="lnt">347
+</span><span class="lnt">348
+</span><span class="lnt">349
+</span><span class="lnt">350
+</span><span class="lnt">351
+</span><span class="lnt">352
+</span><span class="lnt">353
+</span><span class="lnt">354
+</span><span class="lnt">355
+</span><span class="lnt">356
+</span><span class="lnt">357
+</span><span class="lnt">358
+</span><span class="lnt">359
+</span><span class="lnt">360
+</span><span class="lnt">361
+</span><span class="lnt">362
+</span><span class="lnt">363
+</span><span class="lnt">364
+</span><span class="lnt">365
+</span><span class="lnt">366
+</span><span class="lnt">367
+</span><span class="lnt">368
+</span><span class="lnt">369
+</span><span class="lnt">370
+</span><span class="lnt">371
+</span><span class="lnt">372
+</span><span class="lnt">373
+</span><span class="lnt">374
+</span><span class="lnt">375
+</span><span class="lnt">376
+</span><span class="lnt">377
+</span><span class="lnt">378
+</span><span class="lnt">379
+</span><span class="lnt">380
+</span><span class="lnt">381
+</span><span class="lnt">382
+</span><span class="lnt">383
+</span><span class="lnt">384
+</span><span class="lnt">385
+</span><span class="lnt">386
+</span><span class="lnt">387
+</span><span class="lnt">388
+</span><span class="lnt">389
+</span><span class="lnt">390
+</span><span class="lnt">391
+</span><span class="lnt">392
+</span><span class="lnt">393
+</span><span class="lnt">394
+</span><span class="lnt">395
+</span><span class="lnt">396
+</span><span class="lnt">397
+</span><span class="lnt">398
+</span><span class="lnt">399
+</span><span class="lnt">400
+</span><span class="lnt">401
+</span><span class="lnt">402
+</span><span class="lnt">403
+</span><span class="lnt">404
+</span><span class="lnt">405
+</span><span class="lnt">406
+</span><span class="lnt">407
+</span><span class="lnt">408
+</span><span class="lnt">409
+</span><span class="lnt">410
+</span><span class="lnt">411
+</span><span class="lnt">412
+</span><span class="lnt">413
+</span><span class="lnt">414
+</span><span class="lnt">415
+</span><span class="lnt">416
+</span><span class="lnt">417
+</span><span class="lnt">418
+</span><span class="lnt">419
+</span><span class="lnt">420
+</span><span class="lnt">421
+</span><span class="lnt">422
+</span><span class="lnt">423
+</span><span class="lnt">424
+</span><span class="lnt">425
+</span><span class="lnt">426
+</span><span class="lnt">427
+</span><span class="lnt">428
+</span><span class="lnt">429
+</span><span class="lnt">430
+</span><span class="lnt">431
+</span><span class="lnt">432
+</span><span class="lnt">433
+</span><span class="lnt">434
+</span><span class="lnt">435
+</span><span class="lnt">436
+</span><span class="lnt">437
+</span><span class="lnt">438
+</span><span class="lnt">439
+</span><span class="lnt">440
+</span><span class="lnt">441
+</span><span class="lnt">442
+</span><span class="lnt">443
+</span><span class="lnt">444
+</span><span class="lnt">445
+</span><span class="lnt">446
+</span><span class="lnt">447
+</span><span class="lnt">448
+</span><span class="lnt">449
+</span><span class="lnt">450
+</span><span class="lnt">451
+</span><span class="lnt">452
+</span><span class="lnt">453
+</span><span class="lnt">454
+</span><span class="lnt">455
+</span><span class="lnt">456
+</span><span class="lnt">457
+</span><span class="lnt">458
+</span><span class="lnt">459
+</span><span class="lnt">460
+</span><span class="lnt">461
+</span><span class="lnt">462
+</span><span class="lnt">463
+</span><span class="lnt">464
+</span><span class="lnt">465
+</span><span class="lnt">466
+</span><span class="lnt">467
+</span><span class="lnt">468
+</span><span class="lnt">469
+</span><span class="lnt">470
+</span><span class="lnt">471
+</span><span class="lnt">472
+</span><span class="lnt">473
+</span><span class="lnt">474
+</span><span class="lnt">475
+</span><span class="lnt">476
+</span><span class="lnt">477
+</span><span class="lnt">478
+</span><span class="lnt">479
+</span><span class="lnt">480
+</span><span class="lnt">481
+</span><span class="lnt">482
+</span><span class="lnt">483
+</span><span class="lnt">484
+</span><span class="lnt">485
+</span><span class="lnt">486
+</span><span class="lnt">487
+</span><span class="lnt">488
+</span><span class="lnt">489
+</span><span class="lnt">490
+</span><span class="lnt">491
+</span><span class="lnt">492
+</span><span class="lnt">493
+</span><span class="lnt">494
+</span><span class="lnt">495
+</span><span class="lnt">496
+</span><span class="lnt">497
+</span><span class="lnt">498
+</span><span class="lnt">499
+</span><span class="lnt">500
+</span><span class="lnt">501
+</span><span class="lnt">502
+</span><span class="lnt">503
+</span><span class="lnt">504
+</span><span class="lnt">505
+</span><span class="lnt">506
+</span><span class="lnt">507
+</span><span class="lnt">508
+</span><span class="lnt">509
+</span><span class="lnt">510
+</span><span class="lnt">511
+</span><span class="lnt">512
+</span><span class="lnt">513
+</span><span class="lnt">514
+</span><span class="lnt">515
+</span><span class="lnt">516
+</span><span class="lnt">517
+</span><span class="lnt">518
+</span><span class="lnt">519
+</span><span class="lnt">520
+</span><span class="lnt">521
+</span><span class="lnt">522
+</span><span class="lnt">523
+</span><span class="lnt">524
+</span><span class="lnt">525
+</span><span class="lnt">526
+</span><span class="lnt">527
+</span><span class="lnt">528
+</span><span class="lnt">529
+</span><span class="lnt">530
+</span><span class="lnt">531
+</span><span class="lnt">532
+</span><span class="lnt">533
+</span><span class="lnt">534
+</span><span class="lnt">535
+</span><span class="lnt">536
+</span><span class="lnt">537
+</span><span class="lnt">538
+</span><span class="lnt">539
+</span><span class="lnt">540
+</span><span class="lnt">541
+</span><span class="lnt">542
+</span><span class="lnt">543
+</span><span class="lnt">544
+</span><span class="lnt">545
+</span><span class="lnt">546
+</span><span class="lnt">547
+</span><span class="lnt">548
+</span><span class="lnt">549
+</span><span class="lnt">550
+</span><span class="lnt">551
+</span><span class="lnt">552
+</span><span class="lnt">553
+</span><span class="lnt">554
+</span><span class="lnt">555
+</span><span class="lnt">556
+</span><span class="lnt">557
+</span><span class="lnt">558
+</span><span class="lnt">559
+</span><span class="lnt">560
+</span><span class="lnt">561
+</span><span class="lnt">562
+</span><span class="lnt">563
+</span><span class="lnt">564
+</span><span class="lnt">565
+</span><span class="lnt">566
+</span><span class="lnt">567
+</span><span class="lnt">568
+</span><span class="lnt">569
+</span><span class="lnt">570
+</span><span class="lnt">571
+</span><span class="lnt">572
+</span><span class="lnt">573
+</span><span class="lnt">574
+</span><span class="lnt">575
+</span><span class="lnt">576
+</span><span class="lnt">577
+</span><span class="lnt">578
+</span><span class="lnt">579
+</span><span class="lnt">580
+</span><span class="lnt">581
+</span><span class="lnt">582
+</span><span class="lnt">583
+</span><span class="lnt">584
+</span><span class="lnt">585
+</span><span class="lnt">586
+</span><span class="lnt">587
+</span><span class="lnt">588
+</span><span class="lnt">589
+</span><span class="lnt">590
+</span><span class="lnt">591
+</span><span class="lnt">592
+</span><span class="lnt">593
+</span><span class="lnt">594
+</span><span class="lnt">595
+</span><span class="lnt">596
+</span><span class="lnt">597
+</span><span class="lnt">598
+</span><span class="lnt">599
+</span><span class="lnt">600
+</span><span class="lnt">601
+</span><span class="lnt">602
+</span><span class="lnt">603
+</span><span class="lnt">604
+</span><span class="lnt">605
+</span><span class="lnt">606
+</span><span class="lnt">607
+</span><span class="lnt">608
+</span><span class="lnt">609
+</span><span class="lnt">610
+</span><span class="lnt">611
+</span><span class="lnt">612
+</span><span class="lnt">613
+</span><span class="lnt">614
+</span><span class="lnt">615
+</span><span class="lnt">616
+</span><span class="lnt">617
+</span><span class="lnt">618
+</span><span class="lnt">619
+</span><span class="lnt">620
+</span><span class="lnt">621
+</span><span class="lnt">622
+</span><span class="lnt">623
+</span><span class="lnt">624
+</span><span class="lnt">625
+</span><span class="lnt">626
+</span><span class="lnt">627
+</span><span class="lnt">628
+</span><span class="lnt">629
+</span><span class="lnt">630
+</span><span class="lnt">631
+</span><span class="lnt">632
+</span><span class="lnt">633
+</span><span class="lnt">634
+</span><span class="lnt">635
+</span><span class="lnt">636
+</span><span class="lnt">637
+</span><span class="lnt">638
+</span><span class="lnt">639
+</span><span class="lnt">640
+</span><span class="lnt">641
+</span><span class="lnt">642
+</span><span class="lnt">643
+</span><span class="lnt">644
+</span><span class="lnt">645
+</span><span class="lnt">646
+</span><span class="lnt">647
+</span><span class="lnt">648
+</span><span class="lnt">649
+</span><span class="lnt">650
+</span><span class="lnt">651
+</span><span class="lnt">652
+</span><span class="lnt">653
+</span><span class="lnt">654
+</span><span class="lnt">655
+</span><span class="lnt">656
+</span><span class="lnt">657
+</span><span class="lnt">658
+</span><span class="lnt">659
+</span><span class="lnt">660
+</span><span class="lnt">661
+</span><span class="lnt">662
+</span><span class="lnt">663
+</span><span class="lnt">664
+</span><span class="lnt">665
+</span><span class="lnt">666
+</span><span class="lnt">667
+</span><span class="lnt">668
+</span><span class="lnt">669
+</span><span class="lnt">670
+</span><span class="lnt">671
+</span><span class="lnt">672
+</span><span class="lnt">673
+</span><span class="lnt">674
+</span><span class="lnt">675
+</span><span class="lnt">676
+</span><span class="lnt">677
+</span><span class="lnt">678
+</span><span class="lnt">679
+</span><span class="lnt">680
+</span><span class="lnt">681
+</span><span class="lnt">682
+</span><span class="lnt">683
+</span><span class="lnt">684
+</span><span class="lnt">685
+</span><span class="lnt">686
+</span><span class="lnt">687
+</span><span class="lnt">688
+</span><span class="lnt">689
+</span><span class="lnt">690
+</span><span class="lnt">691
+</span><span class="lnt">692
+</span><span class="lnt">693
+</span><span class="lnt">694
+</span><span class="lnt">695
+</span><span class="lnt">696
+</span><span class="lnt">697
+</span><span class="lnt">698
+</span><span class="lnt">699
+</span><span class="lnt">700
+</span><span class="lnt">701
+</span><span class="lnt">702
+</span><span class="lnt">703
+</span><span class="lnt">704
+</span><span class="lnt">705
+</span><span class="lnt">706
+</span><span class="lnt">707
+</span><span class="lnt">708
+</span><span class="lnt">709
+</span><span class="lnt">710
+</span><span class="lnt">711
+</span><span class="lnt">712
+</span><span class="lnt">713
+</span><span class="lnt">714
+</span><span class="lnt">715
+</span><span class="lnt">716
+</span><span class="lnt">717
+</span><span class="lnt">718
+</span><span class="lnt">719
+</span><span class="lnt">720
+</span><span class="lnt">721
+</span><span class="lnt">722
+</span><span class="lnt">723
+</span><span class="lnt">724
+</span><span class="lnt">725
+</span><span class="lnt">726
+</span><span class="lnt">727
+</span><span class="lnt">728
+</span><span class="lnt">729
+</span><span class="lnt">730
+</span><span class="lnt">731
+</span><span class="lnt">732
+</span><span class="lnt">733
+</span><span class="lnt">734
+</span><span class="lnt">735
+</span><span class="lnt">736
+</span><span class="lnt">737
+</span><span class="lnt">738
+</span><span class="lnt">739
+</span><span class="lnt">740
+</span><span class="lnt">741
+</span><span class="lnt">742
+</span><span class="lnt">743
+</span><span class="lnt">744
+</span><span class="lnt">745
+</span><span class="lnt">746
+</span><span class="lnt">747
+</span><span class="lnt">748
+</span><span class="lnt">749
+</span><span class="lnt">750
+</span><span class="lnt">751
+</span><span class="lnt">752
+</span><span class="lnt">753
+</span><span class="lnt">754
+</span><span class="lnt">755
+</span><span class="lnt">756
+</span><span class="lnt">757
+</span><span class="lnt">758
+</span><span class="lnt">759
+</span><span class="lnt">760
+</span><span class="lnt">761
+</span><span class="lnt">762
+</span><span class="lnt">763
+</span><span class="lnt">764
+</span><span class="lnt">765
+</span><span class="lnt">766
+</span><span class="lnt">767
+</span><span class="lnt">768
+</span><span class="lnt">769
+</span><span class="lnt">770
+</span><span class="lnt">771
+</span><span class="lnt">772
+</span><span class="lnt">773
+</span><span class="lnt">774
+</span><span class="lnt">775
+</span><span class="lnt">776
+</span><span class="lnt">777
+</span><span class="lnt">778
+</span><span class="lnt">779
+</span><span class="lnt">780
+</span><span class="lnt">781
+</span><span class="lnt">782
+</span><span class="lnt">783
+</span><span class="lnt">784
+</span><span class="lnt">785
+</span><span class="lnt">786
+</span><span class="lnt">787
+</span><span class="lnt">788
+</span><span class="lnt">789
+</span><span class="lnt">790
+</span><span class="lnt">791
+</span><span class="lnt">792
+</span><span class="lnt">793
+</span><span class="lnt">794
+</span><span class="lnt">795
+</span><span class="lnt">796
+</span><span class="lnt">797
+</span><span class="lnt">798
+</span><span class="lnt">799
+</span><span class="lnt">800
+</span><span class="lnt">801
+</span><span class="lnt">802
+</span><span class="lnt">803
+</span><span class="lnt">804
+</span><span class="lnt">805
+</span><span class="lnt">806
+</span><span class="lnt">807
+</span><span class="lnt">808
+</span><span class="lnt">809
+</span><span class="lnt">810
+</span><span class="lnt">811
+</span><span class="lnt">812
+</span><span class="lnt">813
+</span><span class="lnt">814
+</span><span class="lnt">815
+</span><span class="lnt">816
+</span><span class="lnt">817
+</span><span class="lnt">818
+</span><span class="lnt">819
+</span><span class="lnt">820
+</span><span class="lnt">821
+</span><span class="lnt">822
+</span><span class="lnt">823
+</span><span class="lnt">824
+</span><span class="lnt">825
+</span><span class="lnt">826
+</span><span class="lnt">827
+</span><span class="lnt">828
+</span><span class="lnt">829
+</span><span class="lnt">830
+</span><span class="lnt">831
+</span><span class="lnt">832
+</span><span class="lnt">833
+</span><span class="lnt">834
+</span><span class="lnt">835
+</span><span class="lnt">836
+</span><span class="lnt">837
+</span><span class="lnt">838
+</span><span class="lnt">839
+</span><span class="lnt">840
+</span><span class="lnt">841
+</span><span class="lnt">842
+</span><span class="lnt">843
+</span><span class="lnt">844
+</span><span class="lnt">845
+</span><span class="lnt">846
+</span><span class="lnt">847
+</span><span class="lnt">848
+</span><span class="lnt">849
+</span><span class="lnt">850
+</span><span class="lnt">851
+</span><span class="lnt">852
+</span><span class="lnt">853
+</span><span class="lnt">854
+</span><span class="lnt">855
+</span><span class="lnt">856
+</span><span class="lnt">857
+</span><span class="lnt">858
+</span><span class="lnt">859
+</span><span class="lnt">860
+</span><span class="lnt">861
+</span><span class="lnt">862
+</span><span class="lnt">863
+</span><span class="lnt">864
+</span><span class="lnt">865
+</span><span class="lnt">866
+</span><span class="lnt">867
+</span><span class="lnt">868
+</span><span class="lnt">869
+</span><span class="lnt">870
+</span><span class="lnt">871
+</span><span class="lnt">872
+</span><span class="lnt">873
+</span><span class="lnt">874
+</span><span class="lnt">875
+</span><span class="lnt">876
+</span><span class="lnt">877
+</span><span class="lnt">878
+</span><span class="lnt">879
+</span><span class="lnt">880
+</span><span class="lnt">881
+</span><span class="lnt">882
+</span><span class="lnt">883
+</span><span class="lnt">884
+</span><span class="lnt">885
+</span><span class="lnt">886
+</span><span class="lnt">887
+</span><span class="lnt">888
+</span><span class="lnt">889
+</span><span class="lnt">890
+</span><span class="lnt">891
+</span><span class="lnt">892
+</span><span class="lnt">893
+</span><span class="lnt">894
+</span><span class="lnt">895
+</span><span class="lnt">896
+</span><span class="lnt">897
+</span><span class="lnt">898
+</span><span class="lnt">899
+</span><span class="lnt">900
+</span><span class="lnt">901
+</span><span class="lnt">902
+</span><span class="lnt">903
+</span><span class="lnt">904
+</span><span class="lnt">905
+</span><span class="lnt">906
+</span><span class="lnt">907
+</span><span class="lnt">908
+</span><span class="lnt">909
+</span><span class="lnt">910
+</span><span class="lnt">911
+</span><span class="lnt">912
+</span><span class="lnt">913
+</span><span class="lnt">914
+</span><span class="lnt">915
+</span><span class="lnt">916
+</span><span class="lnt">917
+</span><span class="lnt">918
+</span><span class="lnt">919
+</span><span class="lnt">920
+</span><span class="lnt">921
+</span><span class="lnt">922
+</span><span class="lnt">923
+</span><span class="lnt">924
+</span><span class="lnt">925
+</span><span class="lnt">926
+</span><span class="lnt">927
+</span><span class="lnt">928
+</span><span class="lnt">929
+</span><span class="lnt">930
+</span><span class="lnt">931
+</span><span class="lnt">932
+</span><span class="lnt">933
+</span><span class="lnt">934
+</span><span class="lnt">935
+</span><span class="lnt">936
+</span><span class="lnt">937
+</span><span class="lnt">938
+</span><span class="lnt">939
+</span><span class="lnt">940
+</span><span class="lnt">941
+</span><span class="lnt">942
+</span><span class="lnt">943
+</span><span class="lnt">944
+</span><span class="lnt">945
+</span><span class="lnt">946
+</span><span class="lnt">947
+</span><span class="lnt">948
+</span><span class="lnt">949
+</span><span class="lnt">950
+</span><span class="lnt">951
+</span><span class="lnt">952
+</span><span class="lnt">953
+</span><span class="lnt">954
+</span><span class="lnt">955
+</span><span class="lnt">956
+</span><span class="lnt">957
+</span><span class="lnt">958
+</span><span class="lnt">959
+</span><span class="lnt">960
+</span><span class="lnt">961
+</span><span class="lnt">962
+</span><span class="lnt">963
+</span><span class="lnt">964
+</span><span class="lnt">965
+</span><span class="lnt">966
+</span><span class="lnt">967
+</span><span class="lnt">968
+</span><span class="lnt">969
+</span><span class="lnt">970
+</span><span class="lnt">971
+</span><span class="lnt">972
+</span><span class="lnt">973
+</span><span class="lnt">974
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">baseURL = &#39;https://example.com/&#39;
+</span></span><span class="line"><span class="cl">theme = &#39;loveit&#39;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># theme
+</span></span><span class="line"><span class="cl"># 主题
+</span></span><span class="line"><span class="cl"># themes directory
+</span></span><span class="line"><span class="cl"># 主题目录
+</span></span><span class="line"><span class="cl"># themesDir = &#34;../..&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># website title
+</span></span><span class="line"><span class="cl"># 网站标题
+</span></span><span class="line"><span class="cl">title = &#34;yenao&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># determines default content language [&#34;en&#34;, &#34;zh-cn&#34;, &#34;fr&#34;, &#34;pl&#34;, ...]
+</span></span><span class="line"><span class="cl"># 设置默认的语言 [&#34;en&#34;, &#34;zh-cn&#34;, &#34;fr&#34;, &#34;pl&#34;, ...]
+</span></span><span class="line"><span class="cl">defaultContentLanguage = &#34;zh-cn&#34;
+</span></span><span class="line"><span class="cl"># language code [&#34;en&#34;, &#34;zh-CN&#34;, &#34;fr&#34;, &#34;pl&#34;, ...]
+</span></span><span class="line"><span class="cl"># 网站语言, 仅在这里 CN 大写 [&#34;en&#34;, &#34;zh-CN&#34;, &#34;fr&#34;, &#34;pl&#34;, ...]
+</span></span><span class="line"><span class="cl">languageCode = &#34;zh-cn&#34;
+</span></span><span class="line"><span class="cl"># language name [&#34;English&#34;, &#34;简体中文&#34;, &#34;Français&#34;, &#34;Polski&#34;, ...]
+</span></span><span class="line"><span class="cl"># 语言名称 [&#34;English&#34;, &#34;简体中文&#34;, &#34;Français&#34;, &#34;Polski&#34;, ...]
+</span></span><span class="line"><span class="cl">languageName = &#34;简体中文&#34;
+</span></span><span class="line"><span class="cl"># whether to include Chinese/Japanese/Korean
+</span></span><span class="line"><span class="cl"># 是否包括中日韩文字
+</span></span><span class="line"><span class="cl">hasCJKLanguage = false
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># default amount of posts in each pages
+</span></span><span class="line"><span class="cl"># 默认每页列表显示的文章数目
+</span></span><span class="line"><span class="cl">paginate = 100
+</span></span><span class="line"><span class="cl"># google analytics code [UA-XXXXXXXX-X]
+</span></span><span class="line"><span class="cl"># 谷歌分析代号 [UA-XXXXXXXX-X]
+</span></span><span class="line"><span class="cl">googleAnalytics = &#34;&#34;
+</span></span><span class="line"><span class="cl"># copyright description used only for seo schema
+</span></span><span class="line"><span class="cl"># 版权描述，仅仅用于 SEO
+</span></span><span class="line"><span class="cl">copyright = &#34;&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># whether to use robots.txt
+</span></span><span class="line"><span class="cl"># 是否使用 robots.txt
+</span></span><span class="line"><span class="cl">enableRobotsTXT = true
+</span></span><span class="line"><span class="cl"># whether to use git commit log
+</span></span><span class="line"><span class="cl"># 是否使用 git 信息
+</span></span><span class="line"><span class="cl">enableGitInfo = true
+</span></span><span class="line"><span class="cl"># whether to use emoji code
+</span></span><span class="line"><span class="cl"># 是否使用 emoji 代码
+</span></span><span class="line"><span class="cl">enableEmoji = true
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># ignore some build errors
+</span></span><span class="line"><span class="cl"># 忽略一些构建错误
+</span></span><span class="line"><span class="cl">ignoreErrors = [&#34;error-remote-getjson&#34;, &#34;error-missing-instagram-accesstoken&#34;]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Author config
+</span></span><span class="line"><span class="cl"># 作者配置
+</span></span><span class="line"><span class="cl">[author]
+</span></span><span class="line"><span class="cl">  name = &#34;夜闹&#34;
+</span></span><span class="line"><span class="cl">  email = &#34;&#34;
+</span></span><span class="line"><span class="cl">  link = &#34;&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Menu config
+</span></span><span class="line"><span class="cl"># 菜单配置
+</span></span><span class="line"><span class="cl">[menu]
+</span></span><span class="line"><span class="cl">  [[menu.main]]
+</span></span><span class="line"><span class="cl">    weight = 1
+</span></span><span class="line"><span class="cl">    identifier = &#34;posts&#34;
+</span></span><span class="line"><span class="cl">    # you can add extra information before the name (HTML format is supported), such as icons
+</span></span><span class="line"><span class="cl">    # 你可以在名称 (允许 HTML 格式) 之前添加其他信息, 例如图标
+</span></span><span class="line"><span class="cl">    pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">    # you can add extra information after the name (HTML format is supported), such as icons
+</span></span><span class="line"><span class="cl">    # 你可以在名称 (允许 HTML 格式) 之后添加其他信息, 例如图标
+</span></span><span class="line"><span class="cl">    post = &#34;&#34;
+</span></span><span class="line"><span class="cl">    name = &#34;Posts&#34;
+</span></span><span class="line"><span class="cl">    url = &#34;/posts/&#34;
+</span></span><span class="line"><span class="cl">    # title will be shown when you hover on this menu link
+</span></span><span class="line"><span class="cl">    # 当您将鼠标悬停在此菜单链接上时, 将显示标题
+</span></span><span class="line"><span class="cl">    title = &#34;&#34;
+</span></span><span class="line"><span class="cl">  [[menu.main]]
+</span></span><span class="line"><span class="cl">    weight = 2
+</span></span><span class="line"><span class="cl">    identifier = &#34;tags&#34;
+</span></span><span class="line"><span class="cl">    pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">    post = &#34;&#34;
+</span></span><span class="line"><span class="cl">    name = &#34;Tags&#34;
+</span></span><span class="line"><span class="cl">    url = &#34;/tags/&#34;
+</span></span><span class="line"><span class="cl">    title = &#34;&#34;
+</span></span><span class="line"><span class="cl">  [[menu.main]]
+</span></span><span class="line"><span class="cl">    weight = 3
+</span></span><span class="line"><span class="cl">    identifier = &#34;categories&#34;
+</span></span><span class="line"><span class="cl">    pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">    post = &#34;&#34;
+</span></span><span class="line"><span class="cl">    name = &#34;Categories&#34;
+</span></span><span class="line"><span class="cl">    url = &#34;/categories/&#34;
+</span></span><span class="line"><span class="cl">    title = &#34;&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">[params]
+</span></span><span class="line"><span class="cl">  # site default theme [&#34;auto&#34;, &#34;light&#34;, &#34;dark&#34;]
+</span></span><span class="line"><span class="cl">  # 网站默认主题 [&#34;auto&#34;, &#34;light&#34;, &#34;dark&#34;]
+</span></span><span class="line"><span class="cl">  defaultTheme = &#34;auto&#34;
+</span></span><span class="line"><span class="cl">  # public git repo url only then enableGitInfo is true
+</span></span><span class="line"><span class="cl">  # 公共 git 仓库路径，仅在 enableGitInfo 设为 true 时有效
+</span></span><span class="line"><span class="cl">  gitRepo = &#34;https://github.com/dillonzq/LoveIt&#34;
+</span></span><span class="line"><span class="cl">  # which hash function used for SRI, when empty, no SRI is used
+</span></span><span class="line"><span class="cl">  # [&#34;sha256&#34;, &#34;sha384&#34;, &#34;sha512&#34;, &#34;md5&#34;]
+</span></span><span class="line"><span class="cl">  # 哪种哈希函数用来 SRI, 为空时表示不使用 SRI
+</span></span><span class="line"><span class="cl">  # [&#34;sha256&#34;, &#34;sha384&#34;, &#34;sha512&#34;, &#34;md5&#34;]
+</span></span><span class="line"><span class="cl">  fingerprint = &#34;&#34;
+</span></span><span class="line"><span class="cl">  # date format
+</span></span><span class="line"><span class="cl">  # 日期格式
+</span></span><span class="line"><span class="cl">  dateFormat = &#34;2006-01-02&#34;
+</span></span><span class="line"><span class="cl">  # website title for Open Graph and Twitter Cards
+</span></span><span class="line"><span class="cl">  # 网站标题, 用于 Open Graph 和 Twitter Cards
+</span></span><span class="line"><span class="cl">  title = &#34;LoveIt&#34;
+</span></span><span class="line"><span class="cl">  # website description for RSS, SEO, Open Graph and Twitter Cards
+</span></span><span class="line"><span class="cl">  # 网站描述, 用于 RSS, SEO, Open Graph 和 Twitter Cards
+</span></span><span class="line"><span class="cl">  description = &#34;Hugo theme - LoveIt&#34;
+</span></span><span class="line"><span class="cl">  # website images for Open Graph and Twitter Cards
+</span></span><span class="line"><span class="cl">  # 网站图片, 用于 Open Graph 和 Twitter Cards
+</span></span><span class="line"><span class="cl">  # images = [&#34;/logo.png&#34;]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # Header config
+</span></span><span class="line"><span class="cl">  # 页面头部导航栏配置
+</span></span><span class="line"><span class="cl">  [params.header]
+</span></span><span class="line"><span class="cl">    # desktop header mode [&#34;fixed&#34;, &#34;normal&#34;, &#34;auto&#34;]
+</span></span><span class="line"><span class="cl">    # 桌面端导航栏模式 [&#34;fixed&#34;, &#34;normal&#34;, &#34;auto&#34;]
+</span></span><span class="line"><span class="cl">    desktopMode = &#34;auto&#34;
+</span></span><span class="line"><span class="cl">    # mobile header mode [&#34;fixed&#34;, &#34;normal&#34;, &#34;auto&#34;]
+</span></span><span class="line"><span class="cl">    # 移动端导航栏模式 [&#34;fixed&#34;, &#34;normal&#34;, &#34;auto&#34;]
+</span></span><span class="line"><span class="cl">    mobileMode = &#34;auto&#34;
+</span></span><span class="line"><span class="cl">    # Header title config
+</span></span><span class="line"><span class="cl">    # 页面头部导航栏标题配置
+</span></span><span class="line"><span class="cl">    [params.header.title]
+</span></span><span class="line"><span class="cl">      # URL of the LOGO
+</span></span><span class="line"><span class="cl">      # LOGO 的 URL
+</span></span><span class="line"><span class="cl">      logo = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # title name
+</span></span><span class="line"><span class="cl">      # 标题名称
+</span></span><span class="line"><span class="cl">      name = &#34;yenao&#34;
+</span></span><span class="line"><span class="cl">      # you can add extra information before the name (HTML format is supported), such as icons
+</span></span><span class="line"><span class="cl">      # 你可以在名称 (允许 HTML 格式) 之前添加其他信息, 例如图标
+</span></span><span class="line"><span class="cl">      pre = &#34;&lt;i class=&#39;far fa-kiss-wink-heart fa-fw&#39; aria-hidden=&#39;true&#39;&gt;&lt;/i&gt;&#34;
+</span></span><span class="line"><span class="cl">      # you can add extra information after the name (HTML format is supported), such as icons
+</span></span><span class="line"><span class="cl">      # 你可以在名称 (允许 HTML 格式) 之后添加其他信息, 例如图标
+</span></span><span class="line"><span class="cl">      post = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # whether to use typeit animation for title name
+</span></span><span class="line"><span class="cl">      # 是否为标题显示打字机动画
+</span></span><span class="line"><span class="cl">      typeit = false
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # Footer config
+</span></span><span class="line"><span class="cl">  # 页面底部信息配置
+</span></span><span class="line"><span class="cl">  [params.footer]
+</span></span><span class="line"><span class="cl">    enable = false
+</span></span><span class="line"><span class="cl">    # Custom content (HTML format is supported)
+</span></span><span class="line"><span class="cl">    # 自定义内容 (支持 HTML 格式)
+</span></span><span class="line"><span class="cl">    custom = &#34;&#34;
+</span></span><span class="line"><span class="cl">    # whether to show Hugo and theme info
+</span></span><span class="line"><span class="cl">    # 是否显示 Hugo 和主题信息
+</span></span><span class="line"><span class="cl">    hugo = true
+</span></span><span class="line"><span class="cl">    # whether to show copyright info
+</span></span><span class="line"><span class="cl">    # 是否显示版权信息
+</span></span><span class="line"><span class="cl">    copyright = true
+</span></span><span class="line"><span class="cl">    # whether to show the author
+</span></span><span class="line"><span class="cl">    # 是否显示作者
+</span></span><span class="line"><span class="cl">    author = true
+</span></span><span class="line"><span class="cl">    # site creation time
+</span></span><span class="line"><span class="cl">    # 网站创立年份
+</span></span><span class="line"><span class="cl">    since = 2019
+</span></span><span class="line"><span class="cl">    # ICP info only in China (HTML format is supported)
+</span></span><span class="line"><span class="cl">    # ICP 备案信息，仅在中国使用 (支持 HTML 格式)
+</span></span><span class="line"><span class="cl">    icp = &#34;&#34;
+</span></span><span class="line"><span class="cl">    # license info (HTML format is supported)
+</span></span><span class="line"><span class="cl">    # 许可协议信息 (支持 HTML 格式)
+</span></span><span class="line"><span class="cl">    license= &#39;&lt;a rel=&#34;license external nofollow noopener noreffer&#34; href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34;&gt;CC BY-NC 4.0&lt;/a&gt;&#39;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # Section (all posts) page config
+</span></span><span class="line"><span class="cl">  # Section (所有文章) 页面配置
+</span></span><span class="line"><span class="cl">  [params.section]
+</span></span><span class="line"><span class="cl">    # special amount of posts in each section page
+</span></span><span class="line"><span class="cl">    # section 页面每页显示文章数量
+</span></span><span class="line"><span class="cl">    paginate = 100
+</span></span><span class="line"><span class="cl">    # date format (month and day)
+</span></span><span class="line"><span class="cl">    # 日期格式 (月和日)
+</span></span><span class="line"><span class="cl">    dateFormat = &#34;01-02&#34;
+</span></span><span class="line"><span class="cl">    # amount of RSS pages
+</span></span><span class="line"><span class="cl">    # RSS 文章数目
+</span></span><span class="line"><span class="cl">    rss = 100
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # List (category or tag) page config
+</span></span><span class="line"><span class="cl">  # List (目录或标签) 页面配置
+</span></span><span class="line"><span class="cl">  [params.list]
+</span></span><span class="line"><span class="cl">    # special amount of posts in each list page
+</span></span><span class="line"><span class="cl">    # list 页面每页显示文章数量
+</span></span><span class="line"><span class="cl">    paginate = 1000
+</span></span><span class="line"><span class="cl">    # date format (month and day)
+</span></span><span class="line"><span class="cl">    # 日期格式 (月和日)
+</span></span><span class="line"><span class="cl">    dateFormat = &#34;01-02&#34;
+</span></span><span class="line"><span class="cl">    # amount of RSS pages
+</span></span><span class="line"><span class="cl">    # RSS 文章数目
+</span></span><span class="line"><span class="cl">    rss = 100
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # App icon config
+</span></span><span class="line"><span class="cl">  # 应用图标配置
+</span></span><span class="line"><span class="cl">  [params.app]
+</span></span><span class="line"><span class="cl">    # optional site title override for the app when added to an iOS home screen or Android launcher
+</span></span><span class="line"><span class="cl">    # 当添加到 iOS 主屏幕或者 Android 启动器时的标题, 覆盖默认标题
+</span></span><span class="line"><span class="cl">    title = &#34;LoveIt&#34;
+</span></span><span class="line"><span class="cl">    # whether to omit favicon resource links
+</span></span><span class="line"><span class="cl">    # 是否隐藏网站图标资源链接
+</span></span><span class="line"><span class="cl">    noFavicon = false
+</span></span><span class="line"><span class="cl">    # modern SVG favicon to use in place of older style .png and .ico files
+</span></span><span class="line"><span class="cl">    # 更现代的 SVG 网站图标, 可替代旧的 .png 和 .ico 文件
+</span></span><span class="line"><span class="cl">    svgFavicon = &#34;&#34;
+</span></span><span class="line"><span class="cl">    # Android browser theme color
+</span></span><span class="line"><span class="cl">    # Android 浏览器主题色
+</span></span><span class="line"><span class="cl">    themeColor = &#34;#ffffff&#34;
+</span></span><span class="line"><span class="cl">    # Safari mask icon color
+</span></span><span class="line"><span class="cl">    # Safari 图标颜色
+</span></span><span class="line"><span class="cl">    iconColor = &#34;#5bbad5&#34;
+</span></span><span class="line"><span class="cl">    # Windows v8-11 tile color
+</span></span><span class="line"><span class="cl">    # Windows v8-11 磁贴颜色
+</span></span><span class="line"><span class="cl">    tileColor = &#34;#da532c&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # Search config
+</span></span><span class="line"><span class="cl">  # 搜索配置
+</span></span><span class="line"><span class="cl">  [params.search]
+</span></span><span class="line"><span class="cl">    enable = true
+</span></span><span class="line"><span class="cl">    # type of search engine [&#34;lunr&#34;, &#34;algolia&#34;]
+</span></span><span class="line"><span class="cl">    # 搜索引擎的类型 [&#34;lunr&#34;, &#34;algolia&#34;]
+</span></span><span class="line"><span class="cl">    type = &#34;algolia&#34;
+</span></span><span class="line"><span class="cl">    # max index length of the chunked content
+</span></span><span class="line"><span class="cl">    # 文章内容最长索引长度
+</span></span><span class="line"><span class="cl">    contentLength = 4000
+</span></span><span class="line"><span class="cl">    # placeholder of the search bar
+</span></span><span class="line"><span class="cl">    # 搜索框的占位提示语
+</span></span><span class="line"><span class="cl">    placeholder = &#34;&#34;
+</span></span><span class="line"><span class="cl">    # max number of results length
+</span></span><span class="line"><span class="cl">    # 最大结果数目
+</span></span><span class="line"><span class="cl">    maxResultLength = 10
+</span></span><span class="line"><span class="cl">    # snippet length of the result
+</span></span><span class="line"><span class="cl">    # 结果内容片段长度
+</span></span><span class="line"><span class="cl">    snippetLength = 30
+</span></span><span class="line"><span class="cl">    # HTML tag name of the highlight part in results
+</span></span><span class="line"><span class="cl">    # 搜索结果中高亮部分的 HTML 标签
+</span></span><span class="line"><span class="cl">    highlightTag = &#34;em&#34;
+</span></span><span class="line"><span class="cl">    # whether to use the absolute URL based on the baseURL in search index
+</span></span><span class="line"><span class="cl">    # 是否在搜索索引中使用基于 baseURL 的绝对路径
+</span></span><span class="line"><span class="cl">    absoluteURL = false
+</span></span><span class="line"><span class="cl">    [params.search.algolia]
+</span></span><span class="line"><span class="cl">      index = &#34;&#34;
+</span></span><span class="line"><span class="cl">      appID = &#34;&#34;
+</span></span><span class="line"><span class="cl">      searchKey = &#34;&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # Home page config
+</span></span><span class="line"><span class="cl">  # 主页信息设置
+</span></span><span class="line"><span class="cl">  [params.home]
+</span></span><span class="line"><span class="cl">    # amount of RSS pages
+</span></span><span class="line"><span class="cl">    # RSS 文章数目
+</span></span><span class="line"><span class="cl">    rss = 100
+</span></span><span class="line"><span class="cl">    # Home page profile
+</span></span><span class="line"><span class="cl">    # 主页个人信息
+</span></span><span class="line"><span class="cl">    [params.home.profile]
+</span></span><span class="line"><span class="cl">      enable = true
+</span></span><span class="line"><span class="cl">      # Gravatar Email for preferred avatar in home page
+</span></span><span class="line"><span class="cl">      # Gravatar 邮箱，用于优先在主页显示的头像
+</span></span><span class="line"><span class="cl">      gravatarEmail = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # URL of avatar shown in home page
+</span></span><span class="line"><span class="cl">      # 主页显示头像的 URL
+</span></span><span class="line"><span class="cl">      avatarURL = &#34;/images/avatar.png&#34;
+</span></span><span class="line"><span class="cl">      # title shown in home page (HTML format is supported)
+</span></span><span class="line"><span class="cl">      # 主页显示的网站标题 (支持 HTML 格式)
+</span></span><span class="line"><span class="cl">      title = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # subtitle shown in home page (HTML format is supported)
+</span></span><span class="line"><span class="cl">      # 主页显示的网站副标题 (允许 HTML 格式)
+</span></span><span class="line"><span class="cl">      subtitle = &#34;A Clean, Elegant but Advanced Hugo Theme&#34;
+</span></span><span class="line"><span class="cl">      # whether to use typeit animation for subtitle
+</span></span><span class="line"><span class="cl">      # 是否为副标题显示打字机动画
+</span></span><span class="line"><span class="cl">      typeit = true
+</span></span><span class="line"><span class="cl">      # whether to show social links
+</span></span><span class="line"><span class="cl">      # 是否显示社交账号
+</span></span><span class="line"><span class="cl">      social = true
+</span></span><span class="line"><span class="cl">      # disclaimer (HTML format is supported)
+</span></span><span class="line"><span class="cl">      # 免责声明 (支持 HTML 格式)
+</span></span><span class="line"><span class="cl">      disclaimer = &#34;&#34;
+</span></span><span class="line"><span class="cl">    # Home page posts
+</span></span><span class="line"><span class="cl">    # 主页文章列表
+</span></span><span class="line"><span class="cl">    [params.home.posts]
+</span></span><span class="line"><span class="cl">      enable = true
+</span></span><span class="line"><span class="cl">      # special amount of posts in each home posts page
+</span></span><span class="line"><span class="cl">      # 主页每页显示文章数量
+</span></span><span class="line"><span class="cl">      paginate = 100
+</span></span><span class="line"><span class="cl">  # Social config in home page
+</span></span><span class="line"><span class="cl">  # 主页的社交信息设置
+</span></span><span class="line"><span class="cl">  [params.social]
+</span></span><span class="line"><span class="cl">    GitHub = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Linkedin = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Twitter = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Instagram = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Facebook = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Telegram = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Medium = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Gitlab = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Youtubelegacy = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Youtubecustom = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Youtubechannel = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Tumblr = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Quora = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Keybase = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Pinterest = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Reddit = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Codepen = &#34;&#34;
+</span></span><span class="line"><span class="cl">    FreeCodeCamp = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Bitbucket = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Stackoverflow = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Weibo = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Odnoklassniki = &#34;&#34;
+</span></span><span class="line"><span class="cl">    VK = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Flickr = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Xing = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Snapchat = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Soundcloud = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Spotify = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Bandcamp = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Paypal = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Fivehundredpx = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Mix = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Goodreads = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Lastfm = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Foursquare = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Hackernews = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Kickstarter = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Patreon = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Steam = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Twitch = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Strava = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Skype = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Whatsapp = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Zhihu = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Douban = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Angellist = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Slidershare = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Jsfiddle = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Deviantart = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Behance = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Dribbble = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Wordpress = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Vine = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Googlescholar = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Researchgate = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Mastodon = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Thingiverse = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Devto = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Gitea = &#34;&#34;
+</span></span><span class="line"><span class="cl">    XMPP = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Matrix = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Bilibili = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Discord = &#34;&#34;
+</span></span><span class="line"><span class="cl">    DiscordInvite = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Lichess = &#34;&#34;
+</span></span><span class="line"><span class="cl">    ORCID = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Pleroma = &#34;&#34;
+</span></span><span class="line"><span class="cl">    Kaggle = &#34;&#34;
+</span></span><span class="line"><span class="cl">    MediaWiki= &#34;&#34;
+</span></span><span class="line"><span class="cl">    Plume = &#34;&#34;
+</span></span><span class="line"><span class="cl">    HackTheBox = &#34;&#34;
+</span></span><span class="line"><span class="cl">    RootMe= &#34;&#34;
+</span></span><span class="line"><span class="cl">    Email = &#34;&#34;
+</span></span><span class="line"><span class="cl">    RSS = &#34;&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # Page global config
+</span></span><span class="line"><span class="cl">  # 文章页面全局配置
+</span></span><span class="line"><span class="cl">  [params.page]
+</span></span><span class="line"><span class="cl">    # whether to hide a page from home page
+</span></span><span class="line"><span class="cl">    # 是否在主页隐藏一篇文章
+</span></span><span class="line"><span class="cl">    hiddenFromHomePage = false
+</span></span><span class="line"><span class="cl">    # whether to hide a page from search results
+</span></span><span class="line"><span class="cl">    # 是否在搜索结果中隐藏一篇文章
+</span></span><span class="line"><span class="cl">    hiddenFromSearch = false
+</span></span><span class="line"><span class="cl">    # whether to enable twemoji
+</span></span><span class="line"><span class="cl">    # 是否使用 twemoji
+</span></span><span class="line"><span class="cl">    twemoji = false
+</span></span><span class="line"><span class="cl">    # whether to enable lightgallery
+</span></span><span class="line"><span class="cl">    # 是否使用 lightgallery
+</span></span><span class="line"><span class="cl">    lightgallery = false
+</span></span><span class="line"><span class="cl">    # whether to enable the ruby extended syntax
+</span></span><span class="line"><span class="cl">    # 是否使用 ruby 扩展语法
+</span></span><span class="line"><span class="cl">    ruby = true
+</span></span><span class="line"><span class="cl">    # whether to enable the fraction extended syntax
+</span></span><span class="line"><span class="cl">    # 是否使用 fraction 扩展语法
+</span></span><span class="line"><span class="cl">    fraction = true
+</span></span><span class="line"><span class="cl">    # whether to enable the fontawesome extended syntax
+</span></span><span class="line"><span class="cl">    # 是否使用 fontawesome 扩展语法
+</span></span><span class="line"><span class="cl">    fontawesome = true
+</span></span><span class="line"><span class="cl">    # whether to show link to Raw Markdown content of the content
+</span></span><span class="line"><span class="cl">    # 是否显示原始 Markdown 文档内容的链接
+</span></span><span class="line"><span class="cl">    linkToMarkdown = true
+</span></span><span class="line"><span class="cl">    # whether to show the full text content in RSS
+</span></span><span class="line"><span class="cl">    # 是否在 RSS 中显示全文内容
+</span></span><span class="line"><span class="cl">    rssFullText = true
+</span></span><span class="line"><span class="cl">    # Table of the contents config
+</span></span><span class="line"><span class="cl">    # 目录配置
+</span></span><span class="line"><span class="cl">    [params.page.toc]
+</span></span><span class="line"><span class="cl">      # whether to enable the table of the contents
+</span></span><span class="line"><span class="cl">      # 是否使用目录
+</span></span><span class="line"><span class="cl">      enable = true
+</span></span><span class="line"><span class="cl">      # whether to keep the static table of the contents in front of the post
+</span></span><span class="line"><span class="cl">      # 是否保持使用文章前面的静态目录
+</span></span><span class="line"><span class="cl">      keepStatic = false
+</span></span><span class="line"><span class="cl">      # whether to make the table of the contents in the sidebar automatically collapsed
+</span></span><span class="line"><span class="cl">      # 是否使侧边目录自动折叠展开
+</span></span><span class="line"><span class="cl">      auto = true
+</span></span><span class="line"><span class="cl">    # Code config
+</span></span><span class="line"><span class="cl">    # 代码配置
+</span></span><span class="line"><span class="cl">    [params.page.code]
+</span></span><span class="line"><span class="cl">      # whether to show the copy button of the code block
+</span></span><span class="line"><span class="cl">      # 是否显示代码块的复制按钮
+</span></span><span class="line"><span class="cl">      copy = true
+</span></span><span class="line"><span class="cl">      # the maximum number of lines of displayed code by default
+</span></span><span class="line"><span class="cl">      # 默认展开显示的代码行数
+</span></span><span class="line"><span class="cl">      maxShownLines = 1000
+</span></span><span class="line"><span class="cl">    # KaTeX mathematical formulas config (KaTeX https://katex.org/)
+</span></span><span class="line"><span class="cl">    # KaTeX 数学公式配置 (KaTeX https://katex.org/)
+</span></span><span class="line"><span class="cl">    [params.page.math]
+</span></span><span class="line"><span class="cl">      enable = true
+</span></span><span class="line"><span class="cl">      # default inline delimiter is $ ... $ and \( ... \)
+</span></span><span class="line"><span class="cl">      # 默认行内定界符是 $ ... $ 和 \( ... \)
+</span></span><span class="line"><span class="cl">      inlineLeftDelimiter = &#34;&#34;
+</span></span><span class="line"><span class="cl">      inlineRightDelimiter = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # default block delimiter is $$ ... $$, \[ ... \], \begin{equation} ... \end{equation} and some other functions
+</span></span><span class="line"><span class="cl">      # 默认块定界符是 $$ ... $$, \[ ... \],  \begin{equation} ... \end{equation} 和一些其它的函数
+</span></span><span class="line"><span class="cl">      blockLeftDelimiter = &#34;&#34;
+</span></span><span class="line"><span class="cl">      blockRightDelimiter = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # KaTeX extension copy_tex
+</span></span><span class="line"><span class="cl">      # KaTeX 插件 copy_tex
+</span></span><span class="line"><span class="cl">      copyTex = true
+</span></span><span class="line"><span class="cl">      # KaTeX extension mhchem
+</span></span><span class="line"><span class="cl">      # KaTeX 插件 mhchem
+</span></span><span class="line"><span class="cl">      mhchem = true
+</span></span><span class="line"><span class="cl">    # Mapbox GL JS config (Mapbox GL JS https://docs.mapbox.com/mapbox-gl-js)
+</span></span><span class="line"><span class="cl">    # Mapbox GL JS 配置 (Mapbox GL JS https://docs.mapbox.com/mapbox-gl-js)
+</span></span><span class="line"><span class="cl">    [params.page.mapbox]
+</span></span><span class="line"><span class="cl">      # access token of Mapbox GL JS
+</span></span><span class="line"><span class="cl">      # Mapbox GL JS 的 access token
+</span></span><span class="line"><span class="cl">      accessToken = &#34;pk.eyJ1IjoiZGlsbG9uenEiLCJhIjoiY2s2czd2M2x3MDA0NjNmcGxmcjVrZmc2cyJ9.aSjv2BNuZUfARvxRYjSVZQ&#34;
+</span></span><span class="line"><span class="cl">      # style for the light theme
+</span></span><span class="line"><span class="cl">      # 浅色主题的地图样式
+</span></span><span class="line"><span class="cl">      lightStyle = &#34;mapbox://styles/mapbox/light-v10?optimize=true&#34;
+</span></span><span class="line"><span class="cl">      # style for the dark theme
+</span></span><span class="line"><span class="cl">      # 深色主题的地图样式
+</span></span><span class="line"><span class="cl">      darkStyle = &#34;mapbox://styles/mapbox/dark-v10?optimize=true&#34;
+</span></span><span class="line"><span class="cl">      # whether to add NavigationControl (https://docs.mapbox.com/mapbox-gl-js/api/#navigationcontrol)
+</span></span><span class="line"><span class="cl">      # 是否添加 NavigationControl (https://docs.mapbox.com/mapbox-gl-js/api/#navigationcontrol)
+</span></span><span class="line"><span class="cl">      navigation = true
+</span></span><span class="line"><span class="cl">      # whether to add GeolocateControl (https://docs.mapbox.com/mapbox-gl-js/api/#geolocatecontrol)
+</span></span><span class="line"><span class="cl">      # 是否添加 GeolocateControl (https://docs.mapbox.com/mapbox-gl-js/api/#geolocatecontrol)
+</span></span><span class="line"><span class="cl">      geolocate = true
+</span></span><span class="line"><span class="cl">      # whether to add ScaleControl (https://docs.mapbox.com/mapbox-gl-js/api/#scalecontrol)
+</span></span><span class="line"><span class="cl">      # 是否添加 ScaleControl (https://docs.mapbox.com/mapbox-gl-js/api/#scalecontrol)
+</span></span><span class="line"><span class="cl">      scale = true
+</span></span><span class="line"><span class="cl">      # whether to add FullscreenControl (https://docs.mapbox.com/mapbox-gl-js/api/#fullscreencontrol)
+</span></span><span class="line"><span class="cl">      # 是否添加 FullscreenControl (https://docs.mapbox.com/mapbox-gl-js/api/#fullscreencontrol)
+</span></span><span class="line"><span class="cl">      fullscreen = true
+</span></span><span class="line"><span class="cl">    # Social share links in post page
+</span></span><span class="line"><span class="cl">    # 文章页面的分享信息设置
+</span></span><span class="line"><span class="cl">    [params.page.share]
+</span></span><span class="line"><span class="cl">      enable = true
+</span></span><span class="line"><span class="cl">      Twitter = true
+</span></span><span class="line"><span class="cl">      Facebook = true
+</span></span><span class="line"><span class="cl">      Linkedin = false
+</span></span><span class="line"><span class="cl">      Whatsapp = false
+</span></span><span class="line"><span class="cl">      Pinterest = false
+</span></span><span class="line"><span class="cl">      Tumblr = false
+</span></span><span class="line"><span class="cl">      HackerNews = true
+</span></span><span class="line"><span class="cl">      Reddit = false
+</span></span><span class="line"><span class="cl">      VK = false
+</span></span><span class="line"><span class="cl">      Buffer = false
+</span></span><span class="line"><span class="cl">      Xing = false
+</span></span><span class="line"><span class="cl">      Line = true
+</span></span><span class="line"><span class="cl">      Instapaper = false
+</span></span><span class="line"><span class="cl">      Pocket = false
+</span></span><span class="line"><span class="cl">      Flipboard = false
+</span></span><span class="line"><span class="cl">      Weibo = true
+</span></span><span class="line"><span class="cl">      Blogger = false
+</span></span><span class="line"><span class="cl">      Baidu = false
+</span></span><span class="line"><span class="cl">      Odnoklassniki = false
+</span></span><span class="line"><span class="cl">      Evernote = false
+</span></span><span class="line"><span class="cl">      Skype = false
+</span></span><span class="line"><span class="cl">      Trello = false
+</span></span><span class="line"><span class="cl">      Mix = false
+</span></span><span class="line"><span class="cl">    # Comment config
+</span></span><span class="line"><span class="cl">    # 评论系统设置
+</span></span><span class="line"><span class="cl">    [params.page.comment]
+</span></span><span class="line"><span class="cl">      enable = true
+</span></span><span class="line"><span class="cl">      # Disqus comment config (https://disqus.com/)
+</span></span><span class="line"><span class="cl">      # Disqus 评论系统设置 (https://disqus.com/)
+</span></span><span class="line"><span class="cl">      [params.page.comment.disqus]
+</span></span><span class="line"><span class="cl">        enable = false
+</span></span><span class="line"><span class="cl">        # Disqus shortname to use Disqus in posts
+</span></span><span class="line"><span class="cl">        # Disqus 的 shortname，用来在文章中启用 Disqus 评论系统
+</span></span><span class="line"><span class="cl">        shortname = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # Gitalk comment config (https://github.com/gitalk/gitalk)
+</span></span><span class="line"><span class="cl">      # Gitalk 评论系统设置 (https://github.com/gitalk/gitalk)
+</span></span><span class="line"><span class="cl">      [params.page.comment.gitalk]
+</span></span><span class="line"><span class="cl">        enable = false
+</span></span><span class="line"><span class="cl">        owner = &#34;&#34;
+</span></span><span class="line"><span class="cl">        repo = &#34;&#34;
+</span></span><span class="line"><span class="cl">        clientId = &#34;&#34;
+</span></span><span class="line"><span class="cl">        clientSecret = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # Valine comment config (https://github.com/xCss/Valine)
+</span></span><span class="line"><span class="cl">      # Valine 评论系统设置 (https://github.com/xCss/Valine)
+</span></span><span class="line"><span class="cl">      [params.page.comment.valine]
+</span></span><span class="line"><span class="cl">        enable = true
+</span></span><span class="line"><span class="cl">        appId = &#34;QGzwQXOqs5JOhN4RGPOkR2mR-MdYXbMMI&#34;
+</span></span><span class="line"><span class="cl">        appKey = &#34;WBmoGyJtbqUswvfLh6L8iEBr&#34;
+</span></span><span class="line"><span class="cl">        placeholder = &#34;&#34;
+</span></span><span class="line"><span class="cl">        avatar = &#34;mp&#34;
+</span></span><span class="line"><span class="cl">        meta= &#34;&#34;
+</span></span><span class="line"><span class="cl">        pageSize = 10
+</span></span><span class="line"><span class="cl">        # automatically adapt the current theme i18n configuration when empty
+</span></span><span class="line"><span class="cl">        # 为空时自动适配当前主题 i18n 配置
+</span></span><span class="line"><span class="cl">        lang = &#34;&#34;
+</span></span><span class="line"><span class="cl">        visitor = true
+</span></span><span class="line"><span class="cl">        recordIP = true
+</span></span><span class="line"><span class="cl">        highlight = true
+</span></span><span class="line"><span class="cl">        enableQQ = false
+</span></span><span class="line"><span class="cl">        serverURLs = &#34;https://leancloud.hugoloveit.com&#34;
+</span></span><span class="line"><span class="cl">        # emoji data file name, default is &#34;google.yml&#34;
+</span></span><span class="line"><span class="cl">        # [&#34;apple.yml&#34;, &#34;google.yml&#34;, &#34;facebook.yml&#34;, &#34;twitter.yml&#34;]
+</span></span><span class="line"><span class="cl">        # located in &#34;themes/LoveIt/assets/lib/valine/emoji/&#34; directory
+</span></span><span class="line"><span class="cl">        # you can store your own data files in the same path under your project:
+</span></span><span class="line"><span class="cl">        # &#34;assets/lib/valine/emoji/&#34;
+</span></span><span class="line"><span class="cl">        # emoji 数据文件名称, 默认是 &#34;google.yml&#34;
+</span></span><span class="line"><span class="cl">        # [&#34;apple.yml&#34;, &#34;google.yml&#34;, &#34;facebook.yml&#34;, &#34;twitter.yml&#34;]
+</span></span><span class="line"><span class="cl">        # 位于 &#34;themes/LoveIt/assets/lib/valine/emoji/&#34; 目录
+</span></span><span class="line"><span class="cl">        # 可以在你的项目下相同路径存放你自己的数据文件:
+</span></span><span class="line"><span class="cl">        # &#34;assets/lib/valine/emoji/&#34;
+</span></span><span class="line"><span class="cl">        emoji = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # Facebook comment config (https://developers.facebook.com/docs/plugins/comments)
+</span></span><span class="line"><span class="cl">      # Facebook 评论系统设置 (https://developers.facebook.com/docs/plugins/comments)
+</span></span><span class="line"><span class="cl">      [params.page.comment.facebook]
+</span></span><span class="line"><span class="cl">        enable = false
+</span></span><span class="line"><span class="cl">        width = &#34;100%&#34;
+</span></span><span class="line"><span class="cl">        numPosts = 10
+</span></span><span class="line"><span class="cl">        appId = &#34;&#34;
+</span></span><span class="line"><span class="cl">        # automatically adapt the current theme i18n configuration when empty
+</span></span><span class="line"><span class="cl">        # 为空时自动适配当前主题 i18n 配置
+</span></span><span class="line"><span class="cl">        languageCode = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # Telegram comments config (https://comments.app/)
+</span></span><span class="line"><span class="cl">      # Telegram comments 评论系统设置 (https://comments.app/)
+</span></span><span class="line"><span class="cl">      [params.page.comment.telegram]
+</span></span><span class="line"><span class="cl">        enable = false
+</span></span><span class="line"><span class="cl">        siteID = &#34;&#34;
+</span></span><span class="line"><span class="cl">        limit = 5
+</span></span><span class="line"><span class="cl">        height = &#34;&#34;
+</span></span><span class="line"><span class="cl">        color = &#34;&#34;
+</span></span><span class="line"><span class="cl">        colorful = true
+</span></span><span class="line"><span class="cl">        dislikes = false
+</span></span><span class="line"><span class="cl">        outlined = false
+</span></span><span class="line"><span class="cl">      # Commento comment config (https://commento.io/)
+</span></span><span class="line"><span class="cl">      # Commento comment 评论系统设置 (https://commento.io/)
+</span></span><span class="line"><span class="cl">      [params.page.comment.commento]
+</span></span><span class="line"><span class="cl">        enable = false
+</span></span><span class="line"><span class="cl">      # utterances comment config (https://utteranc.es/)
+</span></span><span class="line"><span class="cl">      # utterances comment 评论系统设置 (https://utteranc.es/)
+</span></span><span class="line"><span class="cl">      [params.page.comment.utterances]
+</span></span><span class="line"><span class="cl">        enable = false
+</span></span><span class="line"><span class="cl">        # owner/repo
+</span></span><span class="line"><span class="cl">        repo = &#34;&#34;
+</span></span><span class="line"><span class="cl">        issueTerm = &#34;pathname&#34;
+</span></span><span class="line"><span class="cl">        label = &#34;&#34;
+</span></span><span class="line"><span class="cl">        lightTheme = &#34;github-light&#34;
+</span></span><span class="line"><span class="cl">        darkTheme = &#34;github-dark&#34;
+</span></span><span class="line"><span class="cl">      # giscus comment config (https://giscus.app/)
+</span></span><span class="line"><span class="cl">      # giscus comment 评论系统设置 (https://giscus.app/zh-CN)
+</span></span><span class="line"><span class="cl">      [params.page.comment.giscus]
+</span></span><span class="line"><span class="cl">        # You can refer to the official documentation of giscus to use the following configuration.
+</span></span><span class="line"><span class="cl">        # 你可以参考官方文档来使用下列配置
+</span></span><span class="line"><span class="cl">        enable = false
+</span></span><span class="line"><span class="cl">        repo = &#34;&#34;
+</span></span><span class="line"><span class="cl">        repoId = &#34;&#34;
+</span></span><span class="line"><span class="cl">        category = &#34;Announcements&#34;
+</span></span><span class="line"><span class="cl">        categoryId = &#34;&#34;
+</span></span><span class="line"><span class="cl">        # automatically adapt the current theme i18n configuration when empty
+</span></span><span class="line"><span class="cl">        # 为空时自动适配当前主题 i18n 配置
+</span></span><span class="line"><span class="cl">        lang = &#34;&#34;
+</span></span><span class="line"><span class="cl">        mapping = &#34;pathname&#34;
+</span></span><span class="line"><span class="cl">        reactionsEnabled = &#34;1&#34;
+</span></span><span class="line"><span class="cl">        emitMetadata = &#34;0&#34;
+</span></span><span class="line"><span class="cl">        inputPosition = &#34;bottom&#34;
+</span></span><span class="line"><span class="cl">        lazyLoading = false
+</span></span><span class="line"><span class="cl">        lightTheme = &#34;light&#34;
+</span></span><span class="line"><span class="cl">        darkTheme = &#34;dark&#34;
+</span></span><span class="line"><span class="cl">    # Third-party library config
+</span></span><span class="line"><span class="cl">    # 第三方库配置
+</span></span><span class="line"><span class="cl">    [params.page.library]
+</span></span><span class="line"><span class="cl">      [params.page.library.css]
+</span></span><span class="line"><span class="cl">        # someCSS = &#34;some.css&#34;
+</span></span><span class="line"><span class="cl">        # located in &#34;assets/&#34; 位于 &#34;assets/&#34;
+</span></span><span class="line"><span class="cl">        # Or 或者
+</span></span><span class="line"><span class="cl">        # someCSS = &#34;https://cdn.example.com/some.css&#34;
+</span></span><span class="line"><span class="cl">      [params.page.library.js]
+</span></span><span class="line"><span class="cl">        # someJavascript = &#34;some.js&#34;
+</span></span><span class="line"><span class="cl">        # located in &#34;assets/&#34; 位于 &#34;assets/&#34;
+</span></span><span class="line"><span class="cl">        # Or 或者
+</span></span><span class="line"><span class="cl">        # someJavascript = &#34;https://cdn.example.com/some.js&#34;
+</span></span><span class="line"><span class="cl">    # Page SEO config
+</span></span><span class="line"><span class="cl">    # 页面 SEO 配置
+</span></span><span class="line"><span class="cl">    [params.page.seo]
+</span></span><span class="line"><span class="cl">      # image URL
+</span></span><span class="line"><span class="cl">      # 图片 URL
+</span></span><span class="line"><span class="cl">      images = []
+</span></span><span class="line"><span class="cl">      # Publisher info
+</span></span><span class="line"><span class="cl">      # 出版者信息
+</span></span><span class="line"><span class="cl">      [params.page.seo.publisher]
+</span></span><span class="line"><span class="cl">        name = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        logoUrl = &#34;/images/avatar.png&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # TypeIt config
+</span></span><span class="line"><span class="cl">  # TypeIt 配置
+</span></span><span class="line"><span class="cl">  [params.typeit]
+</span></span><span class="line"><span class="cl">    # typing speed between each step (measured in milliseconds)
+</span></span><span class="line"><span class="cl">    # 每一步的打字速度 (单位是毫秒)
+</span></span><span class="line"><span class="cl">    speed = 100
+</span></span><span class="line"><span class="cl">    # blinking speed of the cursor (measured in milliseconds)
+</span></span><span class="line"><span class="cl">    # 光标的闪烁速度 (单位是毫秒)
+</span></span><span class="line"><span class="cl">    cursorSpeed = 1000
+</span></span><span class="line"><span class="cl">    # character used for the cursor (HTML format is supported)
+</span></span><span class="line"><span class="cl">    # 光标的字符 (支持 HTML 格式)
+</span></span><span class="line"><span class="cl">    cursorChar = &#34;|&#34;
+</span></span><span class="line"><span class="cl">    # cursor duration after typing finishing (measured in milliseconds, &#34;-1&#34; means unlimited)
+</span></span><span class="line"><span class="cl">    # 打字结束之后光标的持续时间 (单位是毫秒, &#34;-1&#34; 代表无限大)
+</span></span><span class="line"><span class="cl">    duration = -1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # Site verification code for Google/Bing/Yandex/Pinterest/Baidu
+</span></span><span class="line"><span class="cl">  # 网站验证代码，用于 Google/Bing/Yandex/Pinterest/Baidu
+</span></span><span class="line"><span class="cl">  [params.verification]
+</span></span><span class="line"><span class="cl">    google = &#34;&#34;
+</span></span><span class="line"><span class="cl">    bing = &#34;&#34;
+</span></span><span class="line"><span class="cl">    yandex = &#34;&#34;
+</span></span><span class="line"><span class="cl">    pinterest = &#34;&#34;
+</span></span><span class="line"><span class="cl">    baidu = &#34;&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # Site SEO config
+</span></span><span class="line"><span class="cl">  # 网站 SEO 配置
+</span></span><span class="line"><span class="cl">  [params.seo]
+</span></span><span class="line"><span class="cl">    # image URL
+</span></span><span class="line"><span class="cl">    # 图片 URL
+</span></span><span class="line"><span class="cl">    image = &#34;/images/Apple-Devices-Preview.png&#34;
+</span></span><span class="line"><span class="cl">    # thumbnail URL
+</span></span><span class="line"><span class="cl">    # 缩略图 URL
+</span></span><span class="line"><span class="cl">    thumbnailUrl = &#34;/images/screenshot.png&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # Analytics config
+</span></span><span class="line"><span class="cl">  # 网站分析配置
+</span></span><span class="line"><span class="cl">  [params.analytics]
+</span></span><span class="line"><span class="cl">    enable = false
+</span></span><span class="line"><span class="cl">    # Google Analytics
+</span></span><span class="line"><span class="cl">    [params.analytics.google]
+</span></span><span class="line"><span class="cl">      id = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # whether to anonymize IP
+</span></span><span class="line"><span class="cl">      # 是否匿名化用户 IP
+</span></span><span class="line"><span class="cl">      anonymizeIP = true
+</span></span><span class="line"><span class="cl">    # Fathom Analytics
+</span></span><span class="line"><span class="cl">    [params.analytics.fathom]
+</span></span><span class="line"><span class="cl">      id = &#34;&#34;
+</span></span><span class="line"><span class="cl">      # server url for your tracker if you&#39;re self hosting
+</span></span><span class="line"><span class="cl">      # 自行托管追踪器时的主机路径
+</span></span><span class="line"><span class="cl">      server = &#34;&#34;
+</span></span><span class="line"><span class="cl">    # Plausible Analytics
+</span></span><span class="line"><span class="cl">    [params.analytics.plausible]
+</span></span><span class="line"><span class="cl">      dataDomain = &#34;&#34;
+</span></span><span class="line"><span class="cl">    # Yandex Metrica
+</span></span><span class="line"><span class="cl">    [params.analytics.yandexMetrica]
+</span></span><span class="line"><span class="cl">      id = &#34;&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # Cookie consent config
+</span></span><span class="line"><span class="cl">  # Cookie 许可配置
+</span></span><span class="line"><span class="cl">  [params.cookieconsent]
+</span></span><span class="line"><span class="cl">    enable = false
+</span></span><span class="line"><span class="cl">    # text strings used for Cookie consent banner
+</span></span><span class="line"><span class="cl">    # 用于 Cookie 许可横幅的文本字符串
+</span></span><span class="line"><span class="cl">    [params.cookieconsent.content]
+</span></span><span class="line"><span class="cl">      message = &#34;&#34;
+</span></span><span class="line"><span class="cl">      dismiss = &#34;&#34;
+</span></span><span class="line"><span class="cl">      link = &#34;&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # CDN config for third-party library files
+</span></span><span class="line"><span class="cl">  # 第三方库文件的 CDN 设置
+</span></span><span class="line"><span class="cl">  [params.cdn]
+</span></span><span class="line"><span class="cl">    # CDN data file name, disabled by default
+</span></span><span class="line"><span class="cl">    # [&#34;jsdelivr.yml&#34;]
+</span></span><span class="line"><span class="cl">    # located in &#34;themes/LoveIt/assets/data/cdn/&#34; directory
+</span></span><span class="line"><span class="cl">    # you can store your own data files in the same path under your project:
+</span></span><span class="line"><span class="cl">    # &#34;assets/data/cdn/&#34;
+</span></span><span class="line"><span class="cl">    # CDN 数据文件名称, 默认不启用
+</span></span><span class="line"><span class="cl">    # [&#34;jsdelivr.yml&#34;]
+</span></span><span class="line"><span class="cl">    # 位于 &#34;themes/LoveIt/assets/data/cdn/&#34; 目录
+</span></span><span class="line"><span class="cl">    # 可以在你的项目下相同路径存放你自己的数据文件:
+</span></span><span class="line"><span class="cl">    # &#34;assets/data/cdn/&#34;
+</span></span><span class="line"><span class="cl">    data = &#34;jsdelivr.yml&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  # Compatibility config
+</span></span><span class="line"><span class="cl">  # 兼容性设置
+</span></span><span class="line"><span class="cl">  [params.compatibility]
+</span></span><span class="line"><span class="cl">    # whether to use Polyfill.io to be compatible with older browsers
+</span></span><span class="line"><span class="cl">    # 是否使用 Polyfill.io 来兼容旧式浏览器
+</span></span><span class="line"><span class="cl">    polyfill = false
+</span></span><span class="line"><span class="cl">    # whether to use object-fit-images to be compatible with older browsers
+</span></span><span class="line"><span class="cl">    # 是否使用 object-fit-images 来兼容旧式浏览器
+</span></span><span class="line"><span class="cl">    objectFit = false
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Markup related configuration in Hugo
+</span></span><span class="line"><span class="cl"># Hugo 解析文档的配置
+</span></span><span class="line"><span class="cl">[markup]
+</span></span><span class="line"><span class="cl">  # Syntax Highlighting (https://gohugo.io/content-management/syntax-highlighting)
+</span></span><span class="line"><span class="cl">  # 语法高亮设置 (https://gohugo.io/content-management/syntax-highlighting)
+</span></span><span class="line"><span class="cl">  [markup.highlight]
+</span></span><span class="line"><span class="cl">    codeFences = true
+</span></span><span class="line"><span class="cl">    guessSyntax = true
+</span></span><span class="line"><span class="cl">    lineNos = true
+</span></span><span class="line"><span class="cl">    lineNumbersInTable = true
+</span></span><span class="line"><span class="cl">    # false is a necessary configuration (https://github.com/dillonzq/LoveIt/issues/158)
+</span></span><span class="line"><span class="cl">    # false 是必要的设置 (https://github.com/dillonzq/LoveIt/issues/158)
+</span></span><span class="line"><span class="cl">    noClasses = false
+</span></span><span class="line"><span class="cl">  # Goldmark is from Hugo 0.60 the default library used for Markdown
+</span></span><span class="line"><span class="cl">  # Goldmark 是 Hugo 0.60 以来的默认 Markdown 解析库
+</span></span><span class="line"><span class="cl">  [markup.goldmark]
+</span></span><span class="line"><span class="cl">    [markup.goldmark.extensions]
+</span></span><span class="line"><span class="cl">      definitionList = true
+</span></span><span class="line"><span class="cl">      footnote = true
+</span></span><span class="line"><span class="cl">      linkify = true
+</span></span><span class="line"><span class="cl">      strikethrough = true
+</span></span><span class="line"><span class="cl">      table = true
+</span></span><span class="line"><span class="cl">      taskList = true
+</span></span><span class="line"><span class="cl">      typographer = true
+</span></span><span class="line"><span class="cl">    [markup.goldmark.renderer]
+</span></span><span class="line"><span class="cl">      # whether to use HTML tags directly in the document
+</span></span><span class="line"><span class="cl">      # 是否在文档中直接使用 HTML 标签
+</span></span><span class="line"><span class="cl">      unsafe = true
+</span></span><span class="line"><span class="cl">  # Table Of Contents settings
+</span></span><span class="line"><span class="cl">  # 目录设置
+</span></span><span class="line"><span class="cl">  [markup.tableOfContents]
+</span></span><span class="line"><span class="cl">    startLevel = 2
+</span></span><span class="line"><span class="cl">    endLevel = 6
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Sitemap config
+</span></span><span class="line"><span class="cl"># 网站地图配置
+</span></span><span class="line"><span class="cl">[sitemap]
+</span></span><span class="line"><span class="cl">  changefreq = &#34;weekly&#34;
+</span></span><span class="line"><span class="cl">  filename = &#34;sitemap.xml&#34;
+</span></span><span class="line"><span class="cl">  priority = 0.5
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Permalinks config (https://gohugo.io/content-management/urls/#permalinks)
+</span></span><span class="line"><span class="cl"># Permalinks 配置 (https://gohugo.io/content-management/urls/#permalinks)
+</span></span><span class="line"><span class="cl">[Permalinks]
+</span></span><span class="line"><span class="cl">  # posts = &#34;:year/:month/:filename&#34;
+</span></span><span class="line"><span class="cl">  posts = &#34;:filename&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Privacy config (https://gohugo.io/about/hugo-and-gdpr/)
+</span></span><span class="line"><span class="cl"># 隐私信息配置 (https://gohugo.io/about/hugo-and-gdpr/)
+</span></span><span class="line"><span class="cl">[privacy]
+</span></span><span class="line"><span class="cl">  # privacy of the Google Analytics (replaced by params.analytics.google)
+</span></span><span class="line"><span class="cl">  # Google Analytics 相关隐私 (被 params.analytics.google 替代)
+</span></span><span class="line"><span class="cl">  [privacy.googleAnalytics]
+</span></span><span class="line"><span class="cl">    # ...
+</span></span><span class="line"><span class="cl">  [privacy.twitter]
+</span></span><span class="line"><span class="cl">    enableDNT = true
+</span></span><span class="line"><span class="cl">  [privacy.youtube]
+</span></span><span class="line"><span class="cl">    privacyEnhanced = true
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Options to make output .md files
+</span></span><span class="line"><span class="cl"># 用于输出 Markdown 格式文档的设置
+</span></span><span class="line"><span class="cl">[mediaTypes]
+</span></span><span class="line"><span class="cl">  [mediaTypes.&#34;text/plain&#34;]
+</span></span><span class="line"><span class="cl">    suffixes = [&#34;md&#34;]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Options to make output .md files
+</span></span><span class="line"><span class="cl"># 用于输出 Markdown 格式文档的设置
+</span></span><span class="line"><span class="cl">[outputFormats.MarkDown]
+</span></span><span class="line"><span class="cl">  mediaType = &#34;text/plain&#34;
+</span></span><span class="line"><span class="cl">  isPlainText = true
+</span></span><span class="line"><span class="cl">  isHTML = false
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Options to make hugo output files
+</span></span><span class="line"><span class="cl"># 用于 Hugo 输出文档的设置
+</span></span><span class="line"><span class="cl">[outputs]
+</span></span><span class="line"><span class="cl">  home = [&#34;HTML&#34;, &#34;RSS&#34;, &#34;JSON&#34;]
+</span></span><span class="line"><span class="cl">  page = [&#34;HTML&#34;, &#34;MarkDown&#34;]
+</span></span><span class="line"><span class="cl">  section = [&#34;HTML&#34;, &#34;RSS&#34;]
+</span></span><span class="line"><span class="cl">  taxonomy = [&#34;HTML&#34;, &#34;RSS&#34;]
+</span></span><span class="line"><span class="cl">  taxonomyTerm = [&#34;HTML&#34;]
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"># Multilingual
+</span></span><span class="line"><span class="cl"># 多语言
+</span></span><span class="line"><span class="cl">[languages]
+</span></span><span class="line"><span class="cl">  [languages.en]
+</span></span><span class="line"><span class="cl">    weight = 1
+</span></span><span class="line"><span class="cl">    languageCode = &#34;en&#34;
+</span></span><span class="line"><span class="cl">    languageName = &#34;English&#34;
+</span></span><span class="line"><span class="cl">    hasCJKLanguage = false
+</span></span><span class="line"><span class="cl">    copyright = &#34;This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.&#34;
+</span></span><span class="line"><span class="cl">    [languages.en.menu]
+</span></span><span class="line"><span class="cl">      [[languages.en.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 1
+</span></span><span class="line"><span class="cl">        identifier = &#34;posts&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">        post = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;Posts&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;/posts/&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [[languages.en.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 2
+</span></span><span class="line"><span class="cl">        identifier = &#34;tags&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">        post = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;Tags&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;/tags/&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [[languages.en.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 3
+</span></span><span class="line"><span class="cl">        identifier = &#34;categories&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">        post = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;Categories&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;/categories/&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [[languages.en.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 4
+</span></span><span class="line"><span class="cl">        identifier = &#34;documentation&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">        post = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;Docs&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;/categories/documentation/&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [[languages.en.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 5
+</span></span><span class="line"><span class="cl">        identifier = &#34;about&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">        post = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;About&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;/about/&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [[languages.en.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 6
+</span></span><span class="line"><span class="cl">        identifier = &#34;github&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&lt;i class=&#39;fab fa-github fa-fw&#39; aria-hidden=&#39;true&#39;&gt;&lt;/i&gt;&#34;
+</span></span><span class="line"><span class="cl">        post = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;https://github.com/dillonzq/LoveIt&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;GitHub&#34;
+</span></span><span class="line"><span class="cl">    [languages.en.params]
+</span></span><span class="line"><span class="cl">      [languages.en.params.search]
+</span></span><span class="line"><span class="cl">        enable = true
+</span></span><span class="line"><span class="cl">        type = &#34;algolia&#34;
+</span></span><span class="line"><span class="cl">        contentLength = 4000
+</span></span><span class="line"><span class="cl">        placeholder = &#34;&#34;
+</span></span><span class="line"><span class="cl">        maxResultLength = 10
+</span></span><span class="line"><span class="cl">        snippetLength = 30
+</span></span><span class="line"><span class="cl">        highlightTag = &#34;em&#34;
+</span></span><span class="line"><span class="cl">        absoluteURL = false
+</span></span><span class="line"><span class="cl">        [languages.en.params.search.algolia]
+</span></span><span class="line"><span class="cl">          index = &#34;index.en&#34;
+</span></span><span class="line"><span class="cl">          appID = &#34;PASDMWALPK&#34;
+</span></span><span class="line"><span class="cl">          searchKey = &#34;b42948e51daaa93df92381c8e2ac0f93&#34;
+</span></span><span class="line"><span class="cl">      [languages.en.params.home]
+</span></span><span class="line"><span class="cl">        rss = 10
+</span></span><span class="line"><span class="cl">        [languages.en.params.home.profile]
+</span></span><span class="line"><span class="cl">          enable = true
+</span></span><span class="line"><span class="cl">          gravatarEmail = &#34;&#34;
+</span></span><span class="line"><span class="cl">          avatarURL = &#34;/images/avatar.png&#34;
+</span></span><span class="line"><span class="cl">          title = &#34;&#34;
+</span></span><span class="line"><span class="cl">          subtitle = &#34;A Clean, Elegant but Advanced Hugo Theme&#34;
+</span></span><span class="line"><span class="cl">          typeit = true
+</span></span><span class="line"><span class="cl">          social = true
+</span></span><span class="line"><span class="cl">          disclaimer = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [languages.en.params.social]
+</span></span><span class="line"><span class="cl">        GitHub = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Twitter = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Instagram = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Facebook = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Telegram = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Youtubelegacy = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Phone = &#34;555-555-555&#34;
+</span></span><span class="line"><span class="cl">        Email = &#34;xxxx@xxxx.com&#34;
+</span></span><span class="line"><span class="cl">        RSS = true
+</span></span><span class="line"><span class="cl">        [languages.en.params.social.Mastodon]
+</span></span><span class="line"><span class="cl">          id = &#34;@xxxx&#34;
+</span></span><span class="line"><span class="cl">          prefix = &#34;https://mastodon.technology/&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  [languages.zh-cn]
+</span></span><span class="line"><span class="cl">    weight = 2
+</span></span><span class="line"><span class="cl">    languageCode = &#34;zh-CN&#34;
+</span></span><span class="line"><span class="cl">    languageName = &#34;简体中文&#34;
+</span></span><span class="line"><span class="cl">    hasCJKLanguage = true
+</span></span><span class="line"><span class="cl">    copyright = &#34;This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.&#34;
+</span></span><span class="line"><span class="cl">    [languages.zh-cn.menu]
+</span></span><span class="line"><span class="cl">      [[languages.zh-cn.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 1
+</span></span><span class="line"><span class="cl">        identifier = &#34;posts&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">        post = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;所有文章&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;/posts/&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [[languages.zh-cn.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 2
+</span></span><span class="line"><span class="cl">        identifier = &#34;tags&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">        post = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;标签&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;/tags/&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [[languages.zh-cn.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 3
+</span></span><span class="line"><span class="cl">        identifier = &#34;categories&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">        post = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;分类&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;/categories/&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [[languages.zh-cn.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 4
+</span></span><span class="line"><span class="cl">        identifier = &#34;documentation&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;文档&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;/categories/documentation/&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [[languages.zh-cn.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 5
+</span></span><span class="line"><span class="cl">        identifier = &#34;about&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&#34;
+</span></span><span class="line"><span class="cl">        post = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;关于&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;/about/&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [[languages.zh-cn.menu.main]]
+</span></span><span class="line"><span class="cl">        weight = 6
+</span></span><span class="line"><span class="cl">        identifier = &#34;github&#34;
+</span></span><span class="line"><span class="cl">        pre = &#34;&lt;i class=&#39;fab fa-github fa-fw&#39; aria-hidden=&#39;true&#39;&gt;&lt;/i&gt;&#34;
+</span></span><span class="line"><span class="cl">        post = &#34;&#34;
+</span></span><span class="line"><span class="cl">        name = &#34;&#34;
+</span></span><span class="line"><span class="cl">        url = &#34;https://github.com/dillonzq/LoveIt&#34;
+</span></span><span class="line"><span class="cl">        title = &#34;GitHub&#34;
+</span></span><span class="line"><span class="cl">    [languages.zh-cn.params]
+</span></span><span class="line"><span class="cl">      [languages.zh-cn.params.search]
+</span></span><span class="line"><span class="cl">        enable = true
+</span></span><span class="line"><span class="cl">        type = &#34;algolia&#34;
+</span></span><span class="line"><span class="cl">        contentLength = 4000
+</span></span><span class="line"><span class="cl">        placeholder = &#34;&#34;
+</span></span><span class="line"><span class="cl">        maxResultLength = 10
+</span></span><span class="line"><span class="cl">        snippetLength = 50
+</span></span><span class="line"><span class="cl">        highlightTag = &#34;em&#34;
+</span></span><span class="line"><span class="cl">        absoluteURL = false
+</span></span><span class="line"><span class="cl">        [languages.zh-cn.params.search.algolia]
+</span></span><span class="line"><span class="cl">          index = &#34;index.zh-cn&#34;
+</span></span><span class="line"><span class="cl">          appID = &#34;PASDMWALPK&#34;
+</span></span><span class="line"><span class="cl">          searchKey = &#34;b42948e51daaa93df92381c8e2ac0f93&#34;
+</span></span><span class="line"><span class="cl">      [languages.zh-cn.params.home]
+</span></span><span class="line"><span class="cl">        rss = 100
+</span></span><span class="line"><span class="cl">        [languages.zh-cn.params.home.profile]
+</span></span><span class="line"><span class="cl">          enable = false
+</span></span><span class="line"><span class="cl">          gravatarEmail = &#34;&#34;
+</span></span><span class="line"><span class="cl">          avatarURL = &#34;/images/avatar.png&#34;
+</span></span><span class="line"><span class="cl">          title = &#34;&#34;
+</span></span><span class="line"><span class="cl">          subtitle = &#34;一个简洁、优雅且高效的 Hugo 主题&#34;
+</span></span><span class="line"><span class="cl">          typeit = true
+</span></span><span class="line"><span class="cl">          social = true
+</span></span><span class="line"><span class="cl">          disclaimer = &#34;&#34;
+</span></span><span class="line"><span class="cl">      [languages.zh-cn.params.social]
+</span></span><span class="line"><span class="cl">        GitHub = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Weibo = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Steam = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Zhihu = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Douban = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Devto = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Bilibili = &#34;xxxx&#34;
+</span></span><span class="line"><span class="cl">        Email = &#34;xxxx@xxxx.com&#34;
+</span></span><span class="line"><span class="cl">        Phone = &#34;555-555-555&#34;
+</span></span><span class="line"><span class="cl">        RSS = true
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="配置环境变量">配置环境变量
+</h1><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">HUGO1</span><span class="o">=</span>/cygdrive/d/share/hugo/hugo1
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">H1P</span><span class="o">=</span>/cygdrive/d/share/hugo/hugo1/content/posts
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">H1U</span><span class="o">=</span><span class="s2">&#34;source /cygdrive/d/share/hugo/hugo1/upload.sh&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>upload.sh脚本包含的是博客编译并上传的命令</p>
+<h1 id="在-hugo-的-configyaml-文件中配置菜单">在 Hugo 的 config.yaml 文件中配置菜单
+</h1><p>你需要在 <code>menu</code> 字段下添加相应的内容。在你提供的配置文件中，你可以看到以下部分用于定制菜单：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">menu</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">main</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">social</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l">github</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">GitHub</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l">https://github.com/ynhugo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l">brand-github</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l">twitter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Twitter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l">https://twitter.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l">brand-twitter</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>在上面的示例中，<code>menu</code> 字段下定义了两个菜单：<code>main</code> 和 <code>social</code>。你可以根据自己的需求添加或修改菜单项。例如，如果你想在 <code>main</code> 菜单中添加一个链接到主页的菜单项，可以像这样修改配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">menu</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">main</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l">home</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">首页</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l">/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样就会在网站的主菜单中添加一个指向首页的链接。记得根据自己的网站需求和页面结构来调整菜单配置。对于其他文件，通常不需要额外的配置来支持菜单的显示，只需在 <code>config.yaml</code> 中正确配置即可。</p>
+<h1 id="在-hugo-的配置文件中添加图标通常需要使用图标库或者自定义图标">在 Hugo 的配置文件中添加图标通常需要使用图标库或者自定义图标
+</h1><p>在你提供的配置文件中，看到有一个示例使用了 <code>icon: brand-github</code> 和 <code>icon: brand-twitter</code> 来指定图标。这里使用的是 FontAwesome 图标库中的图标类名。</p>
+<p>如果你想使用其他图标库或自定义图标，可以按照以下步骤进行：</p>
+<ol>
+<li>
+<p>**选择图标库：**选择一个适合你需求的图标库，比如 Font Awesome、Material Icons 等。确保你能够获取到所需图标的类名或标识符。</p>
+</li>
+<li>
+<p>**下载或引入图标库：**根据图标库的要求，下载相应的图标文件或通过 CDN 引入。将图标库的 CSS 文件或 JavaScript 文件链接添加到你的 Hugo 主题中。</p>
+</li>
+<li>
+<p>**配置图标：**在 Hugo 的配置文件中，为菜单项指定相应的图标类名或标识符。例如，如果你选择了 Font Awesome 图标库，可以像下面这样配置：</p>
+</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">menu</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">social</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l">github</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">GitHub</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l">https://github.com/ynhugo</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l">fab fa-github</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">identifier</span><span class="p">:</span><span class="w"> </span><span class="l">twitter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Twitter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l">https://twitter.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l">fab fa-twitter</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>在上述示例中，<code>fab</code> 表示 Font Awesome 的品牌图标系列，后面跟着具体的图标名称。根据你选择的图标库和图标名称，替换 <code>fab fa-github</code> 和 <code>fab fa-twitter</code> 部分即可。</p>
+<ol start="4">
+<li>**查看效果：**保存配置文件并重新生成 Hugo 网站，查看菜单是否显示了相应的图标。</li>
+</ol>
+<p>记得根据实际情况调整图标库和图标类名，确保图标能够正确显示在你的网站上。</p>
+<h1 id="在-hugo-中创建对应菜单的首页文件通常是通过创建-content-文件来实现的">在 Hugo 中，创建对应菜单的首页文件通常是通过创建 content 文件来实现的
+</h1><p>你可以按照以下步骤来创建对应菜单的首页文件：</p>
+<ol>
+<li>
+<p><strong>确定菜单对应的内容页面：</strong> 首先确定菜单项所对应的内容页面。比如，如果你创建了一个 &ldquo;blog&rdquo; 菜单，那么你可能需要创建一个用于显示博客列表的页面。</p>
+</li>
+<li>
+<p><strong>创建内容文件：</strong> 在 Hugo 网站的 <code>content</code> 目录下，根据菜单对应的内容类型创建相应的 Markdown 文件。假设你要创建一个 &ldquo;blog&rdquo; 菜单对应的页面，可以在 <code>content</code> 目录下创建一个名为 <code>blog.md</code> 的文件。</p>
+</li>
+<li>
+<p><strong>编辑内容文件：</strong> 编辑刚创建的 Markdown 文件，添加页面所需的 Front Matter 和内容。Front Matter 是位于文件开头的一组 YAML 元数据，用于定义页面的属性，比如标题、日期、标签等。</p>
+<p>例如，一个简单的 <code>blog.md</code> 文件可能如下所示：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">title: &#34;博客&#34;
+</span></span><span class="line"><span class="cl">date: 2024-03-24
+</span></span><span class="line"><span class="cl">description: &#34;这是我的博客页面&#34;
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">这里是博客页面的内容。
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>保存文件并生成网站：</strong> 保存 <code>blog.md</code> 文件并重新生成 Hugo 网站。在生成的网站中，你应该能够在菜单中看到相应的 &ldquo;博客&rdquo; 链接，并且点击链接后会跳转到你刚创建的内容页面。</p>
+</li>
+</ol>
+<p>根据你的网站主题和页面结构，有时候不同的主题可能需要在不同的位置进行配置或创建文件，具体操作可能会有些许差异。请根据你使用的主题及其文档说明进行相应的操作。</p>
+<h1 id="添加about-栏">添加About 栏
+</h1><p>如果 ~/hugo_blog/content/ 下面没有about 文件夹的话</p>
+<p>在 ~/hugo_blog/content/ 创建 about 目录，并在该目录下添加 index.md 文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">title </span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;About&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">lastmod </span><span class="p">:</span><span class="w"> </span><span class="ld">2022-03-10T19:36:26</span><span class="m">+08</span><span class="p">:</span><span class="m">00</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">draft </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nt">menu</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">main</span><span class="p">:</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span>-<span class="m">90</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">params</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l">user</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">Hellow, World!</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>:@ 注意: Even 主题中 文件头部是用 +++ +++ 包起来的 而Stack 主题中 文件头部是用 &mdash; &mdash; 包起来的
+而且在Stack 中 menu: 到时user 部分不能动, 哪怕是改了缩进都会导致识别不出About</p>
+<h2 id="参考链接">参考链接
+</h2><p><a class="link" href="https://skfwe.cn/p/%e5%8d%9a%e5%ae%a2%e5%88%87%e6%8d%a2%e5%88%b0stack-%e4%b8%bb%e9%a2%98/"  target="_blank" rel="noopener"
+    >博客切换到STACK 主题</a></p>
+<h2 id="要使用其他图标你以按照以下步骤获取对应的-svg-代码">要使用其他图标，你��以按照以下步骤获取对应的 SVG 代码：
+</h2><ol>
+<li>
+<p>打开一个提供免费图标的网站，比如 <a class="link" href="https://tablericons.com/"  target="_blank" rel="noopener"
+    >Tabler Icons</a>、<a class="link" href="https://fontawesome.com/"  target="_blank" rel="noopener"
+    >FontAwesome</a> 或 <a class="link" href="https://feathericons.com/"  target="_blank" rel="noopener"
+    >Feather Icons</a>。</p>
+</li>
+<li>
+<p>在网站上搜索你想要使用的图标，然后找到该图标对应的 SVG 代码。这些网站通常会提供直接复制的 SVG 代码。</p>
+</li>
+<li>
+<p>复制选定图标的完整 SVG 代码。</p>
+</li>
+<li>
+<p>将复制的 SVG 代码粘贴到 Hugo 博客的 Markdown 或 HTML 文件中，遵循之前提到的插入方法。</p>
+</li>
+<li>
+<p>确保格式正确，保存文件并在浏览器中查看效果。</p>
+</li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/hugo/">Hugo</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

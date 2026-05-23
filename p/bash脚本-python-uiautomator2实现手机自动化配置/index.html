@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" bash脚本+python+uiautomator2实现手机自动化配置 前言 须知 ：该项目执行的手机切勿黑屏，不然安装软件会报异常导致软件不能正常安装。\n该项目基本实现完全自动化，除了订阅链接的配置，之所以没有也根据自动化的方式实现，是考虑到用户根据自身需要可以手动添加根软件真正匹配的订阅链接，因为不是有的订阅链接不是很通用，这样做可以为了避免出问题。\n另外该项目中某些软件的下载链接可能国内不能顺利访问或速度很慢，如果遇到这样的情况，可以电脑安装clash-verge科学上网软件，电脑通过该软件实现科学上网后，将该软件的TUN（在软件的设置界面中）打开，这样就可以实现终端也能访问外网了，这样在终端执行该项目会更方便一些。\n源代码：python+uiautomator2实现手机自动化配置.zip\n环境配置 windows安装好python3的版本 安装git-bash 安装配置好Cygwin，在Cygwin中要安装常用工具如 curl、wget、jq 如果要配置科学上网软件的订阅链接的话，首先修改 科学上网软件如果更换了，同时需要通过该项目配置科学上网软件的订阅链接，可以查看自己的科学上网软件的包名，将实际的包名替换进该项目中，该项目配置了两个科学上网软件订阅链接，如果只需要配置一个科学上网软件，可以将另外一个注释掉。另外项目中两个软件的界面操作是根据软件界面的实际控件进行操作的，如果更换其他软件了，请根据软件的控制进行修改。 如果需要知道查看包名的方法的话，请按照如下方式操作： 1 2 3 4 # 根据关键词 v2ray 匹配科学上网软件v2ranNG的包名 adb -s aefcb1f3 shell pm list packages | grep &#34;v2ray&#34; | awk -F &#39;:&#39; &#39;{print $2}&#39; # 同时查看软件软件对应的包名 adb -s aefcb1f3 shell pm list packages | grep -e &#34;v2ray&#34; -e &#34;clash&#34; | awk -F &#39;:&#39; &#39;{print $2}&#39; 在执行该项目前，需要基本确保环境配置好了，如果实际执行提示缺少什么库，可以根据终端提示的打印信息，再借助Deepseek完成环境的配置。 1 2 3 pip install uiautomator2 pip install keyboard adb devices # 确认设备已连接 执行方式 在git-bash中运行该项目，cfg.sh与cfg.py和cfg.json要在同一目录下\n">
+<title>bash脚本&#43;python&#43;uiautomator2实现手机自动化配置</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/bash%E8%84%9A%E6%9C%AC-python-uiautomator2%E5%AE%9E%E7%8E%B0%E6%89%8B%E6%9C%BA%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="bash脚本+python+uiautomator2实现手机自动化配置">
+<meta property='og:description' content=" bash脚本+python+uiautomator2实现手机自动化配置 前言 须知 ：该项目执行的手机切勿黑屏，不然安装软件会报异常导致软件不能正常安装。\n该项目基本实现完全自动化，除了订阅链接的配置，之所以没有也根据自动化的方式实现，是考虑到用户根据自身需要可以手动添加根软件真正匹配的订阅链接，因为不是有的订阅链接不是很通用，这样做可以为了避免出问题。\n另外该项目中某些软件的下载链接可能国内不能顺利访问或速度很慢，如果遇到这样的情况，可以电脑安装clash-verge科学上网软件，电脑通过该软件实现科学上网后，将该软件的TUN（在软件的设置界面中）打开，这样就可以实现终端也能访问外网了，这样在终端执行该项目会更方便一些。\n源代码：python+uiautomator2实现手机自动化配置.zip\n环境配置 windows安装好python3的版本 安装git-bash 安装配置好Cygwin，在Cygwin中要安装常用工具如 curl、wget、jq 如果要配置科学上网软件的订阅链接的话，首先修改 科学上网软件如果更换了，同时需要通过该项目配置科学上网软件的订阅链接，可以查看自己的科学上网软件的包名，将实际的包名替换进该项目中，该项目配置了两个科学上网软件订阅链接，如果只需要配置一个科学上网软件，可以将另外一个注释掉。另外项目中两个软件的界面操作是根据软件界面的实际控件进行操作的，如果更换其他软件了，请根据软件的控制进行修改。 如果需要知道查看包名的方法的话，请按照如下方式操作： 1 2 3 4 # 根据关键词 v2ray 匹配科学上网软件v2ranNG的包名 adb -s aefcb1f3 shell pm list packages | grep &#34;v2ray&#34; | awk -F &#39;:&#39; &#39;{print $2}&#39; # 同时查看软件软件对应的包名 adb -s aefcb1f3 shell pm list packages | grep -e &#34;v2ray&#34; -e &#34;clash&#34; | awk -F &#39;:&#39; &#39;{print $2}&#39; 在执行该项目前，需要基本确保环境配置好了，如果实际执行提示缺少什么库，可以根据终端提示的打印信息，再借助Deepseek完成环境的配置。 1 2 3 pip install uiautomator2 pip install keyboard adb devices # 确认设备已连接 执行方式 在git-bash中运行该项目，cfg.sh与cfg.py和cfg.json要在同一目录下\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/bash%E8%84%9A%E6%9C%AC-python-uiautomator2%E5%AE%9E%E7%8E%B0%E6%89%8B%E6%9C%BA%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='bash' /><meta property='article:tag' content='python' /><meta property='article:tag' content='uiautomator2' /><meta property='article:tag' content='安卓' /><meta property='article:published_time' content='2025-07-03T17:40:20&#43;08:00'/><meta property='article:modified_time' content='2025-07-03T17:40:20&#43;08:00'/>
+<meta name="twitter:title" content="bash脚本+python+uiautomator2实现手机自动化配置">
+<meta name="twitter:description" content=" bash脚本+python+uiautomator2实现手机自动化配置 前言 须知 ：该项目执行的手机切勿黑屏，不然安装软件会报异常导致软件不能正常安装。\n该项目基本实现完全自动化，除了订阅链接的配置，之所以没有也根据自动化的方式实现，是考虑到用户根据自身需要可以手动添加根软件真正匹配的订阅链接，因为不是有的订阅链接不是很通用，这样做可以为了避免出问题。\n另外该项目中某些软件的下载链接可能国内不能顺利访问或速度很慢，如果遇到这样的情况，可以电脑安装clash-verge科学上网软件，电脑通过该软件实现科学上网后，将该软件的TUN（在软件的设置界面中）打开，这样就可以实现终端也能访问外网了，这样在终端执行该项目会更方便一些。\n源代码：python+uiautomator2实现手机自动化配置.zip\n环境配置 windows安装好python3的版本 安装git-bash 安装配置好Cygwin，在Cygwin中要安装常用工具如 curl、wget、jq 如果要配置科学上网软件的订阅链接的话，首先修改 科学上网软件如果更换了，同时需要通过该项目配置科学上网软件的订阅链接，可以查看自己的科学上网软件的包名，将实际的包名替换进该项目中，该项目配置了两个科学上网软件订阅链接，如果只需要配置一个科学上网软件，可以将另外一个注释掉。另外项目中两个软件的界面操作是根据软件界面的实际控件进行操作的，如果更换其他软件了，请根据软件的控制进行修改。 如果需要知道查看包名的方法的话，请按照如下方式操作： 1 2 3 4 # 根据关键词 v2ray 匹配科学上网软件v2ranNG的包名 adb -s aefcb1f3 shell pm list packages | grep &#34;v2ray&#34; | awk -F &#39;:&#39; &#39;{print $2}&#39; # 同时查看软件软件对应的包名 adb -s aefcb1f3 shell pm list packages | grep -e &#34;v2ray&#34; -e &#34;clash&#34; | awk -F &#39;:&#39; &#39;{print $2}&#39; 在执行该项目前，需要基本确保环境配置好了，如果实际执行提示缺少什么库，可以根据终端提示的打印信息，再借助Deepseek完成环境的配置。 1 2 3 pip install uiautomator2 pip install keyboard adb devices # 确认设备已连接 执行方式 在git-bash中运行该项目，cfg.sh与cfg.py和cfg.json要在同一目录下\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">bash脚本+python+uiautomator2实现手机自动化配置</a>
+<ul>
+<li><a href="#headline-2">前言</a>
+</li>
+<li><a href="#headline-3">环境配置</a>
+</li>
+<li><a href="#headline-4">执行方式</a>
+</li>
+<li><a href="#headline-5">cfg.json</a>
+</li>
+<li><a href="#headline-6">cfg.sh</a>
+</li>
+<li><a href="#headline-7">cfg.py</a>
+</li>
+<li><a href="#headline-8">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/bash%E8%84%9A%E6%9C%AC-python-uiautomator2%E5%AE%9E%E7%8E%B0%E6%89%8B%E6%9C%BA%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE/">bash脚本&#43;python&#43;uiautomator2实现手机自动化配置</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 03, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+bash脚本+python+uiautomator2实现手机自动化配置
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+前言
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>
+<strong>须知</strong> ：该项目执行的手机切勿黑屏，不然安装软件会报异常导致软件不能正常安装。</p>
+<p>
+该项目基本实现完全自动化，除了订阅链接的配置，之所以没有也根据自动化的方式实现，是考虑到用户根据自身需要可以手动添加根软件真正匹配的订阅链接，因为不是有的订阅链接不是很通用，这样做可以为了避免出问题。</p>
+<p>
+另外该项目中某些软件的下载链接可能国内不能顺利访问或速度很慢，如果遇到这样的情况，可以电脑安装clash-verge科学上网软件，电脑通过该软件实现科学上网后，将该软件的TUN（在软件的设置界面中）打开，这样就可以实现终端也能访问外网了，这样在终端执行该项目会更方便一些。</p>
+<p>
+源代码：<a href="resources/bash脚本_python_uiautomator2实现手机自动化配置.zip">python+uiautomator2实现手机自动化配置.zip</a></p>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+环境配置
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<ol>
+<li>windows安装好python3的版本</li>
+<li>安装git-bash</li>
+<li>安装配置好Cygwin，在Cygwin中要安装常用工具如 curl、wget、jq</li>
+<li>如果要配置科学上网软件的订阅链接的话，首先修改</li>
+<li>科学上网软件如果更换了，同时需要通过该项目配置科学上网软件的订阅链接，可以查看自己的科学上网软件的包名，将实际的包名替换进该项目中，该项目配置了两个科学上网软件订阅链接，如果只需要配置一个科学上网软件，可以将另外一个注释掉。另外项目中两个软件的界面操作是根据软件界面的实际控件进行操作的，如果更换其他软件了，请根据软件的控制进行修改。</li>
+<li>如果需要知道查看包名的方法的话，请按照如下方式操作：</li>
+</ol>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 根据关键词 v2ray 匹配科学上网软件v2ranNG的包名</span>
+</span></span><span class="line"><span class="cl">adb -s aefcb1f3 shell pm list packages <span class="p">|</span> grep <span class="s2">&#34;v2ray&#34;</span> <span class="p">|</span> awk -F <span class="s1">&#39;:&#39;</span> <span class="s1">&#39;{print $2}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 同时查看软件软件对应的包名</span>
+</span></span><span class="line"><span class="cl">adb -s aefcb1f3 shell pm list packages <span class="p">|</span> grep -e <span class="s2">&#34;v2ray&#34;</span> -e <span class="s2">&#34;clash&#34;</span> <span class="p">|</span> awk -F <span class="s1">&#39;:&#39;</span> <span class="s1">&#39;{print $2}&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<ol>
+<li>在执行该项目前，需要基本确保环境配置好了，如果实际执行提示缺少什么库，可以根据终端提示的打印信息，再借助Deepseek完成环境的配置。</li>
+</ol>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pip install uiautomator2
+</span></span><span class="line"><span class="cl">pip install keyboard
+</span></span><span class="line"><span class="cl">adb devices <span class="c1"># 确认设备已连接</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+执行方式
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>
+在git-bash中运行该项目，cfg.sh与cfg.py和cfg.json要在同一目录下</p>
+<p>
+根据以下执行方式运动该项目后，bash脚本会自动下载软件并安装，同时python脚本会根据手机界面的提示是否继续安装来作出反应，如果要配置科学上网软件的订阅链接的话，按字母 <code class="verbatim">p</code> 键（可长按，避免按一下时间太短导致脚本检测不到），当订阅链接配置完成后，根据提示按 <code class="verbatim">q</code> 键或按Ctrl-c结束该项目即可。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bash cfg.sh <span class="p">&amp;</span>                   <span class="c1"># 第一步，先以后台执行的方式执行bash脚本，当所有程序安装完后自动结束该脚本</span>
+</span></span><span class="line"><span class="cl">python cfg.py                   <span class="c1"># 第二步，运行python脚本，循环检测，直到所有程序安装完后手动暂停该脚本</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 或</span>
+</span></span><span class="line"><span class="cl">bash cfg.sh <span class="p">&amp;</span> <span class="se">\p</span>ython cfg.py    <span class="c1"># 跟前边的执行方式一样，不过这个执行方式是通过一条命令完成</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+cfg.json
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<p>
+.android.url对应的值对应软件下载链接，如果链接运行直接就能下载文件的话，则直接将下载链接添加到json文件中，如果是类似于api.github.com/repos这样格式的链接，返回的是json格式的数据，需要从中提取出需要下载的文件的下载链接，将提取表达式添加到json中即可。</p>
+<p>
+github的文件之所以没有下载指定版本，是为了通过对api.github.com/repos内容中提出最新版本的文件。</p>
+<p>
+airport_name 对应科学上网的机场，如果需要用到该键值的话，可以将 airport subscribed links 替换为自己真实的订阅链接，然后通过修改代码添加到科学上网软件中。同时安装好科学上网软件，如果安装的科学上网软件更换了，记得将python代码中的对应科学上网软件的包名也给替换成实际的。</p>
+<div class="src src-json">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;android&#34;</span><span class="p">:{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;url&#34;</span><span class="p">:[</span>            
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="nt">&#34;lawnchair&#34;</span><span class="p">:</span><span class="s2">&#34;$(curl -s https://api.github.com/repos/LawnchairLauncher/lawnchair/releases/latest | jq -r &#39;.assets[]&#39; | jq -r &#39;.browser_download_url&#39; | grep &#39;Lawnchair&#39;)&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="nt">&#34;via&#34;</span><span class="p">:</span><span class="s2">&#34;https://res.viayoo.com/v1/via-release-cn.apk&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="nt">&#34;termux&#34;</span><span class="p">:</span><span class="s2">&#34;https://f-droid.org/repo/com.termux_1022.apk&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="nt">&#34;clash-meta&#34;</span><span class="p">:</span><span class="s2">&#34;$(curl -s https://api.github.com/repos/MetaCubeX/ClashMetaForAndroid/releases/latest | jq -r &#39;.assets[]&#39; | jq -r &#39;.browser_download_url&#39; | grep &#39;arm64&#39;)&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="nt">&#34;v2rayng&#34;</span><span class="p">:</span><span class="s2">&#34;$(curl -s https://api.github.com/repos/2dust/v2rayNG/releases/latest | jq -r &#39;.assets[]&#39; | jq -r &#39;.browser_download_url&#39; | grep &#39;arm64&#39;)&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;value&#34;</span><span class="p">:[</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="nt">&#34;lawnchair&#34;</span><span class="p">:</span><span class="s2">&#34;y&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="nt">&#34;via&#34;</span><span class="p">:</span><span class="s2">&#34;y&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="nt">&#34;termux&#34;</span><span class="p">:</span><span class="s2">&#34;y&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="nt">&#34;clash-meta&#34;</span><span class="p">:</span><span class="s2">&#34;y&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span><span class="nt">&#34;v2rayng&#34;</span><span class="p">:</span><span class="s2">&#34;y&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;airport&#34;</span><span class="p">:{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;airport_name&#34;</span><span class="p">:</span><span class="s2">&#34;https://example.AirportSubscribedLinks.test&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;function&#34;</span><span class="p">:[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span><span class="nt">&#34;download_application&#34;</span><span class="p">:</span><span class="s2">&#34;y&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span><span class="nt">&#34;install_application&#34;</span><span class="p">:</span><span class="s2">&#34;y&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span><span class="nt">&#34;get_subscription&#34;</span><span class="p">:</span><span class="s2">&#34;y&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+cfg.sh
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<p>
+根据json文件中要下载文件对应的value判断是否下载，如果value值为y，则下载对应文件，否则跳过</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/bash
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 定义总文件数组</span>
+</span></span><span class="line"><span class="cl"><span class="nv">apk_array</span><span class="o">=(</span><span class="k">$(</span>jq -r <span class="s1">&#39;.android.value[] | keys[]&#39;</span> cfg.json<span class="k">)</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># printf &#39;%s\n&#39; &#34;${apk_array[@]}&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 定义要安装文件的数组</span>
+</span></span><span class="line"><span class="cl"><span class="nv">apk_files</span><span class="o">=()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 两种文件下载方式：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 方式一</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># # 下载安装文件，如果文件已存在则跳过</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># download_application() {  </span>
+</span></span><span class="line"><span class="cl"><span class="c1">#   while IFS= read -r url; do</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     if [[ &#34;$url&#34; == \$\(* ]]; then url=$(eval echo &#34;$url&#34;); fi    </span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     apk_files+=($(basename &#34;$url&#34;))</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     if [[ ! -f $(basename &#34;$url&#34;) ]]; then wget --no-check-certificate &#34;$url&#34;; fi</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#   done &lt; &lt;(jq -r &#39;.android.url[].[]&#39; cfg.json)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># }</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 方式二</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 根据json文件中要下载文件对应的value判断是否下载，如果value值为y，则下载对应文件，否则跳过</span>
+</span></span><span class="line"><span class="cl">download_application<span class="o">()</span> <span class="o">{</span>    
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> i in <span class="si">${</span><span class="nv">apk_array</span><span class="p">[@]</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># printf &#39;%s\n&#39; $i;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">value</span><span class="o">=</span><span class="k">$(</span>jq -r <span class="s2">&#34;.android.value[] | select(has(\&#34;</span><span class="nv">$i</span><span class="s2">\&#34;)) | .\&#34;</span><span class="nv">$i</span><span class="s2">\&#34;&#34;</span> cfg.json<span class="k">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$value</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;y&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">      <span class="nv">url</span><span class="o">=</span><span class="k">$(</span>jq -r <span class="s2">&#34;.android.url[] | select(has(\&#34;</span><span class="nv">$i</span><span class="s2">\&#34;)) | .\&#34;</span><span class="nv">$i</span><span class="s2">\&#34;&#34;</span> cfg.json<span class="k">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$url</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="se">\$\(</span>* <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> <span class="nv">url</span><span class="o">=</span><span class="k">$(</span><span class="nb">eval</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$url</span><span class="s2">&#34;</span><span class="k">)</span><span class="p">;</span> <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># echo &#34;$url&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="nv">apk_files</span><span class="o">+=(</span><span class="k">$(</span>basename <span class="s2">&#34;</span><span class="nv">$url</span><span class="s2">&#34;</span><span class="k">)</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="o">[[</span> ! -f <span class="k">$(</span>basename <span class="s2">&#34;</span><span class="nv">$url</span><span class="s2">&#34;</span><span class="k">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> wget <span class="s2">&#34;</span><span class="nv">$url</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">done</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装文件</span>
+</span></span><span class="line"><span class="cl">install_application<span class="o">()</span> <span class="o">{</span>    
+</span></span><span class="line"><span class="cl">  <span class="c1"># printf &#39;%s\n&#39; &#34;${apk_files[@]}&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> i in  <span class="s2">&#34;</span><span class="si">${</span><span class="nv">apk_files</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    adb -s <span class="k">$(</span>adb devices <span class="p">|</span> grep -w <span class="s2">&#34;device&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;NR==1{print $1}&#39;</span><span class="k">)</span> install <span class="s2">&#34;</span><span class="nv">$i</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">done</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;所有程序已安装完成，如果要配置科学上网软件的订阅链接的话请按字母 p 健，然后等待python脚本自动配置，完成配置或不需要配置可按Ctrl-c结束&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">function</span> main<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">set</span> -e
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  download_application
+</span></span><span class="line"><span class="cl">  install_application <span class="nv">$1</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">main <span class="nv">$1</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+cfg.py
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<div class="src src-python">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># coding: utf-8</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">signal</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">subprocess</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">uiautomator2</span> <span class="k">as</span> <span class="nn">u2</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">keyboard</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">json</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_device_id</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 获取第第一个已连接的Android设备ID</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">([</span><span class="s1">&#39;adb&#39;</span><span class="p">,</span> <span class="s1">&#39;devices&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">devices</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">device&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">devices</span> <span class="k">else</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="p">(</span><span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">signal_handler</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># print(&#39;Caught Ctrl+C / SIGINT signal&#39;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 在这里添加你想要做的清理操作</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 例如停止子进程，关闭文件等</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ...</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 退出程序的代码</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># def parse_json_airport():</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#     with open(&#39;cfg.json&#39;, &#39;r&#39;) as fcc_file:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#         fcc_data = json.load(fcc_file)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#         print(fcc_data)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">parse_json_airport</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;cfg.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># name_value = data_dict[&#39;airport&#39;]</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># print(name_value)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># # 或</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># airport_value = data_dict.get(&#39;airport&#39;, &#39;airport not found&#39;)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># print(f&#34;Name: {name_value}, airport: {airport_value}&#34;)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sub_value</span><span class="o">=</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;airport&#39;</span><span class="p">]</span> <span class="p">[</span><span class="s1">&#39;airport_name&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># print(test_value)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">sub_value</span>    
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">device_id</span> <span class="o">=</span> <span class="n">get_device_id</span><span class="p">()</span>    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">device_id</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Error: No connect Android device found&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Connected device: </span><span class="si">{</span><span class="n">device_id</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 初始化uiautomator2连接</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">d</span> <span class="o">=</span> <span class="n">u2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">device_id</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Device connected successfully&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="n">running</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="c1"># 检测元素A是否存在</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.android.packageinstaller:id/vbutton_title&#34;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&#34;继续安装&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.android.packageinstaller:id/vbutton_title&#34;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&#34;继续安装&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>        
+</span></span><span class="line"><span class="cl">                    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;点击元素&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># 操作后等待页面稳定</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">continue</span>  <span class="c1"># 回到循环开头重新检测</span>
+</span></span><span class="line"><span class="cl">                <span class="k">elif</span> <span class="n">keyboard</span><span class="o">.</span><span class="n">is_pressed</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">):</span> 
+</span></span><span class="line"><span class="cl">                    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;按下了键盘上的 p 键，暂停while循环&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="c1"># 配置科学上网软件的订阅链接</span>
+</span></span><span class="line"><span class="cl">                    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;开始配置科学上网软件的订阅链接&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;开始调用 parse_json_airport()&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">airport_sub_value</span> <span class="o">=</span> <span class="n">parse_json_airport</span><span class="p">()</span> <span class="c1"># 获取json文件中配置的订阅链接</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="c1"># 以下两个软件的界面操作是根据软件界面的实际控件进行操作的，如果更换其他软件了，请根据软件的控制进行修改</span>
+</span></span><span class="line"><span class="cl">                    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;配置v2rayNG订阅链接&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">app_stop</span><span class="p">(</span><span class="s1">&#39;com.v2ray.ang&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">app_start</span><span class="p">(</span><span class="s1">&#39;com.v2ray.ang&#39;</span><span class="p">)</span>    
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&#34;Open navigation drawer&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>    
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.v2ray.ang:id/design_menu_item_text&#34;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&#34;订阅分组设置&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.v2ray.ang:id/add_config&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.v2ray.ang:id/et_remarks&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s2">&#34;tolink&#34;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.v2ray.ang:id/et_url&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>                    
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">airport_sub_value</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.v2ray.ang:id/save_config&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">app_stop</span><span class="p">(</span><span class="s1">&#39;com.v2ray.ang&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;配置clash-meta订阅链接&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">app_stop</span><span class="p">(</span><span class="s1">&#39;com.github.metacubex.clash.meta&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">app_start</span><span class="p">(</span><span class="s1">&#39;com.github.metacubex.clash.meta&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.github.metacubex.clash.meta:id/text_view&#34;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&#34;配置&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.github.metacubex.clash.meta:id/add_view&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@resource-id=&#34;com.github.metacubex.clash.meta:id/main_list&#34;]/android.widget.LinearLayout[2]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.github.metacubex.clash.meta:id/text_view&#34;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&#34;新配置&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s2">&#34;tolink&#34;</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>    
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;android:id/button1&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.github.metacubex.clash.meta:id/text_view&#34;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&#34;仅接受 http(s) 和 content 类型&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>                    
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">airport_sub_value</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;android:id/button1&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="p">(</span><span class="n">resourceId</span><span class="o">=</span><span class="s2">&#34;com.github.metacubex.clash.meta:id/action_layout&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s1">&#39;//*[@resource-id=&#34;com.github.metacubex.clash.meta:id/main_list&#34;]/android.widget.RelativeLayout[1]/android.widget.RadioButton[1]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">d</span><span class="o">.</span><span class="n">app_stop</span><span class="p">(</span><span class="s1">&#39;com.github.metacubex.clash.meta&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    
+</span></span><span class="line"><span class="cl">                    <span class="nb">input</span><span class="p">(</span><span class="s2">&#34;按回车继续，然后按字母 q 键退出或按 Ctrl-c 结束&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">elif</span> <span class="n">keyboard</span><span class="o">.</span><span class="n">is_pressed</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">):</span>                    
+</span></span><span class="line"><span class="cl">                    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;按下了键盘上的 &#39;q&#39; 键，退出while循环&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">                <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="c1"># print(&#34;未找到目标元素，等待重试...&#34;)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>  <span class="c1"># 降低CPU占用</span>
+</span></span><span class="line"><span class="cl">            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;发生异常: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">，尝试重新连接设备&#34;</span><span class="p">)</span>                
+</span></span><span class="line"><span class="cl">                <span class="n">d</span> <span class="o">=</span> <span class="n">u2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">device_id</span><span class="p">)</span> <span class="c1"># 重新初始化设备连接</span>
+</span></span><span class="line"><span class="cl">                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">d</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Connected failed: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal_handler</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">d</span> <span class="o">=</span> <span class="n">main</span><span class="p">()</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
+参考链接
+</h3>
+<div id="outline-text-headline-8" class="outline-text-3">
+<p>
+<a href="https://ynhugo.github.io/p/jq用法/">jq用法</a></p>
+<p>
+<a href="https://zhuanlan.zhihu.com/p/14712100305">如何获取 Github 上最新的 release 文件</a></p>
+<p>
+<a href="https://cn.bing.com/search?q=python脚本自动配置手机&amp;PC=U316&amp;FORM=CHROMN">python脚本自动配置手机 - 搜索</a></p>
+<p>
+<a href="https://blog.csdn.net/weixin_40901068/article/details/121242489">使用Python控制手机（一）_python操作手机的脚本-CSDN博客</a></p>
+<p>
+<a href="https://ynhugo.github.io/p/termux-uiautomator2自动化/">termux+uiautomator2自动化</a></p>
+<p>
+<a href="https://ynhugo.github.io/p/termux-uiautomator2%E7%BB%99%E5%A4%9A%E4%B8%AAqq%E5%A5%BD%E5%8F%8B%E7%82%B9%E8%B5%9E/">termux+uiautomator2给多个QQ好友点赞</a></p>
+<p>
+<a href="https://app.raindrop.io/my/57091357">uiautomator</a></p>
+<p>
+<a href="https://zhuanlan.zhihu.com/p/25181382631">(12 条消息) UIAutomator2 的使用教程 - 知乎</a></p>
+<p>
+<a href="https://cn.bing.com/search?q=uiautomator%2Bwhile%E5%BE%AA%E7%8E%AF&amp;PC=U316&amp;FORM=CHROMN">uiautomator+while循环 - 搜索</a></p>
+<p>
+<a href="https://wenku.csdn.net/answer/81959ba44add4a52910204c54207cc4f">Android的uiautomator设置循环检测 - CSDN文库</a></p>
+<p>
+<a href="https://blog.csdn.net/qdPython/article/details/134951806">用Python程序如何捕获Ctrl+C终止信号？</a></p>
+<p>
+<a href="https://geek-docs.com/python/python-ask-answer/489_python_catch_ctrlc_sigint_and_exit_multiprocesses_gracefully_in_python.html">Python 在Python中优雅地捕捉Ctrl + C / SIGINT并优雅地退出多进程</a></p>
+<p>
+<a href="https://www.freecodecamp.org/chinese/news/python-parse-json-how-to-read-a-json-file/">Python 解析 JSON――如何读取 JSON 文件</a></p>
+<p>
+<a href="https://blog.51cto.com/u_16213426/11667050">python json 读取指定key</a></p>
+<p>
+<a href="https://blog.csdn.net/weixin_46264660/article/details/130269096">Python | 一文搞定Python中对于json数据键值对遍历</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/bash/">Bash</a>
+        
+            <a href="/tags/python/">Python</a>
+        
+            <a href="/tags/uiautomator2/">Uiautomator2</a>
+        
+            <a href="/tags/%E5%AE%89%E5%8D%93/">安卓</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/python-uiautomator2%E5%AE%9E%E7%8E%B0soul%E5%BE%AA%E7%8E%AF%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81%E6%8C%87%E5%AE%9A%E6%96%87%E6%9C%AC/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">python&#43;uiautomator2实现soul循环自动发送指定文本</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/termux-python-uiautomator2%E8%8E%B7%E5%8F%96%E9%97%B9%E9%92%9F%E7%8A%B6%E6%80%81%E5%8F%8A%E9%97%B9%E9%92%9F%E7%8A%B6%E6%80%81%E8%AE%BE%E5%AE%9A/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">termux&#43;python&#43;uiautomator2获取闹钟状态及闹钟状态设定</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/termux-python-uiautomator2%E5%AE%9E%E7%8E%B0soul%E6%97%A0%E9%99%90%E5%BE%AA%E7%8E%AF%E6%A3%80%E6%B5%8B%E6%8C%87%E5%AE%9A%E6%88%90%E5%91%98%E5%B9%B6%E5%AF%B9%E5%85%B6%E8%BF%9B%E8%A1%8C%E5%B0%81%E9%BA%A6-%E7%A6%81%E8%A8%80%E5%A4%84%E7%90%86/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">termux&#43;python&#43;uiautomator2实现soul无限循环检测指定成员并对其进行封麦&#43;禁言处理</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/soul%E8%87%AA%E5%8A%A8%E9%97%AD%E9%BA%A6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">soul自动闭麦</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/python-uiautomator2%E5%AE%9E%E7%8E%B0termux%E7%9A%84%E6%95%B0%E6%8D%AE%E6%B8%85%E9%99%A4%E4%B8%8E%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE%E5%BE%85%E5%AE%8C%E5%96%84/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">python&#43;uiautomator2实现termux的数据清除与初始化配置(待完善)</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

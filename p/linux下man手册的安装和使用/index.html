@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" ———————————————— 版权声明：本文为CSDN博主「CHENG Jian」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。 原文链接：https://blog.csdn.net/gatieme/article/details/51656707\nlinux下man手册的安装和使用 linux man手册 章节 名称 描述 1 Standard commands(标准命令) Executable programs or shell commands, 普通的命令 2 System calls(系统调用) System calls (functions provided by the kernel)系统调用,如open,write之类的(通过这个，至少可以很方便的查到调用这个函数，需要加什么头文件) 3 Libraryfunctions(库函数) Library calls (functions within program libraries), 库函数,如printf,fread 4 Specialdevices(设备说明) Special files (usually found in /dev), 特殊文件,也就是/dev下的各种设备文件 5 File formats(文件格式) File formats and conventions eg /etc/passwd, 指文件的格式,比如passwd, 就会说明这个文件中各个字段的含义 6 Games andtoys(游戏和娱乐) 给游戏留的,由各个游戏自己定义 7 Miscellaneous(杂项) Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7),附件还有一些变量,比如向environ这种全局变量在这里就有说明 8 AdministrativeCommands(管理员命令) System administration commands (usually only for root), 系统管理用的命令,这些命令只能由root使用,如ifconfig 9 Kernel routines [Non standard] 如果要阅读指定man手册 1 2 3 man 1 ls # 或 man 2 read ubuntu安装中文手册后配置中文手册调用别名 1 2 3 4 5 6 7 8 echo &#39;alias cman=&#34;man -M /usr/share/man/zh_CN&#34;&#39; &gt;&gt; ~/.bashrc; source ~/.bashrc # 如果已配置中文手册 cman man # 或 cman 2 ls # 或 cman 2 read 安装man手册 Ubuntu安装 Ubuntu默认是没有完全安装man手册的\n">
+<title>linux下man手册的安装和使用</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/linux%E4%B8%8Bman%E6%89%8B%E5%86%8C%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="linux下man手册的安装和使用">
+<meta property='og:description' content=" ———————————————— 版权声明：本文为CSDN博主「CHENG Jian」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。 原文链接：https://blog.csdn.net/gatieme/article/details/51656707\nlinux下man手册的安装和使用 linux man手册 章节 名称 描述 1 Standard commands(标准命令) Executable programs or shell commands, 普通的命令 2 System calls(系统调用) System calls (functions provided by the kernel)系统调用,如open,write之类的(通过这个，至少可以很方便的查到调用这个函数，需要加什么头文件) 3 Libraryfunctions(库函数) Library calls (functions within program libraries), 库函数,如printf,fread 4 Specialdevices(设备说明) Special files (usually found in /dev), 特殊文件,也就是/dev下的各种设备文件 5 File formats(文件格式) File formats and conventions eg /etc/passwd, 指文件的格式,比如passwd, 就会说明这个文件中各个字段的含义 6 Games andtoys(游戏和娱乐) 给游戏留的,由各个游戏自己定义 7 Miscellaneous(杂项) Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7),附件还有一些变量,比如向environ这种全局变量在这里就有说明 8 AdministrativeCommands(管理员命令) System administration commands (usually only for root), 系统管理用的命令,这些命令只能由root使用,如ifconfig 9 Kernel routines [Non standard] 如果要阅读指定man手册 1 2 3 man 1 ls # 或 man 2 read ubuntu安装中文手册后配置中文手册调用别名 1 2 3 4 5 6 7 8 echo &#39;alias cman=&#34;man -M /usr/share/man/zh_CN&#34;&#39; &gt;&gt; ~/.bashrc; source ~/.bashrc # 如果已配置中文手册 cman man # 或 cman 2 ls # 或 cman 2 read 安装man手册 Ubuntu安装 Ubuntu默认是没有完全安装man手册的\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/linux%E4%B8%8Bman%E6%89%8B%E5%86%8C%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='man手册' /><meta property='article:published_time' content='2026-03-17T20:34:32&#43;08:00'/><meta property='article:modified_time' content='2026-03-17T20:34:32&#43;08:00'/>
+<meta name="twitter:title" content="linux下man手册的安装和使用">
+<meta name="twitter:description" content=" ———————————————— 版权声明：本文为CSDN博主「CHENG Jian」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。 原文链接：https://blog.csdn.net/gatieme/article/details/51656707\nlinux下man手册的安装和使用 linux man手册 章节 名称 描述 1 Standard commands(标准命令) Executable programs or shell commands, 普通的命令 2 System calls(系统调用) System calls (functions provided by the kernel)系统调用,如open,write之类的(通过这个，至少可以很方便的查到调用这个函数，需要加什么头文件) 3 Libraryfunctions(库函数) Library calls (functions within program libraries), 库函数,如printf,fread 4 Specialdevices(设备说明) Special files (usually found in /dev), 特殊文件,也就是/dev下的各种设备文件 5 File formats(文件格式) File formats and conventions eg /etc/passwd, 指文件的格式,比如passwd, 就会说明这个文件中各个字段的含义 6 Games andtoys(游戏和娱乐) 给游戏留的,由各个游戏自己定义 7 Miscellaneous(杂项) Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7),附件还有一些变量,比如向environ这种全局变量在这里就有说明 8 AdministrativeCommands(管理员命令) System administration commands (usually only for root), 系统管理用的命令,这些命令只能由root使用,如ifconfig 9 Kernel routines [Non standard] 如果要阅读指定man手册 1 2 3 man 1 ls # 或 man 2 read ubuntu安装中文手册后配置中文手册调用别名 1 2 3 4 5 6 7 8 echo &#39;alias cman=&#34;man -M /usr/share/man/zh_CN&#34;&#39; &gt;&gt; ~/.bashrc; source ~/.bashrc # 如果已配置中文手册 cman man # 或 cman 2 ls # 或 cman 2 read 安装man手册 Ubuntu安装 Ubuntu默认是没有完全安装man手册的\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">linux下man手册的安装和使用</a>
+<ul>
+<li><a href="#headline-2">linux man手册</a>
+<ul>
+<li><a href="#headline-3">如果要阅读指定man手册</a>
+</li>
+<li><a href="#headline-4">ubuntu安装中文手册后配置中文手册调用别名</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-5">安装man手册</a>
+<ul>
+<li><a href="#headline-6">Ubuntu安装</a>
+</li>
+<li><a href="#headline-7">CentOS安装</a>
+</li>
+<li><a href="#headline-8">源码安装</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-9">环境变量配置</a>
+</li>
+<li><a href="#headline-10">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/linux%E4%B8%8Bman%E6%89%8B%E5%86%8C%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/">linux下man手册的安装和使用</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 17, 2026</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<p>
+————————————————
+版权声明：本文为CSDN博主「CHENG Jian」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：<a href="https://blog.csdn.net/gatieme/article/details/51656707">https://blog.csdn.net/gatieme/article/details/51656707</a></p>
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+linux下man手册的安装和使用
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+linux man手册
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<div class="table-wrapper"><table>
+<tbody>
+<tr>
+<td class="align-right">章节</td>
+<td>名称</td>
+<td>描述</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-right">1</td>
+<td>Standard commands(标准命令)</td>
+<td>Executable programs or shell commands, 普通的命令</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-right">2</td>
+<td>System calls(系统调用)</td>
+<td>System calls (functions provided by the kernel)系统调用,如open,write之类的(通过这个，至少可以很方便的查到调用这个函数，需要加什么头文件)</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-right">3</td>
+<td>Libraryfunctions(库函数)</td>
+<td>Library calls (functions within program libraries), 库函数,如printf,fread</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-right">4</td>
+<td>Specialdevices(设备说明)</td>
+<td>Special files (usually found in /dev), 特殊文件,也就是/dev下的各种设备文件</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-right">5</td>
+<td>File formats(文件格式)</td>
+<td>File formats and conventions eg /etc/passwd, 指文件的格式,比如passwd, 就会说明这个文件中各个字段的含义</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-right">6</td>
+<td>Games andtoys(游戏和娱乐)</td>
+<td>给游戏留的,由各个游戏自己定义</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-right">7</td>
+<td>Miscellaneous(杂项)</td>
+<td>Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7),附件还有一些变量,比如向environ这种全局变量在这里就有说明</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-right">8</td>
+<td>AdministrativeCommands(管理员命令)</td>
+<td>System administration commands (usually only for root), 系统管理用的命令,这些命令只能由root使用,如ifconfig</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-right">9</td>
+<td>Kernel routines [Non standard]</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+如果要阅读指定man手册
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">man <span class="m">1</span> ls
+</span></span><span class="line"><span class="cl"><span class="c1"># 或</span>
+</span></span><span class="line"><span class="cl">man <span class="m">2</span> read</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-4">
+<h4 id="headline-4">
+ubuntu安装中文手册后配置中文手册调用别名
+</h4>
+<div id="outline-text-headline-4" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;alias cman=&#34;man -M /usr/share/man/zh_CN&#34;&#39;</span> &gt;&gt; ~/.bashrc<span class="p">;</span> <span class="nb">source</span> ~/.bashrc
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果已配置中文手册</span>
+</span></span><span class="line"><span class="cl">cman man
+</span></span><span class="line"><span class="cl"><span class="c1"># 或</span>
+</span></span><span class="line"><span class="cl">cman <span class="m">2</span> ls
+</span></span><span class="line"><span class="cl"><span class="c1"># 或</span>
+</span></span><span class="line"><span class="cl">cman <span class="m">2</span> read</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+安装man手册
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<div id="outline-container-headline-6" class="outline-4">
+<h4 id="headline-6">
+Ubuntu安装
+</h4>
+<div id="outline-text-headline-6" class="outline-text-4">
+<p>Ubuntu默认是没有完全安装man手册的</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt-get install -y manpages-de  manpages-de-dev  manpages-dev glibc-doc manpages-posix-dev manpages-posix</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+为了显示中文手册，下载manpages-zh包。</p>
+<p>
+可以直接运行如下命令安装</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get install -y manpages-zh</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-4">
+<h4 id="headline-7">
+CentOS安装
+</h4>
+<div id="outline-text-headline-7" class="outline-text-4">
+<p>man手册</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install man</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+man中文安装包</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install manpages-zh</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+如果查不到manpages-zh中文包,则可以使用如下命令搜索</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum list <span class="p">|</span>grep man.*zh</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>man-pages-zh-CN.noarch 1.5.2-4.el7 @base</p>
+<p>
+由此可以找到以上安装包，如果找不到，执行 yum -y update 更新安装包。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo yum install man-pages-zh-CN.noarch</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-4">
+<h4 id="headline-8">
+源码安装
+</h4>
+<div id="outline-text-headline-8" class="outline-text-4">
+<p>安装man手册</p>
+<p>
+源码从这里下载</p>
+<p>
+http://www.kernel.org/pub/linux/docs/man-pages/</p>
+<p>
+下载后解压缩，从终端进入解压后的文件夹，输入命令：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo make install</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+这个命令是把man安装到/user/man目录下面的，这样就已经成功的安装了man</p>
+<p>
+但是如果你不想安装, 我们可以直接在解压后的目录使用</p>
+<p>
+假设解压后文件夹路径是：/home/man，如果不想安装，可以用：</p>
+<p>
+man –M /home/man + 所查询的命令
+解释：man -M 路径 定义一组查找man手册页的目录。如果没有指定此参数，系统环境变量 MANPATH将使用。 如果查无到此环境变量，则按默认 /etc/man.config 文件中指定的查找。一个空的 MANPATH 子字 符串表示使用默认清单。</p>
+<p>
+安装中文语言包手册</p>
+<p>
+在安装之前，运行locale 命令来查看自己的语言环境是什么，主要有影响的是LC_ALL，LC_CTYPE 和 LANG 变量的值。</p>
+<p>
+如果语言环境是 zh_CN.UTF-8，可以运行make u8 &amp;&amp; makeinstall-u8；如果语言环境是GB2312，GBK 或者 GB18030，可以运行 make gb &amp;&amp; makeinstall-gb；</p>
+<p>
+或者，可以下载对应的rpm包来安装，同样简单。对于zh_CN.UTF-8，应当安装man-pages-zh_CN-1.x，对于 GB2312，GBK，GB18030，应当安装 man-pages-zh_CN-gb-1.x。请参阅讨论版上关于不同发行版的系统与其默认中文编码的说明。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-3">
+<h3 id="headline-9">
+环境变量配置
+</h3>
+<div id="outline-text-headline-9" class="outline-text-3">
+<p>我们前面安装了中英文的man包, 可以通过设置中英文显示语言来设定其显示</p>
+<p>
+如果希望终端显示为中文, 则可以通过设置LANG和LANGUAGE变量来更新语言环境</p>
+<p>
+在~/.bashrc中设置</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># chinese</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LANG</span><span class="o">=</span><span class="s2">&#34;zh_CN.UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LANGUAGE</span><span class="o">=</span><span class="s2">&#34;zh_CN:zh&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+英文则设定</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">LANG</span><span class="o">=</span><span class="s2">&#34;en_US.UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LANGUAGE</span><span class="o">=</span><span class="s2">&#34;en_US:en&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+但是中文翻译的不太好, 我们多数情况下还是希望使用英文的, 而更改环境变量的方式总是很麻烦, 有什么方式可以一劳永逸呢.</p>
+<p>
+首先差找到我们的man手册安装在哪里</p>
+<p>
+可以使用sudo find / -name man查找</p>
+<p>
+我的man手册安装在了/usr/share/man下,其中zh_开头的就是中文包的man手册,</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>zh_CN简体中文</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>zh_HK香港繁体</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>zh_TW台湾繁体</td>
+</tr>
+</tbody>
+</table></div>
+<p>
+我们可以使用-M选项指定man手册</p>
+<p>
+比如使用</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">man -M /usr/share/man/zh_CN/ <span class="m">2</span> read</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+就可以使用中文手册查看read系统调用</p>
+<p>
+下面我们为其添加一个别名cman, 这样我们可以很方便的使用中文的man手册</p>
+<p>
+在~/.bashrc中添加</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">alias</span> <span class="nv">cman</span><span class="o">=</span><span class="s1">&#39;man -M /usr/share/man/zh_CN&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+这样以来我们的man是英文的, 而cman则是一个中文的man手册</p>
+<p>
+man手册的使用
+我们输入 man ls，它会在最左上角显示“LS（1）”，在这里，“LS”表示手册名称，而“（1）”表示该手册位于第一节章(对应编号, 没个编号对应一个章节)</p>
+<p>
+同样，我们输入“man ifconfig”它会在最左上角显示“IFCONFIG（8）”。</p>
+<p>
+但是有些名称可能对应很多章节的信息,因此可以这样输入命令：“man [章节号] 手册名称”, 来指定某个章节比如我们前面的man 2 read就是查看第2章节(系统调用)中的read</p>
+<p>
+而我们可以使用-f选项来查看命令所在的章节</p>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-3">
+<h3 id="headline-10">
+参考链接
+</h3>
+<div id="outline-text-headline-10" class="outline-text-3">
+<p><a href="https://blog.csdn.net/gatieme/article/details/51656707">linux下man手册的安装和使用</a></p>
+<p>
+<a href="https://www.cnblogs.com/TangQF/articles/18850828">Linux man 命令使用教程</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/man%E6%89%8B%E5%86%8C/">Man手册</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/jq%E7%94%A8%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">jq用法</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Gdb on Example Site</title>
+        <link>https://ynhugo.github.io/tags/gdb/</link>
+        <description>Recent content in Gdb on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 26 Mar 2024 00:24:28 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/gdb/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>GDB调试</title>
+        <link>https://ynhugo.github.io/p/gdb%E8%B0%83%E8%AF%95/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:28 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/gdb%E8%B0%83%E8%AF%95/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+GDB调试
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;命令&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;解释&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;set print thread-events off&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;运行gdb时关闭线程事件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;(gdb)  set logging  on&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;输入这个命令后，此后的调试信息将输出到指定文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;set logging enabled on/off&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;(gdb)  set logging  file &amp;lt;文件名&amp;gt;&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;设置输出的文件名称&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;(gdb)  set     logging  off&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;输入这个命令，关闭到指定文件的输出&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;file &amp;lt;文件名&amp;gt;&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;加载被调试的可执行程序文件，因为一般都在被调试程序所在目录下执行GDB，因而文本名不需要带路径。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;r&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;Run的简写，运行被调试的程序,如果此前没有下过断点，则执行完整个程序；如果有断点，则程序暂停在第一个可用断点处。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;c&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;Continue的简写，继续执行被调试程序，直至下一个断点或程序结束。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;info functions&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;列出函数的名字&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;b &amp;lt;行号&amp;gt;&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;b: Breakpoint的简写，设置断点。两可以使用“行号”“函数名称”“执行地址”等方式指定断点位置，其中在函数名称前面加“*”符号表示将断点设置在“由编译器生成的prolog代码处”。如果不了解汇编，可以不予理会此用法。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;b &amp;lt;函数名称&amp;gt;&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;b *&amp;lt;函数名称&amp;gt;&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;d: Delete breakpoint的简写，删除指定编号的某个断点，或删除所有断点。断点编号从1开始递增。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;b *&amp;lt;代码地址&amp;gt;&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;d [编号]&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;rbreak printNum*&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;对所有调用printNum函数都设置断点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;rbreak .&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;对所有函数设置断点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;rbreak test.c:.&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;对test.c中的所有函数设置断点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;rbreak test.c:^print&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;tbreak test.c:l0&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;在第10行设置临时断点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;ignore 1 30&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;设置跳过多次的断点，其中，1是要忽略的断点号，可以通过前面的方式查找到，30是需要跳过的次数。这样设置之后，会跳过前面30次。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;watch a&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;设置一个一旦值发生变化就停止的断点.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;info breakpoints&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;查看已设置的断点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;p &amp;lt;变量名称&amp;gt;&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;Print的简写，显示指定变量（临时变量或全局变量）的值。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;i&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;Info的简写，用于显示各类信息，详情请查阅“help i”。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;q&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;Quit的简写，退出GDB调试环境。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td class=&#34;align-center&#34;&gt;help [命令名称]&lt;/td&gt;
+&lt;td class=&#34;align-left&#34;&gt;GDB帮助命令，提供对GDB名种命令的解释说明，如果指定了“命令名称”参数，则显示该命令的详细说明；如果没有指定参数，则分类显示所有GDB命令，供用户进一步浏览和查询&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

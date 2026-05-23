@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Book on Example Site</title>
+        <link>https://ynhugo.github.io/tags/book/</link>
+        <description>Recent content in Book on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sat, 23 May 2026 05:47:31 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/book/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>计算机</title>
+        <link>https://ynhugo.github.io/p/%E8%AE%A1%E7%AE%97%E6%9C%BA/</link>
+        <pubDate>Sat, 23 May 2026 05:47:31 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E8%AE%A1%E7%AE%97%E6%9C%BA/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+emacs
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/程序员/emacs/ANSI-Common-Lisp-中文版.epub&#34;&gt;ANSI-Common-Lisp-中文版.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/程序员/emacs/GNU-Emacs-Lisp编程入门.pdf&#34;&gt;GNU-Emacs-Lisp编程入门.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/程序员/emacs/Emacs-生存指南.pdf&#34;&gt;Emacs-生存指南.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-2&#34;&gt;
+qt
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/qt/Qt-Creator-快速入门-第三版.pdf&#34;&gt;Qt-Creator-快速入门-第三版.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-3&#34;&gt;
+linux
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/高级-Bash-脚本编程指南-文档版本-10.0.epub&#34;&gt;高级-Bash-脚本编程指南-文档版本-10.0.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/内核开发/ARM嵌入式LINUX系统开发详解_第2版.pdf&#34;&gt;ARM嵌入式LINUX系统开发详解_第2版.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/内核开发/ARM处理器开发详解基于ARM_Cortex-A8处理器的开发设计.pdf&#34;&gt;ARM处理器开发详解基于ARM_Cortex-A8处理器的开发设计.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/内核开发/Linux-Kernel-Development——A-Thorough-Guide-to-the-Design-and-Implementation-of-the-Linux-Kernel-2010-第3版.pdf&#34;&gt;Linux-Kernel-Development——A-Thorough-Guide-to-the-Design-and-Implementation-of-the-Linux-Kernel-2010-第3版.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/内核开发/Linux内核深度解析_基于ARM64架构的Linux4.x内核.pdf&#34;&gt;Linux内核深度解析_基于ARM64架构的Linux4.x内核.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/内核开发/Linux-内核设计与实现2011-第3版-扫描版.pdf&#34;&gt;Linux-内核设计与实现2011-第3版-扫描版.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/内核开发/深入理解-Linux-内核-2001-第1版-扫描版.pdf&#34;&gt;深入理解-Linux-内核-2001-第1版-扫描版.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/内核开发/ARM_嵌入式Linux_系统开发.epub&#34;&gt;ARM_嵌入式Linux_系统开发.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/内核开发/Linux设备驱动开发详解：基于最新的Linux_4.0内核.pdf&#34;&gt;Linux设备驱动开发详解：基于最新的Linux_4.0内核.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/内核开发/Understanding-the-Linux-Kernel-2005-第3版.pdf&#34;&gt;Understanding-the-Linux-Kernel-2005-第3版.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/内核开发/Linux内核精髓：精通Linux内核必会的75个绝技.pdf&#34;&gt;Linux内核精髓：精通Linux内核必会的75个绝技.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/Linux_From_Scratch_版本_11.3_中文翻译版_由_Gerard_Beekmans_原著和总编辑.pdf&#34;&gt;Linux_From_Scratch_版本_11.3_中文翻译版_由_Gerard_Beekmans_原著和总编辑.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/linux/Linux-与-UNIX-Shell-编程指南.pdf&#34;&gt;Linux-与-UNIX-Shell-编程指南.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/程序员/Modern-CMake-for-C++中文版.pdf&#34;&gt;Modern-CMake-for-C++中文版.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/程序员/UNIX环境高级编程.epub&#34;&gt;UNIX环境高级编程.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/程序员/UNIX网络编程-卷1-套接字联网API-第3版.pdf&#34;&gt;UNIX网络编程-卷1-套接字联网API-第3版.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/程序员/Linux设备驱动程序-中文第三版.pdf&#34;&gt;Linux设备驱动程序-中文第三版.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        <item>
+        <title>米晶子</title>
+        <link>https://ynhugo.github.io/p/%E7%B1%B3%E6%99%B6%E5%AD%90/</link>
+        <pubDate>Sat, 23 May 2026 05:43:55 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E7%B1%B3%E6%99%B6%E5%AD%90/</guid>
+        <description>&lt;p&gt;
+&lt;a href=&#34;resources/《金刚长寿功》高清扫描版.pdf&#34;&gt;《金刚长寿功》高清扫描版.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/八部金刚功.epub&#34;&gt;八部金刚功.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/渐法顿法天元人元九层循序.epub&#34;&gt;渐法顿法天元人元九层循序.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/炁體源流（上）.pdf&#34;&gt;炁體源流（上）.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/炁體源流（下）.pdf&#34;&gt;炁體源流（下）.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/米晶子济世良方.pdf&#34;&gt;米晶子济世良方.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/雄功—男性性气功.pdf&#34;&gt;雄功—男性性气功.pdf&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>礼仪</title>
+        <link>https://ynhugo.github.io/p/%E7%A4%BC%E4%BB%AA/</link>
+        <pubDate>Sat, 23 May 2026 05:41:35 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E7%A4%BC%E4%BB%AA/</guid>
+        <description>&lt;p&gt;
+&lt;a href=&#34;resources/中国人的规矩.pdf&#34;&gt;中国人的规矩.pdf&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>曾士强</title>
+        <link>https://ynhugo.github.io/p/%E6%9B%BE%E5%A3%AB%E5%BC%BA/</link>
+        <pubDate>Sat, 23 May 2026 05:36:32 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E6%9B%BE%E5%A3%AB%E5%BC%BA/</guid>
+        <description>&lt;p&gt;
+&lt;a href=&#34;resources/易经真的很容易.pdf&#34;&gt;易经真的很容易.pdf&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>国之脊梁</title>
+        <link>https://ynhugo.github.io/p/%E5%9B%BD%E4%B9%8B%E8%84%8A%E6%A2%81/</link>
+        <pubDate>Sat, 23 May 2026 05:30:49 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E5%9B%BD%E4%B9%8B%E8%84%8A%E6%A2%81/</guid>
+        <description>&lt;p&gt;
+&lt;a href=&#34;resources/大国脊梁.pdf&#34;&gt;大国脊梁.pdf&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>倪海厦</title>
+        <link>https://ynhugo.github.io/p/%E5%80%AA%E6%B5%B7%E5%8E%A6/</link>
+        <pubDate>Sat, 23 May 2026 05:20:28 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E5%80%AA%E6%B5%B7%E5%8E%A6/</guid>
+        <description>&lt;p&gt;
+&lt;a href=&#34;resources/人纪-金匮.pdf&#34;&gt;人纪-金匮.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/佛州汉唐跟诊日志：师从倪海厦先生见闻录.mobi&#34;&gt;佛州汉唐跟诊日志：师从倪海厦先生见闻录.mobi&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/倪海厦-人纪-简体横版伤寒论.pdf&#34;&gt;倪海厦-人纪-简体横版伤寒论.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/倪海厦-人纪-简体横版神农本草经.pdf&#34;&gt;倪海厦-人纪-简体横版神农本草经.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/倪海厦-人纪-简体针灸教程.pdf&#34;&gt;倪海厦-人纪-简体针灸教程.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/倪海厦-天纪-天机道-听课笔记.pdf&#34;&gt;倪海厦-天纪-天机道-听课笔记.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/倪海厦-天纪-天机道-终稿.pdf&#34;&gt;倪海厦-天纪-天机道-终稿.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/倪海厦《天纪》—人间道01听课笔记.pdf&#34;&gt;倪海厦《天纪》—人间道01听课笔记.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/倪海厦人间道听课笔记.pdf&#34;&gt;倪海厦人间道听课笔记.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/倪海厦地脉道听课笔记.pdf&#34;&gt;倪海厦地脉道听课笔记.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/倪海厦教授养生演讲稿.mobi&#34;&gt;倪海厦教授养生演讲稿.mobi&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/倪海厦注解伤寒论【自编纯文本】.pdf&#34;&gt;倪海厦注解伤寒论【自编纯文本】.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/四柱命卦.pdf&#34;&gt;四柱命卦.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/地脉道-倪海厦.epub&#34;&gt;地脉道-倪海厦.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/地脉道·人间道·天机道【文字版】.pdf&#34;&gt;地脉道·人间道·天机道【文字版】.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/天机道-倪海厦.pdf&#34;&gt;天机道-倪海厦.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/梁冬对话倪海厦七讲.epub&#34;&gt;梁冬对话倪海厦七讲.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/黄帝内经倪海厦注解版-下册.pdf&#34;&gt;黄帝内经倪海厦注解版-下册.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/黄帝内经倪海厦注释版-上册.pdf&#34;&gt;黄帝内经倪海厦注释版-上册.pdf&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>国之脊梁</title>
+        <link>https://ynhugo.github.io/p/%E5%9B%BD%E4%B9%8B%E8%84%8A%E6%A2%81/</link>
+        <pubDate>Wed, 31 Jul 2024 08:59:15 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E5%9B%BD%E4%B9%8B%E8%84%8A%E6%A2%81/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+国之脊梁
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-2&#34;&gt;
+相关读物
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://ynhugo.github.io/book/国之脊梁/大国脊梁.pdf&#34;&gt;大国脊梁&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        <item>
+        <title>国学宝库</title>
+        <link>https://ynhugo.github.io/p/%E5%9B%BD%E5%AD%A6%E5%AE%9D%E5%BA%93/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E5%9B%BD%E5%AD%A6%E5%AE%9D%E5%BA%93/</guid>
+        <description>&lt;p&gt;
+&lt;a href=&#34;resources/中华上下五千年.azw3&#34;&gt;中华上下五千年.azw3&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/中华经典藏书全套装.epub&#34;&gt;中华经典藏书全套装.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/中国古代志怪经典精选合集.mobi&#34;&gt;中国古代志怪经典精选合集.mobi&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/了凡四训--中华经典藏书.epub&#34;&gt;了凡四训–中华经典藏书.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/佛教十三经.epub&#34;&gt;佛教十三经.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/医林改错.pdf&#34;&gt;医林改错.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/古文观止.epub&#34;&gt;古文观止.epub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/子午流注与灵龟八法.pdf&#34;&gt;子午流注与灵龟八法.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;resources/诸子百家系列套装.epub&#34;&gt;诸子百家系列套装.epub&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

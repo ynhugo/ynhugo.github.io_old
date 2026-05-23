@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" expect使用示例 如果通过对expect重定向的方式写脚本的话，这样的脚本适合出现在脚本文件中，如果是通过expect -c这样的方式调用，则运行在命令行上\n示例一 该示例适合运行在脚本文件中，然后通过expect命令运行脚本文件，比如脚本名test.sh\n1 2 3 4 5 6 7 8 9 10 11 12 expect &lt;&lt; &#39;END&#39; set pass &#34;segfault&#34; spawn ssh root@segfault.net expect { &#34;yes/no&#34; { send &#34;yes\\r&#34;; exp_continue } &#34;password:&#34; { send -- &#34;$pass\\n&#34; } } expect &#34;Continuing in 30 sec...&#34; { sleep 30; send &#34;\\r&#34; } expect &#34;Press any key to continue&#34; { send &#34;\\r&#34; } # expect &#34;Would you like to see your SECRET now? (y/N)&#34; { send &#34;y&#34; } interact END 运行方式 1 expect test.sh 示例二 该示例适合运行在命令行，如果将该示例添加到脚本文件运行则会执行不了，直接复制该示例粘贴到命令行上回车运行即可\n">
+<title>expect使用示例</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/expect%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="expect使用示例">
+<meta property='og:description' content=" expect使用示例 如果通过对expect重定向的方式写脚本的话，这样的脚本适合出现在脚本文件中，如果是通过expect -c这样的方式调用，则运行在命令行上\n示例一 该示例适合运行在脚本文件中，然后通过expect命令运行脚本文件，比如脚本名test.sh\n1 2 3 4 5 6 7 8 9 10 11 12 expect &lt;&lt; &#39;END&#39; set pass &#34;segfault&#34; spawn ssh root@segfault.net expect { &#34;yes/no&#34; { send &#34;yes\\r&#34;; exp_continue } &#34;password:&#34; { send -- &#34;$pass\\n&#34; } } expect &#34;Continuing in 30 sec...&#34; { sleep 30; send &#34;\\r&#34; } expect &#34;Press any key to continue&#34; { send &#34;\\r&#34; } # expect &#34;Would you like to see your SECRET now? (y/N)&#34; { send &#34;y&#34; } interact END 运行方式 1 expect test.sh 示例二 该示例适合运行在命令行，如果将该示例添加到脚本文件运行则会执行不了，直接复制该示例粘贴到命令行上回车运行即可\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/expect%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='expect' /><meta property='article:published_time' content='2025-06-27T14:26:36&#43;08:00'/><meta property='article:modified_time' content='2025-06-27T14:26:36&#43;08:00'/>
+<meta name="twitter:title" content="expect使用示例">
+<meta name="twitter:description" content=" expect使用示例 如果通过对expect重定向的方式写脚本的话，这样的脚本适合出现在脚本文件中，如果是通过expect -c这样的方式调用，则运行在命令行上\n示例一 该示例适合运行在脚本文件中，然后通过expect命令运行脚本文件，比如脚本名test.sh\n1 2 3 4 5 6 7 8 9 10 11 12 expect &lt;&lt; &#39;END&#39; set pass &#34;segfault&#34; spawn ssh root@segfault.net expect { &#34;yes/no&#34; { send &#34;yes\\r&#34;; exp_continue } &#34;password:&#34; { send -- &#34;$pass\\n&#34; } } expect &#34;Continuing in 30 sec...&#34; { sleep 30; send &#34;\\r&#34; } expect &#34;Press any key to continue&#34; { send &#34;\\r&#34; } # expect &#34;Would you like to see your SECRET now? (y/N)&#34; { send &#34;y&#34; } interact END 运行方式 1 expect test.sh 示例二 该示例适合运行在命令行，如果将该示例添加到脚本文件运行则会执行不了，直接复制该示例粘贴到命令行上回车运行即可\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">expect使用示例</a>
+<ul>
+<li><a href="#headline-2">示例一</a>
+<ul>
+<li><a href="#headline-3">运行方式</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-4">示例二</a>
+<ul>
+<li><a href="#headline-5">增加端口转发和代理</a>
+<ul>
+<li><a href="#headline-6">验证代理</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#headline-7">示例三</a>
+</li>
+<li><a href="#headline-8">使用for循环</a>
+</li>
+<li><a href="#headline-9">expect eof 和 interact 有什么区别</a>
+<ul>
+<li><a href="#headline-10">expect eof - 等待子进程结束</a>
+</li>
+<li><a href="#headline-11">interact - 将控制权交还给用户</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-12">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/expect%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B/">expect使用示例</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 27, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+expect使用示例
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>
+如果通过对expect重定向的方式写脚本的话，这样的脚本适合出现在脚本文件中，如果是通过expect -c这样的方式调用，则运行在命令行上</p>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+示例一
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>
+该示例适合运行在脚本文件中，然后通过expect命令运行脚本文件，比如脚本名test.sh</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">expect <span class="s">&lt;&lt; &#39;END&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">  set pass &#34;segfault&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">  spawn ssh root@segfault.net
+</span></span></span><span class="line"><span class="cl"><span class="s">  expect {
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;yes/no&#34; { send &#34;yes\r&#34;; exp_continue }
+</span></span></span><span class="line"><span class="cl"><span class="s">        &#34;password:&#34; { send -- &#34;$pass\n&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="s">  }
+</span></span></span><span class="line"><span class="cl"><span class="s">  expect &#34;Continuing in 30 sec...&#34; { sleep 30; send &#34;\r&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="s">  expect &#34;Press any key to continue&#34; { send &#34;\r&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="s">  # expect &#34;Would you like to see your SECRET now? (y/N)&#34; { send &#34;y&#34; }  
+</span></span></span><span class="line"><span class="cl"><span class="s">  interact
+</span></span></span><span class="line"><span class="cl"><span class="s">END</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+运行方式
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  expect test.sh</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+示例二
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>
+该示例适合运行在命令行，如果将该示例添加到脚本文件运行则会执行不了，直接复制该示例粘贴到命令行上回车运行即可</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">expect -c <span class="s1">&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">  set pass &#34;segfault&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">  spawn ssh root@segfault.net
+</span></span></span><span class="line"><span class="cl"><span class="s1">  expect {
+</span></span></span><span class="line"><span class="cl"><span class="s1">        &#34;yes/no&#34; { send &#34;yes\r&#34;; exp_continue }
+</span></span></span><span class="line"><span class="cl"><span class="s1">        &#34;password:&#34; { send -- &#34;$pass\n&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="s1">  }
+</span></span></span><span class="line"><span class="cl"><span class="s1">  expect &#34;Continuing in * sec...&#34; { send &#34;\n&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="s1">  expect &#34;Press*&#34; { send &#34;\n&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="s1">  interact
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+增加端口转发和代理
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">expect -c <span class="s1">&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">  set pass &#34;segfault&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">  spawn ssh -D 127.0.0.1:1080 root@segfault.net
+</span></span></span><span class="line"><span class="cl"><span class="s1">  expect {
+</span></span></span><span class="line"><span class="cl"><span class="s1">        &#34;yes/no&#34; { send &#34;yes\r&#34;; exp_continue }
+</span></span></span><span class="line"><span class="cl"><span class="s1">        &#34;password:&#34; { send -- &#34;$pass\n&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="s1">  }
+</span></span></span><span class="line"><span class="cl"><span class="s1">  expect &#34;Continuing in * sec...&#34; { send &#34;\n&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="s1">  expect &#34;Press*&#34; { send &#34;\n&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="s1">  interact
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>-D 127.0.0.1:1080：开启一个 SOCKS5 代理，监听在本机的 127.0.0.1:1080</p>
+<div id="outline-container-headline-6" class="outline-5">
+<h5 id="headline-6">
+验证代理
+</h5>
+<div id="outline-text-headline-6" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl --proxy socks5://127.0.0.1:1080 google.com
+</span></span><span class="line"><span class="cl">&lt;HTML&gt;&lt;HEAD&gt;&lt;meta http-equiv<span class="o">=</span><span class="s2">&#34;content-type&#34;</span> <span class="nv">content</span><span class="o">=</span><span class="s2">&#34;text/html;charset=utf-8&#34;</span>&gt;
+</span></span><span class="line"><span class="cl">&lt;TITLE&gt;301 Moved&lt;/TITLE&gt;&lt;/HEAD&gt;&lt;BODY&gt;
+</span></span><span class="line"><span class="cl">&lt;H1&gt;301 Moved&lt;/H1&gt;
+</span></span><span class="line"><span class="cl">The document has moved
+</span></span><span class="line"><span class="cl">&lt;A <span class="nv">HREF</span><span class="o">=</span><span class="s2">&#34;http://www.google.com/&#34;</span>&gt;here&lt;/A&gt;.
+</span></span><span class="line"><span class="cl">&lt;/BODY&gt;&lt;/HTML&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+示例三
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<p>
+这是一个常规示例，同样，运行在命令行上</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">expect -c <span class="s1">&#39;  
+</span></span></span><span class="line"><span class="cl"><span class="s1">  set pass &#34;Mind@123&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">  spawn ssh root@192.168.0.2
+</span></span></span><span class="line"><span class="cl"><span class="s1">  expect {
+</span></span></span><span class="line"><span class="cl"><span class="s1">        &#34;yes/no&#34; { send &#34;yes\r&#34;; exp_continue }
+</span></span></span><span class="line"><span class="cl"><span class="s1">        &#34;password:&#34; { send -- &#34;$pass\r&#34; }
+</span></span></span><span class="line"><span class="cl"><span class="s1">  }  
+</span></span></span><span class="line"><span class="cl"><span class="s1">  interact
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
+使用for循环
+</h3>
+<div id="outline-text-headline-8" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">expect -c <span class="s1">&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">    spawn cmd /c EMIFboot_out2bin.bat    
+</span></span></span><span class="line"><span class="cl"><span class="s1">    expect &#34;Press&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">    for {set i 0} {$i &lt; 3} {incr i} {
+</span></span></span><span class="line"><span class="cl"><span class="s1">        send &#34;\n&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">        sleep 0.1
+</span></span></span><span class="line"><span class="cl"><span class="s1">    }                       
+</span></span></span><span class="line"><span class="cl"><span class="s1">    expect eof    
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-3">
+<h3 id="headline-9">
+expect eof 和 interact 有什么区别
+</h3>
+<div id="outline-text-headline-9" class="outline-text-3">
+<p>expect eof 和 interact 是 Expect 脚本中两个非常重要的命令，它们有着本质的区别：</p>
+<div id="outline-container-headline-10" class="outline-4">
+<h4 id="headline-10">
+expect eof - 等待子进程结束
+</h4>
+<div id="outline-text-headline-10" class="outline-text-4">
+<p>作用：等待 spawn 启动的子进程执行完毕</p>
+<p>
+行为：阻塞直到子进程退出</p>
+<p>
+适用场景：自动化脚本执行，不需要用户交互</p>
+<p>
+示例：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">expect
+</span></span><span class="line"><span class="cl">spawn some_command
+</span></span><span class="line"><span class="cl">expect <span class="s2">&#34;some pattern&#34;</span>
+</span></span><span class="line"><span class="cl">send <span class="s2">&#34;some input\r&#34;</span>
+</span></span><span class="line"><span class="cl">expect eof  <span class="c1"># 等待 some_command 执行完成</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-4">
+<h4 id="headline-11">
+interact - 将控制权交还给用户
+</h4>
+<div id="outline-text-headline-11" class="outline-text-4">
+<p>作用：将键盘输入传递给子进程，允许用户与程序交互</p>
+<p>
+行为：Expect 停止自动化控制，用户可以直接操作</p>
+<p>
+适用场景：部分自动化后需要用户手动操作</p>
+<p>
+示例：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">expect
+</span></span><span class="line"><span class="cl">spawn ssh user@host
+</span></span><span class="line"><span class="cl">expect <span class="s2">&#34;password:&#34;</span>
+</span></span><span class="line"><span class="cl">send <span class="s2">&#34;mypassword\r&#34;</span>
+</span></span><span class="line"><span class="cl">interact  <span class="c1"># 登录后，用户可以直接操作ssh会话</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+对比表格：</p>
+<div class="table-wrapper"><table>
+<tbody>
+<tr>
+<td>特性</td>
+<td>expect eof</td>
+<td>interact</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>控制权</td>
+<td>Expect 保持控制</td>
+<td>交还给用户</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>等待对象</td>
+<td>等待进程结束</td>
+<td>不等待，立即返回</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>典型用途</td>
+<td>完全自动化</td>
+<td>半自动化</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>后续代码</td>
+<td>可以继续执行</td>
+<td>通常放在脚本末尾</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>进程状态</td>
+<td>进程结束后继续</td>
+<td>进程继续运行</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-3">
+<h3 id="headline-12">
+参考链接
+</h3>
+<div id="outline-text-headline-12" class="outline-text-3">
+<p><a href="https://blog.csdn.net/qq_46227568/article/details/148049057">使用 curl 通过 SOCKS5 代理访问目标网站</a></p>
+<p>
+<a href="https://www.cnblogs.com/iloveyoucc/archive/2012/06/17/2552553.html">expect语法基础： while、for 循环、if 语句的用法示例</a></p>
+<p>
+<a href="https://chat.deepseek.com/share/4uo1i163nfgxuq2cim">expect eof 和 interact 有什么区别 | DeepSeek</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/expect/">Expect</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

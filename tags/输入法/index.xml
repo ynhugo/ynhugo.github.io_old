@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>输入法 on Example Site</title>
+        <link>https://ynhugo.github.io/tags/%E8%BE%93%E5%85%A5%E6%B3%95/</link>
+        <description>Recent content in 输入法 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Mon, 12 Aug 2024 14:35:57 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/%E8%BE%93%E5%85%A5%E6%B3%95/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>如何安装小狼毫五笔拼音输入法</title>
+        <link>https://ynhugo.github.io/p/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85%E5%B0%8F%E7%8B%BC%E6%AF%AB%E4%BA%94%E7%AC%94%E6%8B%BC%E9%9F%B3%E8%BE%93%E5%85%A5%E6%B3%95/</link>
+        <pubDate>Mon, 12 Aug 2024 14:35:57 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85%E5%B0%8F%E7%8B%BC%E6%AF%AB%E4%BA%94%E7%AC%94%E6%8B%BC%E9%9F%B3%E8%BE%93%E5%85%A5%E6%B3%95/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+windows7安装小狼毫五笔拼音输入法
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-2&#34;&gt;
+下载对应Win7的输入法
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+下载链接：&lt;a href=&#34;https://rime.im/download/&#34;&gt;https://rime.im/download/&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-3&#34;&gt;
+接下来下载词库，两种方式，一种是在线安装，一种是离线安装。推荐在线安装
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;div id=&#34;outline-container-headline-4&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-4&#34;&gt;
+在线安装
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-4&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+在线安装的方法，可以右下角右键，选择“输入法设定”，打开面板，出现“获取更多输入法设定”，点击后，跳出命令窗口，输入&lt;/p&gt;
+&lt;p&gt;
+rime-wubi&lt;/p&gt;
+&lt;p&gt;
+按回车，安装。完成后，再输入&lt;/p&gt;
+&lt;p&gt;
+rime-pinyin-simp&lt;/p&gt;
+&lt;p&gt;
+按回车，安装&lt;/p&gt;
+&lt;p&gt;
+注意：不安装rime-pinyin-simp，是无法启动拼音输入的。&lt;/p&gt;
+&lt;p&gt;
+重新部署即可，选择对应的输入法。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-5&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-5&#34;&gt;
+离线安装
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-5&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+离线安装。安装exe文件后，需要额外下载五笔输入法库，&lt;a href=&#34;https://github.com/rime/rime-wubi&#34;&gt;https://github.com/rime/rime-wubi&lt;/a&gt; 和 &lt;a href=&#34;https://github.com/rime/rime-pinyin-simp/&#34;&gt;https://github.com/rime/rime-pinyin-simp/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+下载后，解压到[程序文件夹] C:Program Files (x86)\Rime\weasel-0.14.3\data
+（可以通过右下角，小狼毫输入法，右键，直接选中打开[程序文件夹]）&lt;/p&gt;
+&lt;p&gt;
+之后，同理，右下角，小狼毫输入法，右键，选择[重新部署]&lt;/p&gt;
+&lt;p&gt;
+部署完毕后，同理点击[输入法设定]，即可显示出五笔输入法了。&lt;/p&gt;
+&lt;p&gt;
+步骤对了，其实很简单。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-6&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-6&#34;&gt;
+参考链接
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-6&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://rime.im/download/&#34;&gt;RIME／中州韻輸入法引擎下载及安装&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.cnblogs.com/profesor/p/13861690.html&#34;&gt;在windows上安装小狼毫 五笔拼音混合输入法，远离国产五笔输入法&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://github.com/rime/rime-wubi&#34;&gt;rime-wubi&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://github.com/rime/rime-pinyin-simp/&#34;&gt;rime-pinyin-simp&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

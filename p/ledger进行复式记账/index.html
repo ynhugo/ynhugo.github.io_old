@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" Ledger进行复式记账-ChatGPT 使用 Ledger 进行复式记账（double-entry bookkeeping）时，可以根据你的消费方式（花呗、借呗、工资银行卡）和消费类别（吃饭、交通费、生活费）设计一个合理的账户结构。Ledger 是一个基于文本的财务管理工具，它通过清晰的借贷记账规则帮助你记录和追踪财务状况。\n以下是一个基本的示例，帮助你将消费、收入以及不同账户之间的交易整理成复式记账的形式。\n账户结构设计 资产账户：\nAssets:Bank:Salary —— 工资银行卡 Assets:PayLater:Huabei —— 花呗 Assets:PayLater:Jiebei —— 借呗 费用账户：\nExpenses:Food —— 吃饭 Expenses:Transportation —— 交通费 Expenses:Living —— 生活费 收入账户：\nIncome:Salary —— 工资收入 示例交易记录 1. 工资收入到账 当你工资收入到账时，使用工资银行卡支付，所以我们会记录从工资账户（Assets:Bank:Salary）到银行账户的转账。\n1 2 3 2024/11/01 工资收入 Assets:Bank:Salary 5000 CNY Income:Salary -5000 CNY 2. 吃饭消费（使用花呗支付） 假设你在餐馆消费了 100 元，使用花呗支付。\n1 2 3 2024/11/02 吃饭 Expenses:Food 100 CNY Assets:PayLater:Huabei -100 CNY 3. 交通费消费（使用借呗支付） 假设你乘坐公交车花费了 20 元，使用借呗支付。\n">
+<title>Ledger进行复式记账</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/ledger%E8%BF%9B%E8%A1%8C%E5%A4%8D%E5%BC%8F%E8%AE%B0%E8%B4%A6/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Ledger进行复式记账">
+<meta property='og:description' content=" Ledger进行复式记账-ChatGPT 使用 Ledger 进行复式记账（double-entry bookkeeping）时，可以根据你的消费方式（花呗、借呗、工资银行卡）和消费类别（吃饭、交通费、生活费）设计一个合理的账户结构。Ledger 是一个基于文本的财务管理工具，它通过清晰的借贷记账规则帮助你记录和追踪财务状况。\n以下是一个基本的示例，帮助你将消费、收入以及不同账户之间的交易整理成复式记账的形式。\n账户结构设计 资产账户：\nAssets:Bank:Salary —— 工资银行卡 Assets:PayLater:Huabei —— 花呗 Assets:PayLater:Jiebei —— 借呗 费用账户：\nExpenses:Food —— 吃饭 Expenses:Transportation —— 交通费 Expenses:Living —— 生活费 收入账户：\nIncome:Salary —— 工资收入 示例交易记录 1. 工资收入到账 当你工资收入到账时，使用工资银行卡支付，所以我们会记录从工资账户（Assets:Bank:Salary）到银行账户的转账。\n1 2 3 2024/11/01 工资收入 Assets:Bank:Salary 5000 CNY Income:Salary -5000 CNY 2. 吃饭消费（使用花呗支付） 假设你在餐馆消费了 100 元，使用花呗支付。\n1 2 3 2024/11/02 吃饭 Expenses:Food 100 CNY Assets:PayLater:Huabei -100 CNY 3. 交通费消费（使用借呗支付） 假设你乘坐公交车花费了 20 元，使用借呗支付。\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/ledger%E8%BF%9B%E8%A1%8C%E5%A4%8D%E5%BC%8F%E8%AE%B0%E8%B4%A6/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='记账' /><meta property='article:tag' content='ledger' /><meta property='article:published_time' content='2024-11-11T04:57:15&#43;08:00'/><meta property='article:modified_time' content='2024-11-11T04:57:15&#43;08:00'/>
+<meta name="twitter:title" content="Ledger进行复式记账">
+<meta name="twitter:description" content=" Ledger进行复式记账-ChatGPT 使用 Ledger 进行复式记账（double-entry bookkeeping）时，可以根据你的消费方式（花呗、借呗、工资银行卡）和消费类别（吃饭、交通费、生活费）设计一个合理的账户结构。Ledger 是一个基于文本的财务管理工具，它通过清晰的借贷记账规则帮助你记录和追踪财务状况。\n以下是一个基本的示例，帮助你将消费、收入以及不同账户之间的交易整理成复式记账的形式。\n账户结构设计 资产账户：\nAssets:Bank:Salary —— 工资银行卡 Assets:PayLater:Huabei —— 花呗 Assets:PayLater:Jiebei —— 借呗 费用账户：\nExpenses:Food —— 吃饭 Expenses:Transportation —— 交通费 Expenses:Living —— 生活费 收入账户：\nIncome:Salary —— 工资收入 示例交易记录 1. 工资收入到账 当你工资收入到账时，使用工资银行卡支付，所以我们会记录从工资账户（Assets:Bank:Salary）到银行账户的转账。\n1 2 3 2024/11/01 工资收入 Assets:Bank:Salary 5000 CNY Income:Salary -5000 CNY 2. 吃饭消费（使用花呗支付） 假设你在餐馆消费了 100 元，使用花呗支付。\n1 2 3 2024/11/02 吃饭 Expenses:Food 100 CNY Assets:PayLater:Huabei -100 CNY 3. 交通费消费（使用借呗支付） 假设你乘坐公交车花费了 20 元，使用借呗支付。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">Ledger进行复式记账-ChatGPT</a>
+<ul>
+<li><a href="#headline-2">账户结构设计</a>
+</li>
+<li><a href="#headline-3">示例交易记录</a>
+<ul>
+<li><a href="#headline-4">1. 工资收入到账</a>
+</li>
+<li><a href="#headline-5">2. 吃饭消费（使用花呗支付）</a>
+</li>
+<li><a href="#headline-6">3. 交通费消费（使用借呗支付）</a>
+</li>
+<li><a href="#headline-7">4. 生活费消费（使用工资银行卡支付）</a>
+</li>
+<li><a href="#headline-8">5. 还花呗账单</a>
+</li>
+<li><a href="#headline-9">6. 还借呗账单</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-10">账户结余</a>
+</li>
+<li><a href="#headline-11">总结</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-12">ledger记账工具导出文件</a>
+<ul>
+<li><a href="#headline-13">导出表格</a>
+</li>
+<li><a href="#headline-14">导出其他文件</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-15">ledger记账工具查看指定时间范围的记账情况</a>
+</li>
+<li><a href="#headline-16">参考链接</a>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/ledger%E8%BF%9B%E8%A1%8C%E5%A4%8D%E5%BC%8F%E8%AE%B0%E8%B4%A6/">Ledger进行复式记账</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 11, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+Ledger进行复式记账-ChatGPT
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>
+使用 Ledger 进行复式记账（double-entry bookkeeping）时，可以根据你的消费方式（花呗、借呗、工资银行卡）和消费类别（吃饭、交通费、生活费）设计一个合理的账户结构。Ledger 是一个基于文本的财务管理工具，它通过清晰的借贷记账规则帮助你记录和追踪财务状况。</p>
+<p>
+以下是一个基本的示例，帮助你将消费、收入以及不同账户之间的交易整理成复式记账的形式。</p>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+账户结构设计
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<ol>
+<li>
+<p>资产账户：</p>
+<ul>
+<li>Assets:Bank:Salary —— 工资银行卡</li>
+<li>Assets:PayLater:Huabei —— 花呗</li>
+<li>Assets:PayLater:Jiebei —— 借呗</li>
+</ul>
+</li>
+<li>
+<p>费用账户：</p>
+<ul>
+<li>Expenses:Food —— 吃饭</li>
+<li>Expenses:Transportation —— 交通费</li>
+<li>Expenses:Living —— 生活费</li>
+</ul>
+</li>
+<li>
+<p>收入账户：</p>
+<ul>
+<li>Income:Salary —— 工资收入</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+示例交易记录
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<div id="outline-container-headline-4" class="outline-4">
+<h4 id="headline-4">
+1. 工资收入到账
+</h4>
+<div id="outline-text-headline-4" class="outline-text-4">
+<p>当你工资收入到账时，使用工资银行卡支付，所以我们会记录从工资账户（Assets:Bank:Salary）到银行账户的转账。</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">2024/11/01 工资收入
+</span></span><span class="line"><span class="cl">    Assets:Bank:Salary        5000 CNY
+</span></span><span class="line"><span class="cl">    Income:Salary              -5000 CNY</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+2. 吃饭消费（使用花呗支付）
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<p>假设你在餐馆消费了 100 元，使用花呗支付。</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">2024/11/02 吃饭
+</span></span><span class="line"><span class="cl">    Expenses:Food              100 CNY
+</span></span><span class="line"><span class="cl">    Assets:PayLater:Huabei     -100 CNY</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-4">
+<h4 id="headline-6">
+3. 交通费消费（使用借呗支付）
+</h4>
+<div id="outline-text-headline-6" class="outline-text-4">
+<p>假设你乘坐公交车花费了 20 元，使用借呗支付。</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">2024/11/03 交通费
+</span></span><span class="line"><span class="cl">    Expenses:Transportation    20 CNY
+</span></span><span class="line"><span class="cl">    Assets:PayLater:Jiebei     -20 CNY</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-4">
+<h4 id="headline-7">
+4. 生活费消费（使用工资银行卡支付）
+</h4>
+<div id="outline-text-headline-7" class="outline-text-4">
+<p>假设你购买日常生活用品花费了 200 元，从工资银行卡支付。</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">2024/11/04 生活费
+</span></span><span class="line"><span class="cl">    Expenses:Living            200 CNY
+</span></span><span class="line"><span class="cl">    Assets:Bank:Salary         -200 CNY</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-4">
+<h4 id="headline-8">
+5. 还花呗账单
+</h4>
+<div id="outline-text-headline-8" class="outline-text-4">
+<p>假设你还了 100 元花呗账单。</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">2024/11/05 还花呗
+</span></span><span class="line"><span class="cl">    Assets:Bank:Salary         100 CNY
+</span></span><span class="line"><span class="cl">    Assets:PayLater:Huabei     100 CNY</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-4">
+<h4 id="headline-9">
+6. 还借呗账单
+</h4>
+<div id="outline-text-headline-9" class="outline-text-4">
+<p>假设你还了 20 元借呗账单。</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">2024/11/06 还借呗
+</span></span><span class="line"><span class="cl">    Assets:Bank:Salary         20 CNY
+</span></span><span class="line"><span class="cl">    Assets:PayLater:Jiebei     20 CNY</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-3">
+<h3 id="headline-10">
+账户结余
+</h3>
+<div id="outline-text-headline-10" class="outline-text-3">
+<p>使用 Ledger，你可以通过命令 ledger register 或 ledger balance 来查看各个账户的余额。例如：</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ledger register Assets</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+这会显示各个资产账户的余额，包括工资银行卡、花呗和借呗的余额。</p>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-3">
+<h3 id="headline-11">
+总结
+</h3>
+<div id="outline-text-headline-11" class="outline-text-3">
+<ul>
+<li>资产账户 用来记录你的银行卡、花呗和借呗等账户的余额。</li>
+<li>费用账户 用来记录不同类别的消费（如吃饭、交通费、生活费）。</li>
+<li>每一笔消费都需要有两个条目：一条是从支付方式账户（如银行卡、花呗、借呗）减少钱款，另一条是将金额记录到相应的费用账户中。</li>
+</ul>
+<p>你可以根据自己的实际情况进一步扩展和调整这些账户分类和交易记录，使得 Ledger 更符合你的需求。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-2">
+<h2 id="headline-12">
+ledger记账工具导出文件
+</h2>
+<div id="outline-text-headline-12" class="outline-text-2">
+<div id="outline-container-headline-13" class="outline-3">
+<h3 id="headline-13">
+导出表格
+</h3>
+<div id="outline-text-headline-13" class="outline-text-3">
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ledger bal -f ledger.ledger -o test.csv
+</span></span><span class="line"><span class="cl">或
+</span></span><span class="line"><span class="cl">ledger reg -f ledger.ledger -o test.csv</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-3">
+<h3 id="headline-14">
+导出其他文件
+</h3>
+<div id="outline-text-headline-14" class="outline-text-3">
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ledger bal -f ledger.ledger -o test.txt
+</span></span><span class="line"><span class="cl">或
+</span></span><span class="line"><span class="cl">ledger reg -f ledger.ledger -o test.txt</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>也可以导出为.md文件或.org文件，只需要更改后缀即可。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-2">
+<h2 id="headline-15">
+ledger记账工具查看指定时间范围的记账情况
+</h2>
+<div id="outline-text-headline-15" class="outline-text-2">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ledger -f ledger_1.ledger bal --begin 12/13 --end 12/14</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-2">
+<h2 id="headline-16">
+参考链接
+</h2>
+<div id="outline-text-headline-16" class="outline-text-2">
+<p>
+<a href="https://zero4drift.github.io/posts/ledger--ledger-mode-xue-xi-zhi-shi-dian-zong-jie/">Ledger &amp; ledger-mode 学习知识点总结</a></p>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E8%AE%B0%E8%B4%A6/">记账</a>
+        
+            <a href="/tags/ledger/">Ledger</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

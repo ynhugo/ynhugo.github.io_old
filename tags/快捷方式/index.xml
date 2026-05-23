@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>快捷方式 on Example Site</title>
+        <link>https://ynhugo.github.io/tags/%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F/</link>
+        <description>Recent content in 快捷方式 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Thu, 14 May 2026 00:55:33 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Windows多用户共享应用程序完全指南</title>
+        <link>https://ynhugo.github.io/p/windows%E5%A4%9A%E7%94%A8%E6%88%B7%E5%85%B1%E4%BA%AB%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/</link>
+        <pubDate>Thu, 14 May 2026 00:55:33 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/windows%E5%A4%9A%E7%94%A8%E6%88%B7%E5%85%B1%E4%BA%AB%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+Windows多用户共享应用程序完全指南
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-2&#34;&gt;
+为什么需要多用户共享应用？
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+在家庭共享电脑或办公环境中，经常有多个用户使用同一台 Windows 设备。默认情况下，每个用户安装的应用程序可能仅对本人可见，导致重复安装、占用磁盘空间，以及配置管理混乱。&lt;/p&gt;
+&lt;p&gt;
+本文将通过系统目录解析、操作方法详解、常见误区与最佳实践，帮助你实现真正的多用户应用共享。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-3&#34;&gt;
+核心概念：两个关键目录
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+Windows 通过两个目录管理开始菜单中的程序快捷方式，它们决定了应用程序对不同用户的可见性。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;作用范围&lt;/th&gt;
+&lt;th&gt;实际路径&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;shell:programs&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;仅当前用户&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C:\Users\&amp;lt;用户名&amp;gt;\AppData\Roaming\Microsoft\Windows\Start Menu\Programs&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;shell:common programs&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;所有用户&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;C:\ProgramData\Microsoft\Windows\Start Menu\Programs&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div id=&#34;outline-container-headline-4&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-4&#34;&gt;
+快速访问方式
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-4&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;按下 &lt;code&gt;Win + R&lt;/code&gt; 组合键&lt;/li&gt;
+&lt;li&gt;输入上述任一命令，点击确定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-5&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-5&#34;&gt;
+权限提醒
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-5&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;修改 ~shell:common programs~（所有用户目录）通常需要管理员权限&lt;/li&gt;
+&lt;li&gt;若无法粘贴或删除文件，请以管理员身份重新打开文件夹&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-6&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-6&#34;&gt;
+共享应用程序的三种方法
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-6&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;div id=&#34;outline-container-headline-7&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-7&#34;&gt;
+方法一：手动复制快捷方式（最推荐，适合大众用户）
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-7&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+这是最简单、最直观的方法，无需记忆任何命令。&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-8&#34; class=&#34;outline-5&#34;&gt;
+&lt;h5 id=&#34;headline-8&#34;&gt;
+操作步骤
+&lt;/h5&gt;
+&lt;div id=&#34;outline-text-headline-8&#34; class=&#34;outline-text-5&#34;&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;按下 ~Win + R~，输入 ~shell:programs~，回车&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这会打开当前用户的开始菜单程序目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;再按一次 ~Win + R~，输入 ~shell:common programs~，回车&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这会打开所有用户的开始菜单程序目录&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在第一个窗口中找到想要共享的应用或文件夹&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可以是一个应用的快捷方式（如 ~微信.lnk~）&lt;/li&gt;
+&lt;li&gt;也可以是一个文件夹（如 ~WPS Office~）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;直接将其 &lt;em&gt;拖拽&lt;/em&gt; 或 &lt;em&gt;复制粘贴&lt;/em&gt; 到第二个窗口&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果系统提示需要管理员权限，点击确认即可&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;完成！其他用户登录后就能在开始菜单中看到这些应用&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-9&#34; class=&#34;outline-5&#34;&gt;
+&lt;h5 id=&#34;headline-9&#34;&gt;
+图示流程
+&lt;/h5&gt;
+&lt;div id=&#34;outline-text-headline-9&#34; class=&#34;outline-text-5&#34;&gt;
+&lt;pre class=&#34;example&#34;&gt;
+[Win+R] shell:programs     [Win+R] shell:common programs
+        │                            │
+        ▼                            ▼
+  当前用户目录                  所有用户目录
+  ┌─────────────────┐         ┌─────────────────┐
+  │ 微信.lnk        │  ──拖拽──▶ │ 微信.lnk        │
+  │ QQ.lnk          │         │ QQ.lnk          │
+  │ WPS Office/     │  ──复制──▶ │ WPS Office/     │
+  └─────────────────┘         └─────────────────┘
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-10&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-10&#34;&gt;
+方法二：安装时选择“所有用户”（一劳永逸）
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-10&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+在安装新软件时，选择“为这台电脑上的所有人安装”或类似选项，安装程序会自动将快捷方式放入公共目录。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-11&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-11&#34;&gt;
+方法三：使用符号链接（高级用户）
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-11&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+适合需要保持源和目标实时同步，且不想占用额外磁盘空间的场景。&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-12&#34; class=&#34;outline-5&#34;&gt;
+&lt;h5 id=&#34;headline-12&#34;&gt;
+命令参数速查
+&lt;/h5&gt;
+&lt;div id=&#34;outline-text-headline-12&#34; class=&#34;outline-text-5&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;th&gt;作用对象&lt;/th&gt;
+&lt;th&gt;示例命令&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;无参数&lt;/td&gt;
+&lt;td&gt;文件&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;mklink &amp;#34;链接.lnk&amp;#34; &amp;#34;目标.lnk&amp;#34;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;文件符号链接，需管理员权限&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;/D&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;目录（文件夹）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;mklink /D &amp;#34;链接文件夹&amp;#34; &amp;#34;目标文件夹&amp;#34;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;目录符号链接，最常用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;/J&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;目录&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;mklink /J &amp;#34;链接文件夹&amp;#34; &amp;#34;目标文件夹&amp;#34;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;目录交接点，仅限本地&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;/H&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;文件&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;mklink /H &amp;#34;链接.lnk&amp;#34; &amp;#34;目标.lnk&amp;#34;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;硬链接，不可跨卷&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-13&#34; class=&#34;outline-5&#34;&gt;
+&lt;h5 id=&#34;headline-13&#34;&gt;
+操作示例
+&lt;/h5&gt;
+&lt;div id=&#34;outline-text-headline-13&#34; class=&#34;outline-text-5&#34;&gt;
+&lt;div class=&#34;src src-cmd&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;: 以管理员身份运行 CMD&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;: 为文件夹创建符号链接&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;mklink&lt;/span&gt; /D &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\工具合集&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Users\当前用户\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\我的工具&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;: 为单个快捷方式创建符号链接&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;mklink&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\某应用.lnk&amp;#34;&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;C:\Users\当前用户\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\某应用.lnk&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-14&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-14&#34;&gt;
+核心前提：应用程序本体必须在公共位置
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-14&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+共享快捷方式的本质是让所有用户都能找到程序的可执行文件。若程序本体安装在当前用户的私有目录，则其他用户无法运行。&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-15&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-15&#34;&gt;
+如何判断程序安装位置？
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-15&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;ol&gt;
+&lt;li&gt;右键点击应用程序快捷方式 → 选择“属性”&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查看“目标”字段中的路径&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;公共位置示例：~C:Program Files~ 或 &lt;code&gt;C:\Program Files (x86)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;私有位置示例：~C:\Users\&amp;lt;用户名&amp;gt;\AppData\Local~&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-16&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-16&#34;&gt;
+解决方案
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-16&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+若程序位于私有目录，需执行以下操作：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;卸载该应用程序&lt;/li&gt;
+&lt;li&gt;重新安装，选择自定义安装路径到公共目录（如 ~C:Program Files~）&lt;/li&gt;
+&lt;li&gt;安装时选择“所有用户”选项&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-17&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-17&#34;&gt;
+用户迁移猜想：删除旧用户前需要了解的事
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-17&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+在完成上述配置后，你可能考虑删除原来的用户，并切换到新建用户中继续使用。本节分析其可行性与风险。&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-18&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-18&#34;&gt;
+理论可行性
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-18&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+只要满足以下条件，可以安全删除旧用户：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;所有需要共享的应用快捷方式均已移至 &lt;code&gt;shell:common programs&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;所有应用本体均安装在公共路径（如 &lt;code&gt;C:\Program Files~），而非 ~C:\Users\&amp;lt;旧用户名&amp;gt;\AppData&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;旧用户中的个人数据已完整备份或迁移&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-19&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-19&#34;&gt;
+不同操作方式的风险对比
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-19&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;操作方式&lt;/th&gt;
+&lt;th&gt;删除旧用户后&lt;/th&gt;
+&lt;th&gt;新用户能否使用&lt;/th&gt;
+&lt;th&gt;推荐度&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;手动复制快捷方式到公共目录&lt;/td&gt;
+&lt;td&gt;完全独立，不受影响&lt;/td&gt;
+&lt;td&gt;能使用&lt;/td&gt;
+&lt;td&gt;★★★★★ 推荐&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;mklink&lt;/code&gt; 指向公共路径（如 D:\、C:Program Files）&lt;/td&gt;
+&lt;td&gt;链接仍然有效&lt;/td&gt;
+&lt;td&gt;能使用&lt;/td&gt;
+&lt;td&gt;★★★★☆ 可行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;mklink&lt;/code&gt; 指向当前用户的 &lt;code&gt;AppData&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;源被删除，链接失效&lt;/td&gt;
+&lt;td&gt;不能使用&lt;/td&gt;
+&lt;td&gt;★☆☆☆☆ 不推荐&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;mklink&lt;/code&gt; 指向当前用户的桌面/文档&lt;/td&gt;
+&lt;td&gt;源被删除，链接失效&lt;/td&gt;
+&lt;td&gt;不能使用&lt;/td&gt;
+&lt;td&gt;★☆☆☆☆ 不推荐&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-20&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-20&#34;&gt;
+结论与建议
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-20&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+&amp;gt; &lt;strong&gt;&lt;strong&gt;如果想进行用户迁移，推荐使用「手动复制」而非 ~mklink~。&lt;/strong&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;
+理由：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;手动复制操作简单，无需记忆命令&lt;/li&gt;
+&lt;li&gt;复制是物理隔离，删除旧用户不会影响公共目录中的副本&lt;/li&gt;
+&lt;li&gt;无需依赖路径，不担心路径引用问题&lt;/li&gt;
+&lt;li&gt;维护简单，不需要记录哪些地方使用了符号链接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;mklink&lt;/code&gt; 更适合的场景：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;不想占用额外磁盘空间&lt;/li&gt;
+&lt;li&gt;需要保持源和目标实时同步&lt;/li&gt;
+&lt;li&gt;确定不会删除源文件的长期使用场景&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-21&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-21&#34;&gt;
+操作流程总结（最佳实践）
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-21&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;div id=&#34;outline-container-headline-22&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-22&#34;&gt;
+步骤一：确认程序安装位置
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-22&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+手动检查法（适合大众）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;找到应用的快捷方式&lt;/li&gt;
+&lt;li&gt;右键 → 属性 → 查看“目标”路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;命令行法（适合批量检查）：&lt;/p&gt;
+&lt;div class=&#34;src src-powershell&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-powershell&#34; data-lang=&#34;powershell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;::&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;以管理员身份运行&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PowerShell&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;Get-Process&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Where-Object&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$_&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;py&#34;&gt;Path&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-like&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;*\Users\*&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;Select-Object&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Name&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Path&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-23&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-23&#34;&gt;
+步骤二：处理位于私有目录的程序
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-23&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;卸载这些程序&lt;/li&gt;
+&lt;li&gt;重新安装到公共目录（如 ~C:Program Files~）&lt;/li&gt;
+&lt;li&gt;安装时选择“所有用户”选项&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-24&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-24&#34;&gt;
+步骤三：共享快捷方式（手动复制法）
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-24&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;ol&gt;
+&lt;li&gt;按下 ~Win + R~，输入 ~shell:programs~，回车&lt;/li&gt;
+&lt;li&gt;再按 ~Win + R~，输入 ~shell:common programs~，回车&lt;/li&gt;
+&lt;li&gt;将需要共享的快捷方式或文件夹从第一个窗口拖拽或复制到第二个窗口&lt;/li&gt;
+&lt;li&gt;如有管理员权限提示，点击确认&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-25&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-25&#34;&gt;
+步骤四：验证共享结果
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-25&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;ol&gt;
+&lt;li&gt;新建一个测试用户（不要直接删除旧用户）&lt;/li&gt;
+&lt;li&gt;登录测试用户，检查开始菜单中是否出现共享的应用&lt;/li&gt;
+&lt;li&gt;逐一启动应用，确认功能正常&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-26&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-26&#34;&gt;
+步骤五：用户迁移（可选）
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-26&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;ol&gt;
+&lt;li&gt;确认所有共享应用正常工作&lt;/li&gt;
+&lt;li&gt;备份旧用户的个人数据（桌面、文档、下载、浏览器收藏夹等）&lt;/li&gt;
+&lt;li&gt;删除旧用户&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;src src-cmd&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cmd&#34; data-lang=&#34;cmd&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;: 以管理员身份运行 CMD&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;net user &lt;span class=&#34;p&#34;&gt;&amp;lt;&lt;/span&gt;旧用户名&lt;span class=&#34;p&#34;&gt;&amp;gt;&lt;/span&gt; /delete&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-27&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-27&#34;&gt;
+常见问题与注意事项
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-27&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;注意点&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;管理员权限&lt;/td&gt;
+&lt;td&gt;修改 &lt;code&gt;shell:common programs&lt;/code&gt; 需要管理员权限&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;用户数据隔离&lt;/td&gt;
+&lt;td&gt;即使快捷方式共享，每个用户的配置、登录状态等仍独立存储&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;UWP/商店应用&lt;/td&gt;
+&lt;td&gt;部分从 Microsoft Store 安装的应用不支持跨用户共享&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;便携版软件&lt;/td&gt;
+&lt;td&gt;若便携版软件放在公共文件夹（如 ~C:\Tools~），则天然支持多用户共享&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;文件类型关联&lt;/td&gt;
+&lt;td&gt;某些应用需要在每个用户首次运行时重新确认文件关联&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;复制 vs 剪切&lt;/td&gt;
+&lt;td&gt;推荐使用「复制」而非「剪切」，保留原用户的一份备份&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-28&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-28&#34;&gt;
+参考链接
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-28&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://learn.microsoft.com/en-us/windows/win32/shell/knownfolderid&#34;&gt;Microsoft Docs: Known Folder IDs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://learn.microsoft.com/en-us/windows/win32/fileio/symbolic-links&#34;&gt;Microsoft Docs: Symbolic Links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://support.microsoft.com/en-us/windows/customize-the-start-menu-on-windows-11-92b2f8f8-2c6d-4c8e-8b9a-3f1e4e5c6d7a&#34;&gt;Microsoft Support: Customize the Start Menu&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://ynhugo.github.io/p/windowsshell命令完全指南/&#34;&gt;WindowsShell命令完全指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://chat.deepseek.com/share/plgtv73fguym6754j7&#34;&gt;用户与全局开始菜单区别&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

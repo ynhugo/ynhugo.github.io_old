@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Z-Libary on Example Site</title>
+        <link>https://ynhugo.github.io/tags/z-libary/</link>
+        <description>Recent content in Z-Libary on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 26 Mar 2024 00:24:34 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/z-libary/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>z-libary</title>
+        <link>https://ynhugo.github.io/p/z-libary/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:34 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/z-libary/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+z-libary 自动获取最新网址的神奇邮箱
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+在这里还要给大家介绍一个可以自动获取最新网址的邮箱。&lt;/p&gt;
+&lt;p&gt;
+只要给 &lt;code class=&#34;verbatim&#34;&gt;blackbox@zlib.se&lt;/code&gt; 随便发个邮件，它会自动告诉你最新的网址。&lt;/p&gt;
+&lt;p&gt;
+而且邮件里面还会告诉你一个客服的邮箱，也是可以联系的。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-2&#34;&gt;
+参考链接
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://zhuanlan.zhihu.com/p/659340795?utm_id=0&#34;&gt;Zlibrary最新使用方法(国内版)(2023.11.20更新)+其他好用电子书网站推荐&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

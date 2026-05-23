@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 脚本使用方式 环境部署 第一次使用该脚本需要先搭建环境，执行命令如下：\n1 qemu-x86-linux.sh default 运行方式 在环境完备的情况下，可以使用两种启动方式启动，一种是通过图形化界面启动，还有一种是通过控制台启动，命令分别如下：\n1 2 3 qemu-x86-linux.sh run graphic 和 qemu-x86-linux.sh run nographic 输出运行命令 如果想输出启动方式，需要执行的命令如下：\n1 2 3 qemu-x86-linux.sh run_way graphic 和 qemu-x86-linux.sh run_way nographic 脚本内容 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 linux=&#34;linux-5.19&#34;; busybox=&#34;busybox-1.35.0&#34;; file_linux=&#34;${linux}.tar.gz&#34;; file_busybox=&#34;${busybox}.tar.bz2&#34;; busybox_config=&#34;busybox-1.35.0/.config&#34;; work_dir_name=&#34;qemu-x86-linux&#34;; work_dir=&#34;${HOME}/${work_dir_name}&#34;; mkdir -p ${work_dir}; qemu_arch=&#34;qemu-system-x86_64&#34; cd ${work_dir}; tools-install() { package_array=(flex bison libncurses5-dev libelf-dev libssl-dev qemu-system-x86) package_array_size=${#package_array[@]} for ((i = 0; i &lt; package_array_size; i++)) do # 软件安装 if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then echo -e &#34;\\e[34m&#34; sudo apt-get install ${package_array[${i}]} -y echo -e &#34;\\e[0m&#34; if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then echo -e &#34;\\e[31m${package_array[${i}]} 未安装\\e[0m&#34; else echo -e &#34;\\e[32m${package_array[${i}]} 已安装\\e[0m&#34; fi\telse echo -e &#34;\\e[32m${package_array[${i}]} 已安装\\e[0m&#34; fi done\t} if [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;graphic&#34; ]; then\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append &#34;init=/init&#34; elif [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;nographic&#34; ]; then\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append &#34;init=/init console=ttyS0&#34; elif [ &#34;$1&#34; = &#34;help&#34; ]; then echo &#34;$0 graphic&#34; echo &#34;$0 nographic&#34; elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;graphic&#34; ]; then echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append \\&#34;init=/init\\&#34;&#34; elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;nographic&#34; ]; then echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append \\&#34;init=/init console=ttyS0\\&#34;&#34; elif [ &#34;$1&#34; = &#34;default&#34; ]; then tools-install # 判断linux内核是否准备好\twhile true; do if [ ! -f &#34;${work_dir}/$file_linux&#34; ]; then\techo -e &#34;\\e[32m&#34; wget https://mirrors.aliyun.com/linux-kernel/v5.x/$file_linux echo -e &#34;\\e[0m&#34; else echo -e &#34;\\e[32m${file_linux} 已下载\\e[0m&#34; break; fi\tdone # 判断busybox文件是否准备好 while true; do if [ ! -f &#34;${work_dir}/$file_busybox&#34; ]; then echo -e &#34;\\e[33m&#34; # wget --no-check-certificate https://busybox.net/downloads/busybox-1.32.0.tar.bz2 wget --no-check-certificate https://busybox.net/downloads/${file_busybox} echo -e &#34;\\e[0m&#34; else echo -e &#34;\\e[32m$file_busybox 已下载\\e[0m&#34; break; fi\tdone\t# 判断linux内核是否解压 echo -e &#34;\\e[32m&#34; # kernel if [ -d &#34;${work_dir}/$linux&#34; ]; then echo &#34;$linux exists.&#34; else tar xf ${work_dir}/$file_linux -C ${work_dir}; fi echo -e &#34;\\e[0m&#34; # 判断busybox文件是否解压 echo -e &#34;\\e[33m&#34; if [ -d &#34;${work_dir}/$busybox&#34; ]; then echo &#34;$busybox exists.&#34; else tar xf ${work_dir}/$file_busybox -C ${work_dir}; fi echo -e &#34;\\e[0m&#34;\t# 编译linux内核 echo -e &#34;\\e[32m&#34; cd ${work_dir}/${linux}; make defconfig\t# 在x86_64架构上默认编译x86_64_defconfig make -j$(nproc) echo -e &#34;\\e[0m&#34; # 编译busybox，编译之后把&#34;${busybox}/_install/*&#34;拷贝到rootfs目录下 cd ${work_dir}/${busybox}; if [ ! -f &#34;${work_dir}/${busybox}/_install/bin/busybox&#34; ]; then echo &#34;# 修改配置，选中如下项目，静态编译&#34; echo -e &#34;\\e[31m# Settings ?C&gt; Build Options ?C&gt; [*] Build static binary（no share libs）\\e[0m&#34; echo &#34;# 反选如下项目，否则后续qemu执行会提示 /bin/sh:can&#39;t access tty;job control turned off&#34; echo -e &#34;\\e[31m# Shells ---&gt; [ ] Job control\\e[0m&#34; read -p &#34;仅第一次编译运行时需要进行该操作，回车后要返回该界面可以执行快捷键Ctrl+z，回到menuconfig界面则执行fg，配置完毕后退出并确认保存即可，回车继续&#34; continue; make menuconfig\tfi\tmake -j$(nproc) make install # 制作initramfs cd ${work_dir}/${busybox}/_install/\tmkdir -p proc sys dev tmp touch init chmod +x init cat &gt; init &lt;&lt; \\EOF #!/bin/sh # 挂载一些必要的文件系统 mount -t proc none /proc mount -t sysfs none /sys mount -t tmpfs none /tmp mount -t devtmpfs none /dev echo echo &#34;Hello Linux&#34; # 显示开机消耗时间 echo &#34;This boot took $(cut -d&#39; &#39; -f1 /proc/uptime) seconds&#34; echo # 停留在控制台 exec /bin/sh EOF if [ -f &#34;initramfs.cpio.gz&#34; ]; then echo &#34;initramfs.cpio.gz exists&#34; else find . -print0 | cpio --null -ov --format=newc | gzip -9 &gt; ../initramfs.cpio.gz fi # QEMU运行虚拟机，通过sd卡加载linux内核\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -device edu -append &#34;init=/init console=ttyS0&#34;\telif [ &#34;$1&#34; = &#34;install&#34; ]; then tools-install fi 参考链接 QEMU启动x86-Linux内核\n">
+<title>QEMU启动x86-Linux内核</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/qemu%E5%90%AF%E5%8A%A8x86-linux%E5%86%85%E6%A0%B8/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="QEMU启动x86-Linux内核">
+<meta property='og:description' content=" 脚本使用方式 环境部署 第一次使用该脚本需要先搭建环境，执行命令如下：\n1 qemu-x86-linux.sh default 运行方式 在环境完备的情况下，可以使用两种启动方式启动，一种是通过图形化界面启动，还有一种是通过控制台启动，命令分别如下：\n1 2 3 qemu-x86-linux.sh run graphic 和 qemu-x86-linux.sh run nographic 输出运行命令 如果想输出启动方式，需要执行的命令如下：\n1 2 3 qemu-x86-linux.sh run_way graphic 和 qemu-x86-linux.sh run_way nographic 脚本内容 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 linux=&#34;linux-5.19&#34;; busybox=&#34;busybox-1.35.0&#34;; file_linux=&#34;${linux}.tar.gz&#34;; file_busybox=&#34;${busybox}.tar.bz2&#34;; busybox_config=&#34;busybox-1.35.0/.config&#34;; work_dir_name=&#34;qemu-x86-linux&#34;; work_dir=&#34;${HOME}/${work_dir_name}&#34;; mkdir -p ${work_dir}; qemu_arch=&#34;qemu-system-x86_64&#34; cd ${work_dir}; tools-install() { package_array=(flex bison libncurses5-dev libelf-dev libssl-dev qemu-system-x86) package_array_size=${#package_array[@]} for ((i = 0; i &lt; package_array_size; i++)) do # 软件安装 if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then echo -e &#34;\\e[34m&#34; sudo apt-get install ${package_array[${i}]} -y echo -e &#34;\\e[0m&#34; if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then echo -e &#34;\\e[31m${package_array[${i}]} 未安装\\e[0m&#34; else echo -e &#34;\\e[32m${package_array[${i}]} 已安装\\e[0m&#34; fi\telse echo -e &#34;\\e[32m${package_array[${i}]} 已安装\\e[0m&#34; fi done\t} if [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;graphic&#34; ]; then\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append &#34;init=/init&#34; elif [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;nographic&#34; ]; then\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append &#34;init=/init console=ttyS0&#34; elif [ &#34;$1&#34; = &#34;help&#34; ]; then echo &#34;$0 graphic&#34; echo &#34;$0 nographic&#34; elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;graphic&#34; ]; then echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append \\&#34;init=/init\\&#34;&#34; elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;nographic&#34; ]; then echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append \\&#34;init=/init console=ttyS0\\&#34;&#34; elif [ &#34;$1&#34; = &#34;default&#34; ]; then tools-install # 判断linux内核是否准备好\twhile true; do if [ ! -f &#34;${work_dir}/$file_linux&#34; ]; then\techo -e &#34;\\e[32m&#34; wget https://mirrors.aliyun.com/linux-kernel/v5.x/$file_linux echo -e &#34;\\e[0m&#34; else echo -e &#34;\\e[32m${file_linux} 已下载\\e[0m&#34; break; fi\tdone # 判断busybox文件是否准备好 while true; do if [ ! -f &#34;${work_dir}/$file_busybox&#34; ]; then echo -e &#34;\\e[33m&#34; # wget --no-check-certificate https://busybox.net/downloads/busybox-1.32.0.tar.bz2 wget --no-check-certificate https://busybox.net/downloads/${file_busybox} echo -e &#34;\\e[0m&#34; else echo -e &#34;\\e[32m$file_busybox 已下载\\e[0m&#34; break; fi\tdone\t# 判断linux内核是否解压 echo -e &#34;\\e[32m&#34; # kernel if [ -d &#34;${work_dir}/$linux&#34; ]; then echo &#34;$linux exists.&#34; else tar xf ${work_dir}/$file_linux -C ${work_dir}; fi echo -e &#34;\\e[0m&#34; # 判断busybox文件是否解压 echo -e &#34;\\e[33m&#34; if [ -d &#34;${work_dir}/$busybox&#34; ]; then echo &#34;$busybox exists.&#34; else tar xf ${work_dir}/$file_busybox -C ${work_dir}; fi echo -e &#34;\\e[0m&#34;\t# 编译linux内核 echo -e &#34;\\e[32m&#34; cd ${work_dir}/${linux}; make defconfig\t# 在x86_64架构上默认编译x86_64_defconfig make -j$(nproc) echo -e &#34;\\e[0m&#34; # 编译busybox，编译之后把&#34;${busybox}/_install/*&#34;拷贝到rootfs目录下 cd ${work_dir}/${busybox}; if [ ! -f &#34;${work_dir}/${busybox}/_install/bin/busybox&#34; ]; then echo &#34;# 修改配置，选中如下项目，静态编译&#34; echo -e &#34;\\e[31m# Settings ?C&gt; Build Options ?C&gt; [*] Build static binary（no share libs）\\e[0m&#34; echo &#34;# 反选如下项目，否则后续qemu执行会提示 /bin/sh:can&#39;t access tty;job control turned off&#34; echo -e &#34;\\e[31m# Shells ---&gt; [ ] Job control\\e[0m&#34; read -p &#34;仅第一次编译运行时需要进行该操作，回车后要返回该界面可以执行快捷键Ctrl+z，回到menuconfig界面则执行fg，配置完毕后退出并确认保存即可，回车继续&#34; continue; make menuconfig\tfi\tmake -j$(nproc) make install # 制作initramfs cd ${work_dir}/${busybox}/_install/\tmkdir -p proc sys dev tmp touch init chmod +x init cat &gt; init &lt;&lt; \\EOF #!/bin/sh # 挂载一些必要的文件系统 mount -t proc none /proc mount -t sysfs none /sys mount -t tmpfs none /tmp mount -t devtmpfs none /dev echo echo &#34;Hello Linux&#34; # 显示开机消耗时间 echo &#34;This boot took $(cut -d&#39; &#39; -f1 /proc/uptime) seconds&#34; echo # 停留在控制台 exec /bin/sh EOF if [ -f &#34;initramfs.cpio.gz&#34; ]; then echo &#34;initramfs.cpio.gz exists&#34; else find . -print0 | cpio --null -ov --format=newc | gzip -9 &gt; ../initramfs.cpio.gz fi # QEMU运行虚拟机，通过sd卡加载linux内核\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -device edu -append &#34;init=/init console=ttyS0&#34;\telif [ &#34;$1&#34; = &#34;install&#34; ]; then tools-install fi 参考链接 QEMU启动x86-Linux内核\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/qemu%E5%90%AF%E5%8A%A8x86-linux%E5%86%85%E6%A0%B8/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='qemu' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='x86' /><meta property='article:published_time' content='2025-03-16T03:26:36&#43;08:00'/><meta property='article:modified_time' content='2025-03-16T03:26:36&#43;08:00'/>
+<meta name="twitter:title" content="QEMU启动x86-Linux内核">
+<meta name="twitter:description" content=" 脚本使用方式 环境部署 第一次使用该脚本需要先搭建环境，执行命令如下：\n1 qemu-x86-linux.sh default 运行方式 在环境完备的情况下，可以使用两种启动方式启动，一种是通过图形化界面启动，还有一种是通过控制台启动，命令分别如下：\n1 2 3 qemu-x86-linux.sh run graphic 和 qemu-x86-linux.sh run nographic 输出运行命令 如果想输出启动方式，需要执行的命令如下：\n1 2 3 qemu-x86-linux.sh run_way graphic 和 qemu-x86-linux.sh run_way nographic 脚本内容 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 linux=&#34;linux-5.19&#34;; busybox=&#34;busybox-1.35.0&#34;; file_linux=&#34;${linux}.tar.gz&#34;; file_busybox=&#34;${busybox}.tar.bz2&#34;; busybox_config=&#34;busybox-1.35.0/.config&#34;; work_dir_name=&#34;qemu-x86-linux&#34;; work_dir=&#34;${HOME}/${work_dir_name}&#34;; mkdir -p ${work_dir}; qemu_arch=&#34;qemu-system-x86_64&#34; cd ${work_dir}; tools-install() { package_array=(flex bison libncurses5-dev libelf-dev libssl-dev qemu-system-x86) package_array_size=${#package_array[@]} for ((i = 0; i &lt; package_array_size; i++)) do # 软件安装 if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then echo -e &#34;\\e[34m&#34; sudo apt-get install ${package_array[${i}]} -y echo -e &#34;\\e[0m&#34; if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then echo -e &#34;\\e[31m${package_array[${i}]} 未安装\\e[0m&#34; else echo -e &#34;\\e[32m${package_array[${i}]} 已安装\\e[0m&#34; fi\telse echo -e &#34;\\e[32m${package_array[${i}]} 已安装\\e[0m&#34; fi done\t} if [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;graphic&#34; ]; then\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append &#34;init=/init&#34; elif [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;nographic&#34; ]; then\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append &#34;init=/init console=ttyS0&#34; elif [ &#34;$1&#34; = &#34;help&#34; ]; then echo &#34;$0 graphic&#34; echo &#34;$0 nographic&#34; elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;graphic&#34; ]; then echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append \\&#34;init=/init\\&#34;&#34; elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;nographic&#34; ]; then echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append \\&#34;init=/init console=ttyS0\\&#34;&#34; elif [ &#34;$1&#34; = &#34;default&#34; ]; then tools-install # 判断linux内核是否准备好\twhile true; do if [ ! -f &#34;${work_dir}/$file_linux&#34; ]; then\techo -e &#34;\\e[32m&#34; wget https://mirrors.aliyun.com/linux-kernel/v5.x/$file_linux echo -e &#34;\\e[0m&#34; else echo -e &#34;\\e[32m${file_linux} 已下载\\e[0m&#34; break; fi\tdone # 判断busybox文件是否准备好 while true; do if [ ! -f &#34;${work_dir}/$file_busybox&#34; ]; then echo -e &#34;\\e[33m&#34; # wget --no-check-certificate https://busybox.net/downloads/busybox-1.32.0.tar.bz2 wget --no-check-certificate https://busybox.net/downloads/${file_busybox} echo -e &#34;\\e[0m&#34; else echo -e &#34;\\e[32m$file_busybox 已下载\\e[0m&#34; break; fi\tdone\t# 判断linux内核是否解压 echo -e &#34;\\e[32m&#34; # kernel if [ -d &#34;${work_dir}/$linux&#34; ]; then echo &#34;$linux exists.&#34; else tar xf ${work_dir}/$file_linux -C ${work_dir}; fi echo -e &#34;\\e[0m&#34; # 判断busybox文件是否解压 echo -e &#34;\\e[33m&#34; if [ -d &#34;${work_dir}/$busybox&#34; ]; then echo &#34;$busybox exists.&#34; else tar xf ${work_dir}/$file_busybox -C ${work_dir}; fi echo -e &#34;\\e[0m&#34;\t# 编译linux内核 echo -e &#34;\\e[32m&#34; cd ${work_dir}/${linux}; make defconfig\t# 在x86_64架构上默认编译x86_64_defconfig make -j$(nproc) echo -e &#34;\\e[0m&#34; # 编译busybox，编译之后把&#34;${busybox}/_install/*&#34;拷贝到rootfs目录下 cd ${work_dir}/${busybox}; if [ ! -f &#34;${work_dir}/${busybox}/_install/bin/busybox&#34; ]; then echo &#34;# 修改配置，选中如下项目，静态编译&#34; echo -e &#34;\\e[31m# Settings ?C&gt; Build Options ?C&gt; [*] Build static binary（no share libs）\\e[0m&#34; echo &#34;# 反选如下项目，否则后续qemu执行会提示 /bin/sh:can&#39;t access tty;job control turned off&#34; echo -e &#34;\\e[31m# Shells ---&gt; [ ] Job control\\e[0m&#34; read -p &#34;仅第一次编译运行时需要进行该操作，回车后要返回该界面可以执行快捷键Ctrl+z，回到menuconfig界面则执行fg，配置完毕后退出并确认保存即可，回车继续&#34; continue; make menuconfig\tfi\tmake -j$(nproc) make install # 制作initramfs cd ${work_dir}/${busybox}/_install/\tmkdir -p proc sys dev tmp touch init chmod +x init cat &gt; init &lt;&lt; \\EOF #!/bin/sh # 挂载一些必要的文件系统 mount -t proc none /proc mount -t sysfs none /sys mount -t tmpfs none /tmp mount -t devtmpfs none /dev echo echo &#34;Hello Linux&#34; # 显示开机消耗时间 echo &#34;This boot took $(cut -d&#39; &#39; -f1 /proc/uptime) seconds&#34; echo # 停留在控制台 exec /bin/sh EOF if [ -f &#34;initramfs.cpio.gz&#34; ]; then echo &#34;initramfs.cpio.gz exists&#34; else find . -print0 | cpio --null -ov --format=newc | gzip -9 &gt; ../initramfs.cpio.gz fi # QEMU运行虚拟机，通过sd卡加载linux内核\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -device edu -append &#34;init=/init console=ttyS0&#34;\telif [ &#34;$1&#34; = &#34;install&#34; ]; then tools-install fi 参考链接 QEMU启动x86-Linux内核\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">脚本使用方式</a>
+<ul>
+<li><a href="#headline-2">环境部署</a>
+</li>
+<li><a href="#headline-3">运行方式</a>
+</li>
+<li><a href="#headline-4">输出运行命令</a>
+</li>
+<li><a href="#headline-5">脚本内容</a>
+</li>
+<li><a href="#headline-6">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/qemu%E5%90%AF%E5%8A%A8x86-linux%E5%86%85%E6%A0%B8/">QEMU启动x86-Linux内核</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 16, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+脚本使用方式
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+环境部署
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>第一次使用该脚本需要先搭建环境，执行命令如下：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">qemu-x86-linux.sh default</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+运行方式
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>
+在环境完备的情况下，可以使用两种启动方式启动，一种是通过图形化界面启动，还有一种是通过控制台启动，命令分别如下：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">qemu-x86-linux.sh run graphic
+</span></span><span class="line"><span class="cl">和
+</span></span><span class="line"><span class="cl">qemu-x86-linux.sh run nographic</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+输出运行命令
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>
+如果想输出启动方式，需要执行的命令如下：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">qemu-x86-linux.sh run_way graphic
+</span></span><span class="line"><span class="cl">和
+</span></span><span class="line"><span class="cl">qemu-x86-linux.sh run_way nographic</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+脚本内容
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">linux</span><span class="o">=</span><span class="s2">&#34;linux-5.19&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">busybox</span><span class="o">=</span><span class="s2">&#34;busybox-1.35.0&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">file_linux</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">linux</span><span class="si">}</span><span class="s2">.tar.gz&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">file_busybox</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">busybox</span><span class="si">}</span><span class="s2">.tar.bz2&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">busybox_config</span><span class="o">=</span><span class="s2">&#34;busybox-1.35.0/.config&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">work_dir_name</span><span class="o">=</span><span class="s2">&#34;qemu-x86-linux&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">work_dir</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">work_dir_name</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">mkdir -p <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">qemu_arch</span><span class="o">=</span><span class="s2">&#34;qemu-system-x86_64&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">tools-install<span class="o">()</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">package_array</span><span class="o">=(</span>flex bison libncurses5-dev libelf-dev libssl-dev qemu-system-x86<span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">package_array_size</span><span class="o">=</span><span class="si">${#</span><span class="nv">package_array</span><span class="p">[@]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="o">((</span><span class="nv">i</span> <span class="o">=</span> 0<span class="p">;</span> i &lt; package_array_size<span class="p">;</span> i++<span class="o">))</span>
+</span></span><span class="line"><span class="cl">	<span class="k">do</span>
+</span></span><span class="line"><span class="cl">		<span class="c1"># 软件安装</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[</span> ! <span class="s2">&#34;</span><span class="k">$(</span>apt list --installed <span class="p">|</span> grep -wo <span class="s2">&#34;</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span> <span class="p">|</span> head -n 1<span class="k">)</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[34m&#34;</span>
+</span></span><span class="line"><span class="cl">			sudo apt-get install <span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span> -y
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">[</span> ! <span class="s2">&#34;</span><span class="k">$(</span>apt list --installed <span class="p">|</span> grep -wo <span class="s2">&#34;</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span> <span class="p">|</span> head -n 1<span class="k">)</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">echo</span> -e <span class="s2">&#34;\e[31m</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2"> 未安装\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">else</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">echo</span> -e <span class="s2">&#34;\e[32m</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2"> 已安装\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">fi</span>		  
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[32m</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2"> 已安装\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="k">done</span>	
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;run&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span>  <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;graphic&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>		
+</span></span><span class="line"><span class="cl">	<span class="nv">$qemu_arch</span> -kernel <span class="nv">$work_dir</span>/<span class="nv">$linux</span>/arch/x86/boot/bzImage -initrd <span class="nv">$work_dir</span>/<span class="nv">$busybox</span>/initramfs.cpio.gz -append <span class="s2">&#34;init=/init&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;run&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span>  <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;nographic&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>	
+</span></span><span class="line"><span class="cl">    <span class="nv">$qemu_arch</span> -kernel <span class="nv">$work_dir</span>/<span class="nv">$linux</span>/arch/x86/boot/bzImage -initrd <span class="nv">$work_dir</span>/<span class="nv">$busybox</span>/initramfs.cpio.gz -nographic -append <span class="s2">&#34;init=/init console=ttyS0&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;help&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2"> graphic&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2"> nographic&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;run_way&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;graphic&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$qemu_arch</span><span class="s2"> -kernel </span><span class="nv">$work_dir</span><span class="s2">/</span><span class="nv">$linux</span><span class="s2">/arch/x86/boot/bzImage -initrd </span><span class="nv">$work_dir</span><span class="s2">/</span><span class="nv">$busybox</span><span class="s2">/initramfs.cpio.gz -append \&#34;init=/init\&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;run_way&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;nographic&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$qemu_arch</span><span class="s2"> -kernel </span><span class="nv">$work_dir</span><span class="s2">/</span><span class="nv">$linux</span><span class="s2">/arch/x86/boot/bzImage -initrd </span><span class="nv">$work_dir</span><span class="s2">/</span><span class="nv">$busybox</span><span class="s2">/initramfs.cpio.gz -nographic -append \&#34;init=/init console=ttyS0\&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;default&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	tools-install
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 判断linux内核是否准备好	</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> true<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">do</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="s2">/</span><span class="nv">$file_linux</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>		  
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[32m&#34;</span>
+</span></span><span class="line"><span class="cl">			wget https://mirrors.aliyun.com/linux-kernel/v5.x/<span class="nv">$file_linux</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e  <span class="s2">&#34;\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[32m</span><span class="si">${</span><span class="nv">file_linux</span><span class="si">}</span><span class="s2"> 已下载\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">			break<span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>		
+</span></span><span class="line"><span class="cl">	<span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 判断busybox文件是否准备好</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> true<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">do</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="s2">/</span><span class="nv">$file_busybox</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e  <span class="s2">&#34;\e[33m&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="c1"># wget --no-check-certificate https://busybox.net/downloads/busybox-1.32.0.tar.bz2</span>
+</span></span><span class="line"><span class="cl">			wget --no-check-certificate https://busybox.net/downloads/<span class="si">${</span><span class="nv">file_busybox</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e  <span class="s2">&#34;\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[32m</span><span class="nv">$file_busybox</span><span class="s2"> 已下载\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">			break<span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>	  	  
+</span></span><span class="line"><span class="cl">	<span class="k">done</span>	
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 判断linux内核是否解压</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[32m&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1"># kernel</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> -d <span class="s2">&#34;</span><span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="s2">/</span><span class="nv">$linux</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$linux</span><span class="s2"> exists.&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		tar xf <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span>/<span class="nv">$file_linux</span> -C <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 判断busybox文件是否解压</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[33m&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> -d <span class="s2">&#34;</span><span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="s2">/</span><span class="nv">$busybox</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$busybox</span><span class="s2"> exists.&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		tar xf <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span>/<span class="nv">$file_busybox</span> -C <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[0m&#34;</span>	
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 编译linux内核</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[32m&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">cd</span>  <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span>/<span class="si">${</span><span class="nv">linux</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	make defconfig				<span class="c1"># 在x86_64架构上默认编译x86_64_defconfig</span>
+</span></span><span class="line"><span class="cl">	make -j<span class="k">$(</span>nproc<span class="k">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 编译busybox，编译之后把&#34;${busybox}/_install/*&#34;拷贝到rootfs目录下</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">cd</span>  <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span>/<span class="si">${</span><span class="nv">busybox</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">busybox</span><span class="si">}</span><span class="s2">/_install/bin/busybox&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;# 修改配置，选中如下项目，静态编译&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> -e <span class="s2">&#34;\e[31m# Settings ?C&gt; Build Options ?C&gt; [*] Build static binary（no share libs）\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;# 反选如下项目，否则后续qemu执行会提示 /bin/sh:can&#39;t access tty;job control turned off&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> -e <span class="s2">&#34;\e[31m# Shells  ---&gt;  [ ]   Job control\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">read</span> -p <span class="s2">&#34;仅第一次编译运行时需要进行该操作，回车后要返回该界面可以执行快捷键Ctrl+z，回到menuconfig界面则执行fg，配置完毕后退出并确认保存即可，回车继续&#34;</span> <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		make menuconfig	
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>	
+</span></span><span class="line"><span class="cl">	make -j<span class="k">$(</span>nproc<span class="k">)</span>
+</span></span><span class="line"><span class="cl">	make install
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1"># 制作initramfs</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">cd</span>  <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span>/<span class="si">${</span><span class="nv">busybox</span><span class="si">}</span>/_install/	
+</span></span><span class="line"><span class="cl">	mkdir -p proc sys dev tmp
+</span></span><span class="line"><span class="cl">	touch init
+</span></span><span class="line"><span class="cl">	chmod +x init
+</span></span><span class="line"><span class="cl">	cat &gt; init <span class="s">&lt;&lt; \EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 挂载一些必要的文件系统
+</span></span></span><span class="line"><span class="cl"><span class="s">mount -t proc none /proc
+</span></span></span><span class="line"><span class="cl"><span class="s">mount -t sysfs none /sys
+</span></span></span><span class="line"><span class="cl"><span class="s">mount -t tmpfs none /tmp
+</span></span></span><span class="line"><span class="cl"><span class="s">mount -t devtmpfs none /dev
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">echo
+</span></span></span><span class="line"><span class="cl"><span class="s">echo &#34;Hello Linux&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 显示开机消耗时间
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">echo &#34;This boot took $(cut -d&#39; &#39; -f1 /proc/uptime) seconds&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 停留在控制台
+</span></span></span><span class="line"><span class="cl"><span class="s">exec /bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> -f <span class="s2">&#34;initramfs.cpio.gz&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;initramfs.cpio.gz exists&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		find . -print0 <span class="p">|</span> cpio --null -ov --format<span class="o">=</span>newc <span class="p">|</span> gzip -9 &gt; ../initramfs.cpio.gz
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1"># QEMU运行虚拟机，通过sd卡加载linux内核	</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">$qemu_arch</span> -kernel <span class="nv">$work_dir</span>/<span class="nv">$linux</span>/arch/x86/boot/bzImage -initrd <span class="nv">$work_dir</span>/<span class="nv">$busybox</span>/initramfs.cpio.gz -nographic -device edu -append <span class="s2">&#34;init=/init console=ttyS0&#34;</span>	
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;install&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	tools-install
+</span></span><span class="line"><span class="cl"><span class="k">fi</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+参考链接
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/benkaoya/article/details/129469116">QEMU启动x86-Linux内核</a></p>
+<p>
+<a href="https://ynhugo.github.io/p/使用qemu搭建arm嵌入式linux开发环境/">使用qemu搭建arm嵌入式linux开发环境</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/qemu/">Qemu</a>
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/x86/">X86</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%9F%BA%E4%BA%8E-arm64-%E7%9A%84-ubuntu-20.04.4-%E6%A0%B9%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9A%E5%88%B6%E4%B8%8E-linux-5.4.52-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91%E5%8F%8A-qemu-%E5%90%AF%E5%8A%A8%E5%AE%9E%E8%B7%B5/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">基于 ARM64 的 Ubuntu 20.04.4 根文件系统定制与 Linux 5.4.52 内核编译及 QEMU 启动实践</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/jq%E7%94%A8%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">jq用法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/qemu%E5%90%AF%E5%8A%A8arm-linux%E5%86%85%E6%A0%B8-edu/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">QEMU启动arm-Linux内核&#43;edu</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

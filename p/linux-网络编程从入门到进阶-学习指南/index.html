@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" Linux 网络编程从入门到进阶 学习指南 网络通信基础 思考一下，如果计算机想要“交朋友”，它们需要怎样互相沟通？正如人们交流需要使用语言一样，计算机通信也必须遵守一套规则 ― 这就是网络协议。\n协议确保信息可以在不同的设备和平台之间清晰、准确地传递。要深入理解协议，我们首先要熟悉两个基础的通信模型：OSI 和 TCP/IP 模型。\nOSI 模型和 TCP/IP 模型 在网络通信的世界里，OSI（开放式系统互联通信参考模型）和 TCP/IP（传输控制协议/网际协议）模型扮演着基础框架的角色。它们各自描述了网络通信的多个层次和阶段，但以不同的方式来分类和处理数据传输的细节。\nOSI模型 OSI（Open Systems Interconnection）模型是一个概念性框架，用于描述网络中不同操作层次的功能。由七层组成，从物理硬件的电气信号（物理层），到应用层（如网页浏览器），每一层都有其独特的功能和协议。\nTCP/IP模型 TCP/IP 模型，则更加贴近实际网络中的运作。Linux 的网络协议栈就是基于该模型实现的。它是基于四层架构，将网络通信过程简化并集中在协议族上，如传输控制协议（TCP）和互联网协议（IP），这两种协议是现代网络通信中最为核心的部分。\n基本概念 地址簿：IP地址和MAC地址 想象一下，互联网是一个巨大的数字城市，而每台计算机或网络设备就像是住在这个城市里的居民。\nIP地址：数字世界的“家庭住址”\n每台设备的 IP 地址就像是它在这个数字城市里的家庭住址。当计算机需要发送信息或访问网络资源时，它会使用目的地设备的 IP 地址来确保信息正确地送达。这个地址有点像是我们现实世界中的邮寄地址，可以根据网络环境的变化而变化（例如，当设备从家庭网络移动到办公室网络时）。\nMAC地址：网络中的“身份证”\n然后，我们有 MAC 地址，这是网络设备的另一个关键标识。每台设备的 MAC 地址都是独一无二的，类似于每个人的身份证号码。它是在设备制造时就被分配的，并且在大多数情况下，这个地址是固定不变的。MAC 地址在本地网络（如家庭或办公室网络）内起着重要作用，它帮助确保信息被准确地送达到特定设备，就像邮递员需要知道收件人的详细身份信息才能将包裹准确递交。\n总结一下 ：ip 地址可以让数据包找到目的主机所在的网络，而 MAC 地址确保数据包能准确送到目的主机上。\n导航路线：子网掩码和网关 子网掩码：定位网络的“区域地图”\n子网掩码可以被视为定位网络内部和外部地址的“区域地图”。就像在一个大城市中，你需要知道哪些街道属于你的社区，哪些通往城市的其他部分。子网掩码帮助计算机确定一个 IP 地址是属于本地网络（即同一个子网）还是位于外部网络。\n内部导航：如果目的地IP地址与计算机所在的子网相匹配（根据子网掩码判断），则数据包在本地网络内传送。 外部导航：如果目的地不在本地子网内，计算机知道它需要将数据发送到更远的目的地。 网关：网络间的“中转站”\n网关在网络通信中扮演中转站的角色。当你的数据包需要从一个网络（比如你的家庭网络）发送到另一个网络（比如你的工作地点的网络）时，网关是这个旅程的第一站。\n路由决策： 网关检查数据包的目的 IP 地址，然后使用它的路由表来决定最佳的路径将数据包发送到目标网络。 总结： 子网掩码和网关共同协作，帮助数据包在复杂的网络结构中找到最有效的路径。子网掩码确定数据包是否在本地网络内，而网关指导跨网络的数据传输。\n端口 ：确保数据到达正确的“应用程序门牌号” 好了，现在我们的数据包已经知道了去哪里，但它如何确保被正确的程序接收呢？这就是端口登场的时候了。端口号就像是收件人的门牌号，确保数据不只是送到了正确的地址，而且被正确的应用程序接收。\nLinux 套接字编程 套接字是什么 在网络编程中，套接字就像是网络世界的通信端口。每一个联网的应用程序，为了能够互发消息，都会使用到这样一个端口。这个端口允许数据从一个程序流向另一个程序。简而言之，套接字是应用程序用来在网络上交流的桥梁。\n">
+<title>Linux 网络编程从入门到进阶 学习指南</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/linux-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6-%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Linux 网络编程从入门到进阶 学习指南">
+<meta property='og:description' content=" Linux 网络编程从入门到进阶 学习指南 网络通信基础 思考一下，如果计算机想要“交朋友”，它们需要怎样互相沟通？正如人们交流需要使用语言一样，计算机通信也必须遵守一套规则 ― 这就是网络协议。\n协议确保信息可以在不同的设备和平台之间清晰、准确地传递。要深入理解协议，我们首先要熟悉两个基础的通信模型：OSI 和 TCP/IP 模型。\nOSI 模型和 TCP/IP 模型 在网络通信的世界里，OSI（开放式系统互联通信参考模型）和 TCP/IP（传输控制协议/网际协议）模型扮演着基础框架的角色。它们各自描述了网络通信的多个层次和阶段，但以不同的方式来分类和处理数据传输的细节。\nOSI模型 OSI（Open Systems Interconnection）模型是一个概念性框架，用于描述网络中不同操作层次的功能。由七层组成，从物理硬件的电气信号（物理层），到应用层（如网页浏览器），每一层都有其独特的功能和协议。\nTCP/IP模型 TCP/IP 模型，则更加贴近实际网络中的运作。Linux 的网络协议栈就是基于该模型实现的。它是基于四层架构，将网络通信过程简化并集中在协议族上，如传输控制协议（TCP）和互联网协议（IP），这两种协议是现代网络通信中最为核心的部分。\n基本概念 地址簿：IP地址和MAC地址 想象一下，互联网是一个巨大的数字城市，而每台计算机或网络设备就像是住在这个城市里的居民。\nIP地址：数字世界的“家庭住址”\n每台设备的 IP 地址就像是它在这个数字城市里的家庭住址。当计算机需要发送信息或访问网络资源时，它会使用目的地设备的 IP 地址来确保信息正确地送达。这个地址有点像是我们现实世界中的邮寄地址，可以根据网络环境的变化而变化（例如，当设备从家庭网络移动到办公室网络时）。\nMAC地址：网络中的“身份证”\n然后，我们有 MAC 地址，这是网络设备的另一个关键标识。每台设备的 MAC 地址都是独一无二的，类似于每个人的身份证号码。它是在设备制造时就被分配的，并且在大多数情况下，这个地址是固定不变的。MAC 地址在本地网络（如家庭或办公室网络）内起着重要作用，它帮助确保信息被准确地送达到特定设备，就像邮递员需要知道收件人的详细身份信息才能将包裹准确递交。\n总结一下 ：ip 地址可以让数据包找到目的主机所在的网络，而 MAC 地址确保数据包能准确送到目的主机上。\n导航路线：子网掩码和网关 子网掩码：定位网络的“区域地图”\n子网掩码可以被视为定位网络内部和外部地址的“区域地图”。就像在一个大城市中，你需要知道哪些街道属于你的社区，哪些通往城市的其他部分。子网掩码帮助计算机确定一个 IP 地址是属于本地网络（即同一个子网）还是位于外部网络。\n内部导航：如果目的地IP地址与计算机所在的子网相匹配（根据子网掩码判断），则数据包在本地网络内传送。 外部导航：如果目的地不在本地子网内，计算机知道它需要将数据发送到更远的目的地。 网关：网络间的“中转站”\n网关在网络通信中扮演中转站的角色。当你的数据包需要从一个网络（比如你的家庭网络）发送到另一个网络（比如你的工作地点的网络）时，网关是这个旅程的第一站。\n路由决策： 网关检查数据包的目的 IP 地址，然后使用它的路由表来决定最佳的路径将数据包发送到目标网络。 总结： 子网掩码和网关共同协作，帮助数据包在复杂的网络结构中找到最有效的路径。子网掩码确定数据包是否在本地网络内，而网关指导跨网络的数据传输。\n端口 ：确保数据到达正确的“应用程序门牌号” 好了，现在我们的数据包已经知道了去哪里，但它如何确保被正确的程序接收呢？这就是端口登场的时候了。端口号就像是收件人的门牌号，确保数据不只是送到了正确的地址，而且被正确的应用程序接收。\nLinux 套接字编程 套接字是什么 在网络编程中，套接字就像是网络世界的通信端口。每一个联网的应用程序，为了能够互发消息，都会使用到这样一个端口。这个端口允许数据从一个程序流向另一个程序。简而言之，套接字是应用程序用来在网络上交流的桥梁。\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/linux-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6-%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='socket' /><meta property='article:published_time' content='2025-03-14T19:20:40&#43;08:00'/><meta property='article:modified_time' content='2025-03-14T19:20:40&#43;08:00'/>
+<meta name="twitter:title" content="Linux 网络编程从入门到进阶 学习指南">
+<meta name="twitter:description" content=" Linux 网络编程从入门到进阶 学习指南 网络通信基础 思考一下，如果计算机想要“交朋友”，它们需要怎样互相沟通？正如人们交流需要使用语言一样，计算机通信也必须遵守一套规则 ― 这就是网络协议。\n协议确保信息可以在不同的设备和平台之间清晰、准确地传递。要深入理解协议，我们首先要熟悉两个基础的通信模型：OSI 和 TCP/IP 模型。\nOSI 模型和 TCP/IP 模型 在网络通信的世界里，OSI（开放式系统互联通信参考模型）和 TCP/IP（传输控制协议/网际协议）模型扮演着基础框架的角色。它们各自描述了网络通信的多个层次和阶段，但以不同的方式来分类和处理数据传输的细节。\nOSI模型 OSI（Open Systems Interconnection）模型是一个概念性框架，用于描述网络中不同操作层次的功能。由七层组成，从物理硬件的电气信号（物理层），到应用层（如网页浏览器），每一层都有其独特的功能和协议。\nTCP/IP模型 TCP/IP 模型，则更加贴近实际网络中的运作。Linux 的网络协议栈就是基于该模型实现的。它是基于四层架构，将网络通信过程简化并集中在协议族上，如传输控制协议（TCP）和互联网协议（IP），这两种协议是现代网络通信中最为核心的部分。\n基本概念 地址簿：IP地址和MAC地址 想象一下，互联网是一个巨大的数字城市，而每台计算机或网络设备就像是住在这个城市里的居民。\nIP地址：数字世界的“家庭住址”\n每台设备的 IP 地址就像是它在这个数字城市里的家庭住址。当计算机需要发送信息或访问网络资源时，它会使用目的地设备的 IP 地址来确保信息正确地送达。这个地址有点像是我们现实世界中的邮寄地址，可以根据网络环境的变化而变化（例如，当设备从家庭网络移动到办公室网络时）。\nMAC地址：网络中的“身份证”\n然后，我们有 MAC 地址，这是网络设备的另一个关键标识。每台设备的 MAC 地址都是独一无二的，类似于每个人的身份证号码。它是在设备制造时就被分配的，并且在大多数情况下，这个地址是固定不变的。MAC 地址在本地网络（如家庭或办公室网络）内起着重要作用，它帮助确保信息被准确地送达到特定设备，就像邮递员需要知道收件人的详细身份信息才能将包裹准确递交。\n总结一下 ：ip 地址可以让数据包找到目的主机所在的网络，而 MAC 地址确保数据包能准确送到目的主机上。\n导航路线：子网掩码和网关 子网掩码：定位网络的“区域地图”\n子网掩码可以被视为定位网络内部和外部地址的“区域地图”。就像在一个大城市中，你需要知道哪些街道属于你的社区，哪些通往城市的其他部分。子网掩码帮助计算机确定一个 IP 地址是属于本地网络（即同一个子网）还是位于外部网络。\n内部导航：如果目的地IP地址与计算机所在的子网相匹配（根据子网掩码判断），则数据包在本地网络内传送。 外部导航：如果目的地不在本地子网内，计算机知道它需要将数据发送到更远的目的地。 网关：网络间的“中转站”\n网关在网络通信中扮演中转站的角色。当你的数据包需要从一个网络（比如你的家庭网络）发送到另一个网络（比如你的工作地点的网络）时，网关是这个旅程的第一站。\n路由决策： 网关检查数据包的目的 IP 地址，然后使用它的路由表来决定最佳的路径将数据包发送到目标网络。 总结： 子网掩码和网关共同协作，帮助数据包在复杂的网络结构中找到最有效的路径。子网掩码确定数据包是否在本地网络内，而网关指导跨网络的数据传输。\n端口 ：确保数据到达正确的“应用程序门牌号” 好了，现在我们的数据包已经知道了去哪里，但它如何确保被正确的程序接收呢？这就是端口登场的时候了。端口号就像是收件人的门牌号，确保数据不只是送到了正确的地址，而且被正确的应用程序接收。\nLinux 套接字编程 套接字是什么 在网络编程中，套接字就像是网络世界的通信端口。每一个联网的应用程序，为了能够互发消息，都会使用到这样一个端口。这个端口允许数据从一个程序流向另一个程序。简而言之，套接字是应用程序用来在网络上交流的桥梁。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">Linux 网络编程从入门到进阶 学习指南</a>
+<ul>
+<li><a href="#headline-2">网络通信基础</a>
+<ul>
+<li><a href="#headline-3">OSI 模型和 TCP/IP 模型</a>
+</li>
+<li><a href="#headline-4">基本概念</a>
+<ul>
+<li><a href="#headline-5">地址簿：IP地址和MAC地址</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-6">Linux 套接字编程</a>
+<ul>
+<li><a href="#headline-7">套接字是什么</a>
+</li>
+<li><a href="#headline-8">套接字类型</a>
+</li>
+<li><a href="#headline-9">套接字常用 API</a>
+</li>
+<li><a href="#headline-10">套接字地址结构以及地址转换 API</a>
+<ul>
+<li><a href="#headline-11">完整 demo 示例</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-12">字节序转换 API</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#headline-13">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/linux-%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6-%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/">Linux 网络编程从入门到进阶 学习指南</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 14, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+Linux 网络编程从入门到进阶 学习指南
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+网络通信基础
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>思考一下，如果计算机想要“交朋友”，它们需要怎样互相沟通？正如人们交流需要使用语言一样，计算机通信也必须遵守一套规则 ― 这就是网络协议。</p>
+<p>
+协议确保信息可以在不同的设备和平台之间清晰、准确地传递。要深入理解协议，我们首先要熟悉两个基础的通信模型：OSI 和 TCP/IP 模型。</p>
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+OSI 模型和 TCP/IP 模型
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<p>在网络通信的世界里，OSI（开放式系统互联通信参考模型）和 TCP/IP（传输控制协议/网际协议）模型扮演着基础框架的角色。它们各自描述了网络通信的多个层次和阶段，但以不同的方式来分类和处理数据传输的细节。</p>
+<ul>
+<li>OSI模型</li>
+</ul>
+<p>OSI（Open Systems Interconnection）模型是一个概念性框架，用于描述网络中不同操作层次的功能。由七层组成，从物理硬件的电气信号（物理层），到应用层（如网页浏览器），每一层都有其独特的功能和协议。</p>
+<ul>
+<li>TCP/IP模型</li>
+</ul>
+<p>TCP/IP 模型，则更加贴近实际网络中的运作。Linux 的网络协议栈就是基于该模型实现的。它是基于四层架构，将网络通信过程简化并集中在协议族上，如传输控制协议（TCP）和互联网协议（IP），这两种协议是现代网络通信中最为核心的部分。</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-4">
+<h4 id="headline-4">
+基本概念
+</h4>
+<div id="outline-text-headline-4" class="outline-text-4">
+<div id="outline-container-headline-5" class="outline-5">
+<h5 id="headline-5">
+地址簿：IP地址和MAC地址
+</h5>
+<div id="outline-text-headline-5" class="outline-text-5">
+<p>想象一下，互联网是一个巨大的数字城市，而每台计算机或网络设备就像是住在这个城市里的居民。</p>
+<p>
+<code class="verbatim">IP地址：数字世界的“家庭住址”</code></p>
+<p>
+每台设备的 IP 地址就像是它在这个数字城市里的家庭住址。当计算机需要发送信息或访问网络资源时，它会使用目的地设备的 IP 地址来确保信息正确地送达。这个地址有点像是我们现实世界中的邮寄地址，可以根据网络环境的变化而变化（例如，当设备从家庭网络移动到办公室网络时）。</p>
+<p>
+<code class="verbatim">MAC地址：网络中的“身份证”</code></p>
+<p>
+然后，我们有 MAC 地址，这是网络设备的另一个关键标识。每台设备的 MAC 地址都是独一无二的，类似于每个人的身份证号码。它是在设备制造时就被分配的，并且在大多数情况下，这个地址是固定不变的。MAC 地址在本地网络（如家庭或办公室网络）内起着重要作用，它帮助确保信息被准确地送达到特定设备，就像邮递员需要知道收件人的详细身份信息才能将包裹准确递交。</p>
+<p>
+<code class="verbatim">总结一下</code> ：ip 地址可以让数据包找到目的主机所在的网络，而 MAC 地址确保数据包能准确送到目的主机上。</p>
+<p>
+<code class="verbatim">导航路线：子网掩码和网关</code>
+<code class="verbatim">子网掩码：定位网络的“区域地图”</code></p>
+<p>
+子网掩码可以被视为定位网络内部和外部地址的“区域地图”。就像在一个大城市中，你需要知道哪些街道属于你的社区，哪些通往城市的其他部分。子网掩码帮助计算机确定一个 IP 地址是属于本地网络（即同一个子网）还是位于外部网络。</p>
+<ul>
+<li>内部导航：如果目的地IP地址与计算机所在的子网相匹配（根据子网掩码判断），则数据包在本地网络内传送。</li>
+<li>外部导航：如果目的地不在本地子网内，计算机知道它需要将数据发送到更远的目的地。</li>
+</ul>
+<p><code class="verbatim">网关：网络间的“中转站”</code></p>
+<p>
+网关在网络通信中扮演中转站的角色。当你的数据包需要从一个网络（比如你的家庭网络）发送到另一个网络（比如你的工作地点的网络）时，网关是这个旅程的第一站。</p>
+<p>
+<code class="verbatim">路由决策：</code> 网关检查数据包的目的 IP 地址，然后使用它的路由表来决定最佳的路径将数据包发送到目标网络。
+<code class="verbatim">总结：</code>  子网掩码和网关共同协作，帮助数据包在复杂的网络结构中找到最有效的路径。子网掩码确定数据包是否在本地网络内，而网关指导跨网络的数据传输。</p>
+<p>
+<code class="verbatim">端口 ：确保数据到达正确的“应用程序门牌号”</code>
+好了，现在我们的数据包已经知道了去哪里，但它如何确保被正确的程序接收呢？这就是端口登场的时候了。端口号就像是收件人的门牌号，确保数据不只是送到了正确的地址，而且被正确的应用程序接收。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-4">
+<h4 id="headline-6">
+Linux 套接字编程
+</h4>
+<div id="outline-text-headline-6" class="outline-text-4">
+<div id="outline-container-headline-7" class="outline-5">
+<h5 id="headline-7">
+套接字是什么
+</h5>
+<div id="outline-text-headline-7" class="outline-text-5">
+<p>在网络编程中，套接字就像是网络世界的通信端口。每一个联网的应用程序，为了能够互发消息，都会使用到这样一个端口。这个端口允许数据从一个程序流向另一个程序。简而言之，套接字是应用程序用来在网络上交流的桥梁。</p>
+<p>
+想象一下，你要用手机给朋友发一条信息。你只需要知道他们的手机号码，这样信息就可以直接发送到他们的手机上。在网络编程中，套接字的作用类似。它使用IP地址 （类似于手机号码） 来确定数据发送的目标位置，而端口号则像是确定信息应该送达到对方手机中的哪个应用程序。这样，套接字（使用 ip 地址和端口）确保了数据能够准确地发送给正在监听那个特定端口的程序。</p>
+<p>
+<code class="verbatim">套接字的工作原理：</code></p>
+<p>
+套接字的工作原理就像是电话通话的过程。首先，你需要拨打一个号码（即IP地址+端口号）来建立连接。一旦连接建立，电话线（网络连接）就激活了，你的声音（数据）就可以通过它传送。</p>
+<p>
+在这个过程中：</p>
+<p>
+<code class="verbatim">拨号</code> 对应于网络编程中的连接 <code class="verbatim">建立</code> ，这是通过调用套接字API来完成的，比如 connect( )函数。</p>
+<p>
+<code class="verbatim">通话</code> 对应于 <code class="verbatim">数据传输</code> ，你可以通过套接字发送 send( ) 和接收 recv( )数据。</p>
+<p>
+<code class="verbatim">挂断</code> 对应于 <code class="verbatim">结束连接</code> ，完成通信后，你需要关闭套接字 close( )函数，以结束会话并清理资源。</p>
+<p>
+在整个通信过程中，套接字保证了数据从一个程序准确地传送到另一个程序，无论这两个程序是在同一台计算机上还是跨越了广阔的互联网。</p>
+<p>
+在 Linux 中，套接字其实就是一系列的编程接口，Linux 提供了很多特定的 API 来创建和使用套接字，接下来，让我们学习如何使用 Linux 套接字 api 来编写各种网络服务程序。</p>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-5">
+<h5 id="headline-8">
+套接字类型
+</h5>
+<div id="outline-text-headline-8" class="outline-text-5">
+<p>
+在 Linux 中，有三种套接字类型， <code class="verbatim">前两种是重点掌握的，</code> 第三种了解即可。</p>
+<p>
+<code class="verbatim">TCP套接字 (SOCK_STREAM):</code></p>
+<ul>
+<li>这是一种可靠的套接字连接，保证数据传输的完整性和顺序。</li>
+<li>必须先建立连接，才能传输数据。</li>
+<li>常用于需要准确数据传输的应用，如网页浏览和文件传输。</li>
+</ul>
+<p><code class="verbatim">UDP套接字 (SOCK_DGRAM):</code></p>
+<ul>
+<li>不需要建立连接，但是数据传输可能会丢失，没有先后顺序。</li>
+<li>适用于视频流和在线游戏，这些应用可以容忍一定的数据丢失。</li>
+</ul>
+<p><code class="verbatim">原始套接字 (SOCK_RAW):</code></p>
+<ul>
+<li>允许直接对较低层次的协议如 IP 或 ICMP 进行访问和操作，它绕过了 TCP 和 UDP 的处理。</li>
+<li>开发者可以使用原始套接字来构建自定义的协议或直接处理来自网络的数据包。</li>
+<li>通常用于需要进行网络诊断或网络安全应用，如自定义的ping实现，或者网络嗅探器。</li>
+</ul>
+<p>选择哪种类型取决于你的应用需求―是否需要可靠传输（TCP），还是速度更快但可能丢失数据也没关系（UDP）。</p>
+<p>
+选择使用原始套接字通常意味着你需要对网络协议有深入的理解，因为你将直接与网络层面的数据交互。这比处理 TCP 和 UDP 套接字更复杂，通常只在特殊情况下使用，例如网络工具的开发或定制协议的实现。</p>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-5">
+<h5 id="headline-9">
+套接字常用 API
+</h5>
+<div id="outline-text-headline-9" class="outline-text-5">
+<p>
+接下来，看下常用的套接字 API：</p>
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">socket</span><span class="p">()</span>                    <span class="o">:</span> <span class="err">创建套接字</span>
+</span></span><span class="line"><span class="cl"><span class="nf">bind</span><span class="p">()</span>                      <span class="o">:</span> <span class="err">绑定套接字到本地地址</span>
+</span></span><span class="line"><span class="cl"><span class="nf">listen</span><span class="p">()</span>                    <span class="o">:</span> <span class="err">监听网络连接</span>
+</span></span><span class="line"><span class="cl"><span class="nf">accept</span><span class="p">()</span>                    <span class="o">:</span> <span class="err">接受网络连接</span>
+</span></span><span class="line"><span class="cl"><span class="nf">connect</span><span class="p">()</span>                   <span class="o">:</span> <span class="err">连接到远程主机</span>
+</span></span><span class="line"><span class="cl"><span class="nf">send</span><span class="p">(),</span> <span class="nf">recv</span><span class="p">()</span>              <span class="o">:</span> <span class="err">发送和接收数据（面向连接的套接字）</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sendto</span><span class="p">(),</span> <span class="nf">recvfrom</span><span class="p">()</span>        <span class="o">:</span> <span class="err">发送和接收数据（无连接的套接字）</span>
+</span></span><span class="line"><span class="cl"><span class="nf">close</span><span class="p">(),</span> <span class="nf">shutdown</span><span class="p">()</span>         <span class="o">:</span> <span class="err">关闭套接字</span>
+</span></span><span class="line"><span class="cl"><span class="nf">getsockopt</span><span class="p">(),</span> <span class="nf">setsockopt</span><span class="p">()</span>  <span class="o">:</span> <span class="err">获取和设置套接字选项</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-5">
+<h5 id="headline-10">
+套接字地址结构以及地址转换 API
+</h5>
+<div id="outline-text-headline-10" class="outline-text-5">
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">sockaddr 是一个通用的套接字地址结构，它通常与特定的地址族结构（如 sockaddr_in ）一起使用。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> 这是因为多数套接字函数，如 bind(), connect(), 和 accept()，需要使用指向 sockaddr 结构的指针的参数。
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">sockaddr</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">sa_family_t</span>     <span class="n">sa_family</span><span class="p">;</span>      <span class="cm">/* Address family */</span>
+</span></span><span class="line"><span class="cl">   <span class="kt">char</span>            <span class="n">sa_data</span><span class="p">[];</span>      <span class="cm">/* Socket address */</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 套接字地址结构（适用于IPv4网络通信的地址结构）
+</span></span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">sockaddr_in</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">sa_family_t</span>    <span class="n">sin_family</span><span class="p">;</span> <span class="err">#</span> <span class="n">address</span> <span class="nl">family</span><span class="p">:</span> <span class="n">AF_INET</span> 
+</span></span><span class="line"><span class="cl">    <span class="kt">in_port_t</span>      <span class="n">sin_port</span><span class="p">;</span>   <span class="err">#</span> <span class="n">port</span> <span class="n">in</span> <span class="n">network</span> <span class="n">byte</span> <span class="n">order</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">in_addr</span> <span class="n">sin_addr</span><span class="p">;</span>   <span class="err">#</span> <span class="n">ip</span> <span class="n">address</span> 
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">in_addr</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="kt">uint32_t</span>       <span class="n">s_addr</span><span class="p">;</span>    <span class="err">#</span> <span class="n">address</span> <span class="n">in</span> <span class="n">network</span> <span class="n">byte</span> <span class="n">order</span> 
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/* 
+</span></span></span><span class="line"><span class="cl"><span class="cm">网络地址转换函数 (用于将IP地址在可打印的格式和二进制结构之间转换)
+</span></span></span><span class="line"><span class="cl"><span class="cm">将点分十进制的IP地址（如&#34;192.168.1.1&#34;）转换成网络字节顺序的二进制形式
+</span></span></span><span class="line"><span class="cl"><span class="cm">inet_pton()   
+</span></span></span><span class="line"><span class="cl"><span class="cm">将网络字节顺序的二进制IP地址转换为点分十进制字符串格式
+</span></span></span><span class="line"><span class="cl"><span class="cm">inet_ntop()   
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp"># demo 示例:
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define INET_ADDRSTRLEN 16；
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="n">INET_ADDRSTRLEN</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">in_addr</span> <span class="n">ipv4addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nf">inet_pton</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="s">&#34;192.168.1.1&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ipv4addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nf">inet_ntop</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ipv4addr</span><span class="p">,</span> <span class="n">str</span><span class="p">,</span> <span class="n">INET_ADDRSTRLEN</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The IPv4 address is: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-6">
+<h6 id="headline-11">
+完整 demo 示例
+</h6>
+<div id="outline-text-headline-11" class="outline-text-6">
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define INET_ADDRSTRLEN 16
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="n">INET_ADDRSTRLEN</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="k">struct</span> <span class="n">in_addr</span> <span class="n">ipv4addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">inet_pton</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="s">&#34;192.168.1.1&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ipv4addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">inet_ntop</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">ipv4addr</span><span class="p">,</span> <span class="n">str</span><span class="p">,</span> <span class="n">INET_ADDRSTRLEN</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The IPv4 address is: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-5">
+<h5 id="headline-12">
+字节序转换 API
+</h5>
+<div id="outline-text-headline-12" class="outline-text-5">
+<p>
+在网络编程中，字节序（也称为端序）指的是数值在内存中保存的顺序。不同的计算机体系结构可能会采用不同的字节序来表示数据。最常见的两种字节序是大端字节序（Big-Endian）和小端字节序（Little-Endian）。在网络通信中，为了确保数据在不同的系统间正确传输和解释，定义了一个统一的字节序，即：网络字节序，它采用大端字节序。</p>
+<p>
+由于主机字节序与网络字节序可能不同，因此在发送数据前，发送方需要将其主机字节序的数值转换为网络字节序；接收方收到数据后，需要将网络字节序的数值转换回主机字节序。</p>
+<p>
+Linux 提供了一组 API 来处理字节序的转换：</p>
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="c1">// 将无符号长整型数/无符号短整型数从主机字节顺序转换为网络字节顺序。
+</span></span></span><span class="line"><span class="cl"><span class="nf">htonl</span><span class="p">()</span> <span class="err">和</span> <span class="nf">htons</span><span class="p">()</span>  
+</span></span><span class="line"><span class="cl"><span class="c1">// 将一个无符号长整型数/无符号短整型数从网络字节顺序转换为主机字节顺序。
+</span></span></span><span class="line"><span class="cl"><span class="nf">ntohl</span><span class="p">()</span> <span class="err">和</span> <span class="nf">ntohs</span><span class="p">()</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm">为了方便记忆，大家可以这样理解：h 代表 host(主机)，n 代表 network(网络)，
+</span></span></span><span class="line"><span class="cl"><span class="cm">l 代表 long(四字节：代表ip)，s 代表 short（两字节：代表端口） 。
+</span></span></span><span class="line"><span class="cl"><span class="cm">
+</span></span></span><span class="line"><span class="cl"><span class="cm">以 htons() 举例，host to network short 即：将端口从主机字节序转成网络字节序。
+</span></span></span><span class="line"><span class="cl"><span class="cm">*/</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p><code class="verbatim">注意：htonl 和 ntohl 一般处理的是 IP 地址，而 htons 和 ntohs 一般处理的是端口。</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-3">
+<h3 id="headline-13">
+参考链接
+</h3>
+<div id="outline-text-headline-13" class="outline-text-3">
+<p>
+<a href="https://www.cnblogs.com/xiaokang-coding/p/18024684">Linux 网络编程从入门到进阶 学习指南</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/socket/">Socket</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

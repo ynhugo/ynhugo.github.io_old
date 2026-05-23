@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 实例 实例-1-车小猿 适用于Ubuntu与Cygwin\n发送端代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;string.h&gt; #include &lt;arpa/inet.h&gt; #define GROUP_IP &#34;224.0.1.0&#34; //#define GROUP_IP &#34;239.0.1.10&#34; int main() { // 1. 创建通信的套接字 int fd = socket(AF_INET, SOCK_DGRAM, 0); if(fd == -1) { perror(&#34;socket&#34;); exit(0); } // 2. 设置组播属性 (经测试可以不设置发送端组播属性也能正常发送) struct in_addr opt; // 将组播地址初始化到这个结构体成员中即可 inet_pton(AF_INET, GROUP_IP, &amp;opt.s_addr); setsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, &amp;opt, sizeof(opt)); char buf[1024]; char sendaddrbuf[64]; socklen_t len = sizeof(struct sockaddr_in); struct sockaddr_in sendaddr; struct sockaddr_in cliaddr; cliaddr.sin_family = AF_INET; cliaddr.sin_port = htons(9999); // 接收端需要绑定9999端口 // 发送组播消息, 需要使用组播地址, 和设置组播属性使用的组播地址一致就可以 inet_pton(AF_INET, GROUP_IP, &amp;cliaddr.sin_addr.s_addr); // 3. 通信 int num = 0; while(1) { memset(buf, 0, sizeof(buf)); sprintf(buf, &#34;hello, client...%d\\n&#34;, num++); // 数据广播 sendto(fd, buf, strlen(buf)+1, 0, (struct sockaddr*)&amp;cliaddr, len); printf(&#34;发送的组播的数据: %s\\n&#34;, buf); memset(buf, 0, sizeof(buf)); recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr *)&amp;sendaddr, &amp;len); printf(&#34;sendaddr:%s, prot:%d\\n&#34;, inet_ntop(AF_INET, &amp;sendaddr.sin_addr.s_addr, sendaddrbuf, sizeof(sendaddrbuf)), sendaddr.sin_port); printf(&#34;接收到的组播消息: %s\\n&#34;, buf); } close(fd); return 0; } 接收端代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;string.h&gt; #include &lt;arpa/inet.h&gt; #define GROUP_IP &#34;224.0.1.0&#34; //#define GROUP_IP &#34;239.0.1.10&#34; int main() { // 1. 创建通信的套接字 int fd = socket(AF_INET, SOCK_DGRAM, 0); if(fd == -1) { perror(&#34;socket&#34;); exit(0); } // 2. 通信的套接字和本地的IP与端口绑定 struct sockaddr_in addr; addr.sin_family = AF_INET; addr.sin_port = htons(9999); // 大端 addr.sin_addr.s_addr = htonl(INADDR_ANY); // 0.0.0.0 int ret = bind(fd, (struct sockaddr*)&amp;addr, sizeof(addr)); if(ret == -1) { perror(&#34;bind&#34;); exit(0); } // 3. 加入到多播组 #if 0 //使用struct ip_mreqn或者 struct ip_mreq 设置接收端组播属性都可以正常接收 struct ip_mreqn opt; // 要加入到哪个多播组, 通过组播地址来区分 inet_pton(AF_INET, GROUP_IP, &amp;opt.imr_multiaddr.s_addr); opt.imr_address.s_addr = htonl(INADDR_ANY); opt.imr_ifindex = if_nametoindex(&#34;ens33&#34;); setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &amp;opt, sizeof(opt)); #else struct ip_mreq mreq; // 多播地址结构体 mreq.imr_multiaddr.s_addr=inet_addr(GROUP_IP); mreq.imr_interface.s_addr = htonl(INADDR_ANY);\tret=setsockopt(fd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&amp;mreq,sizeof(mreq)); #endif char buf[1024]; char sendaddrbuf[64]; socklen_t len = sizeof(struct sockaddr_in); struct sockaddr_in sendaddr; // 3. 通信 while(1) { // 接收广播消息 memset(buf, 0, sizeof(buf)); // 阻塞等待数据达到 recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr *)&amp;sendaddr, &amp;len); printf(&#34;sendaddr:%s, prot:%d\\n&#34;, inet_ntop(AF_INET, &amp;sendaddr.sin_addr.s_addr, sendaddrbuf, sizeof(sendaddrbuf)), sendaddr.sin_port); printf(&#34;接收到的组播消息: %s\\n&#34;, buf); sendto(fd, buf, strlen(buf)+1, 0, (struct sockaddr *)&amp;sendaddr, len); } close(fd); return 0; } 编译方式 1 2 make send make recv 运行方式 先运行接收端，再运行发送端\n">
+<title>UDP特性之组播（多播）</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/udp%E7%89%B9%E6%80%A7%E4%B9%8B%E7%BB%84%E6%92%AD%E5%A4%9A%E6%92%AD/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="UDP特性之组播（多播）">
+<meta property='og:description' content=" 实例 实例-1-车小猿 适用于Ubuntu与Cygwin\n发送端代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;string.h&gt; #include &lt;arpa/inet.h&gt; #define GROUP_IP &#34;224.0.1.0&#34; //#define GROUP_IP &#34;239.0.1.10&#34; int main() { // 1. 创建通信的套接字 int fd = socket(AF_INET, SOCK_DGRAM, 0); if(fd == -1) { perror(&#34;socket&#34;); exit(0); } // 2. 设置组播属性 (经测试可以不设置发送端组播属性也能正常发送) struct in_addr opt; // 将组播地址初始化到这个结构体成员中即可 inet_pton(AF_INET, GROUP_IP, &amp;opt.s_addr); setsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, &amp;opt, sizeof(opt)); char buf[1024]; char sendaddrbuf[64]; socklen_t len = sizeof(struct sockaddr_in); struct sockaddr_in sendaddr; struct sockaddr_in cliaddr; cliaddr.sin_family = AF_INET; cliaddr.sin_port = htons(9999); // 接收端需要绑定9999端口 // 发送组播消息, 需要使用组播地址, 和设置组播属性使用的组播地址一致就可以 inet_pton(AF_INET, GROUP_IP, &amp;cliaddr.sin_addr.s_addr); // 3. 通信 int num = 0; while(1) { memset(buf, 0, sizeof(buf)); sprintf(buf, &#34;hello, client...%d\\n&#34;, num++); // 数据广播 sendto(fd, buf, strlen(buf)+1, 0, (struct sockaddr*)&amp;cliaddr, len); printf(&#34;发送的组播的数据: %s\\n&#34;, buf); memset(buf, 0, sizeof(buf)); recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr *)&amp;sendaddr, &amp;len); printf(&#34;sendaddr:%s, prot:%d\\n&#34;, inet_ntop(AF_INET, &amp;sendaddr.sin_addr.s_addr, sendaddrbuf, sizeof(sendaddrbuf)), sendaddr.sin_port); printf(&#34;接收到的组播消息: %s\\n&#34;, buf); } close(fd); return 0; } 接收端代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;string.h&gt; #include &lt;arpa/inet.h&gt; #define GROUP_IP &#34;224.0.1.0&#34; //#define GROUP_IP &#34;239.0.1.10&#34; int main() { // 1. 创建通信的套接字 int fd = socket(AF_INET, SOCK_DGRAM, 0); if(fd == -1) { perror(&#34;socket&#34;); exit(0); } // 2. 通信的套接字和本地的IP与端口绑定 struct sockaddr_in addr; addr.sin_family = AF_INET; addr.sin_port = htons(9999); // 大端 addr.sin_addr.s_addr = htonl(INADDR_ANY); // 0.0.0.0 int ret = bind(fd, (struct sockaddr*)&amp;addr, sizeof(addr)); if(ret == -1) { perror(&#34;bind&#34;); exit(0); } // 3. 加入到多播组 #if 0 //使用struct ip_mreqn或者 struct ip_mreq 设置接收端组播属性都可以正常接收 struct ip_mreqn opt; // 要加入到哪个多播组, 通过组播地址来区分 inet_pton(AF_INET, GROUP_IP, &amp;opt.imr_multiaddr.s_addr); opt.imr_address.s_addr = htonl(INADDR_ANY); opt.imr_ifindex = if_nametoindex(&#34;ens33&#34;); setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &amp;opt, sizeof(opt)); #else struct ip_mreq mreq; // 多播地址结构体 mreq.imr_multiaddr.s_addr=inet_addr(GROUP_IP); mreq.imr_interface.s_addr = htonl(INADDR_ANY);\tret=setsockopt(fd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&amp;mreq,sizeof(mreq)); #endif char buf[1024]; char sendaddrbuf[64]; socklen_t len = sizeof(struct sockaddr_in); struct sockaddr_in sendaddr; // 3. 通信 while(1) { // 接收广播消息 memset(buf, 0, sizeof(buf)); // 阻塞等待数据达到 recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr *)&amp;sendaddr, &amp;len); printf(&#34;sendaddr:%s, prot:%d\\n&#34;, inet_ntop(AF_INET, &amp;sendaddr.sin_addr.s_addr, sendaddrbuf, sizeof(sendaddrbuf)), sendaddr.sin_port); printf(&#34;接收到的组播消息: %s\\n&#34;, buf); sendto(fd, buf, strlen(buf)+1, 0, (struct sockaddr *)&amp;sendaddr, len); } close(fd); return 0; } 编译方式 1 2 make send make recv 运行方式 先运行接收端，再运行发送端\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/udp%E7%89%B9%E6%80%A7%E4%B9%8B%E7%BB%84%E6%92%AD%E5%A4%9A%E6%92%AD/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='程序员' /><meta property='article:published_time' content='2024-07-15T13:42:34&#43;08:00'/><meta property='article:modified_time' content='2024-07-15T13:42:34&#43;08:00'/>
+<meta name="twitter:title" content="UDP特性之组播（多播）">
+<meta name="twitter:description" content=" 实例 实例-1-车小猿 适用于Ubuntu与Cygwin\n发送端代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;string.h&gt; #include &lt;arpa/inet.h&gt; #define GROUP_IP &#34;224.0.1.0&#34; //#define GROUP_IP &#34;239.0.1.10&#34; int main() { // 1. 创建通信的套接字 int fd = socket(AF_INET, SOCK_DGRAM, 0); if(fd == -1) { perror(&#34;socket&#34;); exit(0); } // 2. 设置组播属性 (经测试可以不设置发送端组播属性也能正常发送) struct in_addr opt; // 将组播地址初始化到这个结构体成员中即可 inet_pton(AF_INET, GROUP_IP, &amp;opt.s_addr); setsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, &amp;opt, sizeof(opt)); char buf[1024]; char sendaddrbuf[64]; socklen_t len = sizeof(struct sockaddr_in); struct sockaddr_in sendaddr; struct sockaddr_in cliaddr; cliaddr.sin_family = AF_INET; cliaddr.sin_port = htons(9999); // 接收端需要绑定9999端口 // 发送组播消息, 需要使用组播地址, 和设置组播属性使用的组播地址一致就可以 inet_pton(AF_INET, GROUP_IP, &amp;cliaddr.sin_addr.s_addr); // 3. 通信 int num = 0; while(1) { memset(buf, 0, sizeof(buf)); sprintf(buf, &#34;hello, client...%d\\n&#34;, num++); // 数据广播 sendto(fd, buf, strlen(buf)+1, 0, (struct sockaddr*)&amp;cliaddr, len); printf(&#34;发送的组播的数据: %s\\n&#34;, buf); memset(buf, 0, sizeof(buf)); recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr *)&amp;sendaddr, &amp;len); printf(&#34;sendaddr:%s, prot:%d\\n&#34;, inet_ntop(AF_INET, &amp;sendaddr.sin_addr.s_addr, sendaddrbuf, sizeof(sendaddrbuf)), sendaddr.sin_port); printf(&#34;接收到的组播消息: %s\\n&#34;, buf); } close(fd); return 0; } 接收端代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;string.h&gt; #include &lt;arpa/inet.h&gt; #define GROUP_IP &#34;224.0.1.0&#34; //#define GROUP_IP &#34;239.0.1.10&#34; int main() { // 1. 创建通信的套接字 int fd = socket(AF_INET, SOCK_DGRAM, 0); if(fd == -1) { perror(&#34;socket&#34;); exit(0); } // 2. 通信的套接字和本地的IP与端口绑定 struct sockaddr_in addr; addr.sin_family = AF_INET; addr.sin_port = htons(9999); // 大端 addr.sin_addr.s_addr = htonl(INADDR_ANY); // 0.0.0.0 int ret = bind(fd, (struct sockaddr*)&amp;addr, sizeof(addr)); if(ret == -1) { perror(&#34;bind&#34;); exit(0); } // 3. 加入到多播组 #if 0 //使用struct ip_mreqn或者 struct ip_mreq 设置接收端组播属性都可以正常接收 struct ip_mreqn opt; // 要加入到哪个多播组, 通过组播地址来区分 inet_pton(AF_INET, GROUP_IP, &amp;opt.imr_multiaddr.s_addr); opt.imr_address.s_addr = htonl(INADDR_ANY); opt.imr_ifindex = if_nametoindex(&#34;ens33&#34;); setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &amp;opt, sizeof(opt)); #else struct ip_mreq mreq; // 多播地址结构体 mreq.imr_multiaddr.s_addr=inet_addr(GROUP_IP); mreq.imr_interface.s_addr = htonl(INADDR_ANY);\tret=setsockopt(fd,IPPROTO_IP,IP_ADD_MEMBERSHIP,&amp;mreq,sizeof(mreq)); #endif char buf[1024]; char sendaddrbuf[64]; socklen_t len = sizeof(struct sockaddr_in); struct sockaddr_in sendaddr; // 3. 通信 while(1) { // 接收广播消息 memset(buf, 0, sizeof(buf)); // 阻塞等待数据达到 recvfrom(fd, buf, sizeof(buf), 0, (struct sockaddr *)&amp;sendaddr, &amp;len); printf(&#34;sendaddr:%s, prot:%d\\n&#34;, inet_ntop(AF_INET, &amp;sendaddr.sin_addr.s_addr, sendaddrbuf, sizeof(sendaddrbuf)), sendaddr.sin_port); printf(&#34;接收到的组播消息: %s\\n&#34;, buf); sendto(fd, buf, strlen(buf)+1, 0, (struct sockaddr *)&amp;sendaddr, len); } close(fd); return 0; } 编译方式 1 2 make send make recv 运行方式 先运行接收端，再运行发送端\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">实例</a>
+<ul>
+<li><a href="#headline-2">实例-1-车小猿</a>
+<ul>
+<li><a href="#headline-3">发送端代码</a>
+</li>
+<li><a href="#headline-4">接收端代码</a>
+</li>
+<li><a href="#headline-5">编译方式</a>
+</li>
+<li><a href="#headline-6">运行方式</a>
+<ul>
+<li><a href="#headline-7">接收端</a>
+</li>
+<li><a href="#headline-8">发送端</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#headline-9">实例-2-苏丙榅</a>
+<ul>
+<li><a href="#headline-10">发送端代码</a>
+</li>
+<li><a href="#headline-11">接收端代码</a>
+</li>
+<li><a href="#headline-12">编译方式</a>
+</li>
+<li><a href="#headline-13">运行方式</a>
+<ul>
+<li><a href="#headline-14">接收端</a>
+</li>
+<li><a href="#headline-15">发送端</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#headline-16">查看Linux系统是否支持多播：</a>
+<ul>
+<li><a href="#headline-17">方法A</a>
+</li>
+<li><a href="#headline-18">方法B</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-19">参考链接</a>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/udp%E7%89%B9%E6%80%A7%E4%B9%8B%E7%BB%84%E6%92%AD%E5%A4%9A%E6%92%AD/">UDP特性之组播（多播）</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 15, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+实例
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+实例-1-车小猿
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>
+适用于Ubuntu与Cygwin</p>
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+发送端代码
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="cp">#define GROUP_IP &#34;224.0.1.0&#34;
+</span></span></span><span class="line"><span class="cl">  <span class="c1">//#define GROUP_IP &#34;239.0.1.10&#34;
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 1. 创建通信的套接字
+</span></span></span><span class="line"><span class="cl">	  <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="nf">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_DGRAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">if</span><span class="p">(</span><span class="n">fd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;socket&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 2. 设置组播属性 (经测试可以不设置发送端组播属性也能正常发送)
+</span></span></span><span class="line"><span class="cl">	  <span class="k">struct</span> <span class="n">in_addr</span> <span class="n">opt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 将组播地址初始化到这个结构体成员中即可
+</span></span></span><span class="line"><span class="cl">	  <span class="nf">inet_pton</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">GROUP_IP</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">opt</span><span class="p">.</span><span class="n">s_addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">setsockopt</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">IPPROTO_IP</span><span class="p">,</span> <span class="n">IP_MULTICAST_IF</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">opt</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">opt</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	  <span class="kt">char</span> <span class="n">sendaddrbuf</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	  <span class="kt">socklen_t</span> <span class="n">len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr_in</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">sendaddr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	  <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">cliaddr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">cliaddr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">cliaddr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="nf">htons</span><span class="p">(</span><span class="mi">9999</span><span class="p">);</span> <span class="c1">// 接收端需要绑定9999端口
+</span></span></span><span class="line"><span class="cl">	  <span class="c1">// 发送组播消息, 需要使用组播地址, 和设置组播属性使用的组播地址一致就可以
+</span></span></span><span class="line"><span class="cl">	  <span class="nf">inet_pton</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">GROUP_IP</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cliaddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">						
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 3. 通信
+</span></span></span><span class="line"><span class="cl">	  <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">memset</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&#34;hello, client...%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">num</span><span class="o">++</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="c1">// 数据广播
+</span></span></span><span class="line"><span class="cl">		  <span class="nf">sendto</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">cliaddr</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;发送的组播的数据: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">memset</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">recvfrom</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">sendaddr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;sendaddr:%s, prot:%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">inet_ntop</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sendaddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="p">,</span>  <span class="n">sendaddrbuf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">sendaddrbuf</span><span class="p">)),</span>  <span class="n">sendaddr</span><span class="p">.</span><span class="n">sin_port</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;接收到的组播消息: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-4">
+<h4 id="headline-4">
+接收端代码
+</h4>
+<div id="outline-text-headline-4" class="outline-text-4">
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="cp">#define GROUP_IP &#34;224.0.1.0&#34;
+</span></span></span><span class="line"><span class="cl">  <span class="c1">//#define GROUP_IP &#34;239.0.1.10&#34;
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 1. 创建通信的套接字
+</span></span></span><span class="line"><span class="cl">	  <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="nf">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_DGRAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">if</span><span class="p">(</span><span class="n">fd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;socket&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 2. 通信的套接字和本地的IP与端口绑定
+</span></span></span><span class="line"><span class="cl">	  <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">addr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">addr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="nf">htons</span><span class="p">(</span><span class="mi">9999</span><span class="p">);</span>    <span class="c1">// 大端
+</span></span></span><span class="line"><span class="cl">	  <span class="n">addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="nf">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span>  <span class="c1">// 0.0.0.0
+</span></span></span><span class="line"><span class="cl">	  <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="nf">bind</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">if</span><span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;bind&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 3. 加入到多播组
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#if 0</span><span class="c"> //使用struct ip_mreqn或者 struct ip_mreq 设置接收端组播属性都可以正常接收
+</span></span></span><span class="line"><span class="cl"><span class="c">	  struct ip_mreqn opt;
+</span></span></span><span class="line"><span class="cl"><span class="c">	  // 要加入到哪个多播组, 通过组播地址来区分
+</span></span></span><span class="line"><span class="cl"><span class="c">	  inet_pton(AF_INET, GROUP_IP, &amp;opt.imr_multiaddr.s_addr);
+</span></span></span><span class="line"><span class="cl"><span class="c">	  opt.imr_address.s_addr = htonl(INADDR_ANY);
+</span></span></span><span class="line"><span class="cl"><span class="c">	  opt.imr_ifindex = if_nametoindex(&#34;ens33&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="c">	  setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &amp;opt, sizeof(opt));
+</span></span></span><span class="line"><span class="cl"><span class="cp">  #else
+</span></span></span><span class="line"><span class="cl">	  <span class="k">struct</span> <span class="n">ip_mreq</span> <span class="n">mreq</span><span class="p">;</span> <span class="c1">// 多播地址结构体
+</span></span></span><span class="line"><span class="cl">	  <span class="n">mreq</span><span class="p">.</span><span class="n">imr_multiaddr</span><span class="p">.</span><span class="n">s_addr</span><span class="o">=</span><span class="nf">inet_addr</span><span class="p">(</span><span class="n">GROUP_IP</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">mreq</span><span class="p">.</span><span class="n">imr_interface</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="nf">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span>	
+</span></span><span class="line"><span class="cl">	  <span class="n">ret</span><span class="o">=</span><span class="nf">setsockopt</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="n">IPPROTO_IP</span><span class="p">,</span><span class="n">IP_ADD_MEMBERSHIP</span><span class="p">,</span><span class="o">&amp;</span><span class="n">mreq</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">mreq</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="cp">#endif
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	  <span class="kt">char</span> <span class="n">sendaddrbuf</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	  <span class="kt">socklen_t</span> <span class="n">len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr_in</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">sendaddr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 3. 通信
+</span></span></span><span class="line"><span class="cl">	  <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="c1">// 接收广播消息
+</span></span></span><span class="line"><span class="cl">		  <span class="nf">memset</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">		  <span class="c1">// 阻塞等待数据达到
+</span></span></span><span class="line"><span class="cl">		  <span class="nf">recvfrom</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">sendaddr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;sendaddr:%s, prot:%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">inet_ntop</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sendaddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="p">,</span>  <span class="n">sendaddrbuf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">sendaddrbuf</span><span class="p">)),</span>  <span class="n">sendaddr</span><span class="p">.</span><span class="n">sin_port</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;接收到的组播消息: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">sendto</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">sendaddr</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+编译方式
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  make send
+</span></span><span class="line"><span class="cl">  make recv</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-4">
+<h4 id="headline-6">
+运行方式
+</h4>
+<div id="outline-text-headline-6" class="outline-text-4">
+<p>
+先运行接收端，再运行发送端</p>
+<div id="outline-container-headline-7" class="outline-5">
+<h5 id="headline-7">
+接收端
+</h5>
+<div id="outline-text-headline-7" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ./recv</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-5">
+<h5 id="headline-8">
+发送端
+</h5>
+<div id="outline-text-headline-8" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ./send</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-3">
+<h3 id="headline-9">
+实例-2-苏丙榅
+</h3>
+<div id="outline-text-headline-9" class="outline-text-3">
+<p>
+适用于Ubuntu</p>
+<div id="outline-container-headline-10" class="outline-4">
+<h4 id="headline-10">
+发送端代码
+</h4>
+<div id="outline-text-headline-10" class="outline-text-4">
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 1. 创建通信的套接字
+</span></span></span><span class="line"><span class="cl">	  <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="nf">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_DGRAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">if</span><span class="p">(</span><span class="n">fd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;socket&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 2. 设置组播属性
+</span></span></span><span class="line"><span class="cl">	  <span class="k">struct</span> <span class="n">in_addr</span> <span class="n">opt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 将组播地址初始化到这个结构体成员中即可
+</span></span></span><span class="line"><span class="cl">	  <span class="nf">inet_pton</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="s">&#34;239.0.1.10&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">opt</span><span class="p">.</span><span class="n">s_addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">setsockopt</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">IPPROTO_IP</span><span class="p">,</span> <span class="n">IP_MULTICAST_IF</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">opt</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">opt</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">cliaddr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cliaddr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">cliaddr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">cliaddr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="nf">htons</span><span class="p">(</span><span class="mi">9999</span><span class="p">);</span> <span class="c1">// 接收端需要绑定9999端口
+</span></span></span><span class="line"><span class="cl">	  <span class="c1">// 发送组播消息, 需要使用组播地址, 和设置组播属性使用的组播地址一致就可以
+</span></span></span><span class="line"><span class="cl">	  <span class="nf">inet_pton</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="s">&#34;239.0.1.10&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cliaddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 3. 通信
+</span></span></span><span class="line"><span class="cl">	  <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&#34;hello, client...%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">num</span><span class="o">++</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="c1">// 数据广播
+</span></span></span><span class="line"><span class="cl">		  <span class="nf">sendto</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">cliaddr</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;发送的组播的数据: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-4">
+<h4 id="headline-11">
+接收端代码
+</h4>
+<div id="outline-text-headline-11" class="outline-text-4">
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;net/if.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 1. 创建通信的套接字
+</span></span></span><span class="line"><span class="cl">	  <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="nf">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_DGRAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">if</span><span class="p">(</span><span class="n">fd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;socket&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 2. 通信的套接字和本地的IP与端口绑定
+</span></span></span><span class="line"><span class="cl">	  <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">addr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">addr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="nf">htons</span><span class="p">(</span><span class="mi">9999</span><span class="p">);</span>    <span class="c1">// 大端
+</span></span></span><span class="line"><span class="cl">	  <span class="n">addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">INADDR_ANY</span><span class="p">;</span>  <span class="c1">// 0.0.0.0
+</span></span></span><span class="line"><span class="cl">	  <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="nf">bind</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">if</span><span class="p">(</span><span class="n">ret</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;bind&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 3. 加入到多播组
+</span></span></span><span class="line"><span class="cl">	  <span class="k">struct</span> <span class="n">ip_mreqn</span> <span class="n">opt</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 要加入到哪个多播组, 通过组播地址来区分
+</span></span></span><span class="line"><span class="cl">	  <span class="nf">inet_pton</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="s">&#34;239.0.1.10&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">opt</span><span class="p">.</span><span class="n">imr_multiaddr</span><span class="p">.</span><span class="n">s_addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">opt</span><span class="p">.</span><span class="n">imr_address</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">INADDR_ANY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">opt</span><span class="p">.</span><span class="n">imr_ifindex</span> <span class="o">=</span> <span class="nf">if_nametoindex</span><span class="p">(</span><span class="s">&#34;ens33&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">setsockopt</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">IPPROTO_IP</span><span class="p">,</span> <span class="n">IP_ADD_MEMBERSHIP</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">opt</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">opt</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	  <span class="c1">// 3. 通信
+</span></span></span><span class="line"><span class="cl">	  <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="c1">// 接收广播消息
+</span></span></span><span class="line"><span class="cl">		  <span class="nf">memset</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">		  <span class="c1">// 阻塞等待数据达到
+</span></span></span><span class="line"><span class="cl">		  <span class="nf">recvfrom</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;接收到的组播消息: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-4">
+<h4 id="headline-12">
+编译方式
+</h4>
+<div id="outline-text-headline-12" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  make send
+</span></span><span class="line"><span class="cl">  make recv</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-4">
+<h4 id="headline-13">
+运行方式
+</h4>
+<div id="outline-text-headline-13" class="outline-text-4">
+<p>
+先运行接收端，再运行发送端</p>
+<div id="outline-container-headline-14" class="outline-5">
+<h5 id="headline-14">
+接收端
+</h5>
+<div id="outline-text-headline-14" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ./recv</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-5">
+<h5 id="headline-15">
+发送端
+</h5>
+<div id="outline-text-headline-15" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ./send</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-2">
+<h2 id="headline-16">
+查看Linux系统是否支持多播：
+</h2>
+<div id="outline-text-headline-16" class="outline-text-2">
+<div id="outline-container-headline-17" class="outline-3">
+<h3 id="headline-17">
+方法A
+</h3>
+<div id="outline-text-headline-17" class="outline-text-3">
+<p>
+ifconfig出现 UP BROADCAST RUNNING MULTICAST MTU:1500 Metric</p>
+</div>
+</div>
+<div id="outline-container-headline-18" class="outline-3">
+<h3 id="headline-18">
+方法B
+</h3>
+<div id="outline-text-headline-18" class="outline-text-3">
+<p>
+查看/boot/config-x.x.xx  文件中是否有如下内容</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nv">CONFIG_IP_MULTICAST</span><span class="o">=</span>y
+</span></span><span class="line"><span class="cl">  <span class="nv">CONFIG_NET_IPIP</span><span class="o">=</span>m
+</span></span><span class="line"><span class="cl">  <span class="nv">CONFIG_IP_MROUTE</span><span class="o">=</span>y</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-19" class="outline-2">
+<h2 id="headline-19">
+参考链接
+</h2>
+<div id="outline-text-headline-19" class="outline-text-2">
+<p>
+<a href="https://blog.csdn.net/weixin_44522306/article/details/119680394">socket之UDP组播（多播）</a></p>
+<p>
+<a href="https://subingwen.cn/linux/multicast/">UDP特性之组播（多播）</a></p>
+<p>
+<a href="blog.chinaunix.net/uid-30574096-id-5760163.html">linux启用IPV4组播路由转发的配置和测试</a></p>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

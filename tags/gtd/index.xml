@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Gtd on Example Site</title>
+        <link>https://ynhugo.github.io/tags/gtd/</link>
+        <description>Recent content in Gtd on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sun, 01 Dec 2024 13:55:39 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/gtd/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>什么是GTD工作法</title>
+        <link>https://ynhugo.github.io/p/%E4%BB%80%E4%B9%88%E6%98%AFgtd%E5%B7%A5%E4%BD%9C%E6%B3%95/</link>
+        <pubDate>Sun, 01 Dec 2024 13:55:39 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E4%BB%80%E4%B9%88%E6%98%AFgtd%E5%B7%A5%E4%BD%9C%E6%B3%95/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+什么是GTD工作法？
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+GTD是Get Things Done的缩写。&lt;/p&gt;
+&lt;p&gt;
+相关方法的英文网站是：&lt;a href=&#34;https://gettingthingsdone.com&#34;&gt;https://gettingthingsdone.com&lt;/a&gt;。 这个网站的最后一句话是：&lt;/p&gt;
+&lt;p&gt;
+Your mind is for having ideas, not holding them.®&lt;/p&gt;
+&lt;p&gt;
+所以，很多人描述GTD的思路大致就是，每当你想到一件你无法在接下来的两分钟内把它处理干净的事情，就先把它找固定的地方记录下来，不要用脑子去惦记着。养成了这个习惯，就做到了GTD方法的一大部分（如果你不想更细节地了解GTD，就记一句古话，好记性不如烂笔头）。&lt;/p&gt;
+&lt;p&gt;
+GTD的剩余部分就是一些如何把已经记录下来的事情做好的一些简单有效的好步骤好习惯。如果你还有兴趣看，分五个步骤：&lt;/p&gt;
+&lt;p&gt;
+1）Capture 领悟自己要干啥&lt;/p&gt;
+&lt;p&gt;
+2）Clarify 简单写处理思路，你自己做还是交给别人做，放弃还是暂时搁置还是删除它 （可以用紧急重要四象限法则）&lt;/p&gt;
+&lt;p&gt;
+3）Organize (要点！)整理上述梳理结果，并确保你真的会被提醒到这些事情，所以，用软件记录也许是个好方法&lt;/p&gt;
+&lt;p&gt;
+4）Reflect 没事常看看列表，好知道当下该干点啥，并保持列表更新&lt;/p&gt;
+&lt;p&gt;
+5）Engage 投入注意力，干活 （可以用番茄工作法）&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-2&#34;&gt;
+划重点
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+GTD工作法能不能用活用好，最关键的是哪一点呢？整理。这步搞定，满盘皆活。整理任务一旦成了习惯，那前面的Clarify，后面的Reflect，都是自然而然的事情。心理压力自然而然就没有了，脑子可以松下来去解决问题了！&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-3&#34;&gt;
+参考链接
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.tomatolist.com/GTD.html&#34;&gt;什么是GTD工作法？&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        <item>
+        <title>Emacs使用org-agenda管理日程</title>
+        <link>https://ynhugo.github.io/p/emacs%E4%BD%BF%E7%94%A8org-agenda%E7%AE%A1%E7%90%86%E6%97%A5%E7%A8%8B/</link>
+        <pubDate>Tue, 26 Nov 2024 02:12:09 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/emacs%E4%BD%BF%E7%94%A8org-agenda%E7%AE%A1%E7%90%86%E6%97%A5%E7%A8%8B/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+Emacs 使用org-agenda 管理日程
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;如何使用org设置日程上篇已经介绍完，那现在的重点就是如何查看日程，并且真正将org运用到日常工作中来。之前学习org跨越了很长时间，但一直没有落实到日常应用，所以过一阵子就会忘记，得来的教训就是学习任何语言，工具一定要落实在使用中，纸上谈兵要不得。让我们一起开始使用org-agenda查看，管理及运用设置好的日程。&lt;/p&gt;
+&lt;p&gt;
+纸上得来终觉浅,绝知此事要躬行.&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-2&#34;&gt;
+日程 Agenda
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;定义完ToDo之后，使用M-x org-agenda 打开日程buffer，可看到当前排的所有日程，并可以直接进行优先级等操作。那如何归纳整理自己的日程表呢，通常我使用多个文件来代表不同的类型。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-3&#34;&gt;
+日程文件
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;可以针对不同的任务类型，定义多个日程或任务文件，然后将文件加入全局的日程文件列表，统一纳入org的管理。&lt;/p&gt;
+&lt;p&gt;
+以下来举例：
+使用C-h v 查看变量org-agenda-flies，当前有一个文件，现在我们再加入另一个&lt;/p&gt;
+&lt;p&gt;
+打开org文件，使用org-agenda-file-to-front或者快捷键C-c [ 将当前文件加入到全局列表。这样一来，我们定义的日程就会加入到全局列表，使用emacs统一进行管理了。也可以通过emacs配置文件加入。&lt;/p&gt;
+&lt;p&gt;
+然后就可以使用M-x org-agenda a 打开agenda界面了。&lt;/p&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;快捷键&lt;/td&gt;
+&lt;td&gt;功能&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-c [&lt;/td&gt;
+&lt;td&gt;将当前文件加入全局列表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-c ]&lt;/td&gt;
+&lt;td&gt;将当前文件移除全局列表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-c C-x &amp;lt;&lt;/td&gt;
+&lt;td&gt;锁定当前文件即在org agenda的buffer中只显示当前文件的日程（org-agenda-set-restriction-lock）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-c C-x &amp;gt;&lt;/td&gt;
+&lt;td&gt;解锁(org-agenda-remove-restriction-lock)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;
+可以打开speedbar ，在文件上使用&amp;lt; 和&amp;gt; 来锁定和解锁。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-4&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-4&#34;&gt;
+日程操作
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-4&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;前一章已经介绍过，使用org-agenda打开日程buffer，此时可以选择多种视图方式，以便更加方便的查看日程。&lt;/p&gt;
+&lt;p&gt;
+Emacs 内置了多种视图，下面会一一介绍，首先来看都有哪些操作。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-5&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-5&#34;&gt;
+视图中的操作
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-5&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;其他快捷键及功能：&lt;/p&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;快捷键&lt;/td&gt;
+&lt;td&gt;功能&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;b&lt;/td&gt;
+&lt;td&gt;daily视图&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;w&lt;/td&gt;
+&lt;td&gt;weekly视图&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;n/p&lt;/td&gt;
+&lt;td&gt;上/下移动光标&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;N/P&lt;/td&gt;
+&lt;td&gt;上/下按日程移动光标&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;SPC&lt;/td&gt;
+&lt;td&gt;在另一缓冲区显示任务在org文件中的定义的位置&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;TAB&lt;/td&gt;
+&lt;td&gt;在另一缓冲区显示任务在org文件中的定义的位置，并且光标跳转至此&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;L&lt;/td&gt;
+&lt;td&gt;显示任务在文件中位置并且光标居中&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;RET&lt;/td&gt;
+&lt;td&gt;在当前buffer打开文件并跳转&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;F&lt;/td&gt;
+&lt;td&gt;打开跟踪模式，即移动光标时，另一buffer显示当前任务的定义处&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-c C-x b&lt;/td&gt;
+&lt;td&gt;显示任务及子树，并可以设置层数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-c C-o&lt;/td&gt;
+&lt;td&gt;打开链接&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;o&lt;/td&gt;
+&lt;td&gt;关闭另一个buffer&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;A&lt;/td&gt;
+&lt;td&gt;打开另一种视图并嵌入到当前视图中&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;v&lt;/td&gt;
+&lt;td&gt;弹出多个命令进行选择&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;f/b&lt;/td&gt;
+&lt;td&gt;下一天&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;.&lt;/td&gt;
+&lt;td&gt;跳转至当天&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;j&lt;/td&gt;
+&lt;td&gt;选择日期并跳转&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;D&lt;/td&gt;
+&lt;td&gt;包含日记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;r&lt;/td&gt;
+&lt;td&gt;刷新agenda buffer&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;/&lt;/td&gt;
+&lt;td&gt;通过tag过滤&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;lt;&lt;/td&gt;
+&lt;td&gt;通过类型过滤&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;^&lt;/td&gt;
+&lt;td&gt;通过 top headline 过滤&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;=&lt;/td&gt;
+&lt;td&gt;通过模式匹配过滤&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;丨&lt;/td&gt;
+&lt;td&gt;去除所有过滤&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;t&lt;/td&gt;
+&lt;td&gt;改变状态&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-S-Left/C-S-Right&lt;/td&gt;
+&lt;td&gt;改变状态&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-k&lt;/td&gt;
+&lt;td&gt;删除&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-w&lt;/td&gt;
+&lt;td&gt;重新归档某项日程&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;$&lt;/td&gt;
+&lt;td&gt;归档，通常是另一个文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;T&lt;/td&gt;
+&lt;td&gt;显示所有tag&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;:&lt;/td&gt;
+&lt;td&gt;设置tag&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;,&lt;/td&gt;
+&lt;td&gt;设置优先级&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;+/- 或者 S-up/down&lt;/td&gt;
+&lt;td&gt;设置优先级&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;z&lt;/td&gt;
+&lt;td&gt;添加note&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-c C-a&lt;/td&gt;
+&lt;td&gt;附件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-c C-s&lt;/td&gt;
+&lt;td&gt;安排日程&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-c C-d&lt;/td&gt;
+&lt;td&gt;设置deadline&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;S-Left/Right&lt;/td&gt;
+&lt;td&gt;改变日期&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;gt;&lt;/td&gt;
+&lt;td&gt;改变日期&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;I&lt;/td&gt;
+&lt;td&gt;插入clock&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;O&lt;/td&gt;
+&lt;td&gt;停止上一个clock&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;X&lt;/td&gt;
+&lt;td&gt;取消当前clock&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;J&lt;/td&gt;
+&lt;td&gt;跳转之clock处&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;M-Up/Down&lt;/td&gt;
+&lt;td&gt;拖拽一个日程&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;m&lt;/td&gt;
+&lt;td&gt;mark当前日程&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;*&lt;/td&gt;
+&lt;td&gt;mark所有日程为重点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;u&lt;/td&gt;
+&lt;td&gt;取消mark当前日程&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;U&lt;/td&gt;
+&lt;td&gt;取消mark所有日程&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;M-m&lt;/td&gt;
+&lt;td&gt;设置/取消当前mark&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;M-×&lt;/td&gt;
+&lt;td&gt;设置/取消所有mark&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;B&lt;/td&gt;
+&lt;td&gt;bulk action&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;C-x C-w&lt;/td&gt;
+&lt;td&gt;导出。可以为.html .pdf .ps .org&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;q&lt;/td&gt;
+&lt;td&gt;退出&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;x&lt;/td&gt;
+&lt;td&gt;退出，包括所有相关打开的buffer&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;
+太多了，大家通过帮助自己尝试吧。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-6&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-6&#34;&gt;
+Weekly/daily 视图
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-6&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;输入M-x org-agenda 时， 选择a 进入此视图。&lt;/p&gt;
+&lt;p&gt;
+在此视图中，操作在上一节介绍过。大家实践一下，通常使用的也就几个功能，碰到需要用的其他，再来查询具体快捷键。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-7&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-7&#34;&gt;
+todo 视图
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-7&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;输入M-x org-agenda 时， 选择t/T 进入此视图。
+t， 列出所有的todo
+T，可以选择特殊的key来进行过滤。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-8&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-8&#34;&gt;
+Tag和属性过滤视图
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-8&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;输入M-x org-agenda 时， 选择m/M 进入此视图。
+m， 根据tag进行过滤&lt;/p&gt;
+&lt;p&gt;
+语法：&lt;/p&gt;
+&lt;div class=&#34;src src-text&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;‘work’： 选择tag ‘:work:’.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;‘work&amp;amp;boss’： 选择tag ‘:work:’ 和 ‘:boss:’.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;‘+work-boss’： 选择tag ‘:work:’, 忽略 tag ‘:boss:’.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;‘work|laptop’： 选择tag ‘:work:’ 或 ‘:laptop:’.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;‘work|laptop+night’：选择有laptop 并且有night的tag&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+除了tag，还可以使用正则表达式，例如： ‘work+{^boss.*}’ ，选择带有work的tag并且以boss开头&lt;/p&gt;
+&lt;p&gt;
+更多的语法及表达式就不介绍了，有需要时，查文档获取。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-9&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-9&#34;&gt;
+search 视图
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-9&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;输入M-x org-agnda 时， 选择s 进入此视图。
+根据关键字查找或者正则。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-10&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-10&#34;&gt;
+stuck project视图
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-10&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;输入M-x org-agnda 时， 选择# 进入此视图。
+参考了David Allen的GTD方法，一个stuck的project是没有定义下一步action的日程，不会在todo显示&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-11&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-11&#34;&gt;
+分类
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-11&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;每个org todo文件都有一个分类，默认就是文件名。&lt;/p&gt;
+&lt;p&gt;
+可以在文件开头加入：&lt;/p&gt;
+&lt;div class=&#34;src src-text&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;#+CATEGORY: xxx&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+可以在某项日程中加入属性：&lt;/p&gt;
+&lt;div class=&#34;src src-text&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;:CATEGORY: xxx&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+之后在检索过滤时，可以根据分类来进行u过滤&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-12&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-12&#34;&gt;
+Column 视图
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-12&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;列模式在上篇文章已经介绍过。
+使用C-c C-x C-c 进入列模式。
+此处不介绍了。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-13&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-13&#34;&gt;
+格式
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-13&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;导出时，Html等格式可以定义更多的格式，所以Emacs 可以定义更多的格式。&lt;/p&gt;
+&lt;p&gt;
+例如：&lt;/p&gt;
+&lt;div class=&#34;src src-text&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;*bold*, /italic/, underlined, =verbatim= and code,&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-14&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-14&#34;&gt;
+参考链接
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-14&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.jianshu.com/p/0d1c26abb7e6&#34;&gt;Emacs 使用org-agenda 管理日程&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

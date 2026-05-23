@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Anaconda on Example Site</title>
+        <link>https://ynhugo.github.io/tags/anaconda/</link>
+        <description>Recent content in Anaconda on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sat, 17 Jan 2026 00:31:31 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/anaconda/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>记录一次卸载Anaconda引发的事故</title>
+        <link>https://ynhugo.github.io/p/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%8D%B8%E8%BD%BDanaconda%E5%BC%95%E5%8F%91%E7%9A%84%E4%BA%8B%E6%95%85/</link>
+        <pubDate>Sat, 17 Jan 2026 00:31:31 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1%E5%8D%B8%E8%BD%BDanaconda%E5%BC%95%E5%8F%91%E7%9A%84%E4%BA%8B%E6%95%85/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+记录一次卸载Anaconda引发的事故
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+卸载Anaconda后发现运行cmd会闪退，在网上查资料后说是要修改注册表，照着操作确实有效&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-2&#34;&gt;
+参考链接
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/1932534824335303430&#34;&gt;windows打开cmd窗口的时候闪退解决办法&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        <item>
+        <title>Linux服务器上安装Anaconda</title>
+        <link>https://ynhugo.github.io/p/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E5%AE%89%E8%A3%85anaconda/</link>
+        <pubDate>Wed, 21 Aug 2024 00:46:14 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E5%AE%89%E8%A3%85anaconda/</guid>
+        <description>
+&lt;ol&gt;
+&lt;li&gt;安装Anaconda&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;1.1 下载anaconda的安装包&lt;/p&gt;
+&lt;p&gt;
+这里我们需要在官网上查找自己需要的版本，地址链接在下面:&lt;/p&gt;
+&lt;p&gt;
+https://repo.anaconda.com/archive/&lt;/p&gt;
+&lt;p&gt;
+这里以我自己安装的版本为例：&lt;/p&gt;
+&lt;p&gt;
+https://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh&lt;/p&gt;
+&lt;p&gt;
+这是我选择的版本，然后我们在控制台输入这句话：&lt;/p&gt;
+&lt;p&gt;
+wget &lt;a href=&#34;https://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh&#34;&gt;https://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+如果使用wget下载不下来的话，可以手动下载安装文件&lt;/p&gt;
+&lt;p&gt;
+1.3 安装anaconda&lt;/p&gt;
+&lt;p&gt;
+接下来我们需要首先赋权再执行安装程序，依次输入下面两句命令:&lt;/p&gt;
+&lt;p&gt;
+chmod +x Anaconda3-5.3.0-Linux-x86_64.sh&lt;/p&gt;
+&lt;p&gt;
+./Anaconda3-5.3.0-Linux-x86_64.sh&lt;/p&gt;
+&lt;p&gt;
+1.4 点击Enter（回车键）&lt;/p&gt;
+&lt;p&gt;
+此时显示Anaconda的信息，并且会出现More，继续按Enter，直到提示输入yes/no&lt;/p&gt;
+&lt;p&gt;
+1.5 输入 yes&lt;/p&gt;
+&lt;p&gt;
+1.6 继续点击 Enter&lt;/p&gt;
+&lt;p&gt;
+1.7 输入 yes，添加环境变量&lt;/p&gt;
+&lt;p&gt;
+这里需要注意点的就是如果你直接跳过这部设置环境变量的话：&lt;/p&gt;
+&lt;p&gt;
+[no ] &amp;gt;&amp;gt;&amp;gt;&lt;/p&gt;
+&lt;p&gt;
+那你需要自己到这个文件夹设置你安装Anaconda路径（比如上面显示我的是）&lt;/p&gt;
+&lt;p&gt;
+&lt;em&gt;home/wangke&lt;/em&gt;.bashrc&lt;/p&gt;
+&lt;p&gt;
+单击进去，在最后一行添加：&lt;/p&gt;
+&lt;p&gt;
+export PATH=/home/anaconda3/bin:$PATH&lt;/p&gt;
+&lt;p&gt;
+需要把之前的那句话给注释掉如下所示：&lt;/p&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;c1&#34;&gt;# export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/sbin:/sbin:$PATH&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+export PATH=/root/anaconda3/bin:$PATH&lt;/p&gt;
+&lt;p&gt;
+这里只是个示例，具体的还是要看你们自己安装的路径。&lt;/p&gt;
+&lt;p&gt;
+然后保存更改，输入下面这句指令：&lt;/p&gt;
+&lt;p&gt;
+source ~/.bashrc&lt;/p&gt;
+&lt;p&gt;
+1.8 完成安装以及检测是否安装成功&lt;/p&gt;
+&lt;p&gt;
+打开新的终端后，进入自己的文件夹目录下，输入anaconda -V（注意a要小写，V要大写），conda -V ,显示版本信息，若显示则表示安装成功。&lt;/p&gt;
+&lt;p&gt;
+root@dev-wyf-react:~/wyf# conda -V&lt;/p&gt;
+&lt;p&gt;
+conda 4.5.11&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-1&#34;&gt;
+ubuntu下conda如何设置镜像源（清华镜像源）
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-5&#34;&gt;
+&lt;h5 id=&#34;headline-2&#34;&gt;
+ubuntu下如何设置镜像源
+&lt;/h5&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-5&#34;&gt;
+&lt;p&gt;
+首先贴出.condarc，直接给出清华的镜像源，需要的小伙伴直接使用，别看内容了&lt;/p&gt;
+&lt;div class=&#34;src src-text&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# ~/.condarc
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;channels:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;show_channel_urls: True&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+添加conda镜像源命令（直接使用）&lt;/p&gt;
+&lt;div class=&#34;src src-text&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;conda config --set show_channel_urls yes&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-3&#34;&gt;
+参考链接
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://blog.csdn.net/wyf2017/article/details/118676765&#34;&gt;如何在Linux服务器上安装Anaconda（超详细）&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://blog.csdn.net/youlinhuanyan/article/details/136110667&#34;&gt;ubuntu下conda如何设置镜像源（清华镜像源）&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

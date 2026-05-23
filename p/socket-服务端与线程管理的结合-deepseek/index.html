@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 以下是一个综合示例，展示了如何在 Socket 服务端中结合线程创建与销毁，根据客户端下发的 flag 动态管理线程，并确保线程中的结构体和动态内存被正确释放。 方案设计 Socket 服务端：\n使用 socket、bind、listen 和 accept 创建 TCP 服务端。 在 while 循环中持续接收客户端连接和消息。 线程管理：\n当客户端发送 flag=1 时，创建线程。 当客户端发送 flag=2 时，销毁线程。 使用全局变量和互斥锁（pthread_mutex_t）管理线程状态。 资源释放：\n使用 pthread_cleanup_push 和 pthread_cleanup_pop 确保线程退出时释放结构体和动态内存。 线程函数：\n线程函数模拟工作逻辑，持续运行直到被取消。 完整代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;string.h&gt; #include &lt;unistd.h&gt; #include &lt;pthread.h&gt; #include &lt;arpa/inet.h&gt; #define PORT 8080 #define BUFFER_SIZE 1024 // 全局变量 pthread_t worker_thread = 0; // 工作线程 ID volatile int thread_running = 0; // 线程运行状态 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁 // 线程数据结构体 typedef struct { int id; char* message; } ThreadData; // 清理函数 void cleanup_handler(void* arg) { ThreadData* data = (ThreadData*)arg; printf(&#34;Cleanup handler: Freeing resources for thread %d\\n&#34;, data-&gt;id); free(data-&gt;message); // 释放动态内存 free(data); // 释放结构体 } // 线程函数 void* thread_func(void* arg) { ThreadData* data = (ThreadData*)arg; // 注册清理函数 pthread_cleanup_push(cleanup_handler, data); // 允许线程被取消 pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL); pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL); printf(&#34;Thread %d: %s\\n&#34;, data-&gt;id, data-&gt;message); // 模拟线程工作 while (1) { printf(&#34;Thread %d: Working...\\n&#34;, data-&gt;id); sleep(1); // 显式检查取消请求 pthread_testcancel(); } // 弹出清理函数（不会执行，因为线程会被取消） pthread_cleanup_pop(0); pthread_exit(NULL); } // 创建线程 void create_thread() { pthread_mutex_lock(&amp;mutex); if (!thread_running) { ThreadData* data = (ThreadData*)malloc(sizeof(ThreadData)); if (!data) { perror(&#34;malloc&#34;); exit(EXIT_FAILURE); } data-&gt;id = 1; data-&gt;message = (char*)malloc(50 * sizeof(char)); if (!data-&gt;message) { perror(&#34;malloc&#34;); free(data); exit(EXIT_FAILURE); } snprintf(data-&gt;message, 50, &#34;Hello from thread %d&#34;, data-&gt;id); int ret = pthread_create(&amp;worker_thread, NULL, thread_func, data); if (ret != 0) { perror(&#34;pthread_create&#34;); free(data-&gt;message); free(data); exit(EXIT_FAILURE); } thread_running = 1; printf(&#34;Main: Created thread %d\\n&#34;, data-&gt;id); } else { printf(&#34;Main: Thread is already running\\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 销毁线程 void destroy_thread() { pthread_mutex_lock(&amp;mutex); if (thread_running) { printf(&#34;Main: Stopping thread...\\n&#34;); int ret = pthread_cancel(worker_thread); if (ret != 0) { perror(&#34;pthread_cancel&#34;); exit(EXIT_FAILURE); } // 等待线程退出并回收资源 ret = pthread_join(worker_thread, NULL); if (ret != 0) { perror(&#34;pthread_join&#34;); exit(EXIT_FAILURE); } thread_running = 0; printf(&#34;Main: Thread has exited.\\n&#34;); } else { printf(&#34;Main: No thread is running\\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 主函数 int main() { int server_fd, client_fd; struct sockaddr_in server_addr, client_addr; socklen_t client_len = sizeof(client_addr); char buffer[BUFFER_SIZE]; // 创建 Socket server_fd = socket(AF_INET, SOCK_STREAM, 0); if (server_fd &lt; 0) { perror(&#34;socket&#34;); exit(EXIT_FAILURE); } // 绑定地址和端口 server_addr.sin_family = AF_INET; server_addr.sin_addr.s_addr = INADDR_ANY; server_addr.sin_port = htons(PORT); if (bind(server_fd, (struct sockaddr*)&amp;server_addr, sizeof(server_addr)) &lt; 0) { perror(&#34;bind&#34;); close(server_fd); exit(EXIT_FAILURE); } // 监听连接 if (listen(server_fd, 5) &lt; 0) { perror(&#34;listen&#34;); close(server_fd); exit(EXIT_FAILURE); } printf(&#34;Server is listening on port %d...\\n&#34;, PORT); // 主循环 while (1) { // 接受客户端连接 client_fd = accept(server_fd, (struct sockaddr*)&amp;client_addr, &amp;client_len); if (client_fd &lt; 0) { perror(&#34;accept&#34;); continue; } // 接收客户端消息 memset(buffer, 0, BUFFER_SIZE); ssize_t bytes_received = recv(client_fd, buffer, BUFFER_SIZE - 1, 0); if (bytes_received &lt; 0) { perror(&#34;recv&#34;); close(client_fd); continue; } printf(&#34;Received from client: %s\\n&#34;, buffer); // 解析客户端 flag int flag = atoi(buffer); if (flag == 1) { create_thread(); } else if (flag == 2) { destroy_thread(); } else { printf(&#34;Invalid flag: %d\\n&#34;, flag); } // 关闭客户端连接 close(client_fd); } // 关闭服务器 Socket close(server_fd); return 0; } 代码解析 Socket 服务端：\n">
+<title>Socket 服务端与线程管理的结合-Deepseek</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/socket-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86%E7%9A%84%E7%BB%93%E5%90%88-deepseek/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Socket 服务端与线程管理的结合-Deepseek">
+<meta property='og:description' content=" 以下是一个综合示例，展示了如何在 Socket 服务端中结合线程创建与销毁，根据客户端下发的 flag 动态管理线程，并确保线程中的结构体和动态内存被正确释放。 方案设计 Socket 服务端：\n使用 socket、bind、listen 和 accept 创建 TCP 服务端。 在 while 循环中持续接收客户端连接和消息。 线程管理：\n当客户端发送 flag=1 时，创建线程。 当客户端发送 flag=2 时，销毁线程。 使用全局变量和互斥锁（pthread_mutex_t）管理线程状态。 资源释放：\n使用 pthread_cleanup_push 和 pthread_cleanup_pop 确保线程退出时释放结构体和动态内存。 线程函数：\n线程函数模拟工作逻辑，持续运行直到被取消。 完整代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;string.h&gt; #include &lt;unistd.h&gt; #include &lt;pthread.h&gt; #include &lt;arpa/inet.h&gt; #define PORT 8080 #define BUFFER_SIZE 1024 // 全局变量 pthread_t worker_thread = 0; // 工作线程 ID volatile int thread_running = 0; // 线程运行状态 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁 // 线程数据结构体 typedef struct { int id; char* message; } ThreadData; // 清理函数 void cleanup_handler(void* arg) { ThreadData* data = (ThreadData*)arg; printf(&#34;Cleanup handler: Freeing resources for thread %d\\n&#34;, data-&gt;id); free(data-&gt;message); // 释放动态内存 free(data); // 释放结构体 } // 线程函数 void* thread_func(void* arg) { ThreadData* data = (ThreadData*)arg; // 注册清理函数 pthread_cleanup_push(cleanup_handler, data); // 允许线程被取消 pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL); pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL); printf(&#34;Thread %d: %s\\n&#34;, data-&gt;id, data-&gt;message); // 模拟线程工作 while (1) { printf(&#34;Thread %d: Working...\\n&#34;, data-&gt;id); sleep(1); // 显式检查取消请求 pthread_testcancel(); } // 弹出清理函数（不会执行，因为线程会被取消） pthread_cleanup_pop(0); pthread_exit(NULL); } // 创建线程 void create_thread() { pthread_mutex_lock(&amp;mutex); if (!thread_running) { ThreadData* data = (ThreadData*)malloc(sizeof(ThreadData)); if (!data) { perror(&#34;malloc&#34;); exit(EXIT_FAILURE); } data-&gt;id = 1; data-&gt;message = (char*)malloc(50 * sizeof(char)); if (!data-&gt;message) { perror(&#34;malloc&#34;); free(data); exit(EXIT_FAILURE); } snprintf(data-&gt;message, 50, &#34;Hello from thread %d&#34;, data-&gt;id); int ret = pthread_create(&amp;worker_thread, NULL, thread_func, data); if (ret != 0) { perror(&#34;pthread_create&#34;); free(data-&gt;message); free(data); exit(EXIT_FAILURE); } thread_running = 1; printf(&#34;Main: Created thread %d\\n&#34;, data-&gt;id); } else { printf(&#34;Main: Thread is already running\\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 销毁线程 void destroy_thread() { pthread_mutex_lock(&amp;mutex); if (thread_running) { printf(&#34;Main: Stopping thread...\\n&#34;); int ret = pthread_cancel(worker_thread); if (ret != 0) { perror(&#34;pthread_cancel&#34;); exit(EXIT_FAILURE); } // 等待线程退出并回收资源 ret = pthread_join(worker_thread, NULL); if (ret != 0) { perror(&#34;pthread_join&#34;); exit(EXIT_FAILURE); } thread_running = 0; printf(&#34;Main: Thread has exited.\\n&#34;); } else { printf(&#34;Main: No thread is running\\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 主函数 int main() { int server_fd, client_fd; struct sockaddr_in server_addr, client_addr; socklen_t client_len = sizeof(client_addr); char buffer[BUFFER_SIZE]; // 创建 Socket server_fd = socket(AF_INET, SOCK_STREAM, 0); if (server_fd &lt; 0) { perror(&#34;socket&#34;); exit(EXIT_FAILURE); } // 绑定地址和端口 server_addr.sin_family = AF_INET; server_addr.sin_addr.s_addr = INADDR_ANY; server_addr.sin_port = htons(PORT); if (bind(server_fd, (struct sockaddr*)&amp;server_addr, sizeof(server_addr)) &lt; 0) { perror(&#34;bind&#34;); close(server_fd); exit(EXIT_FAILURE); } // 监听连接 if (listen(server_fd, 5) &lt; 0) { perror(&#34;listen&#34;); close(server_fd); exit(EXIT_FAILURE); } printf(&#34;Server is listening on port %d...\\n&#34;, PORT); // 主循环 while (1) { // 接受客户端连接 client_fd = accept(server_fd, (struct sockaddr*)&amp;client_addr, &amp;client_len); if (client_fd &lt; 0) { perror(&#34;accept&#34;); continue; } // 接收客户端消息 memset(buffer, 0, BUFFER_SIZE); ssize_t bytes_received = recv(client_fd, buffer, BUFFER_SIZE - 1, 0); if (bytes_received &lt; 0) { perror(&#34;recv&#34;); close(client_fd); continue; } printf(&#34;Received from client: %s\\n&#34;, buffer); // 解析客户端 flag int flag = atoi(buffer); if (flag == 1) { create_thread(); } else if (flag == 2) { destroy_thread(); } else { printf(&#34;Invalid flag: %d\\n&#34;, flag); } // 关闭客户端连接 close(client_fd); } // 关闭服务器 Socket close(server_fd); return 0; } 代码解析 Socket 服务端：\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/socket-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86%E7%9A%84%E7%BB%93%E5%90%88-deepseek/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='socket' /><meta property='article:tag' content='pthread' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='程序员' /><meta property='article:published_time' content='2025-03-19T11:28:06&#43;08:00'/><meta property='article:modified_time' content='2025-03-19T11:28:06&#43;08:00'/>
+<meta name="twitter:title" content="Socket 服务端与线程管理的结合-Deepseek">
+<meta name="twitter:description" content=" 以下是一个综合示例，展示了如何在 Socket 服务端中结合线程创建与销毁，根据客户端下发的 flag 动态管理线程，并确保线程中的结构体和动态内存被正确释放。 方案设计 Socket 服务端：\n使用 socket、bind、listen 和 accept 创建 TCP 服务端。 在 while 循环中持续接收客户端连接和消息。 线程管理：\n当客户端发送 flag=1 时，创建线程。 当客户端发送 flag=2 时，销毁线程。 使用全局变量和互斥锁（pthread_mutex_t）管理线程状态。 资源释放：\n使用 pthread_cleanup_push 和 pthread_cleanup_pop 确保线程退出时释放结构体和动态内存。 线程函数：\n线程函数模拟工作逻辑，持续运行直到被取消。 完整代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;string.h&gt; #include &lt;unistd.h&gt; #include &lt;pthread.h&gt; #include &lt;arpa/inet.h&gt; #define PORT 8080 #define BUFFER_SIZE 1024 // 全局变量 pthread_t worker_thread = 0; // 工作线程 ID volatile int thread_running = 0; // 线程运行状态 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁 // 线程数据结构体 typedef struct { int id; char* message; } ThreadData; // 清理函数 void cleanup_handler(void* arg) { ThreadData* data = (ThreadData*)arg; printf(&#34;Cleanup handler: Freeing resources for thread %d\\n&#34;, data-&gt;id); free(data-&gt;message); // 释放动态内存 free(data); // 释放结构体 } // 线程函数 void* thread_func(void* arg) { ThreadData* data = (ThreadData*)arg; // 注册清理函数 pthread_cleanup_push(cleanup_handler, data); // 允许线程被取消 pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL); pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL); printf(&#34;Thread %d: %s\\n&#34;, data-&gt;id, data-&gt;message); // 模拟线程工作 while (1) { printf(&#34;Thread %d: Working...\\n&#34;, data-&gt;id); sleep(1); // 显式检查取消请求 pthread_testcancel(); } // 弹出清理函数（不会执行，因为线程会被取消） pthread_cleanup_pop(0); pthread_exit(NULL); } // 创建线程 void create_thread() { pthread_mutex_lock(&amp;mutex); if (!thread_running) { ThreadData* data = (ThreadData*)malloc(sizeof(ThreadData)); if (!data) { perror(&#34;malloc&#34;); exit(EXIT_FAILURE); } data-&gt;id = 1; data-&gt;message = (char*)malloc(50 * sizeof(char)); if (!data-&gt;message) { perror(&#34;malloc&#34;); free(data); exit(EXIT_FAILURE); } snprintf(data-&gt;message, 50, &#34;Hello from thread %d&#34;, data-&gt;id); int ret = pthread_create(&amp;worker_thread, NULL, thread_func, data); if (ret != 0) { perror(&#34;pthread_create&#34;); free(data-&gt;message); free(data); exit(EXIT_FAILURE); } thread_running = 1; printf(&#34;Main: Created thread %d\\n&#34;, data-&gt;id); } else { printf(&#34;Main: Thread is already running\\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 销毁线程 void destroy_thread() { pthread_mutex_lock(&amp;mutex); if (thread_running) { printf(&#34;Main: Stopping thread...\\n&#34;); int ret = pthread_cancel(worker_thread); if (ret != 0) { perror(&#34;pthread_cancel&#34;); exit(EXIT_FAILURE); } // 等待线程退出并回收资源 ret = pthread_join(worker_thread, NULL); if (ret != 0) { perror(&#34;pthread_join&#34;); exit(EXIT_FAILURE); } thread_running = 0; printf(&#34;Main: Thread has exited.\\n&#34;); } else { printf(&#34;Main: No thread is running\\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 主函数 int main() { int server_fd, client_fd; struct sockaddr_in server_addr, client_addr; socklen_t client_len = sizeof(client_addr); char buffer[BUFFER_SIZE]; // 创建 Socket server_fd = socket(AF_INET, SOCK_STREAM, 0); if (server_fd &lt; 0) { perror(&#34;socket&#34;); exit(EXIT_FAILURE); } // 绑定地址和端口 server_addr.sin_family = AF_INET; server_addr.sin_addr.s_addr = INADDR_ANY; server_addr.sin_port = htons(PORT); if (bind(server_fd, (struct sockaddr*)&amp;server_addr, sizeof(server_addr)) &lt; 0) { perror(&#34;bind&#34;); close(server_fd); exit(EXIT_FAILURE); } // 监听连接 if (listen(server_fd, 5) &lt; 0) { perror(&#34;listen&#34;); close(server_fd); exit(EXIT_FAILURE); } printf(&#34;Server is listening on port %d...\\n&#34;, PORT); // 主循环 while (1) { // 接受客户端连接 client_fd = accept(server_fd, (struct sockaddr*)&amp;client_addr, &amp;client_len); if (client_fd &lt; 0) { perror(&#34;accept&#34;); continue; } // 接收客户端消息 memset(buffer, 0, BUFFER_SIZE); ssize_t bytes_received = recv(client_fd, buffer, BUFFER_SIZE - 1, 0); if (bytes_received &lt; 0) { perror(&#34;recv&#34;); close(client_fd); continue; } printf(&#34;Received from client: %s\\n&#34;, buffer); // 解析客户端 flag int flag = atoi(buffer); if (flag == 1) { create_thread(); } else if (flag == 2) { destroy_thread(); } else { printf(&#34;Invalid flag: %d\\n&#34;, flag); } // 关闭客户端连接 close(client_fd); } // 关闭服务器 Socket close(server_fd); return 0; } 代码解析 Socket 服务端：\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">以下是一个综合示例，展示了如何在 Socket 服务端中结合线程创建与销毁，根据客户端下发的 flag 动态管理线程，并确保线程中的结构体和动态内存被正确释放。</a>
+<ul>
+<li><a href="#headline-2">方案设计</a>
+</li>
+<li><a href="#headline-3">完整代码</a>
+</li>
+<li><a href="#headline-4">代码解析</a>
+</li>
+<li><a href="#headline-5">总结</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-6">讲一下互斥锁</a>
+</li>
+<li><a href="#headline-7">前边示例为什么创建线程和销毁线程都要加锁</a>
+<ul>
+<li><a href="#headline-8">为什么需要加锁？</a>
+<ul>
+<li><a href="#headline-9">1.1 共享资源的竞争</a>
+</li>
+<li><a href="#headline-10">1.2 数据一致性</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-11">加锁的具体作用</a>
+<ul>
+<li><a href="#headline-12">2.1 创建线程时的加锁</a>
+</li>
+<li><a href="#headline-13">2.2 销毁线程时的加锁</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-14">不加锁的后果</a>
+<ul>
+<li><a href="#headline-15">3.1 创建多个线程</a>
+</li>
+<li><a href="#headline-16">3.2 状态不一致</a>
+</li>
+<li><a href="#headline-17">3.3 资源泄漏</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-18">4. 加锁的最佳实践</a>
+<ul>
+<li><a href="#headline-19">总结</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/socket-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86%E7%9A%84%E7%BB%93%E5%90%88-deepseek/">Socket 服务端与线程管理的结合-Deepseek</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 19, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+以下是一个综合示例，展示了如何在 Socket 服务端中结合线程创建与销毁，根据客户端下发的 flag 动态管理线程，并确保线程中的结构体和动态内存被正确释放。
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+方案设计
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<ul>
+<li>
+<p>Socket 服务端：</p>
+<ul>
+<li>使用 socket、bind、listen 和 accept 创建 TCP 服务端。</li>
+<li>在 while 循环中持续接收客户端连接和消息。</li>
+</ul>
+</li>
+<li>
+<p>线程管理：</p>
+<ul>
+<li>当客户端发送 flag=1 时，创建线程。</li>
+<li>当客户端发送 flag=2 时，销毁线程。</li>
+<li>使用全局变量和互斥锁（pthread_mutex_t）管理线程状态。</li>
+</ul>
+</li>
+<li>
+<p>资源释放：</p>
+<ul>
+<li>使用 pthread_cleanup_push 和 pthread_cleanup_pop 确保线程退出时释放结构体和动态内存。</li>
+</ul>
+</li>
+<li>
+<p>线程函数：</p>
+<ul>
+<li>线程函数模拟工作逻辑，持续运行直到被取消。</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+完整代码
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define PORT 8080
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define BUFFER_SIZE 1024
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 全局变量
+</span></span></span><span class="line"><span class="cl"><span class="kt">pthread_t</span> <span class="n">worker_thread</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 工作线程 ID
+</span></span></span><span class="line"><span class="cl"><span class="k">volatile</span> <span class="kt">int</span> <span class="n">thread_running</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 线程运行状态
+</span></span></span><span class="line"><span class="cl"><span class="kt">pthread_mutex_t</span> <span class="n">mutex</span> <span class="o">=</span> <span class="n">PTHREAD_MUTEX_INITIALIZER</span><span class="p">;</span> <span class="c1">// 互斥锁
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 线程数据结构体
+</span></span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span><span class="o">*</span> <span class="n">message</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">ThreadData</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 清理函数
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">cleanup_handler</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ThreadData</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">ThreadData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Cleanup handler: Freeing resources for thread %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">message</span><span class="p">);</span> <span class="c1">// 释放动态内存
+</span></span></span><span class="line"><span class="cl">    <span class="nf">free</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>          <span class="c1">// 释放结构体
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 线程函数
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="nf">thread_func</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ThreadData</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">ThreadData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 注册清理函数
+</span></span></span><span class="line"><span class="cl">    <span class="nf">pthread_cleanup_push</span><span class="p">(</span><span class="n">cleanup_handler</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 允许线程被取消
+</span></span></span><span class="line"><span class="cl">    <span class="nf">pthread_setcancelstate</span><span class="p">(</span><span class="n">PTHREAD_CANCEL_ENABLE</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_setcanceltype</span><span class="p">(</span><span class="n">PTHREAD_CANCEL_DEFERRED</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Thread %d: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">,</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 模拟线程工作
+</span></span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Thread %d: Working...</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 显式检查取消请求
+</span></span></span><span class="line"><span class="cl">        <span class="nf">pthread_testcancel</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 弹出清理函数（不会执行，因为线程会被取消）
+</span></span></span><span class="line"><span class="cl">    <span class="nf">pthread_cleanup_pop</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_exit</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 创建线程
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">create_thread</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">thread_running</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ThreadData</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">ThreadData</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">ThreadData</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;malloc&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span><span class="o">-&gt;</span><span class="n">id</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="mi">50</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">message</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;malloc&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">free</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">snprintf</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">message</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="s">&#34;Hello from thread %d&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="nf">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">worker_thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">thread_func</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;pthread_create&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">free</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">message</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">free</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">thread_running</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Created thread %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Thread is already running</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 销毁线程
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">destroy_thread</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">thread_running</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Stopping thread...</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="nf">pthread_cancel</span><span class="p">(</span><span class="n">worker_thread</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;pthread_cancel&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 等待线程退出并回收资源
+</span></span></span><span class="line"><span class="cl">        <span class="n">ret</span> <span class="o">=</span> <span class="nf">pthread_join</span><span class="p">(</span><span class="n">worker_thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;pthread_join&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">thread_running</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Thread has exited.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: No thread is running</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 主函数
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">server_fd</span><span class="p">,</span> <span class="n">client_fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">server_addr</span><span class="p">,</span> <span class="n">client_addr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">socklen_t</span> <span class="n">client_len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">client_addr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="n">BUFFER_SIZE</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建 Socket
+</span></span></span><span class="line"><span class="cl">    <span class="n">server_fd</span> <span class="o">=</span> <span class="nf">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">server_fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;socket&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 绑定地址和端口
+</span></span></span><span class="line"><span class="cl">    <span class="n">server_addr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">server_addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">INADDR_ANY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">server_addr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="nf">htons</span><span class="p">(</span><span class="n">PORT</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nf">bind</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">server_addr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">server_addr</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;bind&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">close</span><span class="p">(</span><span class="n">server_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 监听连接
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nf">listen</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;listen&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">close</span><span class="p">(</span><span class="n">server_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Server is listening on port %d...</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">PORT</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 主循环
+</span></span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 接受客户端连接
+</span></span></span><span class="line"><span class="cl">        <span class="n">client_fd</span> <span class="o">=</span> <span class="nf">accept</span><span class="p">(</span><span class="n">server_fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">client_addr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">client_len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">client_fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;accept&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 接收客户端消息
+</span></span></span><span class="line"><span class="cl">        <span class="nf">memset</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">BUFFER_SIZE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">ssize_t</span> <span class="n">bytes_received</span> <span class="o">=</span> <span class="nf">recv</span><span class="p">(</span><span class="n">client_fd</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">BUFFER_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">bytes_received</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;recv&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">close</span><span class="p">(</span><span class="n">client_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Received from client: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">buffer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 解析客户端 flag
+</span></span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">flag</span> <span class="o">=</span> <span class="nf">atoi</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">create_thread</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">destroy_thread</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Invalid flag: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">flag</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 关闭客户端连接
+</span></span></span><span class="line"><span class="cl">        <span class="nf">close</span><span class="p">(</span><span class="n">client_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 关闭服务器 Socket
+</span></span></span><span class="line"><span class="cl">    <span class="nf">close</span><span class="p">(</span><span class="n">server_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+代码解析
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<ul>
+<li>
+<p>Socket 服务端：</p>
+<ul>
+<li>使用 socket、bind、listen 和 accept 创建 TCP 服务端。</li>
+<li>在 while 循环中持续接收客户端连接和消息。</li>
+</ul>
+</li>
+<li>
+<p>线程管理：</p>
+<ul>
+<li>create_thread：创建线程并初始化线程数据。</li>
+<li>destroy_thread：取消线程并等待线程退出。</li>
+</ul>
+</li>
+<li>
+<p>资源释放：</p>
+<ul>
+<li>使用 pthread_cleanup_push 和 pthread_cleanup_pop 确保线程退出时释放资源。</li>
+</ul>
+</li>
+<li>
+<p>客户端消息处理：</p>
+<ul>
+<li>接收客户端消息并解析 flag。</li>
+<li>根据 flag 的值创建或销毁线程。</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+总结
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<ul>
+<li>该方案实现了 Socket 服务端与线程管理的结合。</li>
+<li>通过 flag 动态创建和销毁线程，确保资源被正确释放。</li>
+<li>使用互斥锁保护全局变量，避免竞态条件。</li>
+<li>适用于需要动态管理线程的服务器场景。</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-2">
+<h2 id="headline-6">
+讲一下互斥锁
+</h2>
+<div id="outline-text-headline-6" class="outline-text-2">
+<p>
+互斥锁（Mutex，全称 Mutual Exclusion Lock） 是一种用于多线程编程的同步机制，用于保护共享资源，防止多个线程同时访问或修改这些资源，从而避免竞态条件（Race Condition）和数据不一致的问题。</p>
+<ol>
+<li>互斥锁的作用</li>
+</ol>
+<p>在多线程环境中，如果多个线程同时访问或修改共享资源（如全局变量、文件、内存等），可能会导致数据不一致或程序行为异常。互斥锁的作用是：</p>
+<ul>
+<li>确保同一时间只有一个线程可以访问共享资源。</li>
+<li>当一个线程持有锁时，其他线程必须等待锁释放后才能访问共享资源。</li>
+</ul>
+<ol>
+<li>互斥锁的基本操作</li>
+</ol>
+<p>在 POSIX 线程库（pthread）中，互斥锁的操作包括：</p>
+<ul>
+<li>
+<p>初始化互斥锁：</p>
+<ul>
+<li>使用 pthread_mutex_init 初始化互斥锁。</li>
+<li>也可以使用静态初始化：pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER。</li>
+</ul>
+</li>
+<li>
+<p>加锁：</p>
+<ul>
+<li>使用 pthread_mutex_lock 加锁。如果锁已被其他线程持有，则当前线程会阻塞，直到锁被释放。</li>
+</ul>
+</li>
+<li>
+<p>尝试加锁：</p>
+<ul>
+<li>使用 pthread_mutex_trylock 尝试加锁。如果锁已被其他线程持有，则立即返回错误，而不是阻塞。</li>
+</ul>
+</li>
+<li>
+<p>解锁：</p>
+<ul>
+<li>使用 pthread_mutex_unlock 释放锁，允许其他线程获取锁。</li>
+</ul>
+</li>
+<li>
+<p>销毁互斥锁：</p>
+<ul>
+<li>使用 pthread_mutex_destroy 销毁互斥锁，释放相关资源。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>互斥锁的使用场景</li>
+</ol>
+<ul>
+<li>
+<p>保护共享资源：</p>
+<ul>
+<li>例如，多个线程需要修改同一个全局变量时，可以使用互斥锁确保线程安全。</li>
+</ul>
+</li>
+<li>
+<p>同步线程执行：</p>
+<ul>
+<li>例如，确保某个操作在所有线程完成特定任务后再执行。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>互斥锁的示例</li>
+</ol>
+<p>以下是一个简单的示例，展示了如何使用互斥锁保护共享资源：</p>
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 共享资源
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 互斥锁
+</span></span></span><span class="line"><span class="cl"><span class="kt">pthread_mutex_t</span> <span class="n">mutex</span> <span class="o">=</span> <span class="n">PTHREAD_MUTEX_INITIALIZER</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 线程函数
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="nf">thread_func</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100000</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 加锁
+</span></span></span><span class="line"><span class="cl">        <span class="nf">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 修改共享资源
+</span></span></span><span class="line"><span class="cl">        <span class="n">counter</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 解锁
+</span></span></span><span class="line"><span class="cl">        <span class="nf">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">pthread_t</span> <span class="n">thread1</span><span class="p">,</span> <span class="n">thread2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建两个线程
+</span></span></span><span class="line"><span class="cl">    <span class="nf">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">thread1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">thread_func</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">thread2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">thread_func</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 等待线程结束
+</span></span></span><span class="line"><span class="cl">    <span class="nf">pthread_join</span><span class="p">(</span><span class="n">thread1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_join</span><span class="p">(</span><span class="n">thread2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 打印最终结果
+</span></span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Counter value: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">counter</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 销毁互斥锁
+</span></span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<ol>
+<li>代码解析</li>
+</ol>
+<ul>
+<li>
+<p>共享资源：</p>
+<ul>
+<li>counter 是一个全局变量，被两个线程同时修改。</li>
+</ul>
+</li>
+<li>
+<p>互斥锁保护：</p>
+<ul>
+<li>在修改 counter 之前，线程调用 pthread_mutex_lock 加锁。</li>
+<li>修改完成后，线程调用 pthread_mutex_unlock 解锁。</li>
+</ul>
+</li>
+<li>
+<p>线程安全：</p>
+<ul>
+<li>如果没有互斥锁，两个线程可能同时修改 counter，导致最终结果不正确。</li>
+</ul>
+<p>使用互斥锁后，counter 的最终值一定是 200000。</p>
+</li>
+</ul>
+<ol>
+<li>互斥锁的注意事项</li>
+</ol>
+<ul>
+<li>
+<p>避免死锁：</p>
+<ul>
+<li>死锁是指多个线程互相等待对方释放锁，导致程序无法继续执行。</li>
+<li>例如，线程 A 持有锁 1 并请求锁 2，而线程 B 持有锁 2 并请求锁 1。</li>
+<li>解决方法：按固定顺序加锁，或使用超时机制。</li>
+</ul>
+</li>
+<li>
+<p>锁的粒度：</p>
+<ul>
+<li>锁的粒度不宜过大，否则会降低程序的并发性能。</li>
+<li>例如，如果锁保护了整个函数，而函数中有大量不涉及共享资源的代码，会导致其他线程长时间等待。</li>
+</ul>
+</li>
+<li>
+<p>锁的性能开销：</p>
+<ul>
+<li>加锁和解锁操作有一定的性能开销，尤其是在高并发场景下。</li>
+</ul>
+<p>如果共享资源的访问频率很高，可以考虑使用更高效的同步机制（如读写锁或无锁数据结构）。</p>
+</li>
+</ul>
+<ol>
+<li>互斥锁的变体</li>
+</ol>
+<ul>
+<li>
+<p>读写锁（pthread_rwlock_t）：</p>
+<ul>
+<li>允许多个线程同时读取共享资源，但只允许一个线程写入。</li>
+<li>适用于读多写少的场景。</li>
+</ul>
+</li>
+<li>
+<p>自旋锁（pthread_spinlock_t）：</p>
+<ul>
+<li>在加锁时，线程会忙等待（busy-wait），而不是阻塞。</li>
+<li>适用于锁持有时间非常短的场景。</li>
+</ul>
+</li>
+<li>
+<p>条件变量（pthread_cond_t）：</p>
+<ul>
+<li>用于线程间的条件同步，通常与互斥锁配合使用。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>总结</li>
+</ol>
+<ul>
+<li>互斥锁是保护共享资源的基本工具，可以避免竞态条件和数据不一致。</li>
+<li>使用互斥锁时需要注意死锁、锁粒度和性能开销。</li>
+<li>在实际开发中，应根据具体场景选择合适的同步机制。</li>
+</ul>
+<p>通过合理使用互斥锁，可以编写出高效且线程安全的并发程序。</p>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-2">
+<h2 id="headline-7">
+前边示例为什么创建线程和销毁线程都要加锁
+</h2>
+<div id="outline-text-headline-7" class="outline-text-2">
+<p>
+在前面的示例中，创建线程和销毁线程时加锁是为了解决**竞态条件（Race Condition）**问题，确保多个线程不会同时修改共享资源（如 worker_thread 和 thread_running）而导致数据不一致或程序行为异常。</p>
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
+为什么需要加锁？
+</h3>
+<div id="outline-text-headline-8" class="outline-text-3">
+<div id="outline-container-headline-9" class="outline-4">
+<h4 id="headline-9">
+1.1 共享资源的竞争
+</h4>
+<div id="outline-text-headline-9" class="outline-text-4">
+<ul>
+<li>在示例中，worker_thread 和 thread_running 是全局变量，被多个线程共享。</li>
+<li>
+<p>如果没有锁保护，可能会出现以下问题：</p>
+<ul>
+<li>
+<p><code class="verbatim">创建线程时：</code></p>
+<ul>
+<li>两个客户端同时发送 flag=1，导致两个线程同时调用 create_thread。</li>
+<li>如果没有锁，可能会创建多个线程，而 worker_thread 只能保存一个线程 ID，导致其他线程无法被正确管理。</li>
+</ul>
+</li>
+<li>
+<p><code class="verbatim">销毁线程时：</code></p>
+<ul>
+<li>一个线程正在销毁线程，而另一个线程尝试创建线程，可能导致 worker_thread 和 thread_running 的状态不一致。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-4">
+<h4 id="headline-10">
+1.2 数据一致性
+</h4>
+<div id="outline-text-headline-10" class="outline-text-4">
+<ul>
+<li>加锁可以确保对共享资源的修改是原子操作，即同一时间只有一个线程可以修改这些资源。</li>
+<li>
+<p>例如，在 create_thread 中，加锁后可以确保：</p>
+<ul>
+<li>检查 thread_running 的状态。</li>
+<li>创建线程并更新 worker_thread 和 thread_running。</li>
+<li>这些操作不会被其他线程打断。</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-3">
+<h3 id="headline-11">
+加锁的具体作用
+</h3>
+<div id="outline-text-headline-11" class="outline-text-3">
+<div id="outline-container-headline-12" class="outline-4">
+<h4 id="headline-12">
+2.1 创建线程时的加锁
+</h4>
+<div id="outline-text-headline-12" class="outline-text-4">
+<p>在 create_thread 函数中：</p>
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">create_thread</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span> <span class="c1">// 加锁
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">thread_running</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 创建线程并更新共享资源
+</span></span></span><span class="line"><span class="cl">        <span class="n">ThreadData</span><span class="o">*</span> <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">ThreadData</span><span class="o">*</span><span class="p">)</span><span class="nf">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">ThreadData</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// ... 初始化 data
+</span></span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="nf">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">worker_thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">thread_func</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// ... 错误处理
+</span></span></span><span class="line"><span class="cl">        <span class="n">thread_running</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// 更新状态
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span> <span class="c1">// 解锁
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<ul>
+<li>加锁：确保在检查 thread_running 和创建线程的过程中，不会被其他线程打断。</li>
+<li>解锁：操作完成后释放锁，允许其他线程访问共享资源。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-4">
+<h4 id="headline-13">
+2.2 销毁线程时的加锁
+</h4>
+<div id="outline-text-headline-13" class="outline-text-4">
+<p>在 destroy_thread 函数中：</p>
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">destroy_thread</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span> <span class="c1">// 加锁
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">thread_running</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 取消线程并更新共享资源
+</span></span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="nf">pthread_cancel</span><span class="p">(</span><span class="n">worker_thread</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// ... 错误处理
+</span></span></span><span class="line"><span class="cl">        <span class="n">ret</span> <span class="o">=</span> <span class="nf">pthread_join</span><span class="p">(</span><span class="n">worker_thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// ... 错误处理
+</span></span></span><span class="line"><span class="cl">        <span class="n">thread_running</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 更新状态
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span> <span class="c1">// 解锁
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<ul>
+<li>加锁：确保在检查 thread_running 和销毁线程的过程中，不会被其他线程打断。</li>
+<li>解锁：操作完成后释放锁，允许其他线程访问共享资源。</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-3">
+<h3 id="headline-14">
+不加锁的后果
+</h3>
+<div id="outline-text-headline-14" class="outline-text-3">
+<p>
+如果不加锁，可能会出现以下问题：</p>
+<div id="outline-container-headline-15" class="outline-4">
+<h4 id="headline-15">
+3.1 创建多个线程
+</h4>
+<div id="outline-text-headline-15" class="outline-text-4">
+<ul>
+<li>两个客户端同时发送 flag=1，导致两个线程同时调用 create_thread。</li>
+<li>由于没有锁保护，两个线程可能同时检查 thread_running，发现其为 0，然后同时创建线程。</li>
+<li>最终会导致多个线程运行，而 worker_thread 只能保存一个线程 ID，其他线程无法被管理。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-4">
+<h4 id="headline-16">
+3.2 状态不一致
+</h4>
+<div id="outline-text-headline-16" class="outline-text-4">
+<ul>
+<li>一个线程正在销毁线程，而另一个线程尝试创建线程。</li>
+<li>
+<p>由于没有锁保护，可能会导致 worker_thread 和 thread_running 的状态不一致，例如：</p>
+<ul>
+<li>thread_running 被设置为 0，但 worker_thread 仍然指向一个无效的线程 ID。</li>
+<li>或者 thread_running 被设置为 1，但 worker_thread 尚未被正确赋值。</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-17" class="outline-4">
+<h4 id="headline-17">
+3.3 资源泄漏
+</h4>
+<div id="outline-text-headline-17" class="outline-text-4">
+<ul>
+<li>如果没有锁保护，可能会多次创建线程，导致资源（如动态内存）泄漏。</li>
+<li>例如，多个线程同时分配 ThreadData 结构体，但只有最后一个线程的 ThreadData 会被正确释放。</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-18" class="outline-3">
+<h3 id="headline-18">
+4. 加锁的最佳实践
+</h3>
+<div id="outline-text-headline-18" class="outline-text-3">
+<ul>
+<li>
+<p>锁的粒度：</p>
+<ul>
+<li>锁的粒度不宜过大，否则会降低程序的并发性能。</li>
+<li>在示例中，锁只保护了必要的共享资源（worker_thread 和 thread_running）。</li>
+</ul>
+</li>
+<li>
+<p>避免死锁：</p>
+<ul>
+<li>确保加锁和解锁成对出现。</li>
+<li>在函数的所有退出路径（如 return 或错误处理）中都要解锁。</li>
+</ul>
+</li>
+<li>
+<p>锁的性能：</p>
+<ul>
+<li>加锁和解锁操作有一定的性能开销，尤其是在高并发场景下。</li>
+<li>如果共享资源的访问频率很高，可以考虑使用更高效的同步机制（如读写锁或无锁数据结构）。</li>
+</ul>
+</li>
+</ul>
+<div id="outline-container-headline-19" class="outline-4">
+<h4 id="headline-19">
+总结
+</h4>
+<div id="outline-text-headline-19" class="outline-text-4">
+<ul>
+<li>加锁的目的是保护共享资源，避免竞态条件和数据不一致。</li>
+<li>在示例中，创建线程和销毁线程时加锁，是为了确保对 worker_thread 和 thread_running 的修改是原子操作。</li>
+<li>如果不加锁，可能会导致多个线程同时修改共享资源，从而引发数据不一致、资源泄漏或程序行为异常。</li>
+</ul>
+<p>通过合理使用互斥锁，可以编写出线程安全的并发程序。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/socket/">Socket</a>
+        
+            <a href="/tags/pthread/">Pthread</a>
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%A6%82%E4%BD%95%E6%A0%B9%E6%8D%AEflag%E7%BB%93%E6%9D%9F%E7%BA%BF%E7%A8%8B%E5%B9%B6%E5%88%9B%E5%BB%BA%E6%96%B0%E7%BA%BF%E7%A8%8B-deepseek/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">如何根据flag结束线程并创建新线程-Deepseek</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/jq%E7%94%A8%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">jq用法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/socket%E5%9F%BA%E4%BA%8Etcp%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%9E%E4%BE%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">socket基于tcp的服务端与客户端实例</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/socket%E5%9F%BA%E4%BA%8Etcp%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%9E%E4%BE%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">socket基于tcp客户端实例</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/socket%E5%9F%BA%E4%BA%8Etcp%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%9E%E4%BE%8B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">socket基于tcp服务端实例</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

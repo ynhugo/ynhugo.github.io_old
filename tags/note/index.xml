@@ -1,0 +1,1630 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Note on Example Site</title>
+        <link>https://ynhugo.github.io/tags/note/</link>
+        <description>Recent content in Note on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sun, 30 Jul 2023 14:52:08 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/note/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>note</title>
+        <link>https://ynhugo.github.io/p/note/</link>
+        <pubDate>Sun, 30 Jul 2023 14:52:08 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/note/</guid>
+        <description>&lt;h1 id=&#34;我的onedrive_&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://pan.baidu.com/s/1SYOJl_Y2lUd0cn9lp9De-Q?pwd=9527&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;我的OneDrive_应用(提取码：9527)&lt;/a&gt;
+&lt;/h1&gt;&lt;h1 id=&#34;多个绿色软件下载站-破解软件-激活版-去广告-绿色版-免安装版-全网好资源&#34;&gt;多个绿色软件下载站 破解软件 激活版 去广告 绿色版 免安装版 全网好资源
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;https://www.downgc.com/
+http://www.downxia.com/
+https://www.ghxi.com/
+https://www.ypojie.com/
+https://www.freedownloadmanager.org/zh/
+https://www.onlinedown.net/
+https://www.pcsoft.com.cn/
+https://sourceforge.net/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;keil使用技巧&#34;&gt;keil使用技巧
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;1.在进行keil工程的Manage Project Items的分组设置时
+	方向键下新建分组并编辑
+	回车确认修改
+	Tab选择，空格编辑，回车确认
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;git&#34;&gt;git
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;```C
+git config --global user.name &amp;quot;name&amp;quot;
+git config --global user.email &amp;quot;email&amp;quot;
+
+git branch 新建分支
+
+git checkout branch 新建分支
+
+git add .					//添加内容
+
+git commit -m &amp;quot;注释&amp;quot;		//提交内容
+
+git push -u origin 新建分支	//推送分支到远程仓库
+```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;hexo&#34;&gt;hexo
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;该内容摘自别人的博客
+附链接：[next主题添加站内搜索功能](https://blog.csdn.net/Awt_FuDongLai/article/details/107435633)
+如何让hexo实现搜索功能
+1 安装插件
+
+npm install hexo-generator-search --save
+1
+2 更改主题配置文件
+
+cd 博客目录
+vim themes/next/_config.yml
+
+#将其设置为true即可，其余的保持默认值
+#Local search
+#Dependencies: https://github.com/flashlab/hexo-generator-search
+local_search:
+  enable: true
+  #if auto, trigger search by changing input
+  #if manual, trigger search by pressing enter key or search button
+  trigger: auto
+  #show top n results per article, show all results by setting to -1
+  top_n_per_article: 1
+
+
+
+重新生成即可
+
+hexo g
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;如何配置hexo博客的next主题&#34;&gt;如何配置hexo博客的next主题
+&lt;/h1&gt;&lt;p&gt;网上有很多的next的主题配置教程，但是真正能够简单快捷、一步到位的却很少，今天浏览了一遍掘金的文章关于如何配置hexo的next主题，尝试了一下，然后成功了，记录一下。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://juejin.cn/post/6844903732379910152&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;教程链接&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;hexo-及-next-基本配置与使用&#34;&gt;Hexo 及 NexT 基本配置与使用
+&lt;/h2&gt;&lt;p&gt;这篇文章主要来介绍Hexo的主题及其配置以及如何来写自己的博客。&lt;/p&gt;
+&lt;h3 id=&#34;主题下载与应用&#34;&gt;主题下载与应用
+&lt;/h3&gt;&lt;p&gt;Hexo提供各种各样的主题，我们可以进入官网去选择自己喜欢的主题，然后在GitHub上有其具体的介绍。&lt;/p&gt;
+&lt;p&gt;接下来我们以NexT主题为例进行介绍。&lt;/p&gt;
+&lt;p&gt;截至目前为止，NexT主题已经从v5.1.x更新至v6.6.0，仓库也从原来的老仓库迁移到这里。因此NexT主题的很多配置都和以前不一样了，我当时在网上看的时候全是老版本的配置方法，花费了不少时间。最后发现其实可以自己看着themes下的_config.yml进行配置，很多插件都在theme-next这个仓库有。&lt;/p&gt;
+&lt;h3 id=&#34;下载-next&#34;&gt;下载 NexT
+&lt;/h3&gt;&lt;p&gt;切换到主目录，然后克隆整个仓库到themes/next：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd hexo
+git clone https://github.com/theme-next/hexo-theme-next themes/next
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;之后我们会发现 themes下多了个next文件夹，即我们的主题文件夹。&lt;/p&gt;
+&lt;h3 id=&#34;配置&#34;&gt;配置
+&lt;/h3&gt;&lt;p&gt;整个 Hexo 博客有两个主要的配置文件，第一个是主目录下的_config.yml，另一个是我们的主题配置文件，是thems/next/_config.yml。&lt;/p&gt;
+&lt;p&gt;现在我们开始将我们下载的主题应用到我们的博客中，我们只需修改主目录下的_config.yml，如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+
+theme: next
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后hexo s启动博客即可。 需要注意的是：每当我们修改了主目录下的_config.yml，只有重启博客服务才能生效；而修改thems/next/_config.yml是不需要重启博客服务的。&lt;/p&gt;
+&lt;p&gt;同样我们可以在主目录下的_config.yml进行其他设置，我们可以看到里面有网站基本设置，如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;title: Hexo
+subtitle:
+description:
+keywords:
+author: John Doe
+language:
+timezone:
+
+参数    描述
+title   网站标题
+subtitle        网站副标题
+description     网站描述
+author  作者名字
+language        网站语言，NexT v6.0.3以后中文设为 zh-CN
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;具体全部配置参考官方文档。&lt;/p&gt;
+&lt;p&gt;我们暂时不需要全部理解其意思，只要把网站的基本描述改为你自己的就好。&lt;/p&gt;
+&lt;h3 id=&#34;主题设定&#34;&gt;主题设定
+&lt;/h3&gt;&lt;h4 id=&#34;选择-scheme&#34;&gt;选择 Scheme
+&lt;/h4&gt;&lt;p&gt;Scheme 的切换通过更改主题配置文件，打开thems/next/_config.yml，搜索 scheme 关键字。 你会看到有三行 scheme 的配置，将你需用启用的 scheme 前面注释 # 去除即可。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Schemes
+scheme: Muse
+#scheme: Mist
+#scheme: Pisces
+#scheme: Gemini
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Scheme 是 NexT 提供的一种特性，借助于 Scheme，NexT 为你提供多种不同的外观。同时，几乎所有的配置都可以 在 Scheme 之间共用。
+Muse - 默认 Scheme，这是 NexT 最初的版本，黑白主调，大量留白
+Mist - Muse 的紧凑版本，整洁有序的单栏外观
+Pisces - 双栏 Scheme，小家碧玉似的清新&lt;/p&gt;
+&lt;p&gt;选择对应的外观，刷新浏览器即可预览。&lt;/p&gt;
+&lt;h4 id=&#34;设置菜单&#34;&gt;设置菜单
+&lt;/h4&gt;&lt;p&gt;打开 thems/next/_config.yml ，找到如下代码&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;menu:
+  home: / || home
+  #about: /about/ || user
+  #tags: /tags/ || tags
+  #categories: /categories/ || th
+  archives: /archives/ || archive
+  #schedule: /schedule/ || calendar
+  #sitemap: /sitemap.xml || sitemap
+  #commonweal: /404/ || heartbeat
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这里是进行菜单配置，去掉哪个注释，就会多一个相应的菜单选项。&lt;/p&gt;
+&lt;p&gt;当需要about、tags、categories 需要手动创建这个页面，如果不创建点击则不会出现相应页面。&lt;/p&gt;
+&lt;p&gt;使用如下命令创建这些文件夹&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo new page &amp;quot;about&amp;quot;
+hexo new page &amp;quot;tags&amp;quot;
+hexo new page &amp;quot;categories&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;之后source文件夹下就会出现三个这样的文件夹。&lt;/p&gt;
+&lt;h4 id=&#34;设置头像&#34;&gt;设置头像
+&lt;/h4&gt;&lt;p&gt;打开thems/next/_config.yml，找到如下代码&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;avatar:
+  # in theme directory(source/images): /images/avatar.gif
+  # in site  directory(source/uploads): /uploads/avatar.gif
+  # You can also use other linking images.
+  url: #/images/avatar.gif
+  # If true, the avatar would be dispalyed in circle.
+  rounded: false
+  # The value of opacity should be choose from 0 to 1 to set the opacity of the avatar.
+  opacity: 1
+  # If true, the avatar would be rotated with the cursor.
+  rotated: false
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;修改字段 avatar， 值设置成头像的链接地址，参考这个链接。&lt;/p&gt;
+&lt;p&gt;以上主题设置可以参考Next文档。&lt;/p&gt;
+&lt;h4 id=&#34;tags-和-categories-设置&#34;&gt;tags 和 categories 设置
+&lt;/h4&gt;&lt;p&gt;当菜单中有了 tags 和 categories 时，我们需要在 Front-matter 中添加 type 属性。所谓 Front-matter 是文件最上方以 &amp;mdash; 分隔的区域，用于指定个别文件的变量。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tags/index.md
+
+---
+title: 标签
+date: 2018-12-05 10:00:29
+type: &amp;quot;tags&amp;quot;
+---
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;categories/index.md 同理。&lt;/p&gt;
+&lt;p&gt;只有这样当我们新建一篇博客时，指定的tags和categories才会同步，hexo才会识别出来你的 tags 和 categories。所以接下来我们看如何新建一篇博客。&lt;/p&gt;
+&lt;h3 id=&#34;新建博客&#34;&gt;新建博客
+&lt;/h3&gt;&lt;p&gt;新建博客很简单，使用如下命令&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;hexo new &amp;quot;文章题目&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样就会在source目录下自动创建一个名为 文章题目.md 的文件，我们只要在这个文件上写文章就行了。同样我们需要每篇文章指定一个或多个 tags 和 一个 categories。这样你的菜单中tags 页面 和categories页面就会有内容了。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;---&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nl&#34;&gt;title&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;文章题目&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nl&#34;&gt;date&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2018&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;12&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mo&#34;&gt;05&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;42&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;22&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nl&#34;&gt;tags&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;PS3&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Games&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;nl&#34;&gt;categories&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Diary&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;---&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.jianshu.com/p/03c6dec573a1&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;参考链接&lt;/a&gt;配置好next主题之后在博客页面底部会有由什么什么强力驱动等等内容，我不想显示这些，或者我想修改文本及链接，可以采取如下操作&lt;/p&gt;
+&lt;p&gt;删除该路径&lt;code&gt;{博客文件路径}/themes/next/layout/_partials/footer.swig&lt;/code&gt;文件中的如下文本&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theme&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;footer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;powered&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	  &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;div&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;powered-by&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	    &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;next_site&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;https&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//theme-next.org&amp;#39; %}
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	    &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theme&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;scheme&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!==&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Gemini&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	      &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;next_site&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;https&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//&amp;#39; + theme.scheme | lower + &amp;#39;.theme-next.org&amp;#39; %}
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	    &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;endif&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	    &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;footer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;powered&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;next_url&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;https&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//hexo.io&amp;#39;, &amp;#39;Hexo&amp;#39;, {class: &amp;#39;theme-link&amp;#39;}) + &amp;#39; &amp;amp; &amp;#39; + next_url(next_site, &amp;#39;NexT.&amp;#39; + theme.scheme, {class: &amp;#39;theme-link&amp;#39;})) }}
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	  &lt;span class=&#34;o&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;div&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;endif&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h4 id=&#34;修改链接&#34;&gt;修改链接
+&lt;/h4&gt;&lt;p&gt;将如下文本中的网站关键词和网站链接改成自己想要的即可&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theme&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;footer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;powered&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	  &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;div&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;class&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;powered-by&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	    &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;next_site&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;https&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//theme-next.org&amp;#39; %}
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	    &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;theme&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;scheme&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!==&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Gemini&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	      &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;next_site&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;https&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//&amp;#39; + theme.scheme | lower + &amp;#39;.theme-next.org&amp;#39; %}
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	    &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;endif&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	    &lt;span class=&#34;p&#34;&gt;{{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;footer&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;powered&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;next_url&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;https&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//hexo.io&amp;#39;, &amp;#39;Hexo&amp;#39;, {class: &amp;#39;theme-link&amp;#39;}) + &amp;#39; &amp;amp; &amp;#39; + next_url(next_site, &amp;#39;NexT.&amp;#39; + theme.scheme, {class: &amp;#39;theme-link&amp;#39;})) }}
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	  &lt;span class=&#34;o&#34;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;div&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;endif&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;windows使用技巧&#34;&gt;windows使用技巧
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;系统：
+如何将kali linux安装在u盘上？
+进入kali.org官网下载Live Boot，然后用rufus刻录到u盘上，rufus界面默认设置，除高级选项显示外围硬盘，然后写入镜像模式为以DD镜像写入，制作完成。
+如何将porteus linux发行版安装在u盘上，在porteus.org找到任意版本镜像下载下来后用rufus刻录到u盘上即可，之后重启电脑通过u盘进入系统即可。
+如何将tiny core linux安装在u盘上，到http://tinycorelinux.net/找到镜像下载之后再通过Etcher刻录进u盘即可。
+高级操作：1、打开regedit；2、打开msconfig.exe(安全模式)；3、gpedit;
+查看电脑端口状态：win+r_cmd_netstat
+任务栏程式切换：win+t和win+shitf+t(倒着切换)
+文件强制删除(针对权限不高的文件)：shift+delete
+注销：win+r_logoff
+打开窗口设置：Alt + Space
+打开文件属性：Alt + Enter
+创建虚拟桌面：ctrl+win+d
+虚拟桌面间切换：win+ctrl+方向键
+关闭虚拟桌面：ctrl+win+F4
+从程式切换到桌面：win+m
+打开虚拟键盘：Ctrl + Win + o
+打开投影：Win + p
+查看桌面：win+逗号
+一键回到桌面：win+d
+任务栏打开新应用：win+1..9
+多个应用程式分屏：win+方向键
+应用切换：alt+tab
+显示任务视窗：win+tab
+任务管理器：ctrl+shift+esc
+打开文档浏览器：win+e
+新增视窗：ctrl+n
+打开文档特定类型文件：ctrl+O
+使用放大镜：win+加号键或减号键
+捕捉屏幕：win+psr
+快速截图：win+shift+s
+使用操作中心：win+a
+进入设置：win+i
+与系统语音助手对话：win+c
+使用系统游戏栏：win+g
+锁住pc：win+L
+退出桌面：ctrl+alt+delete
+系统自带表情：win+句号
+打印页面：ctrl+p
+保存页面：ctrl+s
+放大或缩小：ctrl+加号或等于键，ctrl+减号或杠键，ctrl+右括号或零键
+资源监视器：Win+r_resmon/perfmon /res
+打开设置的关于页面：Win+pouse
+投影：ctrl+win+p
+框选识别文字：ctrl+alt+o
+框选翻译文字：ctrl+alt+f
+打开键盘：ctrl+win+o
+重新创建notepad：Ctrl + Shift + N
+打印机设置：ctrl+shift+p
+使用命令提示符来注册电脑上全部的dll文件：for %1 in (%windir%\system32\*.dll) do regsvr32.exe /s %1
+查找计算机：ctrl+win+f
+切换到windows powershell：win+x
+快速启动：C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+一键关闭电脑所有软体：taskkill /F /FI &amp;quot;USERNAME eq Administrator&amp;quot; /FI &amp;quot;IMAGENAME ne explorer.exe&amp;quot; /FI &amp;quot;IMAGENAME ne dwm.exe&amp;quot;
+一键关闭电脑所有软体：taskkill /F  /FI &amp;quot;IMAGENAME ne explorer.exe&amp;quot; /FI &amp;quot;IMAGENAME ne dwm.exe&amp;quot;
+查看电脑连接过的wifi的密码：netsh wlan show profiles name=wifi名字 key=clear
+连接无线设备：win+k
+显示系统信息：按Win键，输入 msinfo并回车或直接搜索 系统信息
+高级菜单：win+x
+rss订阅：https://ynrss.herokuapp.com/
+用cmd命令装逼：先color a回车，再dir /s回车即可
+查看端口排错：netstart -ano | findsrt 50524
+阻止所有弹窗的相关设置方法：win+r_control.exe_网络和internet_internet选项_隐私_启用弹出窗口阻止程序(B)_阻止
+级别(高)_win+e_此电脑_管理_点开任务计划程序小箭头_任务计划程序库_把所有程序状态改为禁用
+远程转接：win+r_control.exe_系统的安全_允许远程访问_允许远程连接到此计算机(L)——win+r_mstsc_输入对方电脑ip
+查看端口排错：netstart -ano | findsrt 50524
+如何查看系统信息：win+r_control.exe_系统_查看RAM的大小和处理器的速度
+修复电脑损坏文件：win+r_chkdsk(回车)_sfc /scannow
+清理电脑垃圾文件：win+r_cmd_%temp%和win+r_cleanmgr
+进入启动文件夹（开机自启动）：shell:startup
+电脑截图的6种方法：ctrl+alt+a（qq截图）、alt+a（微信截图）、shift+alt+a（企业微信截图）、win+shift+a（花样截图）、ctrl+alt+x（wps截图）、电脑自带截图小工具
+删除字符串快捷键：ctrl + backspace
+关闭cmd：taskkill /f /im cmd.exe
+计算机性能实时检测程序：perfmon.msc
+查看或修改电脑程序状态：msconfig
+DirectX诊断工具也查询电脑具体配置：dxdiag
+远程控制电脑，只需输入ip即可：mstsc
+一键清理磁盘内垃圾：cleanmgr
+在dos窗口查看当前路径：echo %pa%
+下载网页视频的方法：F12_network(网络)_F5(刷新一下)_点击刷新出来的链接即可
+上帝之眼(使用方法，把这串代码命名到一个新建的空文件夹之可)：GodMode.{ED7BA470-8E54-465E-825C-99712043E01C}
+一键关闭cmd程式（bat文件）：start taskkill /f /im cmd.exe
+电脑自带工具-哈希值校验：例如要校验 ideaIU-2018.1.exe ，正确做法是在文件所在文件夹输入 certutil -hashfile ideaIU-2018.1.exe sha256 ，即 certutil -hashfile + 文件名(包括后缀) + sha256 ;如果不加最后一个参数，则默认是这个 certutil -hashfile filename md5 ；还有一种方法是：Get-FileHash 文件路径 -Algorithm 校验的Hash值类型| Format-List
+用vbs打开指定文件：createobject(&amp;quot;wscript.shell&amp;quot;).run &amp;quot;cmd /c start D:\__easyHelper__&amp;quot;
+vbs设置循环次数：
+dim s
+do until s=999
+s=s+1
+msgbox&amp;quot;这里写窗口显示内容&amp;quot;
+loop
+999是循环次数，可以修改
+查看电脑vbs的环境变量：进入cmd，输入set即可
+在cmd窗口无限循环输出自定义文字：for /l %a in (0,0,1) do echo  自定义
+可用来尝试激活电脑：slmgr /skms kms.03k.org
+		slmgr /ato
+快捷方式关机：创建快捷方式，输入slidetoshutdown,确定后再将快捷方式的名字改为自定义的即可
+修复(清空)u盘的方法：win+r_cmd_diskpart_list disk_select disk 1(所要操作的磁盘序号)_clean
+创建分区的方法：win+r_cmd_create partition primary_select partition 1(对应清空的磁盘序号)_active_format fs=ntfs quick
+查看磁盘的相关修改参数：lsit disk
+
+掌握win7的快捷键，没有鼠标您也从容使用系统。
+一、Win键相关的快捷键
+Win + Home 将所有使用中窗口以外的窗口最小化（和摇动使用中窗口一样意思）
+Win + Space空格键 将所有桌面上的窗口透明化（和鼠标移到工作列的最右下角一样意思）
+Win + ↑上方向键 最大化使用中窗口（和将窗口用鼠标拖到屏幕上缘一样意思）
+Shift + Win + ↑上方向键 垂直最大化使用中窗口（但水平宽度不变）
+Win +↓下方向键 最小化窗口／还原先前最大化的使用中窗口
+Win +左／右方向键 窗口靠到屏幕的左右两侧（和将窗口用鼠标拖到左右边缘一样意思）
+Shift + Win +左/右方向键 将窗口移到左、右屏幕（如果你有接双屏幕的话）工作列快速列
+Win + 1~9 开启工作列上相对应的软件，从左到右依顺序为Win+1到Win+9
+Shift + Win + 1~9 开启对应位置软件的一个新「分身」，例如firefox的话会是开新窗口（鼠标是Shift+点软件）
+Ctrl + Win + 1~9 在对应位置软件已开的分身中切换
+Alt + Win + 1~9 开启对应位置软件的右键选单
+Ctrl + Shift + 鼠标点软件以管理员权限开启该软件
+WIN +点击任务栏快捷方式 在此程序中新建一个实例
+Win + (+/-)：　　　　　　 打开Windows放大、缩小功能
+Win + G 在屏幕上的Gadget间切换
+Win + X 打开移动中心
+Win + D 显示桌面，最小化所有窗口
+Win + E 打开资源管理器
+Win + F 打开资源管理器搜索结果
+Win + L 锁定计算机，回到登陆窗口
+Win + M 最小化当前窗口
+Win + P 投影机输出设定（仅屏幕、同步显示、延伸、仅投影机）
+Win + R 打开运行窗口
+Win + T 工作列的Alt+Tab
+Win + U 打开控制面板轻松访问中心
+Win + Break 打开控制面板系统属性
+Win + Tab 打开Flip3D任务切换功能
+
+二、Windows基础快捷键
+F1 帮助
+Ctrl+C ( Ctrl+Insert) 复制选中项目
+Ctrl+X 剪切选中项目
+Ctrl+V ( Shift+Insert) 粘贴选中项目
+Ctrl+Z 撤销
+Ctrl+Y 重做
+Delete ( Ctrl+D) 删除选中项目至回收站
+Shift+Delete 直接删除选中项目
+F2 重命名选中项目
+Ctrl+A 全选
+F3 搜索
+Alt+Enter 显示选中项目属性
+Alt+F4 关闭当前项目或退出当前程序
+Alt+空格 打开当前窗口的快捷方式菜单
+Alt+Tab 在当前运行的窗口中切换
+Ctrl+Alt+Tab 使用方向键在当前运行的窗口中切换
+Ctrl+滚轮 改变桌面图标大小
+win+Tab 开启Aero Flip 3-D
+Ctrl+win +Tab 使用方向键在Aero Flip 3D程序中切换
+Alt+Esc 在当前打开的程序间切换
+F4 显示资源管理器的地址栏列表
+Shift+F10 显示选中项目的快捷方式菜单
+Ctrl+Esc 打开开始菜单
+F10 激活当前窗口的菜单栏
+F5 ( Ctrl+R) 刷新
+Alt+↑ 资源管理区中返回文件夹的上一级菜单
+Esc 取消当前操作
+Ctrl+Shift+Esc 打开任务栏管理器
+插入光盘时按住Shift 禁止CD/DVD的自动运行
+右边或左边的Ctrl+Shift 改变阅读顺序
+
+
+浏览器：
+打开/关闭书签栏：Ctrl + Shift + B
+批量提取一个网页里面的链接：可以先用正则表达式将链接提取出来，然后再用在线批量打开链接网站如a-site.cn/tool/kai
+如何在网页上查看时间：点开F12，在控制台输入 document.write(document.lastModified); 指令即可
+从新窗口打开链接：shift+D+鼠标左键点击链接进入跳转
+分页之间切换：ctrl+1..8,ctrl+9到最后一个分布
+从当前分布移动到下一个分页：ctrl+tab，反序切换：ctrl+shift+tab
+关闭或新增分页：关闭分布ctrl+w,撤销关闭分布ctrl+shift+t，新增分页ctrl+t
+快进、恢复、还原：ctrl+加号或等于键，ctrl+减号或杠键，ctrl+右括号或零键
+跳到视频起始处：Fn+右括号或零键
+视频进度起始或结尾切换以及页面滚动：Fn+方向键，空格配合shift反向滚动
+添加书签：ctrl+d
+书签管理：ctrl+shift+o
+查看浏览记录：ctrl+h
+查看下载：ctrl+j
+移动到网址栏：ctrl+l
+刷新页面：ctrl+r或F5
+在同一页面切换链接：alt+左右方向键
+网页查找：ctrl+f或F3
+清除浏览器浏览数据：ctrl+shift+delete
+查看网页原代码：ctrl+u
+如何查看网站记录的密码：针对自动填入网站密码的网站，只需右键菜单点击检查选项查看关于密码的源代码，将密码的type=&amp;quot;原名字&amp;quot;改为text后再点击网页密码的位置即可查看密码
+搜索的快捷方式：在地址栏中输入搜索引擎后按tab即可直接搜索
+在浏览器中从新窗口打开链接：shift+左键点击链接
+关闭所有打开的标签页和浏览器：Ctrl + Shift + w
+退出Chrome浏览器：
+
+YouTube:
+前一部：shift+p
+后一部：shift+n
+暂停：k
+视频进度跳转：数字键(小跳转)、Fn+方向键(大跳转)
+暂停：k
+静音：m
+油管的观看记录：youtube.com/feed/history
+
+电影：
+4个免费电影资源网站：imomoe.la、aiyy.tv、aidi.tv、cupfox.com
+
+网站的访问技巧：
+b站：search.bilibili.com/all?keyword=搜索内容
+油管：https://www.youtube.com/results?search_query=搜索内容
+百度：https://baidu.com/s?&amp;amp;word=1
+360搜索：m.so.com/s?q=1
+谷歌：google.com/search?q=1
+github：github.com/search?q=1
+you.com(搜索引擎)：you.com/search?q=1
+
+
+hosts文件：
+# Copyright (c) 1993-2009 Microsoft Corp.
+#
+# This is a sample HOSTS file used by Microsoft TCP/IP for Windows.
+#
+# This file contains the mappings of IP addresses to host names. Each
+# entry should be kept on an individual line. The IP address should
+# be placed in the first column followed by the corresponding host name.
+# The IP address and the host name should be separated by at least one
+# space.
+#
+# Additionally, comments (such as these) may be inserted on individual
+# lines or following the machine name denoted by a &#39;#&#39; symbol.
+#
+# For example:
+#
+#      102.54.94.97     rhino.acme.com          # source server
+#       38.25.63.10     x.acme.com              # x client host
+
+# localhost name resolution is handled within DNS itself.
+#	127.0.0.1       localhost
+#	::1             localhost
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;当termux遇到了无线键盘我发现的快捷键&#34;&gt;当termux遇到了无线键盘，我发现的快捷键
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;```C
+ctrl + alt + left/right //展示侧边栏
+ctrl + shift + up/down  //在vim中切换以多文件形式打开的窗口，如: vim * -p
+```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;vimrc-for-me&#34;&gt;vimrc for me
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;```C
+# vimrc for me
+set nu
+set ai
+set si
+set sw=4
+set ts=4
+set mouse=a
+noremap &amp;lt;C-a&amp;gt; &amp;lt;Esc&amp;gt;ggVG &amp;quot;全选
+syntax enable
+syntax on
+```
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;pdf文件本地显示正常网站显示报错的解决方法&#34;&gt;pdf文件本地显示正常，网站显示报错的解决方法
+&lt;/h1&gt;&lt;p&gt;打开资源文件夹的功能
+修改 hexo 目录下的 .config.yml 文件，
+将 post_asset_folder: false 修改为 post_asset_folder: true。&lt;/p&gt;
+&lt;h1 id=&#34;转载-醉酒后-我作为高级工程师学到的东西&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://old.reddit.com/r/ExperiencedDevs/comments/nmodyl/drunk_post_things_ive_learned_as_a_sr_engineer/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;转载-醉酒后: 我作为高级工程师学到的东西&lt;/a&gt;
+&lt;/h1&gt;&lt;p&gt;&lt;code&gt;以下内容为网页翻译所得，因此某些地方与原英文要表达的意思有些不同，但是对于我这样英语不太好的人，翻译功能实在是太方便了，偷懒\^_^/&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;我提升职业生涯的最佳方式是更换公司。
+技术堆栈并不重要，因为在我的领域有大约 15 种基本的软件工程模式适用。我从事数据工作，因此它与 webdev 或嵌入式不同。但是所有领域都有大约 10 到 20 条核心原则，而技术堆栈只是试图让这些事情变得更容易，所以不要担心过度。
+人们推荐求职是有原因的。如果我对工作不满意，可能是时候继续前进了。
+在与我合作过的公司里，我结交了一些很好的、终生的朋友。我不需要在我工作的每个地方都要求这样做。在我没有与同事建立友谊的地方工作我非常快乐，而在我结交了一些好朋友的地方我也很不快乐。
+我学会了对我的经理诚实。不太诚实，但足够诚实，我可以在工作中保持真实。可能发生的更糟糕的情况是什么？他开除我？我将在 2 周内找到一份新工作。
+如果我在凌晨 2 点从每季度一次以上的待命状态中醒来，那么就出现了严重错误，我要么修复它，要么退出。
+再倒一杯
+优秀经理的素质与优秀工程师的素质有很多相同之处。
+当我刚开始时，我迷恋于技术、编程和计算机科学。我已经结束了。
+好的代码是初级工程师可以理解的代码。大一的 CS 大一新生都能看懂代码。最好的代码是完全没有代码。
+作为一名工程师，最被低估的技能是如何记录。操，请有人教我如何编写好的文档。说真的，如果有任何建议，我会认真支付一门课程的费用（可能是很多钱，如果能保证我能写出好的文档，一门课程可能需要 1k。）
+与上述相关，为更改编写好的建议是一项很棒的技能。
+几乎每场圣战（vim vs emacs，mac vs linux，等等）都无关紧要......除了一个。见下文。
+年纪越大，我越喜欢动态语言。妈的，我说了算。和我战斗。
+如果我发现自己认为自己是房间里最聪明的人，是时候离开了。
+我不知道为什么全栈 webdev 的报酬如此之低。不，真的，他们应该得到半百万的年薪，只是基本工资。操，他们必须了解前端和后端，以及不同的浏览器是如何工作的，网络和数据库，缓存以及网络和移动设备之间的差异，天哪，还有公司想要使用的另一个框架是什么鬼？说真的，为什么 webdevs 的报酬这么少。
+我们应该雇佣更多的实习生，他们很棒。那些精力充沛的小家伙乱搞他们的想法。当他们可以质疑或批评某事时，情况会更好。我喜欢实习生。
+啜
+不要遇见你的英雄。我花了 5k 参加了我的一位英雄的课程。他是一个才华横溢的人，但最后我意识到他正在编造它，因为他像我们其他人一样前进。
+技术栈很重要。好的，我只是说技术堆栈无关紧要，但请听我说。如果您听到 Python 开发与 C++ 开发，您的想法会非常不同，对吧？那是因为某些工具确实擅长某些工作。如果你不确定你想做什么，那就去做 Java。这是一种糟糕的编程语言，几乎擅长所有方面。
+有史以来最伟大的编程语言是 lisp。我应该学习lisp。
+对于初学者来说，最赚钱的编程语言是 SQL。去他妈的所有其他语言。如果你只知道 SQL 而不会别的，你就可以赚钱。薪资专家？也许50k。懂 SQL 的薪资专家？90k。在大公司有组织能力的普通乔？4 万美元。具有组织能力和 sql 的普通乔？称自己为 PM 并赚取 15 万美元。
+测试很重要，但 TDD 是一个该死的邪教。
+轻松的政府工作并不是他们所吹捧的那样，至少对于职业生涯早期到中期的工程师来说是这样。当然，12 万美元 + 本尼 + 养老金听起来不错，但你会出卖你的灵魂来研究深奥的专有技术。非常尊重政府工作人员，但说真的，这些地方工程师的平均年龄是 50 岁以上是有原因的。建议不适用于政府承包商。
+第三方招聘人员是水蛭。但是，如果您找到了一个好的，请认真与他们建立良好的关系。他们可以帮助引导您的职业生涯。你怎么知道你是否有一个好人？如果他们成为第三方招聘人员超过 3 年，他们可能很糟糕。好的招聘人员通常是大公司。
+期权一文不值，或者可以让你成为百万富翁。除非工程人员超过 100 人，否则它们可能一文不值。那么在这十年内，它们可能会有所价值。
+在家工作是山雀。但是缺乏白板很糟糕。
+我从来没有在 FAANG 工作过，所以我不知道我错过了什么。但是我从 FAANGs 雇佣了（而不是雇佣）工程师，他们也不知道自己在做什么。
+我的自我价值与我的总薪酬无关，也不与我的总薪酬相关。资本主义是确定自我价值的糟糕方式。
+经理的权力比你想象的要小。少了点力气。如果你有事，为什么经理 XYZ 不解雇某人，那是因为他们不能。
+标题大多无关紧要。来自任何公司的首席杰出员工首席工程师，无论什么。你做了什么，你完成了什么。这就是人们所关心的。
+说到头衔：在你职业生涯的早期，头衔的变化很好。初中到中。中到高级。高级领导。在你职业生涯的后期，头衔的变化很好。这样，您可以获得相同的报酬，但在升职时会获得加薪。换句话说，在您职业生涯的早期（&amp;lt;10 年），头衔更改 UP 是好的，因为它可以让您提高技能和责任感。后来，标题更改很好，因为它可以让您增加薪水。
+最大化我们的 401ks。
+善待每一个人。不是因为它会帮助你的事业（它会），而是因为善良本身就是有益的。
+如果上个月我没有从初级工程师或实习生那里学到一些东西，我就没有注意。
+哎呀，我没酒了。
+为课程、书籍、会议付费是值得的。我参加过几次会议、几门 1.5k 的课程、许多书籍和订阅。值得。这样，我可以更好地假装我在做什么。
+说真的，为什么 webdevs 没有得到更多的报酬？他们什么都知道！！！
+腕管和背部问题可不是开玩笑的。现在花 1k 购买好的设备。
+我工作过的最聪明的人是数学博士。我从那个人身上学到了很多。我希望他过得很好。
+有一次，在高中时，有个东西女孩是我的好朋友。我的意思是，我们在几年内交谈、闲逛并分享了很多私人的东西。然后有一个谣言说我喜欢她或者我们要出去什么的。她没有接受太多，所以她开始不理我。那感觉不太好。我想这将是现代的“重影”等价物。不过我不希望她有任何恶意，我希望她过得很好。我很抱歉我没有处理得更好。
+我有一个 8 年级的女朋友，尽管我不再喜欢她，但我不想分手，所以我开始不理她。那太操蛋了。对不起，莉娜。
+你知道成为软件工程师最好的部分是什么吗？您可以结识和与您想法相同的人交谈。不一定像体育和电视节目等相同的兴趣。但他们思考问题的方式与你思考问题的方式相同。这很酷。
+技术领域的女性不够多。什么鬼行业。这需要改变。我一直在努力为我们组织中的女性工程师提供更多鼓励和帮助，但我不知道还能做什么。
+黑人工程师也一样。我勒个去？
+在我开始非常熟悉一种语言或技术之前，我从未真正开始讨厌它。另外，如果我讨厌某项技术，我认为它是好的，但我同时会将它推荐给客户。去他妈的詹金斯，但伙计，我认为我不会通过将软件推荐给新客户来解决软件不当行为。
+话虽如此，git 很糟糕，我只能选择使用它。此外，GUI git 工具可以去地狱，随时给我命令行。大约有 7 个命令行要记住，其他的都可以用谷歌搜索。
+由于我从事数据工作，因此我将提供针对数据的经验教训。去他妈的熊猫。
+我的工作更轻松，因为我的团队中有半技术分析师。半技术，因为他们知道编程但不知道软件工程。这是一种祝福，因为如果某些东西对他们来说没有意义，那就意味着它可能设计得很糟糕。我喜欢团队中的分析师；与最杰出的工程师相比，他们帮助我成长了很多。
+在您被迫使用浅色模式（网页或不受支持的应用程序）之前，深色模式非常棒。这就是我使用灯光模式的原因。
+我对安全有足够的了解，知道我对安全一无所知。
+废话，我没酒了。
+成为一名优秀的工程师意味着了解最佳实践。成为高级工程师意味着知道何时打破最佳实践。
+如果人们试图将责任归咎于错误或中断，那么是时候继续前进了。
+很多进步的公司，尤其是初创公司，都在谈论带上你的“真实自我”。那么如果你真实的自我就是看色情片呢？是的，在工作和个人生活之间保持屏障是健康的。
+我喜欢在欢乐时光和我的同事一起喝酒。我宁愿花时间与孩子、家人或朋友在一起。
+伟大领导力的最好证明是当我的领导因为一个 100% 是我错的错误而跌倒时。你最好相信我会为她走火入魔。
+同样，我有幸在其手下工作过的最优秀的领导者尽最大努力支持我的观点，并向我解释与我的观点相冲突的其他观点。我正在努力成为像他们一样的人。
+他妈的副项目。如果你喜欢做它们，太好了！即使我有时间做副业，我也忙着在 reddit 上写醉酒的帖子
+算法和数据限制在一定程度上很重要。我没有看到药剂师采访测试有关有机化学的琐事。我们行业的面试过程有些搞砸了。
+该死的，那些 devops 的家伙和 gals 很聪明。至少那些 mofos 得到了报酬。
+做我喜欢的事并不重要。做我不讨厌的事更重要。
+我越接近产品，我就越接近推动收入，无论我的工作多么技术性，我都感到越受重视。即使是最先进的公司也是如此。
+即使我在所有 Windows 中工作，Linux 也很重要。为什么？因为我最终在 Linux 中工作。很高兴那个周末我搞砸了安装 Arch。
+我学会了对大数据等模棱两可的流行词保持警惕。WTF是“大”数据？我在 Spark 和 Kafka 中每 10 分钟处理 10k 行流式传输，在 Python 和 MySQL 中每小时处理 1B 行。那些标签可以去他妈的自己。
+并非所有出色的工作都在硅谷。但很多都是。
+最后，如果您真的想伤害我，请不要投反对票，我不在乎。直接忽略这个帖子。没有什么比我写了一篇很长的帖子然后没有人回复更让我难过的了。因此，如果您讨厌这篇文章，请忽略。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;如何在hexo中嵌入歌单&#34;&gt;如何在hexo中嵌入歌单
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://wiki.hushhw.cn/posts/a84d1ef1.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;参考链接&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;1.示例：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;meting&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;3068013756&amp;#34;&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;netease&amp;#34;&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;playlist&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;//添加歌单
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;meting&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;157288&amp;#34;&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;netease&amp;#34;&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;song&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;%&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;		&lt;span class=&#34;c1&#34;&gt;//添加单曲
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;2.效果演示展示：
+{% meting &amp;ldquo;3068013756&amp;rdquo; &amp;ldquo;netease&amp;rdquo; &amp;ldquo;playlist&amp;rdquo; %}		//添加歌单&lt;/p&gt;
+&lt;p&gt;{% meting &amp;ldquo;157288&amp;rdquo; &amp;ldquo;netease&amp;rdquo; &amp;ldquo;song&amp;rdquo;%}		//添加单曲&lt;/p&gt;
+&lt;h1 id=&#34;如何在hexo中嵌入图片&#34;&gt;如何在hexo中嵌入图片
+&lt;/h1&gt;&lt;h2 id=&#34;嵌入本地图片&#34;&gt;嵌入本地图片
+&lt;/h2&gt;&lt;p&gt;1.在 hexo 的站点目录的 source 目录下创建一个文件夹用来存放图片，如 image 文件夹
+将图片存入此目录后，例如我存入了一个图片名称叫做 test.png 的图片，在博客中引入图片路径即可
+示例：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[](&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;images&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;png&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;img&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;/images/test.png&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[](&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;https&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//raw.githubusercontent.com/mytcrp/tc/main/20220830151304.png)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;img&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;https://raw.githubusercontent.com/mytcrp/tc/main/20220830151304.png&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;效果展示：		
+&lt;img src=&#34;https://ynhugo.github.io/images/test.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://ynhugo.github.io/images/test.png&#34;&gt;
+&lt;img src=&#34;https://raw.githubusercontent.com/mytcrp/tc/main/20220830151304.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://raw.githubusercontent.com/mytcrp/tc/main/20220830151304.png&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;嵌入云端图片&#34;&gt;嵌入云端图片
+&lt;/h2&gt;&lt;p&gt;1.在 hexo 的站点目录的 source 目录下创建一个文件夹用来存放图片，如 image 文件夹
+将图片存入此目录后，例如我存入了一个图片名称叫做 test.png 的图片，在博客中引入图片路径即可
+示例：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[](&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;images&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;/&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;png&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;img&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;/images/test.png&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[](&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;https&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;//raw.githubusercontent.com/mytcrp/tc/main/20220830151304.png)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;img&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#34;https://raw.githubusercontent.com/mytcrp/tc/main/20220830151304.png&amp;#34;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;效果展示：		
+&lt;img src=&#34;https://ynhugo.github.io/images/test.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://ynhugo.github.io/images/test.png&#34;&gt;
+&lt;img src=&#34;https://raw.githubusercontent.com/mytcrp/tc/main/20220830151304.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://raw.githubusercontent.com/mytcrp/tc/main/20220830151304.png&#34;&gt;
+视频教程：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{% raw %}
+&amp;lt;iframe src=&amp;quot;//player.bilibili.com/player.html?aid=23204013&amp;amp;bvid=BV19p411f7x9&amp;amp;cid=38628219&amp;amp;page=1&amp;quot; scrolling=&amp;quot;no&amp;quot; border=&amp;quot;0&amp;quot; frameborder=&amp;quot;no&amp;quot; framespacing=&amp;quot;0&amp;quot; allowfullscreen=&amp;quot;true&amp;quot;&amp;gt; &amp;lt;/iframe&amp;gt;
+{% endraw %}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;如何在hexo中嵌入视频&#34;&gt;如何在hexo中嵌入视频
+&lt;/h1&gt;&lt;p&gt;这里以油管视频和b站视频为例：
+1.获取要嵌入的代码
+1)油管和b站都可以通过点击视频页面的分享中的嵌入
+其实好多知名的视频网站都会人分享嵌入的功能，使用嵌入功能就可能得到自己想要的代码
+2)b站(包括其他视频网站)还可以通过在视频页面按下 F12 键进入开发人员模式， 再按下 Ctrl + F
+通过查找功能查找关键词 bvid 定位到要嵌入的代码的位置双击复制要嵌入的代码，
+必须为以下示例代码格式，不能以其他格式复制出来，因此要双击复制
+或者也可以搜索 &amp;lt;iframe 可能会出现好几条结果，确定自己要找的代码后复制下来
+2.在博客页面中添加标签:
+标签格式：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;	{% raw %}
+	{% endraw %}
+
+使用方法：
+
+	{% raw %}
+		要嵌入的视频代码
+	{% endraw %}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;3.示例:
+&lt;code&gt;HTML {% raw %} &amp;lt;iframe width=&amp;quot;560&amp;quot; height=&amp;quot;315&amp;quot; src=&amp;quot;https://www.youtube.com/embed/g4bMPT2wW4o&amp;quot; title=&amp;quot;YouTube video player&amp;quot; frameborder=&amp;quot;0&amp;quot; allow=&amp;quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&amp;quot; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt; {% endraw %} &lt;/code&gt;
+&lt;code&gt;HTML {% raw %} &amp;lt;iframe src=&amp;quot;//player.bilibili.com/player.html?aid=23207325&amp;amp;bvid=BV1Xp411f7vh&amp;amp;cid=38634561&amp;amp;page=1&amp;quot; scrolling=&amp;quot;no&amp;quot; border=&amp;quot;0&amp;quot; frameborder=&amp;quot;no&amp;quot; framespacing=&amp;quot;0&amp;quot; allowfullscreen=&amp;quot;true&amp;quot;&amp;gt; &amp;lt;/iframe&amp;gt; {% endraw %} &lt;/code&gt;
+4.效果展示(转载)：
+{% raw %}
+&lt;iframe src=&#34;//player.bilibili.com/player.html?aid=23207325&amp;bvid=BV1Xp411f7vh&amp;cid=38634561&amp;page=1&#34; scrolling=&#34;no&#34; border=&#34;0&#34; frameborder=&#34;no&#34; framespacing=&#34;0&#34; allowfullscreen=&#34;true&#34;&gt; &lt;/iframe&gt;
+{% endraw %}
+{% raw %}
+&lt;iframe src=&#34;https://open.iqiyi.com/developer/player_js/coopPlayerIndex.html?vid=0bfecbf30854ccd7276fe409aa46ca20&amp;tvId=5500150406907600&amp;accessToken=2.ef9c39d6c7f1d5b44768e38e5243157d&amp;appKey=8c634248790d4343bcae1f66129c1010&amp;appId=1368&amp;height=100%&amp;width=100%&#34; frameborder=&#34;0&#34; allowfullscreen=&#34;true&#34; width=&#34;100%&#34; height=&#34;100%&#34;&gt;&lt;/iframe&gt;
+{% endraw %}&lt;/p&gt;
+&lt;h1 id=&#34;如何为hexo提供下载文件功能&#34;&gt;如何为hexo提供下载文件功能
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;在站点目录的 source 目录建立一个用来存储资源的文件夹，名字自定义，接下来就可以在博客中提供文件下载功能了
+	示例：
+		[点击下载树和二叉树](/images/04ds/树和二叉树.ppt)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://ynhugo.github.io/images/04ds/%e6%a0%91%e5%92%8c%e4%ba%8c%e5%8f%89%e6%a0%91.ppt&#34; &gt;点击下载 树和二叉树.ppt&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;如何将手机作为电脑副屏&#34;&gt;如何将手机作为电脑副屏
+&lt;/h1&gt;&lt;p&gt;{% raw %}&lt;/p&gt;
+&lt;iframe src=&#34;//player.bilibili.com/player.html?aid=853928428&amp;bvid=BV1Q54y1f7ac&amp;cid=714887591&amp;page=1&#34; scrolling=&#34;no&#34; border=&#34;0&#34; frameborder=&#34;no&#34; framespacing=&#34;0&#34; allowfullscreen=&#34;true&#34;&gt; &lt;/iframe&gt;
+{% endraw %}
+&lt;h1 id=&#34;ubuntulinux下使用sedecho进行文件操作总结-转载&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/zkgoup/article/details/110432316&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ubuntu/linux下使用sed、echo进行文件操作总结&lt;/a&gt; &lt;code&gt;转载&lt;/code&gt;
+&lt;/h1&gt;&lt;h2 id=&#34;一sed进行数据操作&#34;&gt;一、sed进行数据操作
+&lt;/h2&gt;&lt;h3 id=&#34;1删除filetxt的第一行最后一行&#34;&gt;1、删除file.txt的第一行、最后一行
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sed -i &#39;1d&#39; file.txt # 删除第一行
+
+sed -i &#39;$d&#39; file.txt # 删除最后一行
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;2删除filetxt的第n行第m到n行&#34;&gt;2、删除file.txt的第N行、第M到N行
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sed -i &#39;Nd&#39; file.txt   # N为具体数字，指第N行，如10
+
+sed -i &#39;M,Nd&#39; file.txt # 删除M到N行
+
+sed -i &#39;M,$d&#39; file.txt # 删除第M行到最后一行的所有行
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;3删除filetxt中包含某个关键字开头的所有行&#34;&gt;3、删除file.txt中包含某个关键字开头的所有行
+&lt;/h3&gt;&lt;h4 id=&#34;使用sed命令删除以a字符开头的所有行&#34;&gt;使用sed命令删除以a字符开头的所有行
+&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;sed -i ‘/^a/d’ abc.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;删除包含特定字符的行&#34;&gt;删除包含特定字符的行
+&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;sed -i &#39;/run distro_bootcmd\b/d&#39; ts.txt # \b是正则表达式中的单词边界，用于确保只匹配关键词的完整单词，而不是部分匹配。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&#34;3删除某文件的多行比如135行&#34;&gt;3、删除某文件的多行比如1、3、5行
+&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;sed -i &#39;3d; 5d; 7d; 9d; 11d; 13d; 15d; 17d; 19d; 21d; 23d; 25d; 27d; 29d; 31d; 33d; 35d; 37d; 39d; 41d; 43d; 45d; 47d; 49d; 51d; 53d; 55d; 57d; 59d; 61d; 63d;&#39; ts.c
+
+sed &#39;/^abc/d&#39; file.txt  #  &amp;quot;^abc&amp;quot;表示abc必须出现在行的开头，即删除abc开头的所有行
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;4删除filetxt中包含某个关键字的所有行&#34;&gt;4、删除file.txt中包含某个关键字的所有行
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sed &#39;/abc/d&#39; file.txt  #  删除包含abc的所有行(任意位置)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;5替换字符串&#34;&gt;5、替换字符串
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sed -i &#39;s/abc/ABC/&#39; file.txt # 替换file.txt每一行的第一个abc为ABC
+
+sed -i &#39;s/abc/ABC/g&#39; file.txt # 使用后缀g，替换file.txt每一行的所有abc为ABC
+
+sed -i &#39;s/^/ABC/&#39; file.txt # 在file.txt每一行的行首追加字符串ABC
+
+sed -i &#39;s/$/ABC/&#39; file.txt # 在file.txt每一行的行尾追加字符串ABC
+
+sed &#39;3s/line/row/&#39; file.txt # 使用sed命令替换文本文件指定行的指定关键词
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;6追加行&#34;&gt;6、追加行
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sed -i &#39;Na hello_world&#39; file.txt # 在file.txt第N行后面追加一行&amp;quot;hello_world&amp;quot;，a表示追加 
+
+sed -i &#39;Ni hello_world&#39; file.txt # 在file.txt第N行前面插入一行&amp;quot;hello_world&amp;quot;，i表示插入 
+
+sed -i &#39;/hello/a hello_world&#39; file.txt # 在file.txt包含&amp;quot;hello&amp;quot;的所有行后面追加一行&amp;quot;hello_world&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;7在指定行首添加字符串&#34;&gt;7、在指定行首添加字符串
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sed -i &#39;3{s/^/aa/}&#39; a.txt    //aa为要在第3行行首添加内容，a.txt为要操作的文件
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;8在连续几行行尾添加&#34;&gt;8、在连续几行行尾添加：
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sed -i &#39;1,2{s/$/bb/}&#39; a.txt（在1-2行行尾添加bb）
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;在特定行行前添加数据&#34;&gt;在特定行，行前添加数据
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sed -i ‘N;2 i 111’ c.txt（在第一行行前添加111）
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;在特定行行后添加数据&#34;&gt;在特定行，行后添加数据
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sed -i &#39;N; 2 i 111&#39; c.txt（在第二行行后添加111）	 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;指定多行批量添加字符串至行首&#34;&gt;指定多行批量添加字符串至行首
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sed -i &#39;1{s/^/## /}&#39; 1.c	//将字符串&amp;quot;## &amp;quot;添加到文件1.c的第1行
+sed -i &#39;2{s/^/## /}&#39; 1.c
+sed -i &#39;4{s/^/## /}&#39; 1.c
+sed -i &#39;6{s/^/## /}&#39; 1.c	//将字符串&amp;quot;## &amp;quot;添加到文件1.c的第6行
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;备注以上所有命令中--i-指在原文件上操作操作后的结果保存到原文件当然也可以用---e-关键字输出操作结果到新文件&#34;&gt;*备注：以上所有命令中 -i 指在原文件上操作，操作后的结果保存到原文件；当然也可以用 - e 关键字输出操作结果到新文件。
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;sed -e &#39;1d&#39; file.txt &amp;gt; new_file.txt # 删除文件file.txt的第一行，将操作后的结果保存到new_file.txt
+
+其余命令类似
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;查看文件指定行&#34;&gt;查看文件指定行
+&lt;/h3&gt;&lt;p&gt;要仅显示文件中的特定行，可以使用以下命令：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat 文件名 &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sed -n &lt;span class=&#34;s1&#34;&gt;&amp;#39;行号p&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;例如，要显示文件 test.txt 的第 5 行，可以运行以下命令：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;cat test.txt &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; sed -n &lt;span class=&#34;s1&#34;&gt;&amp;#39;5p&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这将只显示文件 test.txt 中的第 5 行内容。请注意，行号是从 1 开始计数的。&lt;/p&gt;
+&lt;h2 id=&#34;二echo进行数据操作&#34;&gt;二、echo进行数据操作
+&lt;/h2&gt;&lt;h3 id=&#34;1显示行&#34;&gt;1、显示行
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;echo &amp;quot;hello world&amp;quot; # 在终端打印&amp;quot;hello world&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;2写入行&#34;&gt;2、写入行
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;echo &amp;quot;hello world&amp;quot; &amp;gt;&amp;gt; file.txt # 在文件file.txt末尾写入行&amp;quot;hello world&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;3覆盖写入&#34;&gt;3、覆盖写入
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;echo &amp;quot;hello world&amp;quot; &amp;gt; file.txt # 文件file.txt中原来内容会被覆盖，只保存&amp;quot;hello world&amp;quot;，无论操作多少次，file.txt只保存最新写入的一行
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;4写入包含引号的行特别注意&#34;&gt;4、写入包含引号的行（特别注意）
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;#比如，写入line = 你好，&amp;quot;老王&amp;quot;，你今天真帅！
+
+#注意，这里line的内容包含双引号&amp;quot;&amp;quot;,属于特殊符号，需要使用转义符号
+
+echo &amp;quot;你好，\&amp;quot;老王\&amp;quot;，你今天真帅！&amp;quot; file.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;cygwin添加到有右键菜单-转载&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/yuisyu/article/details/81293333&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Cygwin添加到有右键菜单 转载&lt;/a&gt;
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;系统：windows 10
+目标：在空白处点击右键菜单，显示如图菜单项，点击后可以打开 cygwin 并切换到当前所在目录
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/cygwin/cygwin_1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;方法一：
+步骤：
+1. 开始菜单运行 regedit 打开注册表
+2. 定位到
+
+计算机\HKEY_CLASSES_ROOT\Directory\Background\shell\Cygwin\command
+
+3. 新建项和字符串到如下图所示
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/cygwin/cygwin_2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://ynhugo.github.io/images/cygwin/cygwin_3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;4. 默认值填写
+
+C:\cygwin64\bin\mintty.exe -e /bin/bash --login -i -c &amp;quot;cd &#39;%V&#39;;exec bash
+
+方法二：
+重新运行 cygwin 安装程序，勾选 chere 安装包。
+安装完成后，使用管理员身份运行 cygwin。
+
+chere -i -t mintty -s bash
+1
+此时右键菜单应该有 “Bash Prompt Here” 菜单选项。
+Win10 系统中，更改此处注册表，
+计算机\HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Directory\background\shell\cygwin64_bash
+增加 Icon 字符串，并更改中文描述，达到上图菜单效果。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;点击浏览-nodeconfightml&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://ynhugo.github.io/images/nodeConfig.html&#34; &gt;点击浏览 nodeConfig.html&lt;/a&gt;
+&lt;/h1&gt;&lt;h1 id=&#34;k210-数字识别&#34;&gt;K210-数字识别
+&lt;/h1&gt;&lt;h2 id=&#34;pyai-k210资料下载&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://download.01studio.cc/zh_CN/latest/micropython/pyAI-K210/pyAI-K210.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;pyAI-K210资料下载&lt;/a&gt;
+&lt;/h2&gt;&lt;h2 id=&#34;点击下载-数字识别zip&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://ynhugo.github.io/images/%e6%95%b0%e5%ad%97%e8%af%86%e5%88%ab.zip&#34; &gt;点击下载 数字识别.zip&lt;/a&gt;
+&lt;/h2&gt;&lt;h2 id=&#34;转载-使用-v831-ai检测数字卡片2021电赛f题智能送药小车数字识别速成教程附带k210识别模型&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://neucrack.com/p/384&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;转载-使用 V831 AI检测数字卡片（2021电赛F题智能送药小车数字识别）速成教程（附带k210识别模型）&lt;/a&gt;
+&lt;/h2&gt;&lt;h1 id=&#34;pycharm激活码pycharm稳定专属激活码全网最新&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.ajihuo.com/pycharm/4197.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Pycharm激活码,Pycharm稳定专属激活码（全网最新）&lt;/a&gt;
+&lt;/h1&gt;&lt;h1 id=&#34;python中33个保留字的用法&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_45941400/article/details/110292879&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Python中33个保留字的用法&lt;/a&gt;
+&lt;/h1&gt;&lt;h1 id=&#34;网盘资源搜索终极大法-百度网盘-阿里云盘-夸克网盘&#34;&gt;网盘资源搜索终极大法 #百度网盘 #阿里云盘 #夸克网盘
+&lt;/h1&gt;&lt;h2 id=&#34;网盘搜索引擎&#34;&gt;网盘搜索引擎：
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;https://yunso.net/
+https://www.alipansou.com/
+https://www.upyunso.com/
+https://www.toplinks.cc/s
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;网盘分享社区&#34;&gt;网盘分享社区：
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;https://www.ood.one/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;资源聚合网站&#34;&gt;资源聚合网站
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;https://www.nbwz.com/
+https://newxiaozhan.com/
+https://search.chongbuluo.com/
+https://www.wangzhiku.com/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;云盘搜索助手30个搜索引擎涉及多个知名云盘资源海量资源双击跳转下载页面&#34;&gt;云盘搜索助手，30个搜索引擎，涉及多个知名云盘资源，海量资源，双击跳转下载页面
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;https://wwi.lanzouq.com/iZJHZ01nohof
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;磁力搜&#34;&gt;磁力搜
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;https://cilishenqi.com/
+https://cilitiantang.top/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;转载-bash-批量重命名文件&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.coder.work/article/2575939&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;转载-Bash 批量重命名文件&lt;/a&gt;
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;我在同一个目录中有一堆文件，名称如下:
+IMG_20160824_132614.jpgIMG_20160824_132658.jpgIMG_20160824_132738.jpg
+中间部分是日期，最后部分是照片拍摄时间。因此，如果我按名称对这些文件进行排序，结果将与按修改的日期/时间排序相同
+
+我想使用 bash 将这些文件批量重命名为以下形式:
+1-x-3.jpg
+凡x表示文件在顺序排序中的位置(按名称/修改时间排序)
+
+因此，上面的 3 个示例将重命名为:
+1-1-3.jpg1-2-3.jpg1-3-3.jpg
+是否有可以实现此目的的 bash 命令？还是需要脚本？
+
+最佳答案
+
+尝试:
+
+i=1; for f in *.jpg; do mv &amp;quot;$f&amp;quot; &amp;quot;1-$((i++))-3.jpg&amp;quot;; done
+
+例如，使用您的文件名:
+$ ls
+IMG_20160824_132614.jpg  IMG_20160824_132658.jpg  IMG_20160824_132738.jpg
+$ i=1; for f in *.jpg; do mv &amp;quot;$f&amp;quot; &amp;quot;1-$((i++))-3.jpg&amp;quot;; done
+$ ls
+1-1-3.jpg  1-2-3.jpg  1-3-3.jpg
+
+笔记:
+扩展时*.jpg ，shell 按字母数字顺序列出文件。这似乎是你想要的。但请注意，字母数字顺序可能取决于语言环境。
+顺序编号是用 $((i++)) 完成的.在这里，$((...))表示算术展开。 ++只是意味着将变量增加 1。
+关于Bash 批量重命名文件，我们在Stack Overflow上找到一个类似的问题： https://stackoverflow.com/questions/39133172/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;转载-笔记从零开始制作自己的pascal-voc数据集&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/csdn_zhishui/article/details/84962587&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;转载-【笔记】从零开始制作自己的Pascal VOC数据集&lt;/a&gt;
+&lt;/h1&gt;&lt;h1 id=&#34;转载-&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV13G411V7jd?share_source=copy_web&amp;amp;vd_source=f5c6980392e5b767948a64df6f2b16c3&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;转载-【[教程]从0自制模型，实现多物体识别（以k210多数字识别举例）】&lt;/a&gt;
+&lt;/h1&gt;&lt;h2 id=&#34;相关资料-提取码9527&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://pan.baidu.com/s/1DWo_boXNflqLmob_l4XRWw?pwd=9527&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;相关资料 提取码：9527&lt;/a&gt;
+&lt;/h2&gt;&lt;h1 id=&#34;转载-stm32系列芯片命名规则简明&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/ST_Liam/article/details/108922753&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;转载-STM32系列芯片命名规则——简明&lt;/a&gt;
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;DIRECTORY
+STM32系列芯片命名规则
+1.产品系列：
+2.产品类型：
+3.产品子系列：
+4.管脚数：
+5.Flash存储容量：
+6.封装：
+7.温度范围：
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;stm32系列芯片命名规则&#34;&gt;STM32系列芯片命名规则
+&lt;/h2&gt;&lt;p&gt;例图：
+&lt;img src=&#34;https://ynhugo.github.io/images/STM32F107ZGT6.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;1产品系列&#34;&gt;1.产品系列：
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;STM32代表ST品牌Cortex-Mx系列内核（ARM）的32位MCU
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;2产品类型&#34;&gt;2.产品类型：
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;F ：通用快闪（FlashMemory）
+
+L：低电压（1.65～3.6V）
+
+F类型中F0xx和F1xx系列为2.0～3.6V;F2xx和F4xx系列为1.8～3.6V
+
+W：无线系统芯片，开发版
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;3产品子系列&#34;&gt;3.产品子系列：
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;050：ARMCortex-M0内核
+
+051：ARMCortex-M0内核
+
+100：ARMCortex-M3内核，超值型
+
+101：ARMCortex-M3内核，基本型
+
+102：ARMCortex-M3内核，USB基本型
+
+103：ARMCortex-M3内核，增强型
+
+105：ARMCortex-M3内核，USB互联网型
+
+107：ARMCortex-M3内核，USB互联网型、以太网型
+
+108：ARMCortex-M3内核，IEEE802.15.4标准
+
+151：ARMCortex-M3内核，不带LCD
+
+152/162：ARMCortex-M3内核，带LCD
+
+205/207：ARMCortex-M3内核，不加密模块（备注：150DMIPS，高达1MB闪存/128+4KBRAM，USBOTGHS/FS，以太网，17个TIM，3个ADC，15个通信外设接口和摄像头）
+
+215/217：ARMCortex-M3内核，加密模块（备注：150DMIPS，高达1MB闪存/128+4KBRAM，USBOTGHS/FS，以太网，17个TIM，3个ADC，15个通信外设接口和摄像头）
+
+405/407：ARMCortex-M4内核，不加密模块（备注：MCU+FPU，210DMIPS，高达1MB闪存/192+4KBRAM，USBOTGHS/FS，以太网，17个TIM，3个ADC，15个通信外设接口和摄像头）
+
+415/417：ARMCortex-M4内核，加密模块（备注：MCU+FPU，210DMIPS，高达1MB闪存/192+4KBRAM，USBOTGHS/FS，以太网，17个TIM，3个ADC，15个通信外设接口和摄像头）
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;4管脚数&#34;&gt;4.管脚数：
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;F：20PIN；
+
+G：28PIN；
+
+K：32PIN；
+
+T：36PIN；
+
+H：40PIN；
+
+C：48PIN；
+
+U：63PIN；
+
+R：64PIN；
+
+O：90PIN；
+
+V：100PIN
+
+Q：132PIN；
+
+Z：144PIN；
+
+I ：176PIN；
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;5flash存储容量&#34;&gt;5.Flash存储容量：
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;4：16KB flash（小容量）
+
+6：32KB flash（小容量）
+
+8：64KB flash（中容量）
+
+B：128KB flash（中容量）
+
+C：256KB flash（大容量）
+
+D：384KB flash（大容量）
+
+E：512KB flash（大容量）
+
+F：768KB flash（大容量）
+
+G：1MKB flash（大容量）
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;6封装&#34;&gt;6.封装：
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;T：LQFP
+H：BGA
+U：VFQFPN
+Y：WLCSP/WLCSP64
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;7温度范围&#34;&gt;7.温度范围：
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;6：-40℃-85℃
+
+7：-40℃-105℃
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;转载-三种方案解决npm-warn-config-global&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_38628046/article/details/126082907&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;转载-三种方案解决：npm WARN config global &amp;ndash;global, &amp;ndash;local are deprecated. Use &amp;ndash;location=global instead&lt;/a&gt;
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;找到nodejs安装目录
+ 
+编辑四个名为npm, npm.cmd, npx,npx.cmd的文件
+ 
+在文件中替换prefix -g为prefix --location=global
+ 
+管理员权限保存
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;nodejs提示不安全执行命令&#34;&gt;nodejs提示不安全执行命令
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;npm audit fix --force
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;正点原子_stm32f103zet6_战舰_v3&#34;&gt;正点原子_STM32F103ZET6_战舰_V3
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://ynhugo.github.io/images/%e6%ad%a3%e7%82%b9%e5%8e%9f%e5%ad%90_STM32F103ZET6_%e6%88%98%e8%88%b0_V3/STM32F1%e5%bc%80%e5%8f%91%e6%8c%87%e5%8d%97-%e5%ba%93%e5%87%bd%e6%95%b0%e7%89%88%e6%9c%ac_V3.3.pdf&#34; &gt;STM32F1开发指南-库函数版本_V3.3.pdf&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://ynhugo.github.io/images/%e6%ad%a3%e7%82%b9%e5%8e%9f%e5%ad%90_STM32F103ZET6_%e6%88%98%e8%88%b0_V3/STM32F1%e5%bc%80%e5%8f%91%e6%8c%87%e5%8d%97-%e5%af%84%e5%ad%98%e5%99%a8%e7%89%88%e6%9c%ac_V3.3.pdf&#34; &gt;STM32F1开发指南-寄存器版本_V3.3.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;cpolar教程&#34;&gt;cpolar教程
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;按照官网提示进行安装
+本地的web管理页面：localhost:9200
+在隧道列表启动远程桌面，在状态的在线隧道列表中复制公网地址中的tcp://需要复制内容
+然后在电脑或手机的远程桌面连接工具中输入复制下来的地址，连接过程中输入电脑的用户名和密码即可连接
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;hexo如何自定义菜单图标&#34;&gt;hexo如何自定义菜单图标
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;进入这个网站[fontawesome](https://fontawesome.com/v4/icons/)，找到自己喜欢的图标，在主题配置文件的菜单后直接直接添加即可
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;#〖Linux〗不知谁写的，很实用的Linux命令&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;第一部分
+. sudo 运行上一条命令
+    sudo !!
+. HTTP方式共享当前目录
+    python -m SimpleHTTPServer
+. vim保存一个root用户文件
+    :w !sudo tee %
+. 快速切换至旧的目录
+    cd -
+. 替换上一条命令中的一个短语
+    ^foo^bar^
+. 快速备份一个文件
+    cp filename{,.bak}
+    filename{,.bak} 会被展开为filename filename.bak
+. 排列，大括号在bash中是排列的意义
+    echo {a,b,c}{a,b,c}{a,b,c} 得到一个全排列
+. 免密码ssh登录主机
+    ssh-copy-id remote-machine
+. 抓取Linux桌面的视频
+    ffmpeg -f x11grab -s wxga -r  -i :0.0 -sameq /tmp/out.mpg
+    ffmpeg 可以直接解码X11的图形，并转换输出格式
+    -f x11grab 指定输入类型
+    -s wxga 设置抓取区域的大小，wxga是1366*768的大小，也可以是-s 800x600
+    -r  设置帧频率，每秒抓取的画面数
+    -i :0.0 设置输入源，本地X默认在0.
+    -sameq 保持与输入流一样的图像质量
+ 
+第二部分
+. 用你最喜欢的编辑器来敲命令
+    command &amp;lt;C-X C-E&amp;gt;
+. 清空或创建一个文件
+    &amp;gt; file.txt
+. 用ssh创建端口转发通道
+    ssh -N -L2001:remotehost: user@somemachine
+    在本机打开了2001端口，
+    对本机2001端口的请求，
+    通过somemachine作为跳板，
+    转到remotehost的80端口上。
+    举例：
+    ssh -f -N -L 0.0.0.0::twitter.com: shell.cjb.net
+    ssh -f -N -L 0.0.0.0::twitter.com: shell.cjb.net
+    然后在/etc/hosts里边添加
+    127.0.0.1 twitter.com
+. 重置终端
+    reset
+    对于终端显示有乱码，不能正常显示时很有用。
+. 在午夜时候执行某命令
+    echo &amp;quot;cmd&amp;quot; | at midnight
+    at 调用定时任务
+. 远程传送麦克风语音
+    dd if=/dev/dsp | ssh user@host dd of=/dev/dsp #新系统上可能已失效
+    arecord | ssh user@host aplay   #本地录音，远程播放
+    arecord | aplay                 #本地直接回放
+. 映射一个内存目录
+    mount -t tmpfs -o size=1024m tmpfs /mnt/ram
+    开了一1G内存当目录使用
+    /dev/shm 也是内存目录，可直接使用
+. 使用diff对比远程文件与本地文件
+    ssh user@host cat /path/to/remotefile | diff /path/to/localfile -
+    学会善用ssh，可减少开发工作量，比如
+    sshfs [user@]host:[dir] mountpoint [options]
+    可以挂载远程的目录至本地(卸载fusermount -u mountpoint)
+. 查看系统中占用端口的进程
+    netstat -tulnp
+    -t 显示tcp连接
+    -u 显示udp连接
+    -l 显示监听状态
+    -n 显示ip，不作名称转换
+    -p 显示相应的pid以及名称(root)
+ 
+第三部分
+. 以友好的方式显示当前挂载的文件系统
+    mount | column -t
+    column 用于格式化输出的信息
+. !!:gs/foo/bar
+    !!表示上一条命令
+    gs/foo/bar 用bar替换foo再执行
+. 实时查看某目录最新变化
+    watch -d -n  ls -l
+. 通过ssh挂载远程主机上文件夹
+    sshfs user@host:remotedir localdir
+    卸载使用fusermount或是umount
+. 通过DNS读取Wikipedia的词条
+    dig +short txt &amp;lt;keyword&amp;gt;.wp.dg.cx
+    dig +short txt hacker.wp.dg.cx  #可能已失效
+. 使用wget递归下载整个网站
+    wget --random-wait -r -p -e robots=off -U Mozilla www.example.com
+    --random-wait 等待0.~.5秒的时间进行下一次请求
+    -r 递归下载
+    -e robots=off 忽略robots.txt
+    -U Mozilla 设置User-Agent头为Mozilla
+ 
+    其他实用的参数：
+    --limit-rate=20k 限定下载速度为20k
+    -o logfile.txt 记录下载日志
+    -l  删除深度（默认为5）
+    -wait=1h 每下载一个文件后等待1小时
+. 复制最后使用的命令的参数
+    &amp;lt;Alt +.&amp;gt;
+. 执行一条命令但不保存至history中
+    &amp;lt;space&amp;gt; command
+. 显示当前子目录下所有子目录下的大小
+    du -h --max-depth=
+. 以使用内存量排序查看进程
+    ps aux | sork -nk + | tail
+    sork -nk + 用sort排序列出4栏
+    此外可以使用htop或是top
+. 用python快速开启一个SMTP服务
+    python -m smtpd -n -c DebuggingServer localhost:
+    -m smtpd 指定smtp服务
+    localhost:1025运行1025端口
+    -n 不用setuid为nobody，而直接使用你的uid运行
+    -c DebuggingServer 在屏幕上输出信息
+ 
+第四部分
+. 查看ASCII码表
+    man ascii 或 man  ascii
+ 
+    man  intro - Linux简明教程
+    man  syscalls - 内核提供的系统调用
+    man  select_tut - 关于select()系统调用的教程
+    man  string - 在头文件内的所有函数
+    man  stdio - 关于头文件的使用，标准输入输出的库说明
+    man  errno - 所有errorno取值及说明
+    man  console_codes - Linux终端控制码及使用解释
+    man  full - 介绍总是处理“满”状态的/dev/full（对应有/dev/null）
+    man  proc - 介绍/proc下文件系统
+    man  filesystems - 各种Linux文件系统
+    man  bootparam - 详细解释内核启动参数
+    man  charsets - 解释各种语言的编码集
+    man  glob - 解释glob文件名管理机制的工作过程
+    man  hier - 解释Linux文件系统结构各个部分的作用
+    man  operator - C语言运行符的列表
+    man  regex - 介绍正则表达式
+    man  suffixes - 常见文件后缀名的列表跟解释
+    man  time - Linux的时钟机制解释
+    man  units - 数值单位及其数值的解释
+    man  utf8 - 描述UTF-8编码
+    man  url - 解释URL、URI、URN等的标准
+. 简易计时器
+    time real
+. 远程关掉一台Windows机器
+    net rpc shutdown -I IP_ADDRESS -U user%passwd
+. 在一个子Shell中运行一个命令
+    (cd /tmp &amp;amp;&amp;amp; ls)
+    其中的好处是不会修改当前shell目录
+. 利用中间管道嵌套使用SSH
+    ssh -t host_A ssh host_B
+    使用情况：
+    host_B 网络繁忙，本机不可直达
+    host_A 网络空闲，本机可直达
+. 清空屏幕
+   &amp;lt;C-L&amp;gt; 或是 clear 或是 tput clear
+. 得知一台机器什么时间重启完毕
+    ping -a IP
+    一但ping通，发出警报声音
+. 列出你最常用的10行命令
+    history | awk &#39;{a[$2]++}END{for(i in a){print a[i] &amp;quot; &amp;quot; i}}&#39; | sort -rn | head
+. 使用Telnet查看《星球大战》
+    telnet towel.blinkenlights.nl
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://wenku.baidu.com/view/4724041fa8114431b90dd82b.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;From: http://wenku.baidu.com/view/4724041fa8114431b90dd82b.html&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;批量处理不同文件夹的笔记&#34;&gt;批量处理不同文件夹的笔记：
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;首先将不同文件夹的同类型文件找到复制到指定文件夹
+    find ./ -name *.txt  -exec cp &#39;{}&#39; ~/ts/note_dir/ &#39;;&#39;
+然后在每个文件的首行(即第一行)都加入多行星号(*)用以区分稍后所加的内容
+    sed -i &#39;1i\************************************************************************************************************************\
+			   ************************************************************************************************************************\
+			   ************************************************************************************************************************\&#39; *.txt
+接着将按顺序命名的文件批量到第一个文件复制并重命名后的文件中
+    cp day01.txt allday.txt &amp;amp;&amp;amp; cat day02.txt day03.txt day04.txt day05.txt day06.txt day07.txt day08.txt day09.txt day10.txt day11.txt day12.txt day13.txt day14.txt day15.txt &amp;gt;&amp;gt; day01.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;查找文件关键词并替换&#34;&gt;查找文件关键词并替换
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;方法一：
+    sed -i &amp;quot;s/fda/adf/g&amp;quot; `grep -rl &amp;quot;fda&amp;quot; ./1.c`
+        fda是要查找的字符串，将查找到的字符串fda替换为adf
+方法二：
+    grep -rl -w &amp;quot;adf&amp;quot; ./1.c | xargs sed -i &#39;s/adf/fda/g&#39;
+        adf是要查找的字符串，将查找到的字符串adf替换为fda
+方法三：
+    写一个makefile文件:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;var1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;var2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;var3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;var4&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;var5&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nl&#34;&gt;rep&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;err&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;grep&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;rnl&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#34;\&amp;lt;$(var1).h\&amp;gt;&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;cm&#34;&gt;/* --include &amp;#34;*.c&amp;#34; --include &amp;#34;*.h&amp;#34; | xargs sed -i &amp;#34;s/\&amp;lt;$(var1)\&amp;gt;.h/$(var2).h/g&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;var :
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;        @grep -rnl &amp;#34;\&amp;lt;$(var4)\&amp;gt;&amp;#34; ./* --include &amp;#34;*.c&amp;#34; --include &amp;#34;*.h&amp;#34; | xargs sed -i &amp;#34;s/\&amp;lt;$(var4)\&amp;gt;/$(var5)/g&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;rvar :
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;        @grep -rnl &amp;#34;\&amp;lt;$(var5)\&amp;gt;&amp;#34; ./* --include &amp;#34;*.c&amp;#34; --include &amp;#34;*.h&amp;#34; | xargs sed -i &amp;#34;s/\&amp;lt;$(var5)\&amp;gt;/$(var4)/g&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;find :
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cm&#34;&gt;        @grep -ran &amp;#34;\&amp;lt;$(var3)\&amp;gt;&amp;#34; ./* --include &amp;#34;*.c&amp;#34; --include &amp;#34;*.h&amp;#34;  --color=auto
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;巧用谷歌云的终端shell&#34;&gt;巧用谷歌云的终端shell
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;激活cloud shell后之后输入以下代码，安装完成以后网页预览
+    docker run -p 8080:80 dorowu/ubuntu-desktop-lxde-vnc
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;如果我真的想学习lisp那么我应该把它放在这里&#34;&gt;如果我真的想学习Lisp，那么我应该把它放在这里
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://ynhugo.github.io/images/emacs/ANSI_Common_Lisp_%e4%b8%ad%e6%96%87%e7%89%88.epub&#34; &gt;ANSI_Common_Lisp_中文版.epub&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;这个命令的详细作用wget--r--p--np--k答案来自chatgpt&#34;&gt;这个命令的详细作用：wget -r -p -np -k（答案来自chatgpt）
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;这个命令是用于递归地下载一个网站的所有资源，包括 HTML 页面、图像、样式表、JavaScript 文件等。下面是这些选项的详细说明：
+
+-r 选项表示递归下载。这个选项会让 wget 下载整个网站的资源，而不仅仅是指定的 URL。
+-p 选项表示下载页面所需的所有元素。这个选项会下载 HTML 页面所需的所有资源，包括图像、样式表和 JavaScript 文件。
+-np 选项表示不跟随链接到上一级目录。这个选项会防止 wget 下载其他网站的资源，以及不必要的上级目录。
+-k 选项表示将链接转换为本地文件名。这个选项会让 wget 修改下载的 HTML 文件中的链接，以便它们指向本地下载的文件。这样，即使您将下载的文件移动到其他位置，链接也会正确地指向本地文件。
+综上所述，这个命令的作用是将指定网站的所有资源下载到本地，并将 HTML 文件中的链接转换为本地文件名。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;nrm同时对多个镜像网站测速&#34;&gt;nrm同时对多个镜像网站测速
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;nrm test npm &amp;amp; nrm test yarn &amp;amp; nrm test tencent &amp;amp; nrm test cnpm &amp;amp; nrm test npmMirror
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;一个不错的项目&#34;&gt;一个不错的项目？
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;https://hamibot.com/marketplace
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;免登录临时网盘&#34;&gt;免登录临时网盘
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;https://www.jetdrop.net/
+https://transfer.pcloud.com/
+https://anonfiles.com/
+https://filechan.org/
+https://bayfiles.com/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;autohotkey中文文档&#34;&gt;AutoHotkey中文文档
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://ahkcn.sourceforge.net/docs/AutoHotkey.htm&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;AutoHotkey中文文档&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;autohotkey拾取坐标点击屏幕某处&#34;&gt;AutoHotkey拾取坐标点击屏幕某处
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;; 按 A 和 D 分别对应点击两个单独的屏幕坐标
+; 按 Q 和 E 分别对应重新设置两个单独的屏幕坐标位置
+
+xpos := 618 ; 要点击位置的横坐标（默认值）
+ypos := 186 ; 要点击位置的纵坐标（默认值）
+xpos2 := 52 ; 要点击位置的横坐标（默认值）
+ypos2 := 214 ; 要点击位置的纵坐标（默认值）
+xpos3 := 52 ; 要点击位置的横坐标（默认值）
+ypos3 := 214 ; 要点击位置的纵坐标（默认值）
+xpos4 := 52 ; 要点击位置的横坐标（默认值）
+ypos4 := 214 ; 要点击位置的纵坐标（默认值）
+
+; 快捷键：^F1
+^F1::
+{
+   MouseGetPos, xpos, ypos
+   ; 更新位置坐标
+   MsgBox,拾取光标坐标x:%xpos%,y:%ypos%
+   return
+}
+
+; 快捷键：^F2
+^F2::
+{
+   MouseClick, left, %xpos%, %ypos%, 1, 0 ; 在指定坐标处点击鼠标左键
+   return
+}
+; 快捷键：^F3
+^F3::
+{
+   MouseGetPos, xpos2, ypos2
+   ; 更新位置坐标
+   MsgBox,拾取光标坐标x:%xpos2%,y:%ypos2%
+   return
+}
+
+; 快捷键：^F4
+^F4::
+{
+   MouseClick, left, %xpos2%, %ypos2%, 1, 0 ; 在指定坐标处点击鼠标左键
+   return
+}
+
+; 快捷键：^F5
+^F5::
+{
+   MouseGetPos, xpos3, ypos3
+   ; 更新位置坐标
+   MsgBox,拾取光标坐标x:%xpos3%,y:%ypos3%
+   return
+}
+
+; 快捷键：^F6
+^F6::
+{
+   MouseClick, left, %xpos3%, %ypos3%, 1, 0 ; 在指定坐标处点击鼠标左键
+   return
+}
+
+; 快捷键：^F7
+^F7::
+{
+   MouseGetPos, xpos4, ypos4
+   ; 更新位置坐标
+   MsgBox,拾取光标坐标x:%xpos4%,y:%ypos4%
+   return
+}
+
+; 快捷键：^F8
+^F8::
+{
+   MouseClick, left, %xpos4%, %ypos4%, 1, 0 ; 在指定坐标处点击鼠标左键
+   return
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;autohotkey控制我的某电脑的触摸板是否打开&#34;&gt;AutoHotkey控制我的某电脑的触摸板是否打开
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;; 按 A 和 D 分别对应点击两个单独的屏幕坐标
+; 按 Q 和 E 分别对应重新设置两个单独的屏幕坐标位置
+
+xpos := 300 ; 要点击位置的横坐标（默认值）
+ypos := 120 ; 要点击位置的纵坐标（默认值）
+xpos2 := 50 ; 要点击位置的横坐标（默认值）
+ypos2 := 220 ; 要点击位置的纵坐标（默认值）
+xpos3 := 1280 ; 要点击位置的横坐标（默认值）
+ypos3 := 850 ; 要点击位置的纵坐标（默认值）
+xpos4 := 1320 ; 要点击位置的横坐标（默认值）
+ypos4 := 10 ; 要点击位置的纵坐标（默认值）
+
+
+; 快捷键：^F2
+^F2::
+{
+   MouseClick, left, %xpos%, %ypos%, 1, 0 ; 在指定坐标处点击鼠标左键
+   return
+}
+
+; 快捷键：^F4
+^F4::
+{
+   MouseClick, left, %xpos2%, %ypos2%, 1, 0 ; 在指定坐标处点击鼠标左键
+   return
+}
+
+; 快捷键：^F6
+^F6::
+{
+   MouseClick, left, %xpos3%, %ypos3%, 1, 0 ; 在指定坐标处点击鼠标左键
+   return
+}
+
+; 快捷键：^F8
+^F8::
+{
+   MouseClick, left, %xpos4%, %ypos4%, 1, 0 ; 在指定坐标处点击鼠标左键
+   return
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;windows环境使用cygwin匹配ip&#34;&gt;windows环境使用cygwin匹配ip
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	#!/usr/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	set +m
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	ip=`ipconfig | awk &amp;#39;{print $14}&amp;#39; | grep &amp;#34;192&amp;#34; | tr &amp;#39;\r\n&amp;#39; &amp;#39; &amp;#39; `
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	echo $ip
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	echo $ip | awk -F &amp;#39; &amp;#39; &amp;#39;{print $1}&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	echo $ip | awk -F &amp;#39; &amp;#39; &amp;#39;{print $2}&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	echo $ip | awk -F &amp;#39; &amp;#39; &amp;#39;{print $3}&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	for i in $ip
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	        ping $i
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	done
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;windows环境cmd使用ping局域网所有ip&#34;&gt;windows环境cmd使用ping局域网所有ip
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;for /L %i in (10,1,80) do ping -n 1 -w 60 172.24.240.%i | find &amp;quot;回复&amp;quot; &amp;gt;&amp;gt;pingall.txt
+
+这一条命令是ping局域网内地址范围在172.24.240.10~172.24.240.80的所有主机。ping的结果会输出到执行命令的目录里面的pingAll.txt文件。
+
+for /L %i in (start,step,end) do command
+%i：循环变量，用于迭代循环中的值。在命令提示符中，需要使用单个百分号 %，而不是双百分号 %%。
+
+start：循环的起始值。
+
+step：每次迭代递增或递减的步长。
+
+end：循环的结束值。
+
+command：在每次迭代中要执行的命令。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;linux环境ping局域网所有ip&#34;&gt;linux环境ping局域网所有ip
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	for((i = 1; i &amp;lt; 10; i++)); do ping -n 1 -w 60 192.168.1.$((i)); done | grep &amp;#34;from&amp;#34; | awk &amp;#39;{print $3}&amp;#39; | tr &amp;#39;:&amp;#39; &amp;#39;\n&amp;#39; &amp;gt;&amp;gt; pingall.txt
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;在linux环境ping局域网ip并进行ssh连接的bash-shell脚本&#34;&gt;在linux环境ping局域网ip并进行ssh连接的bash shell脚本
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	#!/usr/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	set +m
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	#ip=`ipconfig | awk &amp;#39;{print $14}&amp;#39; | grep &amp;#34;192&amp;#34; | tr &amp;#39;\r\n&amp;#39; &amp;#39; &amp;#39; `
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	ip=`for((i = 1; i &amp;lt; 10; i++)); do ping -n 1 -w 60 192.168.1.$((i)); done | grep &amp;#34;from&amp;#34; | awk &amp;#39;{print $3}&amp;#39; | tr &amp;#39;:&amp;#39; &amp;#39; &amp;#39; | tr &amp;#39;\n&amp;#39; &amp;#39; &amp;#39;`
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	#ip=`arp -a | awk &amp;#39;{print $1}&amp;#39; | grep &amp;#34;192&amp;#34; | tr &amp;#39;\n&amp;#39; &amp;#39; &amp;#39;`
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	#查看变量ip中的内容
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	#echo $ip
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	#echo $ip | awk -F &amp;#39; &amp;#39; &amp;#39;{print $1}&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	#echo $ip | awk -F &amp;#39; &amp;#39; &amp;#39;{print $2}&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	#echo $ip | awk -F &amp;#39; &amp;#39; &amp;#39;{print $3}&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	for i in $ip
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	do
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	        ssh u0_a731@$i -p 8022
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;	done
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;命令arp--a&#34;&gt;命令&lt;code&gt;arp -a&lt;/code&gt;
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;在使用 arp -a 命令时，它将显示计算机的 ARP（地址解析协议）缓存中的条目，该缓存用于将 IP 地址映射到 MAC 地址。这些条目可以是动态的或静态的。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;linux环境获取进程id并kill掉&#34;&gt;linux环境获取进程id并kill掉
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;ps aux | grep &amp;quot;5901&amp;quot; | grep -v grep | awk &#39;{print $2}&#39; | xargs kill
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;tigervnc-详解-一&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/simple88/article/details/103682784&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TigerVNC 详解 一&lt;/a&gt;
+&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;在linux vnc客户端shell下运行&amp;quot;ssh -L 5901:localhost:5901 vncserverhost&amp;quot;命令，输入用户名密码。即完成通过shh安全通道，将远程的5901端口转发到本机的5901端口。然后在shell下运行&amp;quot;vncviewer 127.0.0.1:1&amp;quot;命令即可以连接到远程的VNC Server。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1 id=&#34;通过termux和vnc实现以手机为服务器的桌面办公&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/phaste/article/details/123616645&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;通过Termux和VNC实现以手机为服务器的桌面办公&lt;/a&gt;
+&lt;/h1&gt;&lt;h1 id=&#34;使用-input-overlay-工具在-obs-studio-中展示鼠标和按键操作&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://ecwuuuuu.com/post/obs-studio-show-keyboard-and-mouse-activity/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;使用 input-overlay 工具在 OBS Studio 中展示鼠标和按键操作&lt;/a&gt;
+&lt;/h1&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

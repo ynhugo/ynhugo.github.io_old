@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>科学上网 on Example Site</title>
+        <link>https://ynhugo.github.io/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+        <description>Recent content in 科学上网 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 08 Jul 2025 18:57:42 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>windows通过共享网络方式实现科学上网</title>
+        <link>https://ynhugo.github.io/p/windows%E9%80%9A%E8%BF%87%E5%85%B1%E4%BA%AB%E7%BD%91%E7%BB%9C%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/windows%E9%80%9A%E8%BF%87%E5%85%B1%E4%BA%AB%E7%BD%91%E7%BB%9C%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
+        <description>&lt;p&gt;
+科学上网工具如果具有Tun模式，是可以将Tun共享给指定的网络设备，从而使其网络可以科学上网&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" Linux磁盘空间异常爆满的排查和处理 我采用了笨方法：在根目录下，通过du -hs命令，列出各目录所占空间大小\n1 2 3 sudo su cd / du -sh * 然后看哪个文件夹占用空间最大，再进入目录继续执行 du -sh * ，这样一步一步的追踪，通过这样的方式最终找到占用空间最大的文件。\n通过追溯，我发现有两个文件占用空间特别大，分别是这两个文件：\n1 2 /var/log/kern.log /var/log/syslog 我可以通过删除临时解决空间占用的问题，不过最根本的是解决问题产生的原因。由于我运行PCIE相关的程序，导致空间异常爆满，为了先临时解决问题是，我可以先删除这两个文件，然后再重启，发现空间异常爆满的问题解决了。\n1 2 3 4 5 6 7 8 rm /var/log/kern.log rm /var/log/syslog reboot # 或 echo &#34;&#34; &gt; /var/log/kern.log echo &#34;&#34; &gt; /var/log/syslog service syslog restart journalctl --vacuum-size=50M 您需要成为根用户:输入sudo su，密码，然后输入上面的命令\n这里有一个更安全的方法，允许您在回收磁盘空间的同时保留日志文件，同时也可以阻止日志文件再次这样做 安全地清除日志:在查看(或备份)日志以确定系统问题后，通过键入 &gt; /var/log/syslog (包括 &gt;)清除它们。您可能需要成为根用户，在这种情况下输入 sudo su 、您的密码，然后输入上面的命令)。 然后重新启动 syslog 服务( systemctl restart syslog 或 service syslog restart)。 然后，可以使用 logrotate 强制日志在达到一定大小时自动旋转和删除。在本例中，您可以使用 sudo vim /etc/logrotate.d/rsyslog 编辑配置并添加一行： maxsize 1G\n">
+<title>Linux磁盘空间异常爆满的排查和处理</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/linux%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E5%BC%82%E5%B8%B8%E7%88%86%E6%BB%A1%E7%9A%84%E6%8E%92%E6%9F%A5%E5%92%8C%E5%A4%84%E7%90%86/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Linux磁盘空间异常爆满的排查和处理">
+<meta property='og:description' content=" Linux磁盘空间异常爆满的排查和处理 我采用了笨方法：在根目录下，通过du -hs命令，列出各目录所占空间大小\n1 2 3 sudo su cd / du -sh * 然后看哪个文件夹占用空间最大，再进入目录继续执行 du -sh * ，这样一步一步的追踪，通过这样的方式最终找到占用空间最大的文件。\n通过追溯，我发现有两个文件占用空间特别大，分别是这两个文件：\n1 2 /var/log/kern.log /var/log/syslog 我可以通过删除临时解决空间占用的问题，不过最根本的是解决问题产生的原因。由于我运行PCIE相关的程序，导致空间异常爆满，为了先临时解决问题是，我可以先删除这两个文件，然后再重启，发现空间异常爆满的问题解决了。\n1 2 3 4 5 6 7 8 rm /var/log/kern.log rm /var/log/syslog reboot # 或 echo &#34;&#34; &gt; /var/log/kern.log echo &#34;&#34; &gt; /var/log/syslog service syslog restart journalctl --vacuum-size=50M 您需要成为根用户:输入sudo su，密码，然后输入上面的命令\n这里有一个更安全的方法，允许您在回收磁盘空间的同时保留日志文件，同时也可以阻止日志文件再次这样做 安全地清除日志:在查看(或备份)日志以确定系统问题后，通过键入 &gt; /var/log/syslog (包括 &gt;)清除它们。您可能需要成为根用户，在这种情况下输入 sudo su 、您的密码，然后输入上面的命令)。 然后重新启动 syslog 服务( systemctl restart syslog 或 service syslog restart)。 然后，可以使用 logrotate 强制日志在达到一定大小时自动旋转和删除。在本例中，您可以使用 sudo vim /etc/logrotate.d/rsyslog 编辑配置并添加一行： maxsize 1G\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/linux%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E5%BC%82%E5%B8%B8%E7%88%86%E6%BB%A1%E7%9A%84%E6%8E%92%E6%9F%A5%E5%92%8C%E5%A4%84%E7%90%86/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='linux' /><meta property='article:published_time' content='2025-07-11T15:03:04&#43;08:00'/><meta property='article:modified_time' content='2025-07-11T15:03:04&#43;08:00'/>
+<meta name="twitter:title" content="Linux磁盘空间异常爆满的排查和处理">
+<meta name="twitter:description" content=" Linux磁盘空间异常爆满的排查和处理 我采用了笨方法：在根目录下，通过du -hs命令，列出各目录所占空间大小\n1 2 3 sudo su cd / du -sh * 然后看哪个文件夹占用空间最大，再进入目录继续执行 du -sh * ，这样一步一步的追踪，通过这样的方式最终找到占用空间最大的文件。\n通过追溯，我发现有两个文件占用空间特别大，分别是这两个文件：\n1 2 /var/log/kern.log /var/log/syslog 我可以通过删除临时解决空间占用的问题，不过最根本的是解决问题产生的原因。由于我运行PCIE相关的程序，导致空间异常爆满，为了先临时解决问题是，我可以先删除这两个文件，然后再重启，发现空间异常爆满的问题解决了。\n1 2 3 4 5 6 7 8 rm /var/log/kern.log rm /var/log/syslog reboot # 或 echo &#34;&#34; &gt; /var/log/kern.log echo &#34;&#34; &gt; /var/log/syslog service syslog restart journalctl --vacuum-size=50M 您需要成为根用户:输入sudo su，密码，然后输入上面的命令\n这里有一个更安全的方法，允许您在回收磁盘空间的同时保留日志文件，同时也可以阻止日志文件再次这样做 安全地清除日志:在查看(或备份)日志以确定系统问题后，通过键入 &gt; /var/log/syslog (包括 &gt;)清除它们。您可能需要成为根用户，在这种情况下输入 sudo su 、您的密码，然后输入上面的命令)。 然后重新启动 syslog 服务( systemctl restart syslog 或 service syslog restart)。 然后，可以使用 logrotate 强制日志在达到一定大小时自动旋转和删除。在本例中，您可以使用 sudo vim /etc/logrotate.d/rsyslog 编辑配置并添加一行： maxsize 1G\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">Linux磁盘空间异常爆满的排查和处理</a>
+<ul>
+<li><a href="#headline-2">这里有一个更安全的方法，允许您在回收磁盘空间的同时保留日志文件，同时也可以阻止日志文件再次这样做</a>
+</li>
+<li><a href="#headline-3">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/linux%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4%E5%BC%82%E5%B8%B8%E7%88%86%E6%BB%A1%E7%9A%84%E6%8E%92%E6%9F%A5%E5%92%8C%E5%A4%84%E7%90%86/">Linux磁盘空间异常爆满的排查和处理</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 11, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+Linux磁盘空间异常爆满的排查和处理
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>
+我采用了笨方法：在根目录下，通过du -hs命令，列出各目录所占空间大小</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo su
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /
+</span></span><span class="line"><span class="cl">du -sh *</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>然后看哪个文件夹占用空间最大，再进入目录继续执行 <code class="verbatim">du -sh *</code> ，这样一步一步的追踪，通过这样的方式最终找到占用空间最大的文件。</p>
+<p>
+通过追溯，我发现有两个文件占用空间特别大，分别是这两个文件：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/var/log/kern.log
+</span></span><span class="line"><span class="cl">/var/log/syslog</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+我可以通过删除临时解决空间占用的问题，不过最根本的是解决问题产生的原因。由于我运行PCIE相关的程序，导致空间异常爆满，为了先临时解决问题是，我可以先删除这两个文件，然后再重启，发现空间异常爆满的问题解决了。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rm /var/log/kern.log
+</span></span><span class="line"><span class="cl">rm /var/log/syslog
+</span></span><span class="line"><span class="cl">reboot
+</span></span><span class="line"><span class="cl"><span class="c1"># 或</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;&#34;</span> &gt; /var/log/kern.log
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;&#34;</span> &gt; /var/log/syslog
+</span></span><span class="line"><span class="cl">service syslog restart
+</span></span><span class="line"><span class="cl">journalctl --vacuum-size<span class="o">=</span>50M</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>您需要成为根用户:输入sudo su，密码，然后输入上面的命令</p>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+这里有一个更安全的方法，允许您在回收磁盘空间的同时保留日志文件，同时也可以阻止日志文件再次这样做
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<ol>
+<li>安全地清除日志:在查看(或备份)日志以确定系统问题后，通过键入 <code class="verbatim">&gt; /var/log/syslog</code> (包括 <code class="verbatim">&gt;</code>)清除它们。您可能需要成为根用户，在这种情况下输入 <code class="verbatim">sudo su</code> 、您的密码，然后输入上面的命令)。</li>
+</ol>
+<p>然后重新启动 <code class="verbatim">syslog</code> 服务( <code class="verbatim">systemctl restart syslog</code> 或 <code class="verbatim">service syslog restart</code>)。
+然后，可以使用 <code class="verbatim">logrotate</code> 强制日志在达到一定大小时自动旋转和删除。在本例中，您可以使用 <code class="verbatim">sudo vim /etc/logrotate.d/rsyslog</code> 编辑配置并添加一行： <code class="verbatim">maxsize 1G</code></p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/var/log/syslog
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  rotate <span class="m">7</span>
+</span></span><span class="line"><span class="cl">  daily
+</span></span><span class="line"><span class="cl">  maxsize 1G <span class="c1"># add this line</span>
+</span></span><span class="line"><span class="cl">  missingok
+</span></span><span class="line"><span class="cl">  notifempty
+</span></span><span class="line"><span class="cl">  delaycompress
+</span></span><span class="line"><span class="cl">  compress
+</span></span><span class="line"><span class="cl">  postrotate
+</span></span><span class="line"><span class="cl">  /usr/lib/rsyslog/rsyslog-rotate
+</span></span><span class="line"><span class="cl">  endscript
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<ul>
+<li>这将迫使您的syslog“旋转”(即，创建一个新的日志文件并将前一个日志文件存档)，或者在该文件成为1GB之后(以第一位为准)。请注意，rotate 7意味着您的系统将只保留7次总的syslog备份，因此它只能占用7GB的空间。</li>
+<li>注意:您可以更改maxsize、rotate N和其他设置以自定义日志–使用命令man logrotate查看更多信息。</li>
+</ul>
+<ol>
+<li>您可能需要在文件的第二部分中添加相同的设置，它控制其他日志文件的行为(例如，kern.log用于内核事件，auth.log用于身份验证事件，等等)。此设置将使每个其他日志文件总共只占用4GB：</li>
+</ol>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/var/log/kern.log
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  rotate <span class="m">7</span>
+</span></span><span class="line"><span class="cl">  daily
+</span></span><span class="line"><span class="cl">  maxsize 1G <span class="c1"># add this line</span>
+</span></span><span class="line"><span class="cl">  missingok
+</span></span><span class="line"><span class="cl">  notifempty
+</span></span><span class="line"><span class="cl">  delaycompress
+</span></span><span class="line"><span class="cl">  compress
+</span></span><span class="line"><span class="cl">  postrotate
+</span></span><span class="line"><span class="cl">  /usr/lib/rsyslog/rsyslog-rotate
+</span></span><span class="line"><span class="cl">  endscript
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>该配置紧挨着上一条配置。</p>
+<p>
+这将允许您的系统在不填充磁盘的情况下继续记录事件。</p>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+参考链接
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/rendongxingzhe/article/details/128036017">Linux 磁盘空间异常爆满的排查和处理</a></p>
+<p>
+<a href="https://blog.csdn.net/zangle260/article/details/146914275">Linux 中dmesg， kern.log， syslog 什么关系？有什么用？</a></p>
+<p>
+<a href="https://blog.csdn.net/tyf97/article/details/135989836">Ubuntu 关闭rsyslog，var/log/syslog文件过大解决</a></p>
+<p>
+<a href="https://cloud.tencent.com/developer/ask/sof/112972685">问Ubuntu:大型syslog和kern.log文件</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linux/">Linux</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/jq%E7%94%A8%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">jq用法</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

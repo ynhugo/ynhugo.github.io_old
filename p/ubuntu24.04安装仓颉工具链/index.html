@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" ubuntu24.04安装仓颉工具链 Linux 版本工具链的支持与安装 Ubuntu 24.04 1 sudo apt-get install -y binutils gcc make libc6-dev libc++-dev libgcc-9-dev 参考链接 适用于各 Linux 发行版的仓颉工具链依赖安装命令\n编译安装依赖工具 OpenSSL 3 从以下链接可以下载到 OpenSSL 3 的源码：\nhttps://www.openssl.org/source/old/\n建议使用 OpenSSL 3.0.7 或更高版本。\n此处以 OpenSSL 3.0.7 为例，下载后使用以下命令解压压缩包：\n1 tar xf openssl-3.0.7.tar.gz 解压完成后进入目录：\n1 cd openssl-3.0.7 编译 OpenSSL：\n注意：\n如果系统已经安装了 OpenSSL，建议使用 –prefix=&lt;path&gt; 选项指定一个自定义安装路径，例如 –prefix=/usr/local/openssl-3.0.7 或开发者的个人目录。在系统目录已经存在 OpenSSL 的场景下直接使用以下命令编译安装可能会使系统 OpenSSL 被覆盖，并导致依赖系统 OpenSSL 的应用不可用。\n">
+<title>ubuntu24.04安装仓颉工具链</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/ubuntu24.04%E5%AE%89%E8%A3%85%E4%BB%93%E9%A2%89%E5%B7%A5%E5%85%B7%E9%93%BE/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="ubuntu24.04安装仓颉工具链">
+<meta property='og:description' content=" ubuntu24.04安装仓颉工具链 Linux 版本工具链的支持与安装 Ubuntu 24.04 1 sudo apt-get install -y binutils gcc make libc6-dev libc++-dev libgcc-9-dev 参考链接 适用于各 Linux 发行版的仓颉工具链依赖安装命令\n编译安装依赖工具 OpenSSL 3 从以下链接可以下载到 OpenSSL 3 的源码：\nhttps://www.openssl.org/source/old/\n建议使用 OpenSSL 3.0.7 或更高版本。\n此处以 OpenSSL 3.0.7 为例，下载后使用以下命令解压压缩包：\n1 tar xf openssl-3.0.7.tar.gz 解压完成后进入目录：\n1 cd openssl-3.0.7 编译 OpenSSL：\n注意：\n如果系统已经安装了 OpenSSL，建议使用 –prefix=&lt;path&gt; 选项指定一个自定义安装路径，例如 –prefix=/usr/local/openssl-3.0.7 或开发者的个人目录。在系统目录已经存在 OpenSSL 的场景下直接使用以下命令编译安装可能会使系统 OpenSSL 被覆盖，并导致依赖系统 OpenSSL 的应用不可用。\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/ubuntu24.04%E5%AE%89%E8%A3%85%E4%BB%93%E9%A2%89%E5%B7%A5%E5%85%B7%E9%93%BE/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='仓颉语言' /><meta property='article:tag' content='Linux' /><meta property='article:tag' content='Ubuntu' /><meta property='article:published_time' content='2025-06-22T22:20:37&#43;08:00'/><meta property='article:modified_time' content='2025-06-22T22:20:37&#43;08:00'/>
+<meta name="twitter:title" content="ubuntu24.04安装仓颉工具链">
+<meta name="twitter:description" content=" ubuntu24.04安装仓颉工具链 Linux 版本工具链的支持与安装 Ubuntu 24.04 1 sudo apt-get install -y binutils gcc make libc6-dev libc++-dev libgcc-9-dev 参考链接 适用于各 Linux 发行版的仓颉工具链依赖安装命令\n编译安装依赖工具 OpenSSL 3 从以下链接可以下载到 OpenSSL 3 的源码：\nhttps://www.openssl.org/source/old/\n建议使用 OpenSSL 3.0.7 或更高版本。\n此处以 OpenSSL 3.0.7 为例，下载后使用以下命令解压压缩包：\n1 tar xf openssl-3.0.7.tar.gz 解压完成后进入目录：\n1 cd openssl-3.0.7 编译 OpenSSL：\n注意：\n如果系统已经安装了 OpenSSL，建议使用 –prefix=&lt;path&gt; 选项指定一个自定义安装路径，例如 –prefix=/usr/local/openssl-3.0.7 或开发者的个人目录。在系统目录已经存在 OpenSSL 的场景下直接使用以下命令编译安装可能会使系统 OpenSSL 被覆盖，并导致依赖系统 OpenSSL 的应用不可用。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">ubuntu24.04安装仓颉工具链</a>
+<ul>
+<li><a href="#headline-2">Linux 版本工具链的支持与安装</a>
+<ul>
+<li><a href="#headline-3">Ubuntu 24.04</a>
+<ul>
+<li><a href="#headline-4">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#headline-5">编译安装依赖工具</a>
+<ul>
+<li><a href="#headline-6">OpenSSL 3</a>
+<ul>
+<li><a href="#headline-7">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#headline-8">安装仓颉工具链</a>
+<ul>
+<li><a href="#headline-9">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-10">运行第一个仓颉程序</a>
+<ul>
+<li><a href="#headline-11">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/ubuntu24.04%E5%AE%89%E8%A3%85%E4%BB%93%E9%A2%89%E5%B7%A5%E5%85%B7%E9%93%BE/">ubuntu24.04安装仓颉工具链</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 22, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+ubuntu24.04安装仓颉工具链
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+Linux 版本工具链的支持与安装
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+Ubuntu 24.04
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo apt-get install -y  binutils gcc make libc6-dev libc++-dev libgcc-9-dev</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-5">
+<h5 id="headline-4">
+参考链接
+</h5>
+<div id="outline-text-headline-4" class="outline-text-5">
+<p>
+<a href="https://docs.cangjie-lang.cn/docs/0.53.18/user_manual/source_zh_cn/Appendix/linux_toolchain_install.html#适用于各-linux-发行版的仓颉工具链依赖安装命令">适用于各 Linux 发行版的仓颉工具链依赖安装命令</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+编译安装依赖工具
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<div id="outline-container-headline-6" class="outline-4">
+<h4 id="headline-6">
+OpenSSL 3
+</h4>
+<div id="outline-text-headline-6" class="outline-text-4">
+<p>
+从以下链接可以下载到 OpenSSL 3 的源码：</p>
+<p>
+https://www.openssl.org/source/old/</p>
+<p>
+建议使用 OpenSSL 3.0.7 或更高版本。</p>
+<p>
+此处以 OpenSSL 3.0.7 为例，下载后使用以下命令解压压缩包：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tar xf openssl-3.0.7.tar.gz</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+解压完成后进入目录：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nb">cd</span> openssl-3.0.7</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+编译 OpenSSL：</p>
+<p>
+注意：</p>
+<p>
+如果系统已经安装了 OpenSSL，建议使用 –prefix=&lt;path&gt; 选项指定一个自定义安装路径，例如 –prefix=/usr/local/openssl-3.0.7 或开发者的个人目录。在系统目录已经存在 OpenSSL 的场景下直接使用以下命令编译安装可能会使系统 OpenSSL 被覆盖，并导致依赖系统 OpenSSL 的应用不可用。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ./Configure --libdir<span class="o">=</span>lib --prefix<span class="o">=</span>/usr/local/openssl-3.0.7
+</span></span><span class="line"><span class="cl">  make -j<span class="k">$(</span>nproc<span class="k">)</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+测试 OpenSSL：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  make -j<span class="k">$(</span>nproc<span class="k">)</span> test</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+将 OpenSSL 安装至系统目录（或先前指定的 –prefix 目录），可能需要提供 root 权限以成功执行以下命令：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  make install
+</span></span><span class="line"><span class="cl">  <span class="c1"># 或</span>
+</span></span><span class="line"><span class="cl">  sudo make  -j<span class="k">$(</span>nproc<span class="k">)</span> install</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+如果先前编译 OpenSSL 时没有通过 –prefix 设置自定义安装路径，则 OpenSSL 安装已经完成了。如果先前通过 –prefix 指定了自定义的安装路径，还需要设置以下变量，以使仓颉工具链可以找到 OpenSSL 3。</p>
+<p>
+注意：</p>
+<p>
+如果系统中原先存在其他版本的 OpenSSL，通过以下方式配置后，除了仓颉工具链外，其他编译开发工具默认使用的 OpenSSL 版本也可能受到影响。如果使用其他编译开发工具时出现 OpenSSL 不兼容的情况，请仅为仓颉开发环境配置以下变量。</p>
+<p>
+请将 &lt;prefix&gt; 替换为指定的自定义安装路径。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="c1"># export LIBRARY_PATH=&lt;prefix&gt;/lib:$LIBRARY_PATH</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># export LD_LIBRARY_PATH=&lt;prefix&gt;/lib:$LD_LIBRARY_PATH</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">export</span> <span class="nv">LIBRARY_PATH</span><span class="o">=</span>/usr/local/openssl-3.0.7/lib:<span class="nv">$LIBRARY_PATH</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">export</span> <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/usr/local/openssl-3.0.7/lib:<span class="nv">$LD_LIBRARY_PATH</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+通过以上方式所配置的环境变量仅在当前执行命令的 shell 会话窗口有效。若希望 shell 每次启动时都自动配置，可以在 <code class="verbatim">$HOME/.bashrc</code> 、 <code class="verbatim">$HOME/.zshrc</code> 或其他 shell 配置文件（依开发者的 shell 种类而定）加入以上命令。</p>
+<p>
+若希望配置可以默认对所有用户生效，可以执行以下命令：</p>
+<p>
+请将 &lt;prefix&gt; 替换为指定的自定义安装路径。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo chown -R <span class="nv">$USER</span>:<span class="nv">$USER</span> /etc/profile  
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;export LIBRARY_PATH=/usr/local/openssl-3.0.7/lib:</span><span class="nv">$LIBRARY_PATH</span><span class="s2">&#34;</span> /etc/profile
+</span></span><span class="line"><span class="cl">  sudo chown -R root:root /etc/profile
+</span></span><span class="line"><span class="cl">  <span class="nb">source</span> /etc/profile
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  sudo chown -R <span class="nv">$USER</span>:<span class="nv">$USER</span> /etc/ld.so.conf
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;export LD_LIBRARY_PATH=/usr/local/openssl-3.0.7/lib:</span><span class="nv">$LD_LIBRARY_PATH</span><span class="s2">&#34;</span> /etc/ld.so.conf
+</span></span><span class="line"><span class="cl">  sudo chown -R root:root  /etc/ld.so.conf
+</span></span><span class="line"><span class="cl">  sudo ldconfig</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>执行完毕后重新打开 shell 会话窗口即可生效。</p>
+<p>
+至此，OpenSSL 3 已经成功安装，可以回到原来的章节继续阅读或尝试运行仓颉编译器了。</p>
+<div id="outline-container-headline-7" class="outline-5">
+<h5 id="headline-7">
+参考链接
+</h5>
+<div id="outline-text-headline-7" class="outline-text-5">
+<p>
+<a href="https://openssl-library.org/source/old/index.html"><a href="https://www.openssl.org/source/old/">https://www.openssl.org/source/old/</a></a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
+安装仓颉工具链
+</h3>
+<div id="outline-text-headline-8" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tar xvf Cangjie-0.53.18-linux_x64.tar.gz
+</span></span><span class="line"><span class="cl">  <span class="nb">source</span> cangjie/envsetup.sh</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-4">
+<h4 id="headline-9">
+参考链接
+</h4>
+<div id="outline-text-headline-9" class="outline-text-4">
+<p>
+<a href="https://docs.cangjie-lang.cn/docs/0.53.18/user_manual/source_zh_cn/first_understanding/install_Community.html#安装仓颉工具链">安装仓颉工具链</a></p>
+<p>
+<a href="https://cangjie-lang.cn/download/0.53.18">Cangjie 0.53.18</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-3">
+<h3 id="headline-10">
+运行第一个仓颉程序
+</h3>
+<div id="outline-text-headline-10" class="outline-text-3">
+<p>
+首先，请在适当目录下新建一个名为 hello.cj 的文本文件，并向文件中写入以下仓颉代码：</p>
+<div class="src src-c">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="c1">// hello.cj
+</span></span></span><span class="line"><span class="cl"><span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">println</span><span class="p">(</span><span class="s">&#34;你好，仓颉&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>在这段代码中，使用了仓颉的注释语法，可以在 <em>/ 符号之后写单行注释，也可以在一对 /* 和 *</em> 符号之间写多行注释，这与 C/C++ 等语言的注释语法相同。注释内容不影响程序的编译和运行。</p>
+<p>
+然后，请在此目录下执行如下命令：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cjc hello.cj -o hello</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+这里仓颉编译器会将 hello.cj 中的源代码编译为此平台上的可执行文件 hello，在命令行环境中运行此文件，将看到程序输出了如下内容：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  $ ./hello
+</span></span><span class="line"><span class="cl">  你好，仓颉</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-4">
+<h4 id="headline-11">
+参考链接
+</h4>
+<div id="outline-text-headline-11" class="outline-text-4">
+<p>
+<a href="https://docs.cangjie-lang.cn/docs/0.53.18/user_manual/source_zh_cn/first_understanding/hello_world.html#运行第一个仓颉程序">运行第一个仓颉程序</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E4%BB%93%E9%A2%89%E8%AF%AD%E8%A8%80/">仓颉语言</a>
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/ubuntu/">Ubuntu</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/linux-%E5%A6%82%E4%BD%95%E5%8F%8D%E6%9F%A5%E5%91%BD%E4%BB%A4%E5%B1%9E%E4%BA%8E%E5%93%AA%E4%B8%AA%E8%BD%AF%E4%BB%B6%E5%8C%85dpkg-s/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Linux 如何反查命令属于哪个软件包（dpkg -S）</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

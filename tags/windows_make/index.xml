@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Windows_make on Example Site</title>
+        <link>https://ynhugo.github.io/tags/windows_make/</link>
+        <description>Recent content in Windows_make on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 08 Jul 2025 18:57:42 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/windows_make/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>如何在windows环境实现make命令</title>
+        <link>https://ynhugo.github.io/p/%E5%A6%82%E4%BD%95%E5%9C%A8windows%E7%8E%AF%E5%A2%83%E5%AE%9E%E7%8E%B0make%E5%91%BD%E4%BB%A4/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E5%A6%82%E4%BD%95%E5%9C%A8windows%E7%8E%AF%E5%A2%83%E5%AE%9E%E7%8E%B0make%E5%91%BD%E4%BB%A4/</guid>
+        <description>&lt;h1 id=&#34;简要说明实现过程&#34;&gt;简要说明实现过程
+&lt;/h1&gt;&lt;p&gt;在官网下载.tar.gz格式的二进制文件，在Cygwin环境中编译出make，再将make命令所在文件夹移到windows环境中，
+同时make命令的执行依赖cygwin1.dll文件，将/bin/下的cygwin1.dll文件复制一份到make命令的文件中，然后再将
+make命令所在文件夹的路径添加到电脑的环境变量中，打开cmd窗口，执行 make -v，正常输出显示make的版本信息。&lt;/p&gt;
+&lt;h1 id=&#34;编译过程&#34;&gt;编译过程
+&lt;/h1&gt;&lt;p&gt;./configure
+mkae
+make install&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

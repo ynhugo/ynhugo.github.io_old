@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" Kali Linux 换源 1 2 3 4 5 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak cat &gt; /etc/apt/sources.list &lt;&lt;&#39;EOF&#39; deb https://mirrors.aliyun.com/kali kali-rolling main non-free contrib deb-src https://mirrors.aliyun.com/kali kali-rolling main non-free contrib EOF 参考链接 Kali 镜像 | 阿里云\n安装fcitx-wbpy 1 2 sudo apt install -y fcitx fcitx-table-wbpy reboot kali搭建dvwa环境演练 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 # 克隆dvwa git clone -c http.proxy=&#34;192.168.1.102:10808&#34; https://github.com/ethicalhack3r/DVWA.git mv DVWA /var/www/html/dvwa chmod -R 755 /var/www/html/dvwa # 启动mysql服务 service mysql start # 打开mysql，命令“mysql -uroot -p”,默认密码是root mysql -uroot -p # 进来之后创建数据库表命令 create database if not exists dvwa; # 创建一个新的用户dvwa给所有权限并且密码为root create user if not exists &#39;dvwa&#39;@&#39;localhost&#39; identified by &#39;root&#39;; grant all privileges on dvwa.* TO &#39;dvwa&#39;@&#39;localhost&#39;; # 刷新一下权限更新并且退出数据库 flush privileges; exit; # 把/var/www/html/dvwa/config/下config.inc.php.dist修改为config.inc.php cp /var/www/html/dvwa/config/config.inc.php.dist /var/www/html/dvwa/config/config.inc.php.dist.bak mv /var/www/html/dvwa/config/config.inc.php.dist /var/www/html/dvwa/config/config.inc.php # 修改用户名，匹配包含 db_user 的行，注释并添加新行 sed -i &#34;/.*db_user.*/s/^\\(.*\\)$/# \\1\\n\\$_DVWA[ &#39;db_user&#39; ] = &#39;dvwa&#39;;/&#34; /var/www/html/dvwa/config/config.inc.php # 修改密码，匹配包含 db_password 的行，注释并添加新行 sed -i &#34;/.*db_password.*/s/^\\(.*\\)$/# \\1\\n\\$_DVWA[ &#39;db_password&#39; ] = &#39;root&#39;;/&#34; /var/www/html/dvwa/config/config.inc.php # 启动apache2服务并且在浏览器输入输入127.0.0.1/dvwa/setup.php跳转到页面后，也可以用对应的局域网地址访问 service apache2 start # 按Create/Reset Database按钮，# 输入默认账号admin默认密码password # 关闭apache2 service apache2 start # OK大功告成 ">
+<title>kali linux</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/kali-linux/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="kali linux">
+<meta property='og:description' content=" Kali Linux 换源 1 2 3 4 5 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak cat &gt; /etc/apt/sources.list &lt;&lt;&#39;EOF&#39; deb https://mirrors.aliyun.com/kali kali-rolling main non-free contrib deb-src https://mirrors.aliyun.com/kali kali-rolling main non-free contrib EOF 参考链接 Kali 镜像 | 阿里云\n安装fcitx-wbpy 1 2 sudo apt install -y fcitx fcitx-table-wbpy reboot kali搭建dvwa环境演练 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 # 克隆dvwa git clone -c http.proxy=&#34;192.168.1.102:10808&#34; https://github.com/ethicalhack3r/DVWA.git mv DVWA /var/www/html/dvwa chmod -R 755 /var/www/html/dvwa # 启动mysql服务 service mysql start # 打开mysql，命令“mysql -uroot -p”,默认密码是root mysql -uroot -p # 进来之后创建数据库表命令 create database if not exists dvwa; # 创建一个新的用户dvwa给所有权限并且密码为root create user if not exists &#39;dvwa&#39;@&#39;localhost&#39; identified by &#39;root&#39;; grant all privileges on dvwa.* TO &#39;dvwa&#39;@&#39;localhost&#39;; # 刷新一下权限更新并且退出数据库 flush privileges; exit; # 把/var/www/html/dvwa/config/下config.inc.php.dist修改为config.inc.php cp /var/www/html/dvwa/config/config.inc.php.dist /var/www/html/dvwa/config/config.inc.php.dist.bak mv /var/www/html/dvwa/config/config.inc.php.dist /var/www/html/dvwa/config/config.inc.php # 修改用户名，匹配包含 db_user 的行，注释并添加新行 sed -i &#34;/.*db_user.*/s/^\\(.*\\)$/# \\1\\n\\$_DVWA[ &#39;db_user&#39; ] = &#39;dvwa&#39;;/&#34; /var/www/html/dvwa/config/config.inc.php # 修改密码，匹配包含 db_password 的行，注释并添加新行 sed -i &#34;/.*db_password.*/s/^\\(.*\\)$/# \\1\\n\\$_DVWA[ &#39;db_password&#39; ] = &#39;root&#39;;/&#34; /var/www/html/dvwa/config/config.inc.php # 启动apache2服务并且在浏览器输入输入127.0.0.1/dvwa/setup.php跳转到页面后，也可以用对应的局域网地址访问 service apache2 start # 按Create/Reset Database按钮，# 输入默认账号admin默认密码password # 关闭apache2 service apache2 start # OK大功告成 ">
+<meta property='og:url' content='https://ynhugo.github.io/p/kali-linux/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='kali' /><meta property='article:published_time' content='2026-01-10T15:03:32&#43;08:00'/><meta property='article:modified_time' content='2026-01-10T15:03:32&#43;08:00'/>
+<meta name="twitter:title" content="kali linux">
+<meta name="twitter:description" content=" Kali Linux 换源 1 2 3 4 5 sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak cat &gt; /etc/apt/sources.list &lt;&lt;&#39;EOF&#39; deb https://mirrors.aliyun.com/kali kali-rolling main non-free contrib deb-src https://mirrors.aliyun.com/kali kali-rolling main non-free contrib EOF 参考链接 Kali 镜像 | 阿里云\n安装fcitx-wbpy 1 2 sudo apt install -y fcitx fcitx-table-wbpy reboot kali搭建dvwa环境演练 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 # 克隆dvwa git clone -c http.proxy=&#34;192.168.1.102:10808&#34; https://github.com/ethicalhack3r/DVWA.git mv DVWA /var/www/html/dvwa chmod -R 755 /var/www/html/dvwa # 启动mysql服务 service mysql start # 打开mysql，命令“mysql -uroot -p”,默认密码是root mysql -uroot -p # 进来之后创建数据库表命令 create database if not exists dvwa; # 创建一个新的用户dvwa给所有权限并且密码为root create user if not exists &#39;dvwa&#39;@&#39;localhost&#39; identified by &#39;root&#39;; grant all privileges on dvwa.* TO &#39;dvwa&#39;@&#39;localhost&#39;; # 刷新一下权限更新并且退出数据库 flush privileges; exit; # 把/var/www/html/dvwa/config/下config.inc.php.dist修改为config.inc.php cp /var/www/html/dvwa/config/config.inc.php.dist /var/www/html/dvwa/config/config.inc.php.dist.bak mv /var/www/html/dvwa/config/config.inc.php.dist /var/www/html/dvwa/config/config.inc.php # 修改用户名，匹配包含 db_user 的行，注释并添加新行 sed -i &#34;/.*db_user.*/s/^\\(.*\\)$/# \\1\\n\\$_DVWA[ &#39;db_user&#39; ] = &#39;dvwa&#39;;/&#34; /var/www/html/dvwa/config/config.inc.php # 修改密码，匹配包含 db_password 的行，注释并添加新行 sed -i &#34;/.*db_password.*/s/^\\(.*\\)$/# \\1\\n\\$_DVWA[ &#39;db_password&#39; ] = &#39;root&#39;;/&#34; /var/www/html/dvwa/config/config.inc.php # 启动apache2服务并且在浏览器输入输入127.0.0.1/dvwa/setup.php跳转到页面后，也可以用对应的局域网地址访问 service apache2 start # 按Create/Reset Database按钮，# 输入默认账号admin默认密码password # 关闭apache2 service apache2 start # OK大功告成 ">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">Kali Linux</a>
+<ul>
+<li><a href="#headline-2">换源</a>
+<ul>
+<li><a href="#headline-3">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-4">安装fcitx-wbpy</a>
+</li>
+<li><a href="#headline-5">kali搭建dvwa环境演练</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/kali-linux/">kali linux</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 10, 2026</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+Kali Linux
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+换源
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo cp /etc/apt/sources.list  /etc/apt/sources.list.bak
+</span></span><span class="line"><span class="cl">cat &gt; /etc/apt/sources.list <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">deb https://mirrors.aliyun.com/kali kali-rolling main non-free contrib
+</span></span></span><span class="line"><span class="cl"><span class="s">deb-src https://mirrors.aliyun.com/kali kali-rolling main non-free contrib
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+参考链接
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<p><a href="https://developer.aliyun.com/mirror/kali?spm=a2c6h.13651102.0.0.3e221b11IPUG76">Kali 镜像 | 阿里云</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+安装fcitx-wbpy
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install -y fcitx fcitx-table-wbpy
+</span></span><span class="line"><span class="cl">reboot</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+kali搭建dvwa环境演练
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 克隆dvwa</span>
+</span></span><span class="line"><span class="cl">git clone -c http.proxy<span class="o">=</span><span class="s2">&#34;192.168.1.102:10808&#34;</span> https://github.com/ethicalhack3r/DVWA.git
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mv DVWA /var/www/html/dvwa
+</span></span><span class="line"><span class="cl">chmod -R <span class="m">755</span>  /var/www/html/dvwa
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动mysql服务</span>
+</span></span><span class="line"><span class="cl">service mysql start
+</span></span><span class="line"><span class="cl"><span class="c1"># 打开mysql，命令“mysql -uroot -p”,默认密码是root</span>
+</span></span><span class="line"><span class="cl">mysql -uroot -p
+</span></span><span class="line"><span class="cl"><span class="c1"># 进来之后创建数据库表命令</span>
+</span></span><span class="line"><span class="cl">create database <span class="k">if</span> not exists dvwa<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建一个新的用户dvwa给所有权限并且密码为root</span>
+</span></span><span class="line"><span class="cl">create user <span class="k">if</span> not exists <span class="s1">&#39;dvwa&#39;</span>@<span class="s1">&#39;localhost&#39;</span> identified by <span class="s1">&#39;root&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">grant all privileges on dvwa.* TO <span class="s1">&#39;dvwa&#39;</span>@<span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 刷新一下权限更新并且退出数据库</span>
+</span></span><span class="line"><span class="cl">flush privileges<span class="p">;</span>
+</span></span><span class="line"><span class="cl">exit<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 把/var/www/html/dvwa/config/下config.inc.php.dist修改为config.inc.php</span>
+</span></span><span class="line"><span class="cl">cp /var/www/html/dvwa/config/config.inc.php.dist /var/www/html/dvwa/config/config.inc.php.dist.bak
+</span></span><span class="line"><span class="cl">mv /var/www/html/dvwa/config/config.inc.php.dist /var/www/html/dvwa/config/config.inc.php
+</span></span><span class="line"><span class="cl"><span class="c1"># 修改用户名，匹配包含 db_user 的行，注释并添加新行</span>
+</span></span><span class="line"><span class="cl">sed -i <span class="s2">&#34;/.*db_user.*/s/^\(.*\)</span>$<span class="s2">/# \1\n\$_DVWA[ &#39;db_user&#39; ] = &#39;dvwa&#39;;/&#34;</span> /var/www/html/dvwa/config/config.inc.php
+</span></span><span class="line"><span class="cl"><span class="c1"># 修改密码，匹配包含 db_password 的行，注释并添加新行</span>
+</span></span><span class="line"><span class="cl">sed -i <span class="s2">&#34;/.*db_password.*/s/^\(.*\)</span>$<span class="s2">/# \1\n\$_DVWA[ &#39;db_password&#39; ] = &#39;root&#39;;/&#34;</span> /var/www/html/dvwa/config/config.inc.php
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动apache2服务并且在浏览器输入输入127.0.0.1/dvwa/setup.php跳转到页面后，也可以用对应的局域网地址访问</span>
+</span></span><span class="line"><span class="cl">service apache2 start
+</span></span><span class="line"><span class="cl"><span class="c1"># 按Create/Reset Database按钮，# 输入默认账号admin默认密码password</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 关闭apache2</span>
+</span></span><span class="line"><span class="cl">service apache2 start
+</span></span><span class="line"><span class="cl"><span class="c1"># OK大功告成</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/kali/">Kali</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

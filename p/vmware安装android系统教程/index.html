@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="参考链接：在VMware上体验了一把Android x86 9\n下载安卓9.0映像文件 我是在这个网站下载的https://www.fosshub.com/Android-x86.html，选择的是Android-x86 64-bit ISO file，对应版本是9.0-r2-k49。\n打开vmware进行安装 1.点击文件，接着点击创建虚拟机；\n2.选择自定义，然后点击下一步；\n3.硬件兼容性默认，然后点击下一步；\n4.点击稍后安装操作系统，然后点击下一步；\n5.客户机系统选择Linux，版本选择其他Linux 5.x 内核64位，然后点击下一步；\n6.虚拟机名称自定义，选择安装位置，然后点击下一步；\n7.内核数量根据自己电脑硬件情况自定义，然后点击下一步；\n8.内存选择2GB或者4GB，然后点击下一步；\n9.网络类型选择使用网络地址转换(NAT)，然后点击下一步；\n10.IO控制器类型默认，然后点击下一步；\n11.磁盘类型默认，然后点击下一步；\n12.创建新虚拟磁盘，然后点击下一步；\n13.最大磁盘大小这里我分配了40GB，可以自由分配，并且我选择了将虚拟磁盘拆分成多个文件，然后点击下一步；\n14.在指定磁盘文件这里，我的做法是在安卓系统的安装位置中再建一个用来存放磁盘文件的子目录，作为磁盘文 件的目录，然后点击下一步；\n15.在这一步中，先点击自定义硬件，然后点击新CD/DVD(IDE)，在右侧点击使用ISO映像文件，接着点击浏览到下载的安卓映像文件所在的目录选择安卓映像文件，然后点击打开，点击关闭，最后点击完成;\n16.为保险起见，我为安卓系统做一个快照，在安卓系统的标签鼠标右键点击，在弹出的菜单中点击快照，点击拍摄快照，快照的名称和描述可以自定义，再次点击拍摄快照，一秒到两秒钟的时间快照就制作完成了，未开 机状态下的快照制作过程花费时间是最短的；\n17.点击开启此虚拟机，底部弹窗可以叉掉，点进安卓系统的界面的时候鼠标消失了，可以通过快捷键ctrl+alt 恢复鼠标，不过目前要安装安卓系统，因此先不恢复鼠标，在安卓系统的启动界面通过上下方向键选择第三个Installation - Install Android-x86 to harddisk选项后敲回车，加载后进入选择分区界面，用上下方向键选择第一个Create/Modify partitions后，默认选择OK，然后敲回车，再次弹出窗口，默认选择No，再次敲回车，进入创建分区界面，将光标通过左右方向键移到New后敲回车，选择primary后敲回车，在设置分区空间大小界面什么都不要做，再次敲回车，在分区界面默认选中了sda1，将移动光标选中write，然后敲回车，接着分区界面提示yes or no，输入yes，然后敲回车，加载之后选中Quit，然后敲回车，在Choose filesystem界面中默认选中了sda1，光标默认选中OK，其他什么都不做，直接敲回车，在下一个界面中选ext4，然后敲回车，在Confirm界 面选中Yes，然后敲回车，加载后再次在Confirm界面选中Yes，然后敲回车，接下来进入到了Question界面 ，依然是选中Yes，然后敲回车开始了安卓系统安装的过程，加载后先什么都不要做，鼠标右键点击当前安卓系统 的标签，在可移动设备的列表中把CD/DVD(IDE)的连接断开，在进行下一步操作之前如果想保险一点可以先将安 卓系统关机并做一个快照然后重新启动，系统在加载后进入到了GRUB启动模式选择界面，选择第二个模式Android-x86 9.0-r2（Debug mode），然后敲回车，系统开始加载，耐心等待一会儿后，尝试敲回车，如果没有反应就继续加载过程，然后再次尝试敲回车，出现一行只有:/android #，并且旁边有光标在来回闪烁，意味着进入到了安卓系 统的终端环境中，接下来要做几个操作，在命令行界面输入mount -o remount,rw /mnt后回车，执行该命令后在下一行返回一行字符串，不用管，输入下一条命令vi /mnt/grub/ment.lst后敲回车，修改ment.lst文件，进入这 个文件后点击键盘的字母i进入编辑模式，然后将光标通过方向键移动到需要修改的位置在这个文件中有四个title，分别是Android-x86 9.0-r2、Android-x86 9.0-r2（Debug mode）、Android-x86 9.0-r2（Debug nomodeset）和Android-x86 9.0-r2（Debug video=LVDS-1 :d），需要修改语句是的是第一个titleAndroid-x86 9.0-r2下边的kernel /android-9.0-r2/kernel quiet root=/dev/ram0 SRC=/android-9.0-r2，将该条语句中的root 改为nomodeset_root，然后点击按键esc退出编辑模式，再执行快捷键shift+;，这个快捷键由按键shift和 标点符号;组成，执行快捷键后进入底行模式，输入字母wq后回车便退出该文件，接下来在系统标签右击展开 菜单，点击电源列表的重新启动客户机，在模式选择界面选中第一个模式后回车，或者你也可以什么都不做，系统会自动默认选择第一个模式并运行，耐心等待一会儿进入安卓系统。\n">
+<title>vmware安装android系统教程</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/vmware%E5%AE%89%E8%A3%85android%E7%B3%BB%E7%BB%9F%E6%95%99%E7%A8%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="vmware安装android系统教程">
+<meta property='og:description' content="参考链接：在VMware上体验了一把Android x86 9\n下载安卓9.0映像文件 我是在这个网站下载的https://www.fosshub.com/Android-x86.html，选择的是Android-x86 64-bit ISO file，对应版本是9.0-r2-k49。\n打开vmware进行安装 1.点击文件，接着点击创建虚拟机；\n2.选择自定义，然后点击下一步；\n3.硬件兼容性默认，然后点击下一步；\n4.点击稍后安装操作系统，然后点击下一步；\n5.客户机系统选择Linux，版本选择其他Linux 5.x 内核64位，然后点击下一步；\n6.虚拟机名称自定义，选择安装位置，然后点击下一步；\n7.内核数量根据自己电脑硬件情况自定义，然后点击下一步；\n8.内存选择2GB或者4GB，然后点击下一步；\n9.网络类型选择使用网络地址转换(NAT)，然后点击下一步；\n10.IO控制器类型默认，然后点击下一步；\n11.磁盘类型默认，然后点击下一步；\n12.创建新虚拟磁盘，然后点击下一步；\n13.最大磁盘大小这里我分配了40GB，可以自由分配，并且我选择了将虚拟磁盘拆分成多个文件，然后点击下一步；\n14.在指定磁盘文件这里，我的做法是在安卓系统的安装位置中再建一个用来存放磁盘文件的子目录，作为磁盘文 件的目录，然后点击下一步；\n15.在这一步中，先点击自定义硬件，然后点击新CD/DVD(IDE)，在右侧点击使用ISO映像文件，接着点击浏览到下载的安卓映像文件所在的目录选择安卓映像文件，然后点击打开，点击关闭，最后点击完成;\n16.为保险起见，我为安卓系统做一个快照，在安卓系统的标签鼠标右键点击，在弹出的菜单中点击快照，点击拍摄快照，快照的名称和描述可以自定义，再次点击拍摄快照，一秒到两秒钟的时间快照就制作完成了，未开 机状态下的快照制作过程花费时间是最短的；\n17.点击开启此虚拟机，底部弹窗可以叉掉，点进安卓系统的界面的时候鼠标消失了，可以通过快捷键ctrl+alt 恢复鼠标，不过目前要安装安卓系统，因此先不恢复鼠标，在安卓系统的启动界面通过上下方向键选择第三个Installation - Install Android-x86 to harddisk选项后敲回车，加载后进入选择分区界面，用上下方向键选择第一个Create/Modify partitions后，默认选择OK，然后敲回车，再次弹出窗口，默认选择No，再次敲回车，进入创建分区界面，将光标通过左右方向键移到New后敲回车，选择primary后敲回车，在设置分区空间大小界面什么都不要做，再次敲回车，在分区界面默认选中了sda1，将移动光标选中write，然后敲回车，接着分区界面提示yes or no，输入yes，然后敲回车，加载之后选中Quit，然后敲回车，在Choose filesystem界面中默认选中了sda1，光标默认选中OK，其他什么都不做，直接敲回车，在下一个界面中选ext4，然后敲回车，在Confirm界 面选中Yes，然后敲回车，加载后再次在Confirm界面选中Yes，然后敲回车，接下来进入到了Question界面 ，依然是选中Yes，然后敲回车开始了安卓系统安装的过程，加载后先什么都不要做，鼠标右键点击当前安卓系统 的标签，在可移动设备的列表中把CD/DVD(IDE)的连接断开，在进行下一步操作之前如果想保险一点可以先将安 卓系统关机并做一个快照然后重新启动，系统在加载后进入到了GRUB启动模式选择界面，选择第二个模式Android-x86 9.0-r2（Debug mode），然后敲回车，系统开始加载，耐心等待一会儿后，尝试敲回车，如果没有反应就继续加载过程，然后再次尝试敲回车，出现一行只有:/android #，并且旁边有光标在来回闪烁，意味着进入到了安卓系 统的终端环境中，接下来要做几个操作，在命令行界面输入mount -o remount,rw /mnt后回车，执行该命令后在下一行返回一行字符串，不用管，输入下一条命令vi /mnt/grub/ment.lst后敲回车，修改ment.lst文件，进入这 个文件后点击键盘的字母i进入编辑模式，然后将光标通过方向键移动到需要修改的位置在这个文件中有四个title，分别是Android-x86 9.0-r2、Android-x86 9.0-r2（Debug mode）、Android-x86 9.0-r2（Debug nomodeset）和Android-x86 9.0-r2（Debug video=LVDS-1 :d），需要修改语句是的是第一个titleAndroid-x86 9.0-r2下边的kernel /android-9.0-r2/kernel quiet root=/dev/ram0 SRC=/android-9.0-r2，将该条语句中的root 改为nomodeset_root，然后点击按键esc退出编辑模式，再执行快捷键shift+;，这个快捷键由按键shift和 标点符号;组成，执行快捷键后进入底行模式，输入字母wq后回车便退出该文件，接下来在系统标签右击展开 菜单，点击电源列表的重新启动客户机，在模式选择界面选中第一个模式后回车，或者你也可以什么都不做，系统会自动默认选择第一个模式并运行，耐心等待一会儿进入安卓系统。\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/vmware%E5%AE%89%E8%A3%85android%E7%B3%BB%E7%BB%9F%E6%95%99%E7%A8%8B/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='vmware_android' /><meta property='article:published_time' content='2025-07-08T18:57:42&#43;08:00'/><meta property='article:modified_time' content='2025-07-08T18:57:42&#43;08:00'/>
+<meta name="twitter:title" content="vmware安装android系统教程">
+<meta name="twitter:description" content="参考链接：在VMware上体验了一把Android x86 9\n下载安卓9.0映像文件 我是在这个网站下载的https://www.fosshub.com/Android-x86.html，选择的是Android-x86 64-bit ISO file，对应版本是9.0-r2-k49。\n打开vmware进行安装 1.点击文件，接着点击创建虚拟机；\n2.选择自定义，然后点击下一步；\n3.硬件兼容性默认，然后点击下一步；\n4.点击稍后安装操作系统，然后点击下一步；\n5.客户机系统选择Linux，版本选择其他Linux 5.x 内核64位，然后点击下一步；\n6.虚拟机名称自定义，选择安装位置，然后点击下一步；\n7.内核数量根据自己电脑硬件情况自定义，然后点击下一步；\n8.内存选择2GB或者4GB，然后点击下一步；\n9.网络类型选择使用网络地址转换(NAT)，然后点击下一步；\n10.IO控制器类型默认，然后点击下一步；\n11.磁盘类型默认，然后点击下一步；\n12.创建新虚拟磁盘，然后点击下一步；\n13.最大磁盘大小这里我分配了40GB，可以自由分配，并且我选择了将虚拟磁盘拆分成多个文件，然后点击下一步；\n14.在指定磁盘文件这里，我的做法是在安卓系统的安装位置中再建一个用来存放磁盘文件的子目录，作为磁盘文 件的目录，然后点击下一步；\n15.在这一步中，先点击自定义硬件，然后点击新CD/DVD(IDE)，在右侧点击使用ISO映像文件，接着点击浏览到下载的安卓映像文件所在的目录选择安卓映像文件，然后点击打开，点击关闭，最后点击完成;\n16.为保险起见，我为安卓系统做一个快照，在安卓系统的标签鼠标右键点击，在弹出的菜单中点击快照，点击拍摄快照，快照的名称和描述可以自定义，再次点击拍摄快照，一秒到两秒钟的时间快照就制作完成了，未开 机状态下的快照制作过程花费时间是最短的；\n17.点击开启此虚拟机，底部弹窗可以叉掉，点进安卓系统的界面的时候鼠标消失了，可以通过快捷键ctrl+alt 恢复鼠标，不过目前要安装安卓系统，因此先不恢复鼠标，在安卓系统的启动界面通过上下方向键选择第三个Installation - Install Android-x86 to harddisk选项后敲回车，加载后进入选择分区界面，用上下方向键选择第一个Create/Modify partitions后，默认选择OK，然后敲回车，再次弹出窗口，默认选择No，再次敲回车，进入创建分区界面，将光标通过左右方向键移到New后敲回车，选择primary后敲回车，在设置分区空间大小界面什么都不要做，再次敲回车，在分区界面默认选中了sda1，将移动光标选中write，然后敲回车，接着分区界面提示yes or no，输入yes，然后敲回车，加载之后选中Quit，然后敲回车，在Choose filesystem界面中默认选中了sda1，光标默认选中OK，其他什么都不做，直接敲回车，在下一个界面中选ext4，然后敲回车，在Confirm界 面选中Yes，然后敲回车，加载后再次在Confirm界面选中Yes，然后敲回车，接下来进入到了Question界面 ，依然是选中Yes，然后敲回车开始了安卓系统安装的过程，加载后先什么都不要做，鼠标右键点击当前安卓系统 的标签，在可移动设备的列表中把CD/DVD(IDE)的连接断开，在进行下一步操作之前如果想保险一点可以先将安 卓系统关机并做一个快照然后重新启动，系统在加载后进入到了GRUB启动模式选择界面，选择第二个模式Android-x86 9.0-r2（Debug mode），然后敲回车，系统开始加载，耐心等待一会儿后，尝试敲回车，如果没有反应就继续加载过程，然后再次尝试敲回车，出现一行只有:/android #，并且旁边有光标在来回闪烁，意味着进入到了安卓系 统的终端环境中，接下来要做几个操作，在命令行界面输入mount -o remount,rw /mnt后回车，执行该命令后在下一行返回一行字符串，不用管，输入下一条命令vi /mnt/grub/ment.lst后敲回车，修改ment.lst文件，进入这 个文件后点击键盘的字母i进入编辑模式，然后将光标通过方向键移动到需要修改的位置在这个文件中有四个title，分别是Android-x86 9.0-r2、Android-x86 9.0-r2（Debug mode）、Android-x86 9.0-r2（Debug nomodeset）和Android-x86 9.0-r2（Debug video=LVDS-1 :d），需要修改语句是的是第一个titleAndroid-x86 9.0-r2下边的kernel /android-9.0-r2/kernel quiet root=/dev/ram0 SRC=/android-9.0-r2，将该条语句中的root 改为nomodeset_root，然后点击按键esc退出编辑模式，再执行快捷键shift+;，这个快捷键由按键shift和 标点符号;组成，执行快捷键后进入底行模式，输入字母wq后回车便退出该文件，接下来在系统标签右击展开 菜单，点击电源列表的重新启动客户机，在模式选择界面选中第一个模式后回车，或者你也可以什么都不做，系统会自动默认选择第一个模式并运行，耐心等待一会儿进入安卓系统。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#下载安卓90映像文件">下载安卓9.0映像文件</a></li>
+    <li><a href="#打开vmware进行安装">打开vmware进行安装</a></li>
+    <li><a href="#配置安卓系统">配置安卓系统</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/vmware%E5%AE%89%E8%A3%85android%E7%B3%BB%E7%BB%9F%E6%95%99%E7%A8%8B/">vmware安装android系统教程</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 08, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>参考链接：<a class="link" href="https://www.jianshu.com/p/375bdee19239"  target="_blank" rel="noopener"
+    >在VMware上体验了一把Android x86 9</a></p>
+<h2 id="下载安卓90映像文件">下载安卓9.0映像文件
+</h2><p>我是在这个网站下载的<a class="link" href="https://www.fosshub.com/Android-x86.html"  target="_blank" rel="noopener"
+    >https://www.fosshub.com/Android-x86.html</a>，选择的是<code>Android-x86 64-bit ISO file</code>，对应版本是<code>9.0-r2-k49</code>。</p>
+<h2 id="打开vmware进行安装">打开vmware进行安装
+</h2><p>1.点击文件，接着点击创建虚拟机；</p>
+<p>2.选择自定义，然后点击<code>下一步</code>；</p>
+<p>3.硬件兼容性默认，然后点击<code>下一步</code>；</p>
+<p>4.点击稍后安装操作系统，然后点击<code>下一步</code>；</p>
+<p>5.客户机系统选择<code>Linux</code>，版本选择<code>其他Linux 5.x 内核64位</code>，然后点击<code>下一步</code>；</p>
+<p>6.虚拟机名称自定义，选择安装位置，然后点击<code>下一步</code>；</p>
+<p>7.内核数量根据自己电脑硬件情况自定义，然后点击<code>下一步</code>；</p>
+<p>8.内存选择2GB或者4GB，然后点击<code>下一步</code>；</p>
+<p>9.网络类型选择<code>使用网络地址转换(NAT)</code>，然后点击<code>下一步</code>；</p>
+<p>10.IO控制器类型默认，然后点击<code>下一步</code>；</p>
+<p>11.磁盘类型默认，然后点击<code>下一步</code>；</p>
+<p>12.创建新虚拟磁盘，然后点击<code>下一步</code>；</p>
+<p>13.<code>最大磁盘大小</code>这里我分配了40GB，可以自由分配，并且我选择了<code>将虚拟磁盘拆分成多个文件</code>，然后点击<code>下一步</code>；</p>
+<p>14.在<code>指定磁盘文件</code>这里，我的做法是在安卓系统的安装位置中再建一个用来存放磁盘文件的子目录，作为磁盘文 件的目录，然后点击<code>下一步</code>；</p>
+<p>15.在这一步中，先点击<code>自定义硬件</code>，然后点击<code>新CD/DVD(IDE)</code>，在右侧点击<code>使用ISO映像文件</code>，接着点击<code>浏览</code>到下载的安卓映像文件所在的目录选择安卓映像文件，然后点击<code>打开</code>，点击<code>关闭</code>，最后点击<code>完成</code>;</p>
+<p>16.为保险起见，我为安卓系统做一个快照，在安卓系统的标签鼠标右键点击，在弹出的菜单中点击<code>快照</code>，点击<code>拍摄快照</code>，快照的<code>名称</code>和<code>描述</code>可以自定义，再次点击<code>拍摄快照</code>，一秒到两秒钟的时间快照就制作完成了，未开 机状态下的快照制作过程花费时间是最短的；</p>
+<p>17.点击<code>开启此虚拟机</code>，底部弹窗可以叉掉，点进安卓系统的界面的时候鼠标消失了，可以通过快捷键<code>ctrl+alt</code> 恢复鼠标，不过目前要安装安卓系统，因此先不恢复鼠标，在安卓系统的启动界面通过上下方向键选择第三个<code>Installation - Install Android-x86 to harddisk</code>选项后敲回车，加载后进入选择分区界面，用上下方向键选择第一个<code>Create/Modify partitions</code>后，默认选择<code>OK</code>，然后敲回车，再次弹出窗口，默认选择<code>No</code>，再次敲回车，进入创建分区界面，将光标通过左右方向键移到<code>New</code>后敲回车，选择<code>primary</code>后敲回车，在设置分区空间大小界面什么都不要做，再次敲回车，在分区界面默认选中了sda1，将移动光标选中<code>write</code>，然后敲回车，接着分区界面提示<code>yes or no</code>，输入<code>yes</code>，然后敲回车，加载之后选中<code>Quit</code>，然后敲回车，在<code>Choose filesystem</code>界面中默认选中了<code>sda1</code>，光标默认选中<code>OK</code>，其他什么都不做，直接敲回车，在下一个界面中选<code>ext4</code>，然后敲回车，在<code>Confirm</code>界 面选中<code>Yes</code>，然后敲回车，加载后再次在<code>Confirm</code>界面选中<code>Yes</code>，然后敲回车，接下来进入到了<code>Question</code>界面 ，依然是选中<code>Yes</code>，然后敲回车开始了安卓系统安装的过程，加载后先什么都不要做，鼠标右键点击当前安卓系统 的标签，在<code>可移动设备</code>的列表中把<code>CD/DVD(IDE)</code>的连接断开，在进行下一步操作之前如果想保险一点可以先将安 卓系统关机并做一个快照然后重新启动，系统在加载后进入到了GRUB启动模式选择界面，选择第二个模式<code>Android-x86 9.0-r2（Debug mode）</code>，然后敲回车，系统开始加载，耐心等待一会儿后，尝试敲回车，如果没有反应就继续加载过程，然后再次尝试敲回车，出现一行只有<code>:/android #</code>，并且旁边有光标在来回闪烁，意味着进入到了安卓系 统的终端环境中，接下来要做几个操作，在命令行界面输入<code>mount -o remount,rw /mnt</code>后回车，执行该命令后在下一行返回一行字符串，不用管，输入下一条命令<code>vi /mnt/grub/ment.lst</code>后敲回车，修改<code>ment.lst</code>文件，进入这 个文件后点击键盘的字母<code>i</code>进入编辑模式，然后将光标通过方向键移动到需要修改的位置在这个文件中有四个<code>title</code>，分别是<code>Android-x86 9.0-r2</code>、<code>Android-x86 9.0-r2（Debug mode）</code>、<code>Android-x86 9.0-r2（Debug nomodeset）</code>和<code>Android-x86 9.0-r2（Debug video=LVDS-1 :d）</code>，需要修改语句是的是第一个title<code>Android-x86 9.0-r2</code>下边的<code>kernel /android-9.0-r2/kernel quiet root=/dev/ram0 SRC=/android-9.0-r2</code>，将该条语句中的<code>root</code> 改为<code>nomodeset_root</code>，然后点击按键<code>esc</code>退出编辑模式，再执行快捷键<code>shift+;</code>，这个快捷键由按键<code>shift</code>和 标点符号<code>;</code>组成，执行快捷键后进入底行模式，输入字母<code>wq</code>后回车便退出该文件，接下来在系统标签右击展开 菜单，点击<code>电源</code>列表的<code>重新启动客户机</code>，在模式选择界面选中第一个模式后回车，或者你也可以什么都不做，系统会自动默认选择第一个模式并运行，耐心等待一会儿进入安卓系统。</p>
+<h2 id="配置安卓系统">配置安卓系统
+</h2><p>第一次启动进行安卓系统开机时需要设置语言，把语言设置成简体中文，然后点击开始，跳过网络设置，一些隐私设置能不勾选就不要勾选，屏幕锁定也不设置，点击<code>以后再说</code>，主屏幕应用选择<code>Quickstep</code>并设置始终选择，至此 安卓系统就配置完成了。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/vmware_android/">Vmware_android</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

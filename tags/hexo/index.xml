@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Hexo on Example Site</title>
+        <link>https://ynhugo.github.io/tags/hexo/</link>
+        <description>Recent content in Hexo on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 08 Jul 2025 18:57:42 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/hexo/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>搭建hexo</title>
+        <link>https://ynhugo.github.io/p/%E6%90%AD%E5%BB%BAhexo/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E6%90%AD%E5%BB%BAhexo/</guid>
+        <description>&lt;h1 id=&#34;笔记文件&#34;&gt;笔记文件
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://ynhugo.github.io/images/%e6%90%ad%e5%bb%bahexo.pdf&#34; &gt;点击访问 搭建hexo.pdf&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;视频教程&#34;&gt;视频教程
+&lt;/h1&gt;&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe
+    src=&#34;//player.bilibili.com/player.html?bvid=BV1tG4y1h7UE&amp;page=1&#34;
+    scrolling=&#34;no&#34;
+    border=&#34;0&#34;
+    frameborder=&#34;no&#34;
+    framespacing=&#34;0&#34;
+    allowfullscreen=&#34;true&#34;
+    style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34;&gt;
+  &lt;/iframe&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&#34;hexo博客搭建教程&#34;&gt;hexo博客搭建教程
+&lt;/h1&gt;&lt;h2 id=&#34;准备工作&#34;&gt;准备工作
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;需要安装：nodejs、git-bash
+因官网下载太慢，这里使用nodejs的国内网站和git-bash的镜像网站进行下载
+nodejs链接：http://nodejs.cn/download/
+	nodejs下载地址：https://cdn.npmmirror.com/binaries/node/v16.17.0/node-v16.17.0-x64.msi
+git-bash链接：https://registry.npmmirror.com/binary.html?path=git-for-windows/
+	git-bash下载地址：https://cdn.npmmirror.com/binaries/git-for-windows/v2.38.0.windows.1/Git-2.38.0-64-bit.exe
+
+接下来安装nodejs和git-bash
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;nodejs安装教程&#34;&gt;nodejs安装教程：
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/nodejs/%e6%8d%95%e8%8e%b71.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/nodejs/%e6%8d%95%e8%8e%b72.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/nodejs/%e6%8d%95%e8%8e%b73.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/nodejs/%e6%8d%95%e8%8e%b74.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/nodejs/%e6%8d%95%e8%8e%b75.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/nodejs/%e6%8d%95%e8%8e%b76.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/nodejs/%e6%8d%95%e8%8e%b77.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/nodejs/%e6%8d%95%e8%8e%b78.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;git-bash安装教程&#34;&gt;git-bash安装教程：
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b71.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b72.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b73.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b74.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b75.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b76.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b77.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b78.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b79.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b710.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b711.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b712.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b713.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b714.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b715.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b716.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/git-bash/%e6%8d%95%e8%8e%b717.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;开始搭建&#34;&gt;开始搭建
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;接下来开始搭建hexo：
+	在git-bash中执行命令
+		npm install hexo-cli -g	#安装博客框架
+			执行 hexo init myBlog		#生成博客的站点目录
+			执行命令 hexo s 可以启动本地博客，博客显示的内容
+				在站点目录的 source/_posts/ 路径下
+
+		修改配置文件
+			准备一个qq邮箱之外的邮箱，邮箱的实用性越高越好，因此我建议的邮箱是微软的Outlook邮箱，官网是 outlook.live.com 可以在注册一个Outlook邮箱,注册完Outlook邮箱之后就可以到 github.com官网 注册了，搭建hexo的前提是在github.com官网 注册并搭建一个用于部署hexo的仓库。
+			在github注册并新建一个仓库，仓库格式为 用户名.github.io，然后将该仓库生成的	ssh链接复制下来，打开刚刚创建的站点目录下的 _config.yml
+				vim _config.yml
+				在该文件的最下面，有一段代码：
+&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# Deployment
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;## Docs: https://hexo.io/docs/one-command-deployment
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;deploy:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  type: &amp;#39; &amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;pre&gt;&lt;code&gt;				将代码更改为：
+&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# Deployment
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;## Docs: https://hexo.io/docs/one-command-deployment
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;deploy:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  type: &amp;#39;git&amp;#39;	#部署博客类型
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  repo: git@github.com:zzfxdyn/zzfxdyn.github.io.git	#仓库生成的链接
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  branch: main		#仓库默认分支
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;pre&gt;&lt;code&gt;				同时将该文件中url：http://example.com改为 https://仓库名
+				
+		npm install hexo-deployer-git --save	#安装博客部署插件
+
+		生成ssh密钥
+			ssh-keygen -t rsa -C &amp;quot;注册github时的邮箱&amp;quot;
+			连续多次回车，生成ssh密钥在，按照提示的路径进入该路径下复制 id_rsa.pub 的内容
+			默认路径为 ~/.ssh,在git-bash中通过命令 cd ~/.ssh 进入该路径
+			cat id_rsa.pub		#显示id_rsa.pub的内容，然后鼠标选中复制
+			复制的内容为生成的密钥的公钥，回到浏览器，打开github的设置，点击SSH and GPG Keys，
+			添加新的密钥，自定义一个名字，粘贴密钥并确定
+
+		
+		回到git-bash，配置好站点目录文件后执行命令
+		git config --global user.email &amp;quot;you@example.com&amp;quot;
+		git config --global user.name &amp;quot;Your Name&amp;quot;
+		执行 hexo clean &amp;amp;&amp;amp; hexo g &amp;amp;&amp;amp; hexo d 测试博客部署插件是否安装成功
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;vim编辑器的使用方法&#34;&gt;vim编辑器的使用方法
+&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;vim之所以被称之为强大的编辑器是因为本身支持很多的模式
+命令模式 命令行模式(底行模式) 编辑模式(插入模式) 可视 可视块 可视行
+注意 : 不要使用vim打开目录文件
+注意 : 用vim编写完成的文件内容要用正常的保存退出方式,不要直接关闭终端
+	否则会生成交换文件(交换文件是隐藏文件)
+				vim hello.c
+					|
+按iIoOaA				V				按:
+编辑模式&amp;lt;----------命令模式----------&amp;gt;命令行模式
+		---------&amp;gt;		&amp;lt;---------	
+			按esc		按esc或者删掉:
+
+命令行模式的操作
+	:w		保存
+	:q		退出
+	:wq		保存并且退出
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;如何修改hosts文件&#34;&gt;如何修改hosts文件
+&lt;/h2&gt;&lt;h3 id=&#34;第一种方法&#34;&gt;第一种方法
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;也是网上推荐较多的，比较常用的方法
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b71.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b72.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b73.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b74.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b75.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b76.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b77.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b78.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b79.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b710.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b711.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b712.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b713.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b714.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b715.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b716.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b717.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b718.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b719.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b720.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b721.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b722.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;第二种方法&#34;&gt;第二种方法
+&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;通过网站获得github网站的ip，我用的是 ipaddress.com 这个网站，点击进入网站后会显示一个403页面，再点击 Go to Homepage 即可真正进入网站。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b71.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b72.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b73.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b74.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b75.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b76.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b77.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b78.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b79.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b710.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b711.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b712.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b713.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b714.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b715.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b716.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b717.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b718.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b719.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b720.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b721.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://ynhugo.github.io/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b722.PNG&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+	
+&gt;&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

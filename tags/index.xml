@@ -1,0 +1,1988 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Tags on Example Site</title>
+        <link>https://ynhugo.github.io/tags/</link>
+        <description>Recent content in Tags on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sat, 23 May 2026 05:47:31 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Book</title>
+        <link>https://ynhugo.github.io/tags/book/</link>
+        <pubDate>Sat, 23 May 2026 05:47:31 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/book/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>20.04</title>
+        <link>https://ynhugo.github.io/tags/20.04/</link>
+        <pubDate>Fri, 22 May 2026 10:02:33 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/20.04/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Ubuntu</title>
+        <link>https://ynhugo.github.io/tags/ubuntu/</link>
+        <pubDate>Fri, 22 May 2026 10:02:33 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/ubuntu/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>交叉编译</title>
+        <link>https://ynhugo.github.io/tags/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/</link>
+        <pubDate>Fri, 22 May 2026 10:02:33 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Linux</title>
+        <link>https://ynhugo.github.io/tags/linux/</link>
+        <pubDate>Thu, 21 May 2026 14:17:19 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/linux/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Vnc</title>
+        <link>https://ynhugo.github.io/tags/vnc/</link>
+        <pubDate>Thu, 21 May 2026 14:17:19 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/vnc/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>云服务器</title>
+        <link>https://ynhugo.github.io/tags/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/</link>
+        <pubDate>Thu, 21 May 2026 14:17:19 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>腾讯云</title>
+        <link>https://ynhugo.github.io/tags/%E8%85%BE%E8%AE%AF%E4%BA%91/</link>
+        <pubDate>Thu, 21 May 2026 14:17:19 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E8%85%BE%E8%AE%AF%E4%BA%91/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Curl</title>
+        <link>https://ynhugo.github.io/tags/curl/</link>
+        <pubDate>Thu, 21 May 2026 01:06:06 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/curl/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Shell</title>
+        <link>https://ynhugo.github.io/tags/shell/</link>
+        <pubDate>Thu, 21 May 2026 01:06:06 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/shell/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Kod</title>
+        <link>https://ynhugo.github.io/tags/kod/</link>
+        <pubDate>Wed, 20 May 2026 16:37:11 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/kod/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Nginx</title>
+        <link>https://ynhugo.github.io/tags/nginx/</link>
+        <pubDate>Wed, 20 May 2026 16:37:11 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/nginx/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Php</title>
+        <link>https://ynhugo.github.io/tags/php/</link>
+        <pubDate>Wed, 20 May 2026 16:37:11 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/php/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Termux</title>
+        <link>https://ynhugo.github.io/tags/termux/</link>
+        <pubDate>Wed, 20 May 2026 16:37:11 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/termux/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Server</title>
+        <link>https://ynhugo.github.io/tags/server/</link>
+        <pubDate>Wed, 20 May 2026 01:35:37 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/server/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Tencent</title>
+        <link>https://ynhugo.github.io/tags/tencent/</link>
+        <pubDate>Wed, 20 May 2026 01:35:37 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/tencent/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Zerotier</title>
+        <link>https://ynhugo.github.io/tags/zerotier/</link>
+        <pubDate>Wed, 20 May 2026 01:35:37 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/zerotier/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Tightvnc</title>
+        <link>https://ynhugo.github.io/tags/tightvnc/</link>
+        <pubDate>Tue, 19 May 2026 15:16:00 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/tightvnc/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Sudo</title>
+        <link>https://ynhugo.github.io/tags/sudo/</link>
+        <pubDate>Tue, 19 May 2026 10:41:29 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/sudo/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>310P</title>
+        <link>https://ynhugo.github.io/tags/310p/</link>
+        <pubDate>Tue, 19 May 2026 09:59:09 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/310p/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Kylin</title>
+        <link>https://ynhugo.github.io/tags/kylin/</link>
+        <pubDate>Tue, 19 May 2026 09:59:09 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/kylin/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>PCIE</title>
+        <link>https://ynhugo.github.io/tags/pcie/</link>
+        <pubDate>Tue, 19 May 2026 09:59:09 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/pcie/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Qt5</title>
+        <link>https://ynhugo.github.io/tags/qt5/</link>
+        <pubDate>Tue, 19 May 2026 09:53:56 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/qt5/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>静态ip</title>
+        <link>https://ynhugo.github.io/tags/%E9%9D%99%E6%80%81ip/</link>
+        <pubDate>Tue, 19 May 2026 09:51:29 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E9%9D%99%E6%80%81ip/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Emacs</title>
+        <link>https://ynhugo.github.io/tags/emacs/</link>
+        <pubDate>Sat, 16 May 2026 22:33:50 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/emacs/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Git</title>
+        <link>https://ynhugo.github.io/tags/git/</link>
+        <pubDate>Sat, 16 May 2026 07:55:19 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/git/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>SSH</title>
+        <link>https://ynhugo.github.io/tags/ssh/</link>
+        <pubDate>Sat, 16 May 2026 07:55:19 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/ssh/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Ftp</title>
+        <link>https://ynhugo.github.io/tags/ftp/</link>
+        <pubDate>Fri, 15 May 2026 00:53:50 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/ftp/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Windows</title>
+        <link>https://ynhugo.github.io/tags/windows/</link>
+        <pubDate>Thu, 14 May 2026 00:55:33 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/windows/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>快捷方式</title>
+        <link>https://ynhugo.github.io/tags/%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F/</link>
+        <pubDate>Thu, 14 May 2026 00:55:33 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Bcdedit</title>
+        <link>https://ynhugo.github.io/tags/bcdedit/</link>
+        <pubDate>Wed, 13 May 2026 10:18:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/bcdedit/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Docker</title>
+        <link>https://ynhugo.github.io/tags/docker/</link>
+        <pubDate>Wed, 13 May 2026 10:18:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/docker/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Hpyer-V</title>
+        <link>https://ynhugo.github.io/tags/hpyer-v/</link>
+        <pubDate>Wed, 13 May 2026 10:18:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/hpyer-v/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Vmweare</title>
+        <link>https://ynhugo.github.io/tags/vmweare/</link>
+        <pubDate>Wed, 13 May 2026 10:18:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/vmweare/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Commit</title>
+        <link>https://ynhugo.github.io/tags/commit/</link>
+        <pubDate>Tue, 12 May 2026 10:16:11 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/commit/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>服务仓库</title>
+        <link>https://ynhugo.github.io/tags/%E6%9C%8D%E5%8A%A1%E4%BB%93%E5%BA%93/</link>
+        <pubDate>Mon, 11 May 2026 10:53:59 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E6%9C%8D%E5%8A%A1%E4%BB%93%E5%BA%93/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Beancount</title>
+        <link>https://ynhugo.github.io/tags/beancount/</link>
+        <pubDate>Wed, 29 Apr 2026 00:23:55 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/beancount/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>2022</title>
+        <link>https://ynhugo.github.io/tags/2022/</link>
+        <pubDate>Wed, 15 Apr 2026 19:28:14 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/2022/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Visual Studio</title>
+        <link>https://ynhugo.github.io/tags/visual-studio/</link>
+        <pubDate>Wed, 15 Apr 2026 19:28:14 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/visual-studio/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Cmake</title>
+        <link>https://ynhugo.github.io/tags/cmake/</link>
+        <pubDate>Wed, 15 Apr 2026 15:25:57 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/cmake/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Debian</title>
+        <link>https://ynhugo.github.io/tags/debian/</link>
+        <pubDate>Sun, 05 Apr 2026 00:29:29 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/debian/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>运维</title>
+        <link>https://ynhugo.github.io/tags/%E8%BF%90%E7%BB%B4/</link>
+        <pubDate>Sun, 05 Apr 2026 00:29:29 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E8%BF%90%E7%BB%B4/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Fpga</title>
+        <link>https://ynhugo.github.io/tags/fpga/</link>
+        <pubDate>Sat, 04 Apr 2026 15:48:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/fpga/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Zynq</title>
+        <link>https://ynhugo.github.io/tags/zynq/</link>
+        <pubDate>Sat, 04 Apr 2026 15:48:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/zynq/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Zynq7000</title>
+        <link>https://ynhugo.github.io/tags/zynq7000/</link>
+        <pubDate>Sat, 04 Apr 2026 15:48:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/zynq7000/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Zynqmp</title>
+        <link>https://ynhugo.github.io/tags/zynqmp/</link>
+        <pubDate>Sat, 04 Apr 2026 15:48:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/zynqmp/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>16.04</title>
+        <link>https://ynhugo.github.io/tags/16.04/</link>
+        <pubDate>Thu, 02 Apr 2026 03:44:46 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/16.04/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Parted</title>
+        <link>https://ynhugo.github.io/tags/parted/</link>
+        <pubDate>Mon, 30 Mar 2026 11:21:59 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/parted/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Sd</title>
+        <link>https://ynhugo.github.io/tags/sd/</link>
+        <pubDate>Mon, 30 Mar 2026 11:21:59 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/sd/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Http</title>
+        <link>https://ynhugo.github.io/tags/http/</link>
+        <pubDate>Wed, 25 Mar 2026 15:16:50 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/http/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Https</title>
+        <link>https://ynhugo.github.io/tags/https/</link>
+        <pubDate>Wed, 25 Mar 2026 15:16:50 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/https/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>下载</title>
+        <link>https://ynhugo.github.io/tags/%E4%B8%8B%E8%BD%BD/</link>
+        <pubDate>Wed, 25 Mar 2026 15:16:50 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E4%B8%8B%E8%BD%BD/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>验证</title>
+        <link>https://ynhugo.github.io/tags/%E9%AA%8C%E8%AF%81/</link>
+        <pubDate>Wed, 25 Mar 2026 15:16:50 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E9%AA%8C%E8%AF%81/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Wsl</title>
+        <link>https://ynhugo.github.io/tags/wsl/</link>
+        <pubDate>Tue, 24 Mar 2026 23:38:52 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/wsl/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>区分大小写</title>
+        <link>https://ynhugo.github.io/tags/%E5%8C%BA%E5%88%86%E5%A4%A7%E5%B0%8F%E5%86%99/</link>
+        <pubDate>Tue, 24 Mar 2026 23:38:52 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%8C%BA%E5%88%86%E5%A4%A7%E5%B0%8F%E5%86%99/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Vim</title>
+        <link>https://ynhugo.github.io/tags/vim/</link>
+        <pubDate>Mon, 23 Mar 2026 18:53:16 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/vim/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Vimrc</title>
+        <link>https://ynhugo.github.io/tags/vimrc/</link>
+        <pubDate>Mon, 23 Mar 2026 18:53:16 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/vimrc/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Containerd</title>
+        <link>https://ynhugo.github.io/tags/containerd/</link>
+        <pubDate>Mon, 23 Mar 2026 17:08:31 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/containerd/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Icraft</title>
+        <link>https://ynhugo.github.io/tags/icraft/</link>
+        <pubDate>Mon, 23 Mar 2026 02:00:12 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/icraft/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>代理</title>
+        <link>https://ynhugo.github.io/tags/%E4%BB%A3%E7%90%86/</link>
+        <pubDate>Sun, 22 Mar 2026 15:28:09 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E4%BB%A3%E7%90%86/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Bsp</title>
+        <link>https://ynhugo.github.io/tags/bsp/</link>
+        <pubDate>Sun, 22 Mar 2026 04:25:10 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/bsp/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Petalinux</title>
+        <link>https://ynhugo.github.io/tags/petalinux/</link>
+        <pubDate>Sun, 22 Mar 2026 04:25:10 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/petalinux/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Zcu102</title>
+        <link>https://ynhugo.github.io/tags/zcu102/</link>
+        <pubDate>Sun, 22 Mar 2026 04:25:10 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/zcu102/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Arm32</title>
+        <link>https://ynhugo.github.io/tags/arm32/</link>
+        <pubDate>Fri, 20 Mar 2026 12:08:38 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/arm32/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Arm64</title>
+        <link>https://ynhugo.github.io/tags/arm64/</link>
+        <pubDate>Fri, 20 Mar 2026 12:08:38 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/arm64/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Man手册</title>
+        <link>https://ynhugo.github.io/tags/man%E6%89%8B%E5%86%8C/</link>
+        <pubDate>Tue, 17 Mar 2026 20:34:32 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/man%E6%89%8B%E5%86%8C/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>反向隧道</title>
+        <link>https://ynhugo.github.io/tags/%E5%8F%8D%E5%90%91%E9%9A%A7%E9%81%93/</link>
+        <pubDate>Mon, 16 Mar 2026 03:04:49 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%8F%8D%E5%90%91%E9%9A%A7%E9%81%93/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>端口转发</title>
+        <link>https://ynhugo.github.io/tags/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</link>
+        <pubDate>Mon, 16 Mar 2026 03:04:49 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Openclaw</title>
+        <link>https://ynhugo.github.io/tags/openclaw/</link>
+        <pubDate>Mon, 16 Mar 2026 01:50:48 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/openclaw/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Opencode</title>
+        <link>https://ynhugo.github.io/tags/opencode/</link>
+        <pubDate>Sun, 15 Mar 2026 19:15:41 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/opencode/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Proot-Distro</title>
+        <link>https://ynhugo.github.io/tags/proot-distro/</link>
+        <pubDate>Sun, 15 Mar 2026 19:15:41 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/proot-distro/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Hugo</title>
+        <link>https://ynhugo.github.io/tags/hugo/</link>
+        <pubDate>Sun, 15 Mar 2026 19:13:39 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/hugo/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Stack</title>
+        <link>https://ynhugo.github.io/tags/stack/</link>
+        <pubDate>Sun, 15 Mar 2026 19:13:39 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/stack/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Git-Bash</title>
+        <link>https://ynhugo.github.io/tags/git-bash/</link>
+        <pubDate>Sun, 15 Mar 2026 10:25:52 +0000</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/git-bash/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>相亲</title>
+        <link>https://ynhugo.github.io/tags/%E7%9B%B8%E4%BA%B2/</link>
+        <pubDate>Sat, 14 Mar 2026 23:37:15 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%9B%B8%E4%BA%B2/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>反向代理</title>
+        <link>https://ynhugo.github.io/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</link>
+        <pubDate>Fri, 13 Mar 2026 11:54:20 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Axidma</title>
+        <link>https://ynhugo.github.io/tags/axidma/</link>
+        <pubDate>Fri, 13 Mar 2026 11:28:34 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/axidma/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Mmap</title>
+        <link>https://ynhugo.github.io/tags/mmap/</link>
+        <pubDate>Fri, 13 Mar 2026 11:28:34 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/mmap/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>模拟</title>
+        <link>https://ynhugo.github.io/tags/%E6%A8%A1%E6%8B%9F/</link>
+        <pubDate>Fri, 13 Mar 2026 11:28:34 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E6%A8%A1%E6%8B%9F/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>反向</title>
+        <link>https://ynhugo.github.io/tags/%E5%8F%8D%E5%90%91/</link>
+        <pubDate>Fri, 13 Mar 2026 01:28:55 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%8F%8D%E5%90%91/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Dhclient</title>
+        <link>https://ynhugo.github.io/tags/dhclient/</link>
+        <pubDate>Tue, 10 Mar 2026 14:45:00 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/dhclient/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>乐刻</title>
+        <link>https://ynhugo.github.io/tags/%E4%B9%90%E5%88%BB/</link>
+        <pubDate>Thu, 26 Feb 2026 16:58:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E4%B9%90%E5%88%BB/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Vmware</title>
+        <link>https://ynhugo.github.io/tags/vmware/</link>
+        <pubDate>Wed, 25 Feb 2026 17:47:48 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/vmware/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>N8n</title>
+        <link>https://ynhugo.github.io/tags/n8n/</link>
+        <pubDate>Fri, 06 Feb 2026 20:17:11 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/n8n/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Lighthouse</title>
+        <link>https://ynhugo.github.io/tags/lighthouse/</link>
+        <pubDate>Fri, 30 Jan 2026 02:04:27 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/lighthouse/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Moltbot</title>
+        <link>https://ynhugo.github.io/tags/moltbot/</link>
+        <pubDate>Fri, 30 Jan 2026 02:04:27 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/moltbot/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Cygwin</title>
+        <link>https://ynhugo.github.io/tags/cygwin/</link>
+        <pubDate>Thu, 29 Jan 2026 02:40:14 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/cygwin/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Docker Desktop</title>
+        <link>https://ynhugo.github.io/tags/docker-desktop/</link>
+        <pubDate>Wed, 28 Jan 2026 16:40:35 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/docker-desktop/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Gpu</title>
+        <link>https://ynhugo.github.io/tags/gpu/</link>
+        <pubDate>Thu, 22 Jan 2026 00:37:43 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/gpu/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Nvidia</title>
+        <link>https://ynhugo.github.io/tags/nvidia/</link>
+        <pubDate>Thu, 22 Jan 2026 00:37:43 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/nvidia/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>PyTorch</title>
+        <link>https://ynhugo.github.io/tags/pytorch/</link>
+        <pubDate>Thu, 22 Jan 2026 00:37:43 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/pytorch/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>深度学习</title>
+        <link>https://ynhugo.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</link>
+        <pubDate>Wed, 21 Jan 2026 18:38:06 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>大模型</title>
+        <link>https://ynhugo.github.io/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/</link>
+        <pubDate>Wed, 21 Jan 2026 18:35:51 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Conda</title>
+        <link>https://ynhugo.github.io/tags/conda/</link>
+        <pubDate>Sat, 17 Jan 2026 00:35:55 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/conda/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Miniconda</title>
+        <link>https://ynhugo.github.io/tags/miniconda/</link>
+        <pubDate>Sat, 17 Jan 2026 00:35:55 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/miniconda/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Anaconda</title>
+        <link>https://ynhugo.github.io/tags/anaconda/</link>
+        <pubDate>Sat, 17 Jan 2026 00:31:31 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/anaconda/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Cmd</title>
+        <link>https://ynhugo.github.io/tags/cmd/</link>
+        <pubDate>Wed, 14 Jan 2026 15:29:01 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/cmd/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Kali</title>
+        <link>https://ynhugo.github.io/tags/kali/</link>
+        <pubDate>Sat, 10 Jan 2026 15:03:32 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/kali/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Dvwa</title>
+        <link>https://ynhugo.github.io/tags/dvwa/</link>
+        <pubDate>Sat, 10 Jan 2026 13:50:35 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/dvwa/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>MariaDB(MySQL)</title>
+        <link>https://ynhugo.github.io/tags/mariadbmysql/</link>
+        <pubDate>Thu, 08 Jan 2026 18:50:37 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/mariadbmysql/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Php-Fpm</title>
+        <link>https://ynhugo.github.io/tags/php-fpm/</link>
+        <pubDate>Thu, 08 Jan 2026 18:50:37 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/php-fpm/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Sqli</title>
+        <link>https://ynhugo.github.io/tags/sqli/</link>
+        <pubDate>Thu, 08 Jan 2026 18:50:37 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/sqli/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Mintty</title>
+        <link>https://ynhugo.github.io/tags/mintty/</link>
+        <pubDate>Thu, 08 Jan 2026 00:28:44 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/mintty/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>ExFat</title>
+        <link>https://ynhugo.github.io/tags/exfat/</link>
+        <pubDate>Thu, 01 Jan 2026 23:58:03 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/exfat/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Nethunter</title>
+        <link>https://ynhugo.github.io/tags/nethunter/</link>
+        <pubDate>Sat, 27 Dec 2025 18:37:56 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/nethunter/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Python</title>
+        <link>https://ynhugo.github.io/tags/python/</link>
+        <pubDate>Wed, 24 Dec 2025 17:20:58 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/python/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>报销</title>
+        <link>https://ynhugo.github.io/tags/%E6%8A%A5%E9%94%80/</link>
+        <pubDate>Wed, 24 Dec 2025 13:42:48 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E6%8A%A5%E9%94%80/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>22.04</title>
+        <link>https://ynhugo.github.io/tags/22.04/</link>
+        <pubDate>Sat, 06 Dec 2025 08:38:24 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/22.04/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Android</title>
+        <link>https://ynhugo.github.io/tags/android/</link>
+        <pubDate>Sun, 30 Nov 2025 20:25:07 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/android/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Jar</title>
+        <link>https://ynhugo.github.io/tags/jar/</link>
+        <pubDate>Sun, 30 Nov 2025 20:25:07 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/jar/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Java</title>
+        <link>https://ynhugo.github.io/tags/java/</link>
+        <pubDate>Sun, 30 Nov 2025 20:25:07 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/java/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Qemu</title>
+        <link>https://ynhugo.github.io/tags/qemu/</link>
+        <pubDate>Thu, 20 Nov 2025 21:06:00 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/qemu/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Rootfs</title>
+        <link>https://ynhugo.github.io/tags/rootfs/</link>
+        <pubDate>Thu, 20 Nov 2025 21:06:00 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/rootfs/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Deepseek</title>
+        <link>https://ynhugo.github.io/tags/deepseek/</link>
+        <pubDate>Fri, 07 Nov 2025 18:40:02 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/deepseek/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Ollama</title>
+        <link>https://ynhugo.github.io/tags/ollama/</link>
+        <pubDate>Fri, 07 Nov 2025 18:40:02 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/ollama/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>AutojsPro</title>
+        <link>https://ynhugo.github.io/tags/autojspro/</link>
+        <pubDate>Mon, 27 Oct 2025 10:11:29 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/autojspro/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Soul</title>
+        <link>https://ynhugo.github.io/tags/soul/</link>
+        <pubDate>Mon, 27 Oct 2025 10:11:29 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/soul/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Uiautomator2</title>
+        <link>https://ynhugo.github.io/tags/uiautomator2/</link>
+        <pubDate>Sun, 21 Sep 2025 23:49:56 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/uiautomator2/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>网络安全</title>
+        <link>https://ynhugo.github.io/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</link>
+        <pubDate>Fri, 19 Sep 2025 10:26:43 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>聚会</title>
+        <link>https://ynhugo.github.io/tags/%E8%81%9A%E4%BC%9A/</link>
+        <pubDate>Mon, 15 Sep 2025 01:04:59 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E8%81%9A%E4%BC%9A/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>炸金花</title>
+        <link>https://ynhugo.github.io/tags/%E7%82%B8%E9%87%91%E8%8A%B1/</link>
+        <pubDate>Mon, 15 Sep 2025 00:07:31 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%82%B8%E9%87%91%E8%8A%B1/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>纸牌</title>
+        <link>https://ynhugo.github.io/tags/%E7%BA%B8%E7%89%8C/</link>
+        <pubDate>Mon, 15 Sep 2025 00:07:31 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%BA%B8%E7%89%8C/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>国标麻将</title>
+        <link>https://ynhugo.github.io/tags/%E5%9B%BD%E6%A0%87%E9%BA%BB%E5%B0%86/</link>
+        <pubDate>Sun, 14 Sep 2025 15:53:43 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%9B%BD%E6%A0%87%E9%BA%BB%E5%B0%86/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>番种表</title>
+        <link>https://ynhugo.github.io/tags/%E7%95%AA%E7%A7%8D%E8%A1%A8/</link>
+        <pubDate>Sun, 14 Sep 2025 15:53:43 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%95%AA%E7%A7%8D%E8%A1%A8/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Ai</title>
+        <link>https://ynhugo.github.io/tags/ai/</link>
+        <pubDate>Mon, 08 Sep 2025 15:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/ai/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Yolov5</title>
+        <link>https://ynhugo.github.io/tags/yolov5/</link>
+        <pubDate>Mon, 08 Sep 2025 15:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/yolov5/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Ledger</title>
+        <link>https://ynhugo.github.io/tags/ledger/</link>
+        <pubDate>Wed, 13 Aug 2025 18:04:20 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/ledger/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Ledger-Cli</title>
+        <link>https://ynhugo.github.io/tags/ledger-cli/</link>
+        <pubDate>Wed, 13 Aug 2025 18:04:20 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/ledger-cli/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>旅游</title>
+        <link>https://ynhugo.github.io/tags/%E6%97%85%E6%B8%B8/</link>
+        <pubDate>Sat, 09 Aug 2025 13:10:57 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E6%97%85%E6%B8%B8/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>旅行</title>
+        <link>https://ynhugo.github.io/tags/%E6%97%85%E8%A1%8C/</link>
+        <pubDate>Sat, 09 Aug 2025 13:10:57 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E6%97%85%E8%A1%8C/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Google</title>
+        <link>https://ynhugo.github.io/tags/google/</link>
+        <pubDate>Sat, 09 Aug 2025 03:41:08 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/google/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Pass</title>
+        <link>https://ynhugo.github.io/tags/pass/</link>
+        <pubDate>Sat, 09 Aug 2025 03:41:08 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/pass/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Ffmpeg</title>
+        <link>https://ynhugo.github.io/tags/ffmpeg/</link>
+        <pubDate>Tue, 05 Aug 2025 02:12:22 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/ffmpeg/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Php-Study</title>
+        <link>https://ynhugo.github.io/tags/php-study/</link>
+        <pubDate>Mon, 21 Jul 2025 20:19:30 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/php-study/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Xss</title>
+        <link>https://ynhugo.github.io/tags/xss/</link>
+        <pubDate>Mon, 21 Jul 2025 20:19:30 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/xss/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Xss-Labs</title>
+        <link>https://ynhugo.github.io/tags/xss-labs/</link>
+        <pubDate>Mon, 21 Jul 2025 20:19:30 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/xss-labs/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Crontab</title>
+        <link>https://ynhugo.github.io/tags/crontab/</link>
+        <pubDate>Tue, 15 Jul 2025 02:26:24 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/crontab/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Zip</title>
+        <link>https://ynhugo.github.io/tags/zip/</link>
+        <pubDate>Fri, 11 Jul 2025 14:02:27 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/zip/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Ubuntu_16.04</title>
+        <link>https://ynhugo.github.io/tags/ubuntu_16.04/</link>
+        <pubDate>Thu, 10 Jul 2025 10:49:13 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/ubuntu_16.04/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Alist</title>
+        <link>https://ynhugo.github.io/tags/alist/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/alist/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>C</title>
+        <link>https://ynhugo.github.io/tags/c/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/c/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Diskpart</title>
+        <link>https://ynhugo.github.io/tags/diskpart/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/diskpart/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Hexo</title>
+        <link>https://ynhugo.github.io/tags/hexo/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/hexo/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Scripts</title>
+        <link>https://ynhugo.github.io/tags/scripts/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/scripts/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Tools</title>
+        <link>https://ynhugo.github.io/tags/tools/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/tools/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>VHD</title>
+        <link>https://ynhugo.github.io/tags/vhd/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/vhd/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Vmware_android</title>
+        <link>https://ynhugo.github.io/tags/vmware_android/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/vmware_android/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Windows_make</title>
+        <link>https://ynhugo.github.io/tags/windows_make/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/windows_make/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>国学宝库</title>
+        <link>https://ynhugo.github.io/tags/%E5%9B%BD%E5%AD%A6%E5%AE%9D%E5%BA%93/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%9B%BD%E5%AD%A6%E5%AE%9D%E5%BA%93/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>科学上网</title>
+        <link>https://ynhugo.github.io/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Gradle</title>
+        <link>https://ynhugo.github.io/tags/gradle/</link>
+        <pubDate>Sun, 06 Jul 2025 17:12:23 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/gradle/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Bash</title>
+        <link>https://ynhugo.github.io/tags/bash/</link>
+        <pubDate>Thu, 03 Jul 2025 17:40:20 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/bash/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>安卓</title>
+        <link>https://ynhugo.github.io/tags/%E5%AE%89%E5%8D%93/</link>
+        <pubDate>Thu, 03 Jul 2025 17:40:20 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%AE%89%E5%8D%93/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Blog</title>
+        <link>https://ynhugo.github.io/tags/blog/</link>
+        <pubDate>Sat, 28 Jun 2025 18:45:44 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/blog/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Expect</title>
+        <link>https://ynhugo.github.io/tags/expect/</link>
+        <pubDate>Fri, 27 Jun 2025 14:26:36 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/expect/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>仓颉语言</title>
+        <link>https://ynhugo.github.io/tags/%E4%BB%93%E9%A2%89%E8%AF%AD%E8%A8%80/</link>
+        <pubDate>Sun, 22 Jun 2025 22:20:37 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E4%BB%93%E9%A2%89%E8%AF%AD%E8%A8%80/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Timeshift</title>
+        <link>https://ynhugo.github.io/tags/timeshift/</link>
+        <pubDate>Sun, 22 Jun 2025 13:07:14 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/timeshift/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Mainline</title>
+        <link>https://ynhugo.github.io/tags/mainline/</link>
+        <pubDate>Fri, 20 Jun 2025 15:06:33 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/mainline/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Jq</title>
+        <link>https://ynhugo.github.io/tags/jq/</link>
+        <pubDate>Fri, 20 Jun 2025 10:23:56 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/jq/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Edu</title>
+        <link>https://ynhugo.github.io/tags/edu/</link>
+        <pubDate>Mon, 02 Jun 2025 03:40:02 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/edu/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>华为</title>
+        <link>https://ynhugo.github.io/tags/%E5%8D%8E%E4%B8%BA/</link>
+        <pubDate>Mon, 28 Apr 2025 19:21:38 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%8D%8E%E4%B8%BA/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Grub</title>
+        <link>https://ynhugo.github.io/tags/grub/</link>
+        <pubDate>Mon, 28 Apr 2025 17:05:48 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/grub/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Plantuml</title>
+        <link>https://ynhugo.github.io/tags/plantuml/</link>
+        <pubDate>Wed, 16 Apr 2025 18:59:46 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/plantuml/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>流程图</title>
+        <link>https://ynhugo.github.io/tags/%E6%B5%81%E7%A8%8B%E5%9B%BE/</link>
+        <pubDate>Wed, 16 Apr 2025 18:59:46 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E6%B5%81%E7%A8%8B%E5%9B%BE/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Socket</title>
+        <link>https://ynhugo.github.io/tags/socket/</link>
+        <pubDate>Thu, 20 Mar 2025 17:38:32 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/socket/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Tcp</title>
+        <link>https://ynhugo.github.io/tags/tcp/</link>
+        <pubDate>Thu, 20 Mar 2025 17:38:32 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/tcp/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>程序员</title>
+        <link>https://ynhugo.github.io/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</link>
+        <pubDate>Thu, 20 Mar 2025 17:38:32 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Pthread</title>
+        <link>https://ynhugo.github.io/tags/pthread/</link>
+        <pubDate>Wed, 19 Mar 2025 11:28:06 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/pthread/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>X86</title>
+        <link>https://ynhugo.github.io/tags/x86/</link>
+        <pubDate>Sun, 16 Mar 2025 03:26:36 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/x86/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Shc</title>
+        <link>https://ynhugo.github.io/tags/shc/</link>
+        <pubDate>Thu, 27 Feb 2025 17:25:50 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/shc/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>加密</title>
+        <link>https://ynhugo.github.io/tags/%E5%8A%A0%E5%AF%86/</link>
+        <pubDate>Thu, 27 Feb 2025 17:25:50 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%8A%A0%E5%AF%86/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>星座</title>
+        <link>https://ynhugo.github.io/tags/%E6%98%9F%E5%BA%A7/</link>
+        <pubDate>Tue, 04 Feb 2025 05:10:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E6%98%9F%E5%BA%A7/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>四象星座</title>
+        <link>https://ynhugo.github.io/tags/%E5%9B%9B%E8%B1%A1%E6%98%9F%E5%BA%A7/</link>
+        <pubDate>Tue, 04 Feb 2025 05:01:17 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%9B%9B%E8%B1%A1%E6%98%9F%E5%BA%A7/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Jpg</title>
+        <link>https://ynhugo.github.io/tags/jpg/</link>
+        <pubDate>Fri, 27 Dec 2024 14:45:14 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/jpg/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Png</title>
+        <link>https://ynhugo.github.io/tags/png/</link>
+        <pubDate>Fri, 27 Dec 2024 14:45:14 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/png/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Icon</title>
+        <link>https://ynhugo.github.io/tags/icon/</link>
+        <pubDate>Fri, 27 Dec 2024 13:51:00 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/icon/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>IDM 6.38</title>
+        <link>https://ynhugo.github.io/tags/idm-6.38/</link>
+        <pubDate>Thu, 26 Dec 2024 19:11:36 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/idm-6.38/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Bat</title>
+        <link>https://ynhugo.github.io/tags/bat/</link>
+        <pubDate>Wed, 25 Dec 2024 23:26:30 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/bat/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>驱动</title>
+        <link>https://ynhugo.github.io/tags/%E9%A9%B1%E5%8A%A8/</link>
+        <pubDate>Wed, 25 Dec 2024 23:26:30 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E9%A9%B1%E5%8A%A8/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Rtsp</title>
+        <link>https://ynhugo.github.io/tags/rtsp/</link>
+        <pubDate>Tue, 24 Dec 2024 21:01:00 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/rtsp/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Adb</title>
+        <link>https://ynhugo.github.io/tags/adb/</link>
+        <pubDate>Fri, 13 Dec 2024 10:52:52 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/adb/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>无线调试</title>
+        <link>https://ynhugo.github.io/tags/%E6%97%A0%E7%BA%BF%E8%B0%83%E8%AF%95/</link>
+        <pubDate>Fri, 13 Dec 2024 10:52:52 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E6%97%A0%E7%BA%BF%E8%B0%83%E8%AF%95/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Clone</title>
+        <link>https://ynhugo.github.io/tags/clone/</link>
+        <pubDate>Sun, 08 Dec 2024 02:23:37 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/clone/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Proxy</title>
+        <link>https://ynhugo.github.io/tags/proxy/</link>
+        <pubDate>Sun, 08 Dec 2024 02:23:37 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/proxy/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Elpa</title>
+        <link>https://ynhugo.github.io/tags/elpa/</link>
+        <pubDate>Sat, 07 Dec 2024 23:34:29 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/elpa/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Package</title>
+        <link>https://ynhugo.github.io/tags/package/</link>
+        <pubDate>Sat, 07 Dec 2024 23:34:29 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/package/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Gtd</title>
+        <link>https://ynhugo.github.io/tags/gtd/</link>
+        <pubDate>Sun, 01 Dec 2024 13:55:39 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/gtd/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>任务管理</title>
+        <link>https://ynhugo.github.io/tags/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/</link>
+        <pubDate>Sun, 01 Dec 2024 13:55:39 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>时间管理</title>
+        <link>https://ynhugo.github.io/tags/%E6%97%B6%E9%97%B4%E7%AE%A1%E7%90%86/</link>
+        <pubDate>Sun, 01 Dec 2024 13:55:39 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E6%97%B6%E9%97%B4%E7%AE%A1%E7%90%86/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>PowerShell</title>
+        <link>https://ynhugo.github.io/tags/powershell/</link>
+        <pubDate>Wed, 27 Nov 2024 00:27:35 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/powershell/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Script</title>
+        <link>https://ynhugo.github.io/tags/script/</link>
+        <pubDate>Wed, 27 Nov 2024 00:27:35 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/script/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>脚本</title>
+        <link>https://ynhugo.github.io/tags/%E8%84%9A%E6%9C%AC/</link>
+        <pubDate>Wed, 27 Nov 2024 00:27:35 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E8%84%9A%E6%9C%AC/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Org-Mode</title>
+        <link>https://ynhugo.github.io/tags/org-mode/</link>
+        <pubDate>Tue, 26 Nov 2024 03:14:07 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/org-mode/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Org-Agenda</title>
+        <link>https://ynhugo.github.io/tags/org-agenda/</link>
+        <pubDate>Tue, 26 Nov 2024 02:12:09 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/org-agenda/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Tmux</title>
+        <link>https://ynhugo.github.io/tags/tmux/</link>
+        <pubDate>Sun, 24 Nov 2024 11:40:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/tmux/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>公网</title>
+        <link>https://ynhugo.github.io/tags/%E5%85%AC%E7%BD%91/</link>
+        <pubDate>Wed, 20 Nov 2024 22:25:09 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%85%AC%E7%BD%91/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>内网</title>
+        <link>https://ynhugo.github.io/tags/%E5%86%85%E7%BD%91/</link>
+        <pubDate>Wed, 20 Nov 2024 22:25:09 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%86%85%E7%BD%91/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>转发</title>
+        <link>https://ynhugo.github.io/tags/%E8%BD%AC%E5%8F%91/</link>
+        <pubDate>Wed, 20 Nov 2024 22:25:09 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E8%BD%AC%E5%8F%91/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Html</title>
+        <link>https://ynhugo.github.io/tags/html/</link>
+        <pubDate>Wed, 20 Nov 2024 18:31:12 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/html/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>留言</title>
+        <link>https://ynhugo.github.io/tags/%E7%95%99%E8%A8%80/</link>
+        <pubDate>Wed, 20 Nov 2024 18:31:12 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%95%99%E8%A8%80/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>网页</title>
+        <link>https://ynhugo.github.io/tags/%E7%BD%91%E9%A1%B5/</link>
+        <pubDate>Wed, 20 Nov 2024 18:31:12 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%BD%91%E9%A1%B5/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Scrcpy</title>
+        <link>https://ynhugo.github.io/tags/scrcpy/</link>
+        <pubDate>Mon, 18 Nov 2024 22:14:38 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/scrcpy/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>远程</title>
+        <link>https://ynhugo.github.io/tags/%E8%BF%9C%E7%A8%8B/</link>
+        <pubDate>Mon, 18 Nov 2024 22:14:38 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E8%BF%9C%E7%A8%8B/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Frp</title>
+        <link>https://ynhugo.github.io/tags/frp/</link>
+        <pubDate>Sun, 17 Nov 2024 18:57:10 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/frp/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>内网穿透</title>
+        <link>https://ynhugo.github.io/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</link>
+        <pubDate>Sun, 17 Nov 2024 18:57:10 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>记账</title>
+        <link>https://ynhugo.github.io/tags/%E8%AE%B0%E8%B4%A6/</link>
+        <pubDate>Mon, 11 Nov 2024 04:57:15 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E8%AE%B0%E8%B4%A6/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Bios</title>
+        <link>https://ynhugo.github.io/tags/bios/</link>
+        <pubDate>Tue, 29 Oct 2024 10:21:58 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/bios/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Mininet</title>
+        <link>https://ynhugo.github.io/tags/mininet/</link>
+        <pubDate>Tue, 29 Oct 2024 02:18:53 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/mininet/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Live555</title>
+        <link>https://ynhugo.github.io/tags/live555/</link>
+        <pubDate>Mon, 28 Oct 2024 14:07:19 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/live555/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Makefile</title>
+        <link>https://ynhugo.github.io/tags/makefile/</link>
+        <pubDate>Thu, 19 Sep 2024 14:43:41 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/makefile/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Autojs</title>
+        <link>https://ynhugo.github.io/tags/autojs/</link>
+        <pubDate>Mon, 09 Sep 2024 13:42:41 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/autojs/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>MBTI</title>
+        <link>https://ynhugo.github.io/tags/mbti/</link>
+        <pubDate>Thu, 05 Sep 2024 23:31:55 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/mbti/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>输入法</title>
+        <link>https://ynhugo.github.io/tags/%E8%BE%93%E5%85%A5%E6%B3%95/</link>
+        <pubDate>Mon, 12 Aug 2024 14:35:57 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E8%BE%93%E5%85%A5%E6%B3%95/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>生活</title>
+        <link>https://ynhugo.github.io/tags/%E7%94%9F%E6%B4%BB/</link>
+        <pubDate>Thu, 01 Aug 2024 23:39:21 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%94%9F%E6%B4%BB/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>国之脊梁</title>
+        <link>https://ynhugo.github.io/tags/%E5%9B%BD%E4%B9%8B%E8%84%8A%E6%A2%81/</link>
+        <pubDate>Wed, 31 Jul 2024 08:59:15 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%9B%BD%E4%B9%8B%E8%84%8A%E6%A2%81/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Moonlight</title>
+        <link>https://ynhugo.github.io/tags/moonlight/</link>
+        <pubDate>Sat, 27 Jul 2024 01:34:59 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/moonlight/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>VPS</title>
+        <link>https://ynhugo.github.io/tags/vps/</link>
+        <pubDate>Thu, 18 Jul 2024 15:02:58 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/vps/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Key</title>
+        <link>https://ynhugo.github.io/tags/key/</link>
+        <pubDate>Wed, 17 Jul 2024 10:41:48 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/key/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Eat</title>
+        <link>https://ynhugo.github.io/tags/eat/</link>
+        <pubDate>Tue, 16 Jul 2024 21:01:14 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/eat/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Sdf</title>
+        <link>https://ynhugo.github.io/tags/sdf/</link>
+        <pubDate>Tue, 18 Jun 2024 11:09:56 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/sdf/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Unix</title>
+        <link>https://ynhugo.github.io/tags/unix/</link>
+        <pubDate>Tue, 18 Jun 2024 11:09:56 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/unix/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Tool</title>
+        <link>https://ynhugo.github.io/tags/tool/</link>
+        <pubDate>Sun, 21 Apr 2024 16:45:23 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/tool/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Javascript</title>
+        <link>https://ynhugo.github.io/tags/javascript/</link>
+        <pubDate>Thu, 04 Apr 2024 20:19:17 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/javascript/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>网页操作</title>
+        <link>https://ynhugo.github.io/tags/%E7%BD%91%E9%A1%B5%E6%93%8D%E4%BD%9C/</link>
+        <pubDate>Sun, 31 Mar 2024 15:39:23 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%BD%91%E9%A1%B5%E6%93%8D%E4%BD%9C/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Word2007</title>
+        <link>https://ynhugo.github.io/tags/word2007/</link>
+        <pubDate>Fri, 29 Mar 2024 20:39:57 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/word2007/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>办公</title>
+        <link>https://ynhugo.github.io/tags/%E5%8A%9E%E5%85%AC/</link>
+        <pubDate>Fri, 29 Mar 2024 20:39:57 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%8A%9E%E5%85%AC/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>C语言</title>
+        <link>https://ynhugo.github.io/tags/c%E8%AF%AD%E8%A8%80/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:36 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/c%E8%AF%AD%E8%A8%80/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Z-Libary</title>
+        <link>https://ynhugo.github.io/tags/z-libary/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:34 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/z-libary/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>主机</title>
+        <link>https://ynhugo.github.io/tags/%E4%B8%BB%E6%9C%BA/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:34 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E4%B8%BB%E6%9C%BA/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>工具</title>
+        <link>https://ynhugo.github.io/tags/%E5%B7%A5%E5%85%B7/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:34 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%B7%A5%E5%85%B7/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>空间</title>
+        <link>https://ynhugo.github.io/tags/%E7%A9%BA%E9%97%B4/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:34 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E7%A9%BA%E9%97%B4/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Stm32</title>
+        <link>https://ynhugo.github.io/tags/stm32/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:32 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/stm32/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Qt</title>
+        <link>https://ynhugo.github.io/tags/qt/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:30 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/qt/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Gdb</title>
+        <link>https://ynhugo.github.io/tags/gdb/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:28 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/gdb/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>域名</title>
+        <link>https://ynhugo.github.io/tags/%E5%9F%9F%E5%90%8D/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:28 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%9F%9F%E5%90%8D/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Wsl_ubuntu</title>
+        <link>https://ynhugo.github.io/tags/wsl_ubuntu/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:26 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/wsl_ubuntu/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>五笔</title>
+        <link>https://ynhugo.github.io/tags/%E4%BA%94%E7%AC%94/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:26 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E4%BA%94%E7%AC%94/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Sshfs</title>
+        <link>https://ynhugo.github.io/tags/sshfs/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:22 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/sshfs/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Obs-Studio</title>
+        <link>https://ynhugo.github.io/tags/obs-studio/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:20 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/obs-studio/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Xilinx</title>
+        <link>https://ynhugo.github.io/tags/xilinx/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:20 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/xilinx/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Github</title>
+        <link>https://ynhugo.github.io/tags/github/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:18 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/github/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Windows-Server</title>
+        <link>https://ynhugo.github.io/tags/windows-server/</link>
+        <pubDate>Sat, 09 Sep 2023 21:53:23 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/windows-server/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Note</title>
+        <link>https://ynhugo.github.io/tags/note/</link>
+        <pubDate>Sun, 30 Jul 2023 14:52:08 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/note/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>1080</title>
+        <link>https://ynhugo.github.io/tags/1080/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/1080/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Kernel</title>
+        <link>https://ynhugo.github.io/tags/kernel/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/kernel/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Segfault</title>
+        <link>https://ynhugo.github.io/tags/segfault/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/segfault/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>动态端口转发</title>
+        <link>https://ynhugo.github.io/tags/%E5%8A%A8%E6%80%81%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/%E5%8A%A8%E6%80%81%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</guid>
+        <description></description>
+        </item>
+        
+    </channel>
+</rss>

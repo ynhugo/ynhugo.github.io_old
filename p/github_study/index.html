@@ -1,0 +1,2454 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 学习git-bash的网站 廖雪峰的官方网站-git教程\n菜鸟教程-git\nw3cschool-git教程\ngit-简易指南\ncsdn-git\ngitee-git\ngit的核心概念\n博客园-git\ngit-scm教程\ngitee-git命令学习\ngit初始化本地仓库和基本操作 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 mkdir cangku\t# 建一个空文件夹 cd cangku\t# 进入创建的文件夹 git init # 将该文件夹初始化为本地仓库 git config --global user.name &#34;name&#34; # &#34;name&#34;对应github注册时的用户名 git config --global user.email &#34;email&#34; # &#34;email&#34;对应github注册时的用户名 git remote add origin &lt;远程仓库地址&gt; # 添加远程仓库地址 git remote set-url --add origin &lt;远程仓库地址&gt; # 添加第二个远程仓库地址 echo &#34;Hello&#34; &gt;&gt; newFile\t# 创建一个&#34;newFile&#34;文件并添加&#34;Hello&#34; git add .\t# 添加本地仓库所有文件到暂存区 git commit -m &#34;Commit a file.&#34;\t# 对添加到文件暂存区的内容添加文件描述 git checkout -b main\t# 创建本地分支 git push -u origin main\t# 将文件暂存区的内容推送到远程的&#34;main&#34;分支 git checkout -b develop master\t# 创建一个基于 master 的叫做 develop 的新分支 git checkout main # 切换到 main 分支 git merge --no-ff develop\t# Git执行&#34;快进式合并&#34;（fast-farward merge），会直接将 Master 分支指向 Develop 分支 git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke themes/ananke # 将一个仓库克隆到某一子目录下，并且会添加子模块到当前目录，这样的操作不会影响主目录的 git 仓库操作 git log 或 git reflog\t# 查看提交记录 git reset --hard 894bece\t# 版本回退到该提前记录 git push -f\t# 强制推送 git rebase -i HEAD~n # 使用 git rebase -i HEAD~5 压缩5个commit为1个，或者git rebase -i 51efaef517abdbf674478de6073c12239d78a56a （第一个commit的id），然后在vim编辑器中，按i编辑，将后4个commit的pick修改为fixup，保留第一个pick。按esc键，输入:wq保存退出。 .gitmodules 内容展示 1 2 3 [submodule &#34;hugo1/themes/hugo-theme-stack&#34;] path = hugo1/themes/hugo-theme-stack url = https://github.com/CaiJimmy/hugo-theme-stack/ 参考链接 git进行版本回退（文件恢复、恢复误提交、已提交）\n">
+<title>Github_study</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/github_study/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Github_study">
+<meta property='og:description' content=" 学习git-bash的网站 廖雪峰的官方网站-git教程\n菜鸟教程-git\nw3cschool-git教程\ngit-简易指南\ncsdn-git\ngitee-git\ngit的核心概念\n博客园-git\ngit-scm教程\ngitee-git命令学习\ngit初始化本地仓库和基本操作 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 mkdir cangku\t# 建一个空文件夹 cd cangku\t# 进入创建的文件夹 git init # 将该文件夹初始化为本地仓库 git config --global user.name &#34;name&#34; # &#34;name&#34;对应github注册时的用户名 git config --global user.email &#34;email&#34; # &#34;email&#34;对应github注册时的用户名 git remote add origin &lt;远程仓库地址&gt; # 添加远程仓库地址 git remote set-url --add origin &lt;远程仓库地址&gt; # 添加第二个远程仓库地址 echo &#34;Hello&#34; &gt;&gt; newFile\t# 创建一个&#34;newFile&#34;文件并添加&#34;Hello&#34; git add .\t# 添加本地仓库所有文件到暂存区 git commit -m &#34;Commit a file.&#34;\t# 对添加到文件暂存区的内容添加文件描述 git checkout -b main\t# 创建本地分支 git push -u origin main\t# 将文件暂存区的内容推送到远程的&#34;main&#34;分支 git checkout -b develop master\t# 创建一个基于 master 的叫做 develop 的新分支 git checkout main # 切换到 main 分支 git merge --no-ff develop\t# Git执行&#34;快进式合并&#34;（fast-farward merge），会直接将 Master 分支指向 Develop 分支 git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke themes/ananke # 将一个仓库克隆到某一子目录下，并且会添加子模块到当前目录，这样的操作不会影响主目录的 git 仓库操作 git log 或 git reflog\t# 查看提交记录 git reset --hard 894bece\t# 版本回退到该提前记录 git push -f\t# 强制推送 git rebase -i HEAD~n # 使用 git rebase -i HEAD~5 压缩5个commit为1个，或者git rebase -i 51efaef517abdbf674478de6073c12239d78a56a （第一个commit的id），然后在vim编辑器中，按i编辑，将后4个commit的pick修改为fixup，保留第一个pick。按esc键，输入:wq保存退出。 .gitmodules 内容展示 1 2 3 [submodule &#34;hugo1/themes/hugo-theme-stack&#34;] path = hugo1/themes/hugo-theme-stack url = https://github.com/CaiJimmy/hugo-theme-stack/ 参考链接 git进行版本回退（文件恢复、恢复误提交、已提交）\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/github_study/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Git' /><meta property='article:published_time' content='2023-07-29T11:15:46&#43;08:00'/><meta property='article:modified_time' content='2023-07-29T11:15:46&#43;08:00'/>
+<meta name="twitter:title" content="Github_study">
+<meta name="twitter:description" content=" 学习git-bash的网站 廖雪峰的官方网站-git教程\n菜鸟教程-git\nw3cschool-git教程\ngit-简易指南\ncsdn-git\ngitee-git\ngit的核心概念\n博客园-git\ngit-scm教程\ngitee-git命令学习\ngit初始化本地仓库和基本操作 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 mkdir cangku\t# 建一个空文件夹 cd cangku\t# 进入创建的文件夹 git init # 将该文件夹初始化为本地仓库 git config --global user.name &#34;name&#34; # &#34;name&#34;对应github注册时的用户名 git config --global user.email &#34;email&#34; # &#34;email&#34;对应github注册时的用户名 git remote add origin &lt;远程仓库地址&gt; # 添加远程仓库地址 git remote set-url --add origin &lt;远程仓库地址&gt; # 添加第二个远程仓库地址 echo &#34;Hello&#34; &gt;&gt; newFile\t# 创建一个&#34;newFile&#34;文件并添加&#34;Hello&#34; git add .\t# 添加本地仓库所有文件到暂存区 git commit -m &#34;Commit a file.&#34;\t# 对添加到文件暂存区的内容添加文件描述 git checkout -b main\t# 创建本地分支 git push -u origin main\t# 将文件暂存区的内容推送到远程的&#34;main&#34;分支 git checkout -b develop master\t# 创建一个基于 master 的叫做 develop 的新分支 git checkout main # 切换到 main 分支 git merge --no-ff develop\t# Git执行&#34;快进式合并&#34;（fast-farward merge），会直接将 Master 分支指向 Develop 分支 git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke themes/ananke # 将一个仓库克隆到某一子目录下，并且会添加子模块到当前目录，这样的操作不会影响主目录的 git 仓库操作 git log 或 git reflog\t# 查看提交记录 git reset --hard 894bece\t# 版本回退到该提前记录 git push -f\t# 强制推送 git rebase -i HEAD~n # 使用 git rebase -i HEAD~5 压缩5个commit为1个，或者git rebase -i 51efaef517abdbf674478de6073c12239d78a56a （第一个commit的id），然后在vim编辑器中，按i编辑，将后4个commit的pick修改为fixup，保留第一个pick。按esc键，输入:wq保存退出。 .gitmodules 内容展示 1 2 3 [submodule &#34;hugo1/themes/hugo-theme-stack&#34;] path = hugo1/themes/hugo-theme-stack url = https://github.com/CaiJimmy/hugo-theme-stack/ 参考链接 git进行版本回退（文件恢复、恢复误提交、已提交）\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">学习git-bash的网站</a>
+</li>
+<li><a href="#headline-2">git初始化本地仓库和基本操作</a>
+<ul>
+<li><a href="#headline-3">.gitmodules 内容展示</a>
+</li>
+<li><a href="#headline-4">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-5">推送和拉取</a>
+<ul>
+<li><a href="#headline-6">推送</a>
+</li>
+<li><a href="#headline-7">拉取</a>
+<ul>
+<li><a href="#headline-8">git pull 命令时出现了冲突</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#headline-9">【Git】 如何将一个分支的某个提交合并到另一个分支</a>
+<ul>
+<li><a href="#headline-10">什么是 git cherry-pick</a>
+<ul>
+<li><a href="#headline-11">基本用法</a>
+<ul>
+<li><a href="#headline-12">切换到目标分支</a>
+</li>
+<li><a href="#headline-13">找到提交的哈希值</a>
+</li>
+<li><a href="#headline-14">Cherry-pick 提交</a>
+</li>
+<li><a href="#headline-15">解决冲突</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#headline-16">cherry-pick 的其他用法</a>
+<ul>
+<li><a href="#headline-17">合并多个提交</a>
+</li>
+<li><a href="#headline-18">编辑提交信息</a>
+</li>
+<li><a href="#headline-19">保留提交信息</a>
+</li>
+<li><a href="#headline-20">忽略空提交</a>
+</li>
+<li><a href="#headline-21">总结一下</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#headline-22">查看和删除分支</a>
+</li>
+<li><a href="#headline-23">修改远程仓库地址</a>
+<ul>
+<li><a href="#headline-24">方法1</a>
+</li>
+<li><a href="#headline-25">方法2(先删后加)</a>
+</li>
+<li><a href="#headline-26">方法3(直接修改配置文件)</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-27">Git 仓库的远程列表</a>
+<ul>
+<li><a href="#headline-28">查看远程列表</a>
+</li>
+<li><a href="#headline-29">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-30">构建github代码文件链接的方法</a>
+</li>
+<li><a href="#headline-31">其他操作</a>
+<ul>
+<li><a href="#headline-32">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-33">要将一个 Git 仓库作为子模块添加到另一个 Git 仓库中，你可以按照以下步骤操作：</a>
+</li>
+<li><a href="#headline-34">子模块索引过，如何再次索引</a>
+</li>
+<li><a href="#headline-35">Git 如何解决从GitHub克隆仓库时出现的SSL证书自签名问题</a>
+<ul>
+<li><a href="#headline-36">解决方案</a>
+</li>
+<li><a href="#headline-37">方案一：忽略SSL证书验证</a>
+<ul>
+<li><a href="#headline-38">操作方式</a>
+</li>
+<li><a href="#headline-39">使用实例</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-40">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-41">git reset –hard</a>
+<ul>
+<li><a href="#headline-42">git reset –hard 是一个Git命令，其作用是将当前的工作目录和索引（即暂存区）都重置为指定的提交（commit），并且丢弃所有未提交的修改。</a>
+</li>
+<li><a href="#headline-43">在 Git 中，reset 和 –hard 是两个不同的命令和选项，它们分别具有以下作用：</a>
+</li>
+<li><a href="#headline-44">git reset 命令在 Git 中有三种常见的重置模式，它们是：</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-45">Git在检出代码时遇到了问题，可能是由于网络问题或Git版本不兼容</a>
+<ul>
+<li><a href="#headline-46">异常现象</a>
+</li>
+<li><a href="#headline-47">解决方式</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-48">github的一些快捷键和在线编辑器</a>
+<ul>
+<li><a href="#headline-49">github的一些常用快捷键</a>
+</li>
+<li><a href="#headline-50">GitHub 看代码神器</a>
+</li>
+<li><a href="#headline-51">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-52">Git 如何使用一条命令来获取Git根目录</a>
+<ul>
+<li><a href="#headline-53">使用git rev-parse命令获取Git根目录</a>
+</li>
+<li><a href="#headline-54">示例</a>
+</li>
+<li><a href="#headline-55">其他方法</a>
+</li>
+<li><a href="#headline-56">总结</a>
+</li>
+<li><a href="#headline-57">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-58">我的push与pull脚本</a>
+<ul>
+<li><a href="#headline-59">push脚本</a>
+</li>
+<li><a href="#headline-60">pull脚本</a>
+</li>
+<li><a href="#headline-61">强制push脚本</a>
+</li>
+<li><a href="#headline-62">强制pull脚本</a>
+</li>
+<li><a href="#headline-63">将脚本整合到一起</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-64">在执行 git pull 操作时，本地的某些文件发生了修改，而这些修改未被提交。git pull 操作会试图将远程分支的更改合并到本地分支，但这会导致你本地的修改被覆盖，从而产生了冲突</a>
+<ul>
+<li><a href="#headline-65">1. 提交本地更改</a>
+</li>
+<li><a href="#headline-66">2. 暂存本地更改</a>
+</li>
+<li><a href="#headline-67">3. 丢弃本地更改</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-68">当前分支 Master 没有对应的上游分支</a>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/github_study/">Github_study</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 29, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+学习git-bash的网站
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>
+<a href="https://www.liaoxuefeng.com/wiki/896043488029600">廖雪峰的官方网站-git教程</a></p>
+<p>
+<a href="https://www.runoob.com/git/git-tutorial.htm">菜鸟教程-git</a></p>
+<p>
+<a href="https://www.w3cschool.cn/git/">w3cschool-git教程</a></p>
+<p>
+<a href="https://www.bootcss.com/p/git-guide/">git-简易指南</a></p>
+<p>
+<a href="https://blog.csdn.net/Free_Wind22/article/details/50967723">csdn-git</a></p>
+<p>
+<a href="https://gitee.com/progit/">gitee-git</a></p>
+<p>
+<a href="https://blog.lufficc.com/the-core-conception-of-git/">git的核心概念</a></p>
+<p>
+<a href="https://www.cnblogs.com/syp172654682/p/7689328.html8">博客园-git</a></p>
+<p>
+<a href="https://git-scm.com/book/zh/v2">git-scm教程</a></p>
+<p>
+<a href="https://oschina.gitee.io/learn-git-branching/">gitee-git命令学习</a></p>
+</div>
+</div>
+<div id="outline-container-headline-2" class="outline-2">
+<h2 id="headline-2">
+git初始化本地仓库和基本操作
+</h2>
+<div id="outline-text-headline-2" class="outline-text-2">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir cangku					<span class="c1"># 建一个空文件夹</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> cangku						<span class="c1"># 进入创建的文件夹</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git init 						<span class="c1"># 将该文件夹初始化为本地仓库</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git config --global user.name <span class="s2">&#34;name&#34;</span> <span class="c1"># &#34;name&#34;对应github注册时的用户名</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git config --global user.email <span class="s2">&#34;email&#34;</span> <span class="c1"># &#34;email&#34;对应github注册时的用户名</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git remote add origin &lt;远程仓库地址&gt; <span class="c1"># 添加远程仓库地址</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git remote set-url --add origin &lt;远程仓库地址&gt; <span class="c1"># 添加第二个远程仓库地址</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Hello&#34;</span> &gt;&gt; newFile			<span class="c1"># 创建一个&#34;newFile&#34;文件并添加&#34;Hello&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git add .						<span class="c1"># 添加本地仓库所有文件到暂存区</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;Commit a file.&#34;</span>	<span class="c1"># 对添加到文件暂存区的内容添加文件描述</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git checkout -b main			<span class="c1"># 创建本地分支</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git push -u origin main			<span class="c1"># 将文件暂存区的内容推送到远程的&#34;main&#34;分支</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git checkout -b develop master	<span class="c1"># 创建一个基于 master 的叫做 develop 的新分支</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git checkout main 				<span class="c1"># 切换到 main 分支</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git merge --no-ff develop		<span class="c1"># Git执行&#34;快进式合并&#34;（fast-farward merge），会直接将 Master 分支指向 Develop 分支</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git submodule add https://github.com/theNewDynamic/gohugo-theme-ananke themes/ananke <span class="c1"># 将一个仓库克隆到某一子目录下，并且会添加子模块到当前目录，这样的操作不会影响主目录的 git 仓库操作</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git log 或 git reflog			<span class="c1"># 查看提交记录</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git reset --hard 894bece		<span class="c1"># 版本回退到该提前记录</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git push -f						<span class="c1"># 强制推送</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git rebase -i HEAD~n 			<span class="c1"># 使用 git rebase -i HEAD~5 压缩5个commit为1个，或者git rebase -i 51efaef517abdbf674478de6073c12239d78a56a （第一个commit的id），然后在vim编辑器中，按i编辑，将后4个commit的pick修改为fixup，保留第一个pick。按esc键，输入:wq保存退出。</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+.gitmodules 内容展示
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>submodule <span class="s2">&#34;hugo1/themes/hugo-theme-stack&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">path</span> <span class="o">=</span> hugo1/themes/hugo-theme-stack
+</span></span><span class="line"><span class="cl">        <span class="nv">url</span> <span class="o">=</span> https://github.com/CaiJimmy/hugo-theme-stack/</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+参考链接
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/qing040513/article/details/109150075">git进行版本回退（文件恢复、恢复误提交、已提交）</a></p>
+<p>
+<a href="https://blog.csdn.net/Spade_/article/details/108698036">[Git] 两种方法合并多个commit为一个</a></p>
+<p>
+<a href="https://www.cnblogs.com/teamemory/p/11607613.html">一个项目设置两个git地址，并最终实现一次性同时推送到到两个git地址上的方法总结</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-2">
+<h2 id="headline-5">
+推送和拉取
+</h2>
+<div id="outline-text-headline-5" class="outline-text-2">
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+推送
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<div class="table-wrapper"><table>
+<thead>
+</thead>
+<tbody>
+<tr>
+<td class="align-center">push -u</td>
+<td class="align-left">推送到远程分支时与远程分支内容合并</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="align-center">push  -f</td>
+<td class="align-left">推送到远程分支时与覆盖远程分支内容</td>
+</tr>
+</tbody>
+</table></div>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git push -u origin master
+</span></span><span class="line"><span class="cl">  或
+</span></span><span class="line"><span class="cl">  git pull -f origin master</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+拉取
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<div class="table-wrapper"><table>
+<thead>
+</thead>
+<tbody>
+<tr>
+<td class="align-center">pull</td>
+<td class="align-left">拉取远程分支内容</td>
+</tr>
+</tbody>
+</table></div>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git pull origin master</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+git fatal: 拒绝合并无关的历史的错误解决方法</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git pull origin master --allow-unrelated-histories</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-4">
+<h4 id="headline-8">
+git pull 命令时出现了冲突
+</h4>
+<div id="outline-text-headline-8" class="outline-text-4">
+<p>
+这通常是因为远程仓库和本地仓库的历史记录不一致导致的。</p>
+<ol>
+<li>执行 git status 命令查看当前的状态，确认哪些文件存在冲突。</li>
+<li>手动编辑冲突的文件，解决冲突。冲突通常会被标记为类似以下内容的标记：</li>
+</ol>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="o">&lt;&lt;&lt;&lt;&lt;&lt;</span>&lt; HEAD
+</span></span><span class="line"><span class="cl">  // <span class="nv">本地仓库中的代码</span>
+</span></span><span class="line"><span class="cl">  <span class="o">=======</span>
+</span></span><span class="line"><span class="cl">  // 远程仓库中的代码
+</span></span><span class="line"><span class="cl">  &gt;&gt;&gt;&gt;&gt;&gt;&gt; FETCH_HEAD</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+您需要手动选择保留哪些代码，并删除冲突标记，直到文件中所有的冲突都得到解决。</p>
+<ol>
+<li>解决冲突后，执行 git add &lt;冲突文件&gt; 将已解决冲突的文件标记为已解决。</li>
+<li>最后执行 git commit 提交解决冲突后的修改。</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-2">
+<h2 id="headline-9">
+【Git】 如何将一个分支的某个提交合并到另一个分支
+</h2>
+<div id="outline-text-headline-9" class="outline-text-2">
+<p>
+在使用 Git 进行版本控制时，常常会遇到这样的需求：将某个分支的特定提交合并到另一个分支中。这种情况下，我们可以使用 cherry-pick 命令来实现。本文将详细介绍 cherry-pick 命令的使用方法，并介绍一些 cherry-pick 的高级用法。</p>
+<div id="outline-container-headline-10" class="outline-3">
+<h3 id="headline-10">
+什么是 git cherry-pick
+</h3>
+<div id="outline-text-headline-10" class="outline-text-3">
+<p>
+git cherry-pick 命令可以将某个分支上的特定提交应用到当前分支上。与 merge 或 rebase 不同，cherry-pick 只关注指定的提交，而不处理整个分支的变更历史。</p>
+<div id="outline-container-headline-11" class="outline-4">
+<h4 id="headline-11">
+基本用法
+</h4>
+<div id="outline-text-headline-11" class="outline-text-4">
+<p>
+以下是使用 git cherry-pick 将一个分支的某个提交合并到另一个分支的具体步骤：</p>
+<div id="outline-container-headline-12" class="outline-5">
+<h5 id="headline-12">
+切换到目标分支
+</h5>
+<div id="outline-text-headline-12" class="outline-text-5">
+<p>
+首先，切换到你希望将提交合并到的目标分支。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git checkout 目标分支</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+例如，如果目标分支是 main，则执行：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git checkout main</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-5">
+<h5 id="headline-13">
+找到提交的哈希值
+</h5>
+<div id="outline-text-headline-13" class="outline-text-5">
+<p>
+在源分支中找到你想要合并的那个提交的哈希值（SHA-1）。你可以通过以下命令查看提交日志：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git log 源分支</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+例如：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git log feature</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+找到你需要的提交的哈希值，例如 abc123。</p>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-5">
+<h5 id="headline-14">
+Cherry-pick 提交
+</h5>
+<div id="outline-text-headline-14" class="outline-text-5">
+<p>
+使用 cherry-pick 命令将该提交合并到当前分支。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git cherry-pick 提交的哈希值</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+例如：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git cherry-pick abc123</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-5">
+<h5 id="headline-15">
+解决冲突
+</h5>
+<div id="outline-text-headline-15" class="outline-text-5">
+<p>
+在 cherry-pick 过程中可能会遇到冲突。此时需要手动解决冲突，然后继续 cherry-pick 过程。</p>
+<p>
+解决冲突后，添加解决冲突后的文件：</p>
+<p>
+git add 解决冲突后的文件</p>
+<p>
+继续 cherry-pick 过程：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git cherry-pick --continue</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+如果想要放弃这次 cherry-pick，可以使用以下命令：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git cherry-pick --abort</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-3">
+<h3 id="headline-16">
+cherry-pick 的其他用法
+</h3>
+<div id="outline-text-headline-16" class="outline-text-3">
+<div id="outline-container-headline-17" class="outline-4">
+<h4 id="headline-17">
+合并多个提交
+</h4>
+<div id="outline-text-headline-17" class="outline-text-4">
+<p>
+如果需要一次性合并多个提交，可以在 cherry-pick 后面指定多个提交的哈希值：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git cherry-pick 哈希值1 哈希值2 哈希值3</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+也可以使用提交范围：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git cherry-pick 哈希值A..哈希值B</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-18" class="outline-4">
+<h4 id="headline-18">
+编辑提交信息
+</h4>
+<div id="outline-text-headline-18" class="outline-text-4">
+<p>
+在 cherry-pick 的时候，可以使用 -e 选项来编辑提交信息：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git cherry-pick -e 提交的哈希值</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-19" class="outline-4">
+<h4 id="headline-19">
+保留提交信息
+</h4>
+<div id="outline-text-headline-19" class="outline-text-4">
+<p>
+使用 -x 选项可以在提交信息中加入原始提交的引用信息，方便追溯：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git cherry-pick -x 提交的哈希值</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-20" class="outline-4">
+<h4 id="headline-20">
+忽略空提交
+</h4>
+<div id="outline-text-headline-20" class="outline-text-4">
+<p>
+使用 –skip 选项可以跳过空的提交（即已经应用的变更）：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git cherry-pick --skip</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-21" class="outline-4">
+<h4 id="headline-21">
+总结一下
+</h4>
+<div id="outline-text-headline-21" class="outline-text-4">
+<p>
+git cherry-pick 是一个非常有用的命令，可以帮助我们将特定的提交从一个分支应用到另一个分支。在使用过程中，遇到冲突时需要手动解决，并可以利用一些高级选项来增强 cherry-pick 的功能。通过掌握这些技巧，能够更灵活地管理项目的版本控制。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-22" class="outline-2">
+<h2 id="headline-22">
+查看和删除分支
+</h2>
+<div id="outline-text-headline-22" class="outline-text-2">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git branch						<span class="c1">#查看本地分支</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git branch -r					<span class="c1">#查看远程分支</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git branch -a					<span class="c1">#查看本地和远程分支</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git branch -d 本地分支名		<span class="c1">#删除本地分支</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git push origin --delete 远程分支名 <span class="c1">#删除远程分支</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git push origin 远程分支名		<span class="c1">#推送空分支到远程(删除远程分支的另一种实现)</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-23" class="outline-2">
+<h2 id="headline-23">
+修改远程仓库地址
+</h2>
+<div id="outline-text-headline-23" class="outline-text-2">
+<div id="outline-container-headline-24" class="outline-3">
+<h3 id="headline-24">
+方法1
+</h3>
+<div id="outline-text-headline-24" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git remote set-url origin &lt;url&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git remote rm origin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git remote add origin &lt;url&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-25" class="outline-3">
+<h3 id="headline-25">
+方法2(先删后加)
+</h3>
+<div id="outline-text-headline-25" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git remote rm origin <span class="c1">#删除远程仓库地址</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git remote add origin &lt;url&gt; <span class="c1">#添加远程仓库地址</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-26" class="outline-3">
+<h3 id="headline-26">
+方法3(直接修改配置文件)
+</h3>
+<div id="outline-text-headline-26" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  进入git的根目录，编辑config文件，将文件中的内容修改成自己的
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>core<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nv">repositoryformatversion</span> <span class="o">=</span> <span class="m">0</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nv">symlinks</span> <span class="o">=</span> <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nv">ignorecase</span> <span class="o">=</span> <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nv">hideDotFiles</span> <span class="o">=</span> dotGitOnly
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="o">[</span>remote <span class="s2">&#34;origin&#34;</span><span class="o">]</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nv">url</span> <span class="o">=</span> &lt;仓库地址&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nv">fetch</span> <span class="o">=</span> +refs/heads/*:refs/remotes/origin/*</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-27" class="outline-2">
+<h2 id="headline-27">
+Git 仓库的远程列表
+</h2>
+<div id="outline-text-headline-27" class="outline-text-2">
+<div id="outline-container-headline-28" class="outline-3">
+<h3 id="headline-28">
+查看远程列表
+</h3>
+<div id="outline-text-headline-28" class="outline-text-3">
+<p>
+要查看 Git 仓库的远程列表，我们可以使用 git remote 命令。这个命令会列出所有远程仓库的名称。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git remote
+</span></span><span class="line"><span class="cl">  origin</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+如果仓库有多个远程仓库，我们可以使用 -v 选项查看更详细的信息，包括每个远程仓库的 URL。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git remote -v</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-29" class="outline-3">
+<h3 id="headline-29">
+参考链接
+</h3>
+<div id="outline-text-headline-29" class="outline-text-3">
+<p>
+<a href="https://geek-docs.com/git/git-questions/352_git_list_of_remotes_for_a_git_repository.html">Git 仓库的远程列表</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-30" class="outline-2">
+<h2 id="headline-30">
+构建github代码文件链接的方法
+</h2>
+<div id="outline-text-headline-30" class="outline-text-2">
+<div class="src src-emacs-lisp">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-emacs-lisp" data-lang="emacs-lisp"><span class="line"><span class="cl">  <span class="nv">对于</span> <span class="nv">GitHub</span> <span class="nv">上的代码文件,可以通过以下方式构建它的</span> <span class="nv">raw</span> <span class="nv">格式链接:</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">https://raw.githubusercontent.com/:owner/:repo/:branch/:path/to/file</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">其中:</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">-</span> <span class="nb">:owner</span> <span class="nf">-</span> <span class="nv">仓库所属的用户或组织名</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">-</span> <span class="nb">:repo</span> <span class="nf">-</span> <span class="nv">仓库的名称</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">-</span> <span class="nb">:branch</span> <span class="nf">-</span> <span class="nv">代码所在的分支,通常是</span> <span class="nv">master</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">-</span> <span class="nb">:path/to/file</span> <span class="nf">-</span> <span class="nv">仓库内文件的路径</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-31" class="outline-2">
+<h2 id="headline-31">
+其他操作
+</h2>
+<div id="outline-text-headline-31" class="outline-text-2">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git fetch origin <span class="s2">&#34;远程分支名&#34;</span> <span class="c1"># 将指定的远程分支与本地建立链接</span>
+</span></span><span class="line"><span class="cl">  git remote add <span class="s2">&#34;test&#34;</span> <span class="s2">&#34;远程仓库链接&#34;</span> <span class="c1"># 用git将&#34;远程仓库&#34;起别名为&#34;test&#34;  </span>
+</span></span><span class="line"><span class="cl">  git fetch <span class="nb">test</span> master:dev	  <span class="c1"># pull取远程仓库最新代码（需要新分支来储存），test为远程仓库名，默认为origin</span>
+</span></span><span class="line"><span class="cl">  git diff dev				  <span class="c1"># 查看远程最新分支与本地最新分支的区别，这里dev是新建分支</span>
+</span></span><span class="line"><span class="cl">  git merge dev				  <span class="c1"># 将远程最新分支与本地最新分支合并</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-32" class="outline-3">
+<h3 id="headline-32">
+参考链接
+</h3>
+<div id="outline-text-headline-32" class="outline-text-3">
+<p>
+https://blog.csdn.net/xiaoxgongzs/article/details/105099281</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-33" class="outline-2">
+<h2 id="headline-33">
+要将一个 Git 仓库作为子模块添加到另一个 Git 仓库中，你可以按照以下步骤操作：
+</h2>
+<div id="outline-text-headline-33" class="outline-text-2">
+<ol>
+<li>在父项目中初始化子模块：
+在父项目的根目录下打开命令行或终端，并执行以下命令：</li>
+</ol>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git submodule add &lt;子模块的远程仓库地址&gt; &lt;子模块的存放路径&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+例如：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git submodule add https://github.com/CaiJimmy/hugo-theme-stack/ themes/hugo-theme-stack</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+这将把 hugo-theme-stack 作为子模块添加到 themes/hugo-theme-stack 路径中。</p>
+<ol>
+<li>提交更新：
+添加子模块后，父项目会有一些变动，需要提交到版本控制系统中：</li>
+</ol>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git commit -m <span class="s2">&#34;Add hugo-theme-stack submodule&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<ol>
+<li>初始化子模块（如果有必要）：
+在父项目的根目录下执行以下命令来初始化子模块：</li>
+</ol>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git submodule update --init --recursive</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+这会将子模块的代码拉取到本地，使得父项目能够使用它。</p>
+<ol>
+<li>提交更新：
+如果你初始化了子模块，那么子模块的代码也会被拉取到本地，需要将这些变动提交到版本控制系统中：</li>
+</ol>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git commit -m <span class="s2">&#34;Initialize hugo-theme-stack submodule&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<ol>
+<li>推送更新（可选）：
+如果需要，将父项目的更新推送到远程仓库：</li>
+</ol>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git push</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+以上步骤将会在父项目中成功添加一个子模块。在执行这些步骤之前，请确保你对子模块的路径和远程仓库地址有正确的了解，并且你有权限访问这些仓库。</p>
+</div>
+</div>
+<div id="outline-container-headline-34" class="outline-2">
+<h2 id="headline-34">
+子模块索引过，如何再次索引
+</h2>
+<div id="outline-text-headline-34" class="outline-text-2">
+<p>
+如果你已经删除了相关的索引文件（比如.gitmodules文件）并且配置文件中也不包含索引信息，但仍然无法添加子模块，可能是由于Git仓库中还存在一些缓存或其他问题导致的。</p>
+<p>
+你可以尝试以下步骤来清除可能导致无法添加子模块的问题：</p>
+<ol>
+<li>
+<p>**清除子模块缓存**：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git rm --cached hugo1/themes/hugo-theme-stack</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>**删除子模块目录**：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rm -rf hugo1/themes/hugo-theme-stack</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>**提交更改**：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git add .
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;Remove submodule hugo-theme-stack&#34;</span>
+</span></span><span class="line"><span class="cl">git push</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</li>
+</ol>
+<p>完成以上步骤后，你可以尝试重新添加子模块：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git submodule add https://github.com/CaiJimmy/hugo-theme-stack/ hugo1/themes/hugo-theme-stack</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+以上步骤来源于 chatgpt，而我实际操作的时候只执行了第一步，即清除子模块缓存，然后执行最后一步，即重新添加子模块</p>
+</div>
+</div>
+<div id="outline-container-headline-35" class="outline-2">
+<h2 id="headline-35">
+Git 如何解决从GitHub克隆仓库时出现的SSL证书自签名问题
+</h2>
+<div id="outline-text-headline-35" class="outline-text-2">
+<div id="outline-container-headline-36" class="outline-3">
+<h3 id="headline-36">
+解决方案
+</h3>
+<div id="outline-text-headline-36" class="outline-text-3">
+<p>
+在解决SSL证书自签名问题前，我们先要了解一下Git配置中和SSL有关的几个关键属性：</p>
+<ul>
+<li>http.sslVerify：该属性用于指定是否验证SSL证书，默认值为true，表示验证证书。</li>
+<li>http.sslCAInfo：该属性用于指定SSL证书的位置，提供自定义的CA证书进行验证。</li>
+<li>http.sslCAPath：该属性用于指定SSL证书的路径，提供自定义的CA证书进行验证。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-37" class="outline-3">
+<h3 id="headline-37">
+方案一：忽略SSL证书验证
+</h3>
+<div id="outline-text-headline-37" class="outline-text-3">
+<p>
+当您确定从GitHub上克隆仓库的过程中，SSL证书问题不会对仓库的安全性产生威胁时，您可以选择忽略SSL证书验证。在使用Git命令进行克隆操作时，可以添加-c选项，并指定http.sslVerify=false参数</p>
+<div id="outline-container-headline-38" class="outline-4">
+<h4 id="headline-38">
+操作方式
+</h4>
+<div id="outline-text-headline-38" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git -c http.sslVerify<span class="o">=</span><span class="nb">false</span> clone https://github.com/username/repo.git</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+通过设置http.sslVerify为false，Git会跳过证书验证，并将通信与GitHub建立起来。</p>
+</div>
+</div>
+<div id="outline-container-headline-39" class="outline-4">
+<h4 id="headline-39">
+使用实例
+</h4>
+<div id="outline-text-headline-39" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git -c Http.sslVerify<span class="o">=</span><span class="nb">false</span> clone https://hub.nuaa.cf/hexgio/emacs_config.git</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-40" class="outline-3">
+<h3 id="headline-40">
+参考链接
+</h3>
+<div id="outline-text-headline-40" class="outline-text-3">
+<p>
+<a href="https://deepinout.com/git/git-questions/63_git_how_to_solve_ssl_certificate_self_signed_certificate_when_cloning_repo_from_github.html">Git 如何解决从GitHub克隆仓库时出现的SSL证书自签名问题</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-41" class="outline-2">
+<h2 id="headline-41">
+git reset –hard
+</h2>
+<div id="outline-text-headline-41" class="outline-text-2">
+<div id="outline-container-headline-42" class="outline-3">
+<h3 id="headline-42">
+git reset –hard 是一个Git命令，其作用是将当前的工作目录和索引（即暂存区）都重置为指定的提交（commit），并且丢弃所有未提交的修改。
+</h3>
+<div id="outline-text-headline-42" class="outline-text-3">
+<p>
+具体来说，它的作用如下：</p>
+<ol>
+<li>重置工作目录和暂存区： 使用 –hard 选项会将工作目录和暂存区完全重置为指定的提交状态。这意味着当前的工作目录中的所有未提交的修改都会被删除，包括未添加到暂存区的文件修改和已经添加到暂存区但未提交的更改。</li>
+<li>丢弃所有本地修改： 如果你在工作目录中进行了一些修改（比如编辑文件、添加新文件等），但是还没有提交这些更改，运行 git reset –hard 将会丢弃所有这些修改，使工作目录变成指定提交的状态。</li>
+<li>慎重使用： 由于 git reset –hard 会永久丢弃所有未提交的工作，因此在使用时需要特别小心。确保你真的希望丢弃所有本地修改并将工作目录恢复到指定提交的状态。</li>
+</ol>
+<p>总之，git reset –hard 是一个强制性的命令，可以帮助你彻底清理和重置本地工作目录和暂存区，回到指定提交的状态。</p>
+</div>
+</div>
+<div id="outline-container-headline-43" class="outline-3">
+<h3 id="headline-43">
+在 Git 中，reset 和 –hard 是两个不同的命令和选项，它们分别具有以下作用：
+</h3>
+<div id="outline-text-headline-43" class="outline-text-3">
+<ol>
+<li>git reset</li>
+</ol>
+<p>git reset 命令用于将当前分支的 HEAD 指针重置为指定的状态，并且可以选择是否更新暂存区和工作目录。</p>
+<ul>
+<li>作用： 主要用于撤销提交、重置当前分支的位置或者在不同的模式之间切换。</li>
+<li>
+<p>常见用法：</p>
+<ul>
+<li>git reset &lt;commit&gt;：将当前分支的 HEAD 指针移动到 &lt;commit&gt;，并且不更改暂存区和工作目录。这个命令通常用于撤销提交或者移动到不同的提交上。</li>
+<li>git reset –soft &lt;commit&gt;：将 HEAD 指针移动到 &lt;commit&gt;，并且保留暂存区和工作目录的更改。这个命令通常用于撤销最近的一次提交，并且保留更改以便重新提交。</li>
+<li>git reset –mixed &lt;commit&gt;（默认行为）：将 HEAD 指针移动到 &lt;commit&gt;，并且重置暂存区，但是保留工作目录的更改。这个命令通常用于取消暂存的更改或者将暂存区和工作目录的状态与指定提交保持一致。</li>
+<li>git reset –hard &lt;commit&gt;：将 HEAD 指针移动到 &lt;commit&gt;，并且重置暂存区和工作目录，使它们与指定提交完全一致。这个命令通常用于彻底清理工作目录并重置到指定的提交状态。</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>–hard 选项</li>
+</ol>
+<p>–hard 是 git reset 命令的一个选项，用于指定重置的模式之一。它的作用是：</p>
+<ul>
+<li>作用： 在执行 git reset 时，–hard 选项会重置当前分支的 HEAD 指针，并且彻底重置暂存区和工作目录，使它们与指定的提交完全一致。</li>
+<li>注意事项： 使用 git reset –hard 时要非常小心，因为它会永久删除未提交的工作目录中的所有更改。任何未提交的更改都将被彻底清除。</li>
+</ul>
+<p>综上所述，git reset 是一个多功能命令，可以用来移动 HEAD 指针和管理暂存区、工作目录的状态。而 –hard 是 git reset 命令的一种选项，用于彻底重置工作目录和暂存区，以使它们与指定的提交完全一致。</p>
+</div>
+</div>
+<div id="outline-container-headline-44" class="outline-3">
+<h3 id="headline-44">
+git reset 命令在 Git 中有三种常见的重置模式，它们是：
+</h3>
+<div id="outline-text-headline-44" class="outline-text-3">
+<ol>
+<li>
+<p>–soft 模式：</p>
+<ul>
+<li>git reset –soft &lt;commit&gt;：在这种模式下，Git 会将 HEAD 指针移动到 &lt;commit&gt;，但是不会重置暂存区和工作目录。这意味着所有的更改都会保留在工作目录中，并且保留在暂存区，因此你可以随时使用 git commit 命令来提交这些更改。</li>
+<li>典型用途：用于取消上一次提交，并将更改保留在工作目录和暂存区，以便进一步调整或重新提交。</li>
+</ul>
+</li>
+<li>
+<p>–mixed 模式：</p>
+<ul>
+<li>git reset –mixed &lt;commit&gt; 或 git reset &lt;commit&gt;（默认模式）：这种模式是 git reset 的默认行为。在这种模式下，Git 会将 HEAD 指针移动到 &lt;commit&gt;，同时重置暂存区的状态，但是保留工作目录中的更改。</li>
+<li>典型用途：用于取消暂存的更改，或者将暂存区和工作目录的状态与指定的提交保持一致。</li>
+</ul>
+</li>
+<li>
+<p>–hard 模式：</p>
+<ul>
+<li>git reset –hard &lt;commit&gt;：这是最强制的重置模式。在这种模式下，Git 会将 HEAD 指针移动到 &lt;commit&gt;，并且彻底重置暂存区和工作目录，使它们与指定的提交完全一致。</li>
+<li>典型用途：用于完全丢弃工作目录中的所有未提交更改，并将工作目录恢复到指定提交的状态。</li>
+</ul>
+</li>
+</ol>
+<p>这些模式允许你根据需要选择不同级别的重置操作。在选择使用 –soft、–mixed 或 –hard 时，务必注意其影响范围，以免意外丢失或保留不必要的更改。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-45" class="outline-2">
+<h2 id="headline-45">
+Git在检出代码时遇到了问题，可能是由于网络问题或Git版本不兼容
+</h2>
+<div id="outline-text-headline-45" class="outline-text-2">
+<div id="outline-container-headline-46" class="outline-3">
+<h3 id="headline-46">
+异常现象
+</h3>
+<div id="outline-text-headline-46" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ git clone https://www.modelscope.cn/pzc163/chatTTS.git
+</span></span><span class="line"><span class="cl">正克隆到 <span class="s1">&#39;chatTTS&#39;</span>...
+</span></span><span class="line"><span class="cl">remote: Enumerating objects: 49, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Counting objects: 100% <span class="o">(</span>49/49<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Compressing objects: 100% <span class="o">(</span>39/39<span class="o">)</span>, <span class="k">done</span>.
+</span></span><span class="line"><span class="cl">remote: Total <span class="m">49</span> <span class="o">(</span>delta 15<span class="o">)</span>, reused <span class="m">29</span> <span class="o">(</span>delta 8<span class="o">)</span>, pack-reused <span class="m">0</span>
+</span></span><span class="line"><span class="cl">接收对象中: 100% <span class="o">(</span>49/49<span class="o">)</span>, 6.23 KiB <span class="p">|</span> 398.00 KiB/s, 完成.
+</span></span><span class="line"><span class="cl">处理 delta 中: 100% <span class="o">(</span>15/15<span class="o">)</span>, 完成.
+</span></span><span class="line"><span class="cl">致命错误：协议错误：错误的行长度字符串：Not
+</span></span><span class="line"><span class="cl">警告：克隆成功，但是检出失败。
+</span></span><span class="line"><span class="cl">您可以通过 <span class="s1">&#39;git status&#39;</span> 检查哪些已被检出，然后使用命令
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;git restore --source=HEAD :/&#39;</span> 重试</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-47" class="outline-3">
+<h3 id="headline-47">
+解决方式
+</h3>
+<div id="outline-text-headline-47" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git restore --source<span class="o">=</span>HEAD :/</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-48" class="outline-2">
+<h2 id="headline-48">
+github的一些快捷键和在线编辑器
+</h2>
+<div id="outline-text-headline-48" class="outline-text-2">
+<div id="outline-container-headline-49" class="outline-3">
+<h3 id="headline-49">
+github的一些常用快捷键
+</h3>
+<div id="outline-text-headline-49" class="outline-text-3">
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>s</td>
+<td>跳转到搜索框</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>t</td>
+<td>用于仓库内的文件搜索</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>l</td>
+<td>在仓库文件显示页，键入l后在弹处窗口输入行号，表示跳转到该文件的指定行</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>b</td>
+<td>查看文件改动进度</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>ctrl+k</td>
+<td>快速定位查看内容模块</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>.</td>
+<td>进入在线编辑器模式</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div id="outline-container-headline-50" class="outline-3">
+<h3 id="headline-50">
+GitHub 看代码神器
+</h3>
+<div id="outline-text-headline-50" class="outline-text-3">
+<ul>
+<li>只需将github网页地址中github.com改为github1s.com (增加的字符是123的&#34;1&#34;和&#34;s&#34;）</li>
+<li>GitHub 官方出的 Online VSCode 编辑器：输入.键（句号键），相当于把仓库地址中github.com改为github.dev  </li>
+</ul>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">参考：https://blog.csdn.net/cqcre/article/details/120398001</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<ul>
+<li>地址前加上 (<a href="https://)">https://)</a> gitpod.io/#/,，即把地址中gihub.com改为gitpod.io/#/github.com，直接进入gitpod。</li>
+</ul>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">可在线运行脚本，里面有安装的依赖包。
+</span></span><span class="line"><span class="cl">可直接一键构建docker镜像。</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-51" class="outline-3">
+<h3 id="headline-51">
+参考链接
+</h3>
+<div id="outline-text-headline-51" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/sinat_32872729/article/details/125191720">github的一些快捷键和在线编辑器</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-52" class="outline-2">
+<h2 id="headline-52">
+Git 如何使用一条命令来获取Git根目录
+</h2>
+<div id="outline-text-headline-52" class="outline-text-2">
+<p>
+在本文中，我们将介绍如何使用一条命令来获取Git根目录。在Git中，根目录是指包含.git文件夹的顶级目录，它是整个Git仓库的起始点。</p>
+<div id="outline-container-headline-53" class="outline-3">
+<h3 id="headline-53">
+使用git rev-parse命令获取Git根目录
+</h3>
+<div id="outline-text-headline-53" class="outline-text-3">
+<p>Git提供了一个名为git rev-parse的命令，可以用来解析、处理Git对象以及获取与之相关的信息。通过使用git rev-parse命令，我们可以获取Git根目录的绝对路径。</p>
+<p>
+要获取Git根目录的绝对路径，可以在命令行中输入以下命令：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git rev-parse --show-toplevel</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+这将返回Git根目录的绝对路径。例如，假设我们的Git仓库位于/Users/username/git-repo目录中，那么以上命令将返回/Users/username/git-repo。你可以在自己的Git仓库中尝试该命令，看看它是否返回了正确的根目录路径。</p>
+</div>
+</div>
+<div id="outline-container-headline-54" class="outline-3">
+<h3 id="headline-54">
+示例
+</h3>
+<div id="outline-text-headline-54" class="outline-text-3">
+<p>让我们通过一个示例来进一步说明如何使用git rev-parse命令获取Git根目录。</p>
+<p>
+首先，我们在命令行中切换到我们的Git仓库所在的目录。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /path/to/git-repo</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+接下来，我们可以使用git rev-parse –show-toplevel命令来获取Git根目录的路径。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git rev-parse --show-toplevel</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+结果将会显示Git根目录的绝对路径。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  /path/to/git-repo</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+通过执行以上命令，我们成功地获取了Git根目录的路径。</p>
+</div>
+</div>
+<div id="outline-container-headline-55" class="outline-3">
+<h3 id="headline-55">
+其他方法
+</h3>
+<div id="outline-text-headline-55" class="outline-text-3">
+<p>除了使用git rev-parse命令之外，还有一些其他方法可以获取Git根目录的路径。这些方法可能更简洁或更适合特定的情况，但可能不如git rev-parse命令灵活。</p>
+<p>
+使用git rev-parse –show-cdup命令可以返回到Git根目录所需的相对路径。
+使用git rev-parse –git-dir命令可以返回相对于当前目录的.git文件夹的路径。</p>
+<p>
+在Git的钩子脚本中，可以使用git rev-parse命令获取Git根目录以及其他相关信息，用于自定义的处理逻辑。</p>
+<p>
+请注意，使用这些方法时需要切换到Git仓库所在的目录。</p>
+</div>
+</div>
+<div id="outline-container-headline-56" class="outline-3">
+<h3 id="headline-56">
+总结
+</h3>
+<div id="outline-text-headline-56" class="outline-text-3">
+<p>通过使用git rev-parse命令，我们可以方便地获取Git根目录的路径。该命令对于构建自定义的Git工具或在Git钩子脚本中进行自定义处理非常有用。除了git rev-parse命令之外，还有一些其他方法可以获取Git根目录的路径，但可能不如git rev-parse命令灵活。希望本文对你理解如何获取Git根目录有所帮助。</p>
+</div>
+</div>
+<div id="outline-container-headline-57" class="outline-3">
+<h3 id="headline-57">
+参考链接
+</h3>
+<div id="outline-text-headline-57" class="outline-text-3">
+<p>
+<a href="https://geek-docs.com/git/git-questions/267_git_is_there_a_way_to_get_the_git_root_directory_in_one_command.html">Git 如何使用一条命令来获取Git根目录</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-58" class="outline-2">
+<h2 id="headline-58">
+我的push与pull脚本
+</h2>
+<div id="outline-text-headline-58" class="outline-text-2">
+<div id="outline-container-headline-59" class="outline-3">
+<h3 id="headline-59">
+push脚本
+</h3>
+<div id="outline-text-headline-59" class="outline-text-3">
+<p>
+upload.sh</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nb">cd</span> <span class="k">$(</span>git rev-parse --show-toplevel<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git add .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git commit -m <span class="s2">&#34;test&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git push -u origin <span class="k">$(</span>git branch <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-60" class="outline-3">
+<h3 id="headline-60">
+pull脚本
+</h3>
+<div id="outline-text-headline-60" class="outline-text-3">
+<p>
+pull.sh</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nb">cd</span> <span class="k">$(</span>git rev-parse --show-toplevel<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git pull origin <span class="k">$(</span>git branch <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-61" class="outline-3">
+<h3 id="headline-61">
+强制push脚本
+</h3>
+<div id="outline-text-headline-61" class="outline-text-3">
+<p>
+force_upload.sh</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nb">cd</span> <span class="k">$(</span>git rev-parse --show-toplevel<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git add .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git commit -m <span class="s2">&#34;test&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git push -f origin <span class="k">$(</span>git branch <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-62" class="outline-3">
+<h3 id="headline-62">
+强制pull脚本
+</h3>
+<div id="outline-text-headline-62" class="outline-text-3">
+<p>
+force_pull.sh</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nb">cd</span> <span class="k">$(</span>git rev-parse --show-toplevel<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git fetch origin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git reset --hard origin/<span class="k">$(</span>git branch <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  git pull origin <span class="k">$(</span>git branch <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-63" class="outline-3">
+<h3 id="headline-63">
+将脚本整合到一起
+</h3>
+<div id="outline-text-headline-63" class="outline-text-3">
+<p>
+git_push_pull.sh</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="k">case</span> <span class="nv">$1</span> in
+</span></span><span class="line"><span class="cl">	  push<span class="o">)</span>
+</span></span><span class="line"><span class="cl">		  <span class="nb">cd</span> <span class="k">$(</span>git rev-parse --show-toplevel<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		  git add .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		  git commit -m <span class="s2">&#34;test&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		  git push -u origin <span class="k">$(</span>git branch <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">		  <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">	  force_push<span class="o">)</span>
+</span></span><span class="line"><span class="cl">		  <span class="nb">cd</span> <span class="k">$(</span>git rev-parse --show-toplevel<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		  git add .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		  git commit -m <span class="s2">&#34;test&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		  git push -f origin <span class="k">$(</span>git branch <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">		  <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">	  pull<span class="o">)</span>
+</span></span><span class="line"><span class="cl">		  <span class="nb">cd</span> <span class="k">$(</span>git rev-parse --show-toplevel<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		  git pull origin <span class="k">$(</span>git branch <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">		  <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">	  force_pull<span class="o">)</span>
+</span></span><span class="line"><span class="cl">		  <span class="nb">cd</span> <span class="k">$(</span>git rev-parse --show-toplevel<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		  git fetch origin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		  git reset --hard origin/<span class="k">$(</span>git branch <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		  git pull origin <span class="k">$(</span>git branch <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">		  <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">	  ,*<span class="o">)</span>
+</span></span><span class="line"><span class="cl">		  <span class="nb">echo</span> <span class="s2">&#34;Usage:&#34;</span>
+</span></span><span class="line"><span class="cl">		  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2"> push|force_push|pull|force_pull&#34;</span>		
+</span></span><span class="line"><span class="cl">		  <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">esac</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-64" class="outline-2">
+<h2 id="headline-64">
+在执行 git pull 操作时，本地的某些文件发生了修改，而这些修改未被提交。git pull 操作会试图将远程分支的更改合并到本地分支，但这会导致你本地的修改被覆盖，从而产生了冲突
+</h2>
+<div id="outline-text-headline-64" class="outline-text-2">
+<p>
+为了解决这个问题，你可以采取以下几种方法之一：</p>
+<div id="outline-container-headline-65" class="outline-3">
+<h3 id="headline-65">
+1. 提交本地更改
+</h3>
+<div id="outline-text-headline-65" class="outline-text-3">
+<p>如果你希望保留你本地的修改，最简单的做法是先将本地更改提交，再进行合并操作。步骤如下：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看当前文件修改的状态</span>
+</span></span><span class="line"><span class="cl">git status
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将文件添加到暂存区</span>
+</span></span><span class="line"><span class="cl">git add filename
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 提交更改</span>
+</span></span><span class="line"><span class="cl">git commit -m <span class="s2">&#34;保存本地修改&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 进行拉取操作</span>
+</span></span><span class="line"><span class="cl">git pull</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-66" class="outline-3">
+<h3 id="headline-66">
+2. 暂存本地更改
+</h3>
+<div id="outline-text-headline-66" class="outline-text-3">
+<p>如果你暂时不想提交本地更改，可以使用 git stash 来存储本地更改，再进行拉取操作。步骤如下：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 暂存本地更改</span>
+</span></span><span class="line"><span class="cl">git stash
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 拉取远程代码</span>
+</span></span><span class="line"><span class="cl">git pull
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 恢复本地更改</span>
+</span></span><span class="line"><span class="cl">git stash pop</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-67" class="outline-3">
+<h3 id="headline-67">
+3. 丢弃本地更改
+</h3>
+<div id="outline-text-headline-67" class="outline-text-3">
+<p>如果你确定不需要保留本地的更改，可以直接丢弃这些修改。步骤如下：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 丢弃本地更改</span>
+</span></span><span class="line"><span class="cl">git checkout -- filename
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 拉取远程代码</span>
+</span></span><span class="line"><span class="cl">git pull</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+选择合适的方式取决于你是否需要保留本地的修改。如果你不确定如何操作，可以先用 git status 查看当前本地的修改情况，然后决定是否提交、暂存或丢弃这些修改。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-68" class="outline-2">
+<h2 id="headline-68">
+当前分支 Master 没有对应的上游分支
+</h2>
+<div id="outline-text-headline-68" class="outline-text-2">
+<p>
+为推送当前分支并建立与远程上游的跟踪，使用:</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git push --set-upstream origin Master</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/git/">Git</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

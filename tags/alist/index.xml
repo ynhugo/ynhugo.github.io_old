@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Alist on Example Site</title>
+        <link>https://ynhugo.github.io/tags/alist/</link>
+        <description>Recent content in Alist on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 08 Jul 2025 18:57:42 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/alist/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>termux环境搭建alist教程</title>
+        <link>https://ynhugo.github.io/p/termux%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAalist%E6%95%99%E7%A8%8B/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/termux%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAalist%E6%95%99%E7%A8%8B/</guid>
+        <description>&lt;h1 id=&#34;搭建alist教程&#34;&gt;搭建alist教程
+&lt;/h1&gt;&lt;p&gt;alist配置&lt;a class=&#34;link&#34; href=&#34;https://alist.nn.ci/zh/guide/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方文档&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;安装alist&#34;&gt;安装alist
+&lt;/h2&gt;&lt;p&gt;安装程序后在命令行界面运行就可以了，第一次运行的时候先获取到用户名和密码，然后根据提供的用户名和密码进行网页访问并修改密码。&lt;/p&gt;
+&lt;h2 id=&#34;后台运行&#34;&gt;后台运行
+&lt;/h2&gt;&lt;p&gt;在termux的家目录编辑&amp;quot;.bashrc&amp;quot;文件，如果没有这个文件可以创建这个文件，该命名的文件在启动termux后可以自动运行，不过alist不能重复启动，为避免使用ssh连接termux时再次启动启动alist，我写了一个脚本进行判断，如果alist已经运行就不再重复运行，执行命令时产生的附带文件如&lt;code&gt;nohup.out&lt;/code&gt;和&lt;code&gt;null&lt;/code&gt;也通过判断是否存在，如果存在则删除，在这一部分我在网上找了两个链接参考了一下，分别是&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/e345ug/article/details/103024875&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;shell判断进程是否存在，不存在则启动&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_36154886/article/details/109659974&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Shell脚本实用小技巧-教你屏蔽执行命令的所有显示信息，包含错误信息&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/u012206617/article/details/118366597&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Shell 判断文件或文件夹是否存在（不存在则创建）&lt;/a&gt;，这样这个脚本就可以实现alist在后台运行了，并且不需要自己手动做任何操作了。
+想要完成上面描述的效果，则需要将下面的脚本内容添加到&amp;quot;.bashrc&amp;quot;中&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;cp&#34;&gt;#!/data/data/com.termux/files/usr/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ps -ef &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep &lt;span class=&#34;s2&#34;&gt;&amp;#34;alist&amp;#34;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -v &lt;span class=&#34;s2&#34;&gt;&amp;#34;grep&amp;#34;&lt;/span&gt; &amp;gt; /dev/null 2&amp;gt;&lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$?&lt;/span&gt; -ne &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nohup alist server &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; -e &lt;span class=&#34;s2&#34;&gt;&amp;#34;/data/data/com.termux/files/home/null&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rm /data/data/com.termux/files/home/null
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; -e &lt;span class=&#34;s2&#34;&gt;&amp;#34;/data/data/com.termux/files/home/nohup.out&amp;#34;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        rm /data/data/com.termux/files/home/nohup.out
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&amp;lt;35&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;177&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;4m
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;最后启动该文件即可&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;source .bashrc
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;alist操作方式&#34;&gt;alist操作方式
+&lt;/h2&gt;&lt;p&gt;使用alist的命令有两个就够用了，分别是用于获取alist密码的运行alist服务的。&lt;/p&gt;
+&lt;h3 id=&#34;获取用户名和密码&#34;&gt;获取用户名和密码
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;alist admin
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;运行alist服务&#34;&gt;运行alist服务
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;alist server
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;运行服务之后通过提示的端口进行网页访问，链接格式是这样的&amp;quot;127.0.0.1:5244&amp;quot;，通过这个链接进行访问你就可以访问alist的界面了。&lt;/p&gt;
+&lt;h2 id=&#34;添加存储&#34;&gt;添加存储
+&lt;/h2&gt;&lt;p&gt;接下来就需要添加存储了，将百度网盘或者阿里云网盘添加进alist存储，也可以添加本地目录；
+第一次访问alist时界面什么都没有，未来添加过网盘后首页应付出现相应的网盘了，添加网盘首先要做的操作是点 击首页最底部的管理，然后再点击存储，接着点击添加，接下来就可以选择要添加的网盘的类型了，添加好的网盘可以在主页浏览。&lt;/p&gt;
+&lt;h3 id=&#34;浏览官方文档&#34;&gt;浏览官方文档
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://alist.nn.ci/zh/guide/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方文档&lt;/a&gt;
+刚开始接触alist只需要看&amp;quot;安装&amp;quot;和&amp;quot;添加存储&amp;quot;就够用了，相关内容介绍的也都比较到位，至少我们平时用的百度网 盘和阿里云网盘是没有问题的，其他网盘有待折腾，包括网上也会有许多不错的教程可以参考学习。&lt;/p&gt;
+&lt;h3 id=&#34;添加百度网盘&#34;&gt;添加百度网盘
+&lt;/h3&gt;&lt;p&gt;需要关注的有两点，刷新令牌和web代理；
+刷新令牌可以根据官方文档进行操作获取并进行添加，web代理也勾选一下，挂载路径随便设置，格式是一个斜杠加 自定义名称，就像这样&amp;quot;/BaiduNetdisk&amp;quot;，剩下的不需要动，接着点击保存就可以了。&lt;/p&gt;
+&lt;h3 id=&#34;添加阿里云网盘open&#34;&gt;添加阿里云网盘Open
+&lt;/h3&gt;&lt;p&gt;即添加阿里云盘，Open是开源的意思，即跟添加另一个阿里云盘时要做的操作不一样，但是目的都是一样的；
+添加阿里云盘只需要关注刷新令牌，然后设置挂载路径，其他地方不需要做，接着保存就可以了；&lt;/p&gt;
+&lt;h3 id=&#34;添加本机存储&#34;&gt;添加本机存储
+&lt;/h3&gt;&lt;p&gt;即添加本地目录，只需要设置根文件夹路径和挂载路径即可，根文件夹路径是termux的某个目录，就像这样&amp;quot;/data/data/com.termux/files/home/Alist&amp;quot;，这个路径中&amp;quot;/data/data/com.termux/files/home&amp;quot;对应termux的家目录，在家目录我创建了一个名字叫做&amp;quot;Alist&amp;quot;的目录，这就是我要添加到alist的目录，做完这些后保存就可以了；
+我在添加本地存储的时候我有考虑过如果我想添加多个文件夹到本地存储怎么办，我总不能一个一个的复制到设定的目录中吧，因此我想了为要添加到本地存储的目录创建软链接，就像快捷方式一样，这些快捷方式都被我添加到我设定的根文件夹路径中，使用的创建软链接的命令是&amp;quot;ln&amp;quot;，&amp;ldquo;ln&amp;quot;的使用方法可以参考这个链接&lt;a class=&#34;link&#34; href=&#34;https://www.linuxcool.com/ln&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Linux命令大全(手册)&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;注意事项&#34;&gt;注意事项
+&lt;/h2&gt;&lt;p&gt;alist程序在运行的过程中会在同一目录下创建data目录用来存放配置文件和一些数据文件，如果alist程序在其他地方运行了，会另外创建data目录，这意味着在不同地方运行的alist的data目录的数据不一样，最能直观感受到的就 是当你进行网页访问的时候，两次运行的用户名和密码不同，即配置文件不同，因此alist程序安排好运行路径之后 就不要再动了，不然会导致alist配置文件异常。&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>windows环境搭建alist教程</title>
+        <link>https://ynhugo.github.io/p/windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAalist%E6%95%99%E7%A8%8B/</link>
+        <pubDate>Tue, 08 Jul 2025 18:57:42 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAalist%E6%95%99%E7%A8%8B/</guid>
+        <description>&lt;h1 id=&#34;搭建alist教程&#34;&gt;搭建alist教程
+&lt;/h1&gt;&lt;p&gt;alist配置&lt;a class=&#34;link&#34; href=&#34;https://alist.nn.ci/zh/guide/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方文档&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;下载alist&#34;&gt;下载alist
+&lt;/h2&gt;&lt;p&gt;下载程序后在命令行界面运行就可以了，第一次运行的时候先获取到用户名和密码，然后根据提供的用户名和密码进行网页访问并修改密码。&lt;/p&gt;
+&lt;h3 id=&#34;从终端运行&#34;&gt;从终端运行
+&lt;/h3&gt;&lt;p&gt;当前步骤需要做的操作，假设你已经进入程序所在的目录，那么只需要执行 ctrl+l 快捷键，然后回车即可打开相应终端，通过这样的方式打开的终端，终端显示的路径是你的alist程序所在目录的路径。&lt;/p&gt;
+&lt;h2 id=&#34;后台运行&#34;&gt;后台运行
+&lt;/h2&gt;&lt;p&gt;创建一个bat脚本，脚本内容如下，参考链接：&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/fen_fen/article/details/124584786&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Windows如何后台运行bat文件&lt;/a&gt;。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;@echo off
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;if &amp;#34;%1&amp;#34;==&amp;#34;h&amp;#34; goto begin
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;start mshta vbscript:createobject(&amp;#34;wscript.shell&amp;#34;).run(&amp;#34;&amp;#34;&amp;#34;%~nx0&amp;#34;&amp;#34; h&amp;#34;,0)(window.close)&amp;amp;&amp;amp;exit
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;:begin
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;alist server
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;然后我为该脚本创建了一个快捷方式，并添加到windows的程序和启动菜单中，这样除了可以手动启动以alist还可以在电脑启动时自动运行alist，并且是在后台运行，有的喜欢将添加快捷方式放到桌面的也没有问题，再提一下windows的程序和启动菜单是&amp;quot;C:\ProgramData\Microsoft\Windows\Start Menu\Programs&amp;quot; 和 &amp;ldquo;C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup&amp;rdquo;。&lt;/p&gt;
+&lt;h2 id=&#34;alist操作方式&#34;&gt;alist操作方式
+&lt;/h2&gt;&lt;p&gt;使用alist的命令有两个就够用了，分别是用于获取alist密码的运行alist服务的。&lt;/p&gt;
+&lt;h3 id=&#34;获取用户名和密码&#34;&gt;获取用户名和密码
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;alist.exe admin 或者 .\alist.exe admin
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;运行alist服务&#34;&gt;运行alist服务
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;alist.exe server 或者 .\alist.exe server
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;运行服务之后通过提示的端口进行网页访问，链接格式是这样的&amp;quot;127.0.0.1:5244&amp;quot;，通过这个链接进行访问你就可以访问alist的界面了。&lt;/p&gt;
+&lt;h2 id=&#34;添加存储&#34;&gt;添加存储
+&lt;/h2&gt;&lt;p&gt;接下来就需要添加存储了，将百度网盘或者阿里云网盘添加进alist存储，也可以添加本地目录；
+第一次访问alist时界面什么都没有，未来添加过网盘后首页应付出现相应的网盘了，添加网盘首先要做的操作是点击首页最底部的管理，然后再点击存储，接着点击添加，接下来就可以选择要添加的网盘的类型了，添加好的网盘可以在主页浏览。&lt;/p&gt;
+&lt;h3 id=&#34;浏览官方文档&#34;&gt;浏览官方文档
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://alist.nn.ci/zh/guide/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官方文档&lt;/a&gt;
+刚开始接触alist只需要看&amp;quot;安装&amp;quot;和&amp;quot;添加存储&amp;quot;就够用了，相关内容介绍的也都比较到位，至少我们平时用的百度网盘和阿里云网盘是没有问题的，其他网盘有待折腾，包括网上也会有许多不错的教程可以参考学习。&lt;/p&gt;
+&lt;h3 id=&#34;添加百度网盘&#34;&gt;添加百度网盘
+&lt;/h3&gt;&lt;p&gt;需要关注的有两点，刷新令牌和web代理；
+刷新令牌可以根据官方文档进行操作获取并进行添加，web代理也勾选一下，挂载路径随便设置，格式是一个斜杠加自定义名称，就像这样&amp;quot;/BaiduNetdisk&amp;quot;，剩下的不需要动，接着点击保存就可以了。&lt;/p&gt;
+&lt;h3 id=&#34;添加阿里云网盘open&#34;&gt;添加阿里云网盘Open
+&lt;/h3&gt;&lt;p&gt;即添加阿里云盘，Open是开源的意思，即跟添加另一个阿里云盘时要做的操作不一样，但是目的都是一样的；
+添加阿里云盘只需要关注刷新令牌，然后设置挂载路径，其他地方不需要做，接着保存就可以了；&lt;/p&gt;
+&lt;h3 id=&#34;添加本机存储&#34;&gt;添加本机存储
+&lt;/h3&gt;&lt;p&gt;即添加本地目录，只需要设置根文件夹路径和挂载路径即可，根文件夹路径是windows硬盘的某个目录，就像这样&amp;quot;D:\alist&amp;quot;,做完这些后保存就可以了；
+我在添加本地存储的时候我有考虑过如果我想添加多个文件夹到本地存储怎么办，我总不能一个一个的复制到设定的目录中吧，因此我想了为要添加到本地存储的目录创建软链接，就像快捷方式一样，这些快捷方式都被我添加到我设定的根文件夹路径中，使用的创建软链接的命令是&amp;quot;mklink&amp;quot;，官方命令说明如下。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;创建符号链接。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;MKLINK [[/D] | [/H] | [/J]] Link Target
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        /D      创建目录符号链接。默认为文件
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                符号链接。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        /H      创建硬链接而非符号链接。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        /J      创建目录联接。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        Link    指定新的符号链接名称。
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        Target  指定新链接引用的路径
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                (相对或绝对)。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;注意事项&#34;&gt;注意事项
+&lt;/h2&gt;&lt;p&gt;alist程序在运行的过程中会在同一目录下创建data目录用来存放配置文件和一些数据文件，如果alist程序在其他地方运行了，会另外创建data目录，这意味着在不同地方运行的alist的data目录的数据不一样，最能直观感受到的就是当你进行网页访问的时候，两次运行的用户名和密码不同，即配置文件不同，因此alist程序安排好运行路径之后就不要再动了，或者可以将data目录一块移动。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" ledger设置循环交易 ledger-cli如何支持循环交易 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 在 **ledger-cli** 里，“循环交易” 一般是指一种定期重复发生的交易，比如每周/每月的工资、房租、水电费、转账等。 Ledger 本身并不会像记账软件那样自动生成未来的交易，但它有两种机制可以支持这种场景： --- ## **1. 用 `~` 定义周期性交易（Periodic Transactions）** Ledger 的 journal 文件可以直接写定期规则，让它在报表时自动扩展出这些交易。 语法大致是： ```ledger ~ every month on the 5th Expenses:Rent 2000 CNY Assets:Bank:ICBC ``` ### 常用的周期表达式 ,* `~ monthly` / `~ every month` → 每月 ,* `~ weekly` / `~ every week` → 每周 ,* `~ daily` / `~ every day` → 每天 ,* 可以指定日期：`~ every month on the 15th` ,* 可以指定范围：`~ weekly from 2025/01/01 until 2025/12/31` 例如： ```ledger ~ every week Expenses:运营商:中国联通 49.75 CNY Assets:Bank:工商银行 ``` 这个不会直接写入账本，只会在你运行报表命令时自动计算这些交易的总额。 --- ## **2. 生成实际交易（Materializing Periodic Transactions）** 如果你想让循环交易“落地”成普通交易（方便将来修改或导出），可以用 Ledger 自带的扩展功能： ```bash ledger -f ledger.dat print --period &#34;from 2025/01/01 to 2025/12/31&#34; ``` 配合 `--actual` 可以生成真实交易而不是仅显示。 也可以用 **ledger-autoschedule**（第三方脚本）将周期交易展开为实际的交易条目存到文件里。 --- ## **3. 注意事项** ,* 周期交易不会自动影响期初余额，因为它是计算时临时展开的。 ,* 如果你的循环交易金额会变化（比如水费），那最好生成实际交易手动调整。 ,* Ledger 的日期计算遵循 `boost::date_time` 规则，复杂的周期需要测试一下（例如“每月最后一天”要用 `on last day of month`）。 --- 如果你愿意，我可以帮你写一个 **可以在 ledger-cli 里自动生成全年循环交易的脚本**，这样 journal 文件里就是全部真实交易而不是临时规则。这样你就可以和普通账目一起查询和编辑。 你是想要这种**脚本生成法**还是**\\~ every week**这种原生 Ledger 周期规则？ 问答1 问：\n">
+<title>ledger设置循环交易</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/ledger%E8%AE%BE%E7%BD%AE%E5%BE%AA%E7%8E%AF%E4%BA%A4%E6%98%93/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="ledger设置循环交易">
+<meta property='og:description' content=" ledger设置循环交易 ledger-cli如何支持循环交易 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 在 **ledger-cli** 里，“循环交易” 一般是指一种定期重复发生的交易，比如每周/每月的工资、房租、水电费、转账等。 Ledger 本身并不会像记账软件那样自动生成未来的交易，但它有两种机制可以支持这种场景： --- ## **1. 用 `~` 定义周期性交易（Periodic Transactions）** Ledger 的 journal 文件可以直接写定期规则，让它在报表时自动扩展出这些交易。 语法大致是： ```ledger ~ every month on the 5th Expenses:Rent 2000 CNY Assets:Bank:ICBC ``` ### 常用的周期表达式 ,* `~ monthly` / `~ every month` → 每月 ,* `~ weekly` / `~ every week` → 每周 ,* `~ daily` / `~ every day` → 每天 ,* 可以指定日期：`~ every month on the 15th` ,* 可以指定范围：`~ weekly from 2025/01/01 until 2025/12/31` 例如： ```ledger ~ every week Expenses:运营商:中国联通 49.75 CNY Assets:Bank:工商银行 ``` 这个不会直接写入账本，只会在你运行报表命令时自动计算这些交易的总额。 --- ## **2. 生成实际交易（Materializing Periodic Transactions）** 如果你想让循环交易“落地”成普通交易（方便将来修改或导出），可以用 Ledger 自带的扩展功能： ```bash ledger -f ledger.dat print --period &#34;from 2025/01/01 to 2025/12/31&#34; ``` 配合 `--actual` 可以生成真实交易而不是仅显示。 也可以用 **ledger-autoschedule**（第三方脚本）将周期交易展开为实际的交易条目存到文件里。 --- ## **3. 注意事项** ,* 周期交易不会自动影响期初余额，因为它是计算时临时展开的。 ,* 如果你的循环交易金额会变化（比如水费），那最好生成实际交易手动调整。 ,* Ledger 的日期计算遵循 `boost::date_time` 规则，复杂的周期需要测试一下（例如“每月最后一天”要用 `on last day of month`）。 --- 如果你愿意，我可以帮你写一个 **可以在 ledger-cli 里自动生成全年循环交易的脚本**，这样 journal 文件里就是全部真实交易而不是临时规则。这样你就可以和普通账目一起查询和编辑。 你是想要这种**脚本生成法**还是**\\~ every week**这种原生 Ledger 周期规则？ 问答1 问：\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/ledger%E8%AE%BE%E7%BD%AE%E5%BE%AA%E7%8E%AF%E4%BA%A4%E6%98%93/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ledger' /><meta property='article:tag' content='ledger-cli' /><meta property='article:published_time' content='2025-08-13T18:04:20&#43;08:00'/><meta property='article:modified_time' content='2025-08-13T18:04:20&#43;08:00'/>
+<meta name="twitter:title" content="ledger设置循环交易">
+<meta name="twitter:description" content=" ledger设置循环交易 ledger-cli如何支持循环交易 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 在 **ledger-cli** 里，“循环交易” 一般是指一种定期重复发生的交易，比如每周/每月的工资、房租、水电费、转账等。 Ledger 本身并不会像记账软件那样自动生成未来的交易，但它有两种机制可以支持这种场景： --- ## **1. 用 `~` 定义周期性交易（Periodic Transactions）** Ledger 的 journal 文件可以直接写定期规则，让它在报表时自动扩展出这些交易。 语法大致是： ```ledger ~ every month on the 5th Expenses:Rent 2000 CNY Assets:Bank:ICBC ``` ### 常用的周期表达式 ,* `~ monthly` / `~ every month` → 每月 ,* `~ weekly` / `~ every week` → 每周 ,* `~ daily` / `~ every day` → 每天 ,* 可以指定日期：`~ every month on the 15th` ,* 可以指定范围：`~ weekly from 2025/01/01 until 2025/12/31` 例如： ```ledger ~ every week Expenses:运营商:中国联通 49.75 CNY Assets:Bank:工商银行 ``` 这个不会直接写入账本，只会在你运行报表命令时自动计算这些交易的总额。 --- ## **2. 生成实际交易（Materializing Periodic Transactions）** 如果你想让循环交易“落地”成普通交易（方便将来修改或导出），可以用 Ledger 自带的扩展功能： ```bash ledger -f ledger.dat print --period &#34;from 2025/01/01 to 2025/12/31&#34; ``` 配合 `--actual` 可以生成真实交易而不是仅显示。 也可以用 **ledger-autoschedule**（第三方脚本）将周期交易展开为实际的交易条目存到文件里。 --- ## **3. 注意事项** ,* 周期交易不会自动影响期初余额，因为它是计算时临时展开的。 ,* 如果你的循环交易金额会变化（比如水费），那最好生成实际交易手动调整。 ,* Ledger 的日期计算遵循 `boost::date_time` 规则，复杂的周期需要测试一下（例如“每月最后一天”要用 `on last day of month`）。 --- 如果你愿意，我可以帮你写一个 **可以在 ledger-cli 里自动生成全年循环交易的脚本**，这样 journal 文件里就是全部真实交易而不是临时规则。这样你就可以和普通账目一起查询和编辑。 你是想要这种**脚本生成法**还是**\\~ every week**这种原生 Ledger 周期规则？ 问答1 问：\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">ledger设置循环交易</a>
+<ul>
+<li><a href="#headline-2">ledger-cli如何支持循环交易</a>
+<ul>
+<li><a href="#headline-3">问答1</a>
+</li>
+<li><a href="#headline-4">问答2</a>
+</li>
+<li><a href="#headline-5">问答3</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/ledger%E8%AE%BE%E7%BD%AE%E5%BE%AA%E7%8E%AF%E4%BA%A4%E6%98%93/">ledger设置循环交易</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 13, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+ledger设置循环交易
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+ledger-cli如何支持循环交易
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<div class="src src-markdown">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">在 <span class="gs">**ledger-cli**</span> 里，“循环交易” 一般是指一种定期重复发生的交易，比如每周/每月的工资、房租、水电费、转账等。
+</span></span><span class="line"><span class="cl">Ledger 本身并不会像记账软件那样自动生成未来的交易，但它有两种机制可以支持这种场景：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## **1. 用 `~` 定义周期性交易（Periodic Transactions）**
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Ledger 的 journal 文件可以直接写定期规则，让它在报表时自动扩展出这些交易。
+</span></span><span class="line"><span class="cl">语法大致是：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```ledger
+</span></span></span><span class="line"><span class="cl">~ every month on the 5th
+</span></span><span class="line"><span class="cl">    Expenses:Rent               2000 CNY
+</span></span><span class="line"><span class="cl">    Assets:Bank:ICBC
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">### 常用的周期表达式
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">,* <span class="sb">`~ monthly`</span> / <span class="sb">`~ every month`</span> → 每月
+</span></span><span class="line"><span class="cl">,* <span class="sb">`~ weekly`</span> / <span class="sb">`~ every week`</span> → 每周
+</span></span><span class="line"><span class="cl">,* <span class="sb">`~ daily`</span> / <span class="sb">`~ every day`</span> → 每天
+</span></span><span class="line"><span class="cl">,* 可以指定日期：<span class="sb">`~ every month on the 15th`</span>
+</span></span><span class="line"><span class="cl">,* 可以指定范围：<span class="sb">`~ weekly from 2025/01/01 until 2025/12/31`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">例如：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```ledger
+</span></span></span><span class="line"><span class="cl">~ every week
+</span></span><span class="line"><span class="cl">    Expenses:运营商:中国联通    49.75 CNY
+</span></span><span class="line"><span class="cl">    Assets:Bank:工商银行
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">这个不会直接写入账本，只会在你运行报表命令时自动计算这些交易的总额。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## **2. 生成实际交易（Materializing Periodic Transactions）**
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">如果你想让循环交易“落地”成普通交易（方便将来修改或导出），可以用 Ledger 自带的扩展功能：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```bash
+</span></span></span><span class="line"><span class="cl">ledger -f ledger.dat print --period <span class="s2">&#34;from 2025/01/01 to 2025/12/31&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">配合 <span class="sb">`--actual`</span> 可以生成真实交易而不是仅显示。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">也可以用 <span class="gs">**ledger-autoschedule**</span>（第三方脚本）将周期交易展开为实际的交易条目存到文件里。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## **3. 注意事项**
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">,* 周期交易不会自动影响期初余额，因为它是计算时临时展开的。
+</span></span><span class="line"><span class="cl">,* 如果你的循环交易金额会变化（比如水费），那最好生成实际交易手动调整。
+</span></span><span class="line"><span class="cl">,* Ledger 的日期计算遵循 <span class="sb">`boost::date_time`</span> 规则，复杂的周期需要测试一下（例如“每月最后一天”要用 <span class="sb">`on last day of month`</span>）。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">如果你愿意，我可以帮你写一个 <span class="gs">**可以在 ledger-cli 里自动生成全年循环交易的脚本**</span>，这样 journal 文件里就是全部真实交易而不是临时规则。这样你就可以和普通账目一起查询和编辑。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">你是想要这种**脚本生成法**还是**\~ every week**这种原生 Ledger 周期规则？</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+问答1
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<p>
+问：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">~/.../2025/05 $ ledger -f ledger.ledger bal -b 08/31
+</span></span><span class="line"><span class="cl">While parsing file <span class="s2">&#34;/data/data/com.termux/files/home/yenao_ledger.github.io/ledger/2025/05/ledger.ledger&#34;</span>, line 1843:
+</span></span><span class="line"><span class="cl">While parsing periodic transaction:
+</span></span><span class="line"><span class="cl">&gt; ~ every daily
+</span></span><span class="line"><span class="cl">Error: Unexpected date period token <span class="s1">&#39;daily&#39;</span>
+</span></span><span class="line"><span class="cl">~/.../2025/05 $</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+答：</p>
+<div class="src src-markdown">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">你这个报错是因为 Ledger 的周期语法写错了。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="sb">`~ every daily`</span> 不是合法写法，Ledger 期望的是：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">,* <span class="sb">`~ daily`</span>（每天）
+</span></span><span class="line"><span class="cl">,* <span class="sb">`~ weekly`</span>（每周）
+</span></span><span class="line"><span class="cl">,* <span class="sb">`~ monthly`</span>（每月）
+</span></span><span class="line"><span class="cl">,* 或者 <span class="sb">`~ every day`</span> / <span class="sb">`~ every week`</span> / <span class="sb">`~ every month`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">,**所以改成这样就行：**
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```ledger
+</span></span></span><span class="line"><span class="cl">~ daily
+</span></span><span class="line"><span class="cl">    Expenses:运营商:中国联通    49.75 CNY
+</span></span><span class="line"><span class="cl">    Assets:Bank:工商银行
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">或者：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```ledger
+</span></span></span><span class="line"><span class="cl">~ every day
+</span></span><span class="line"><span class="cl">    Expenses:运营商:中国联通    49.75 CNY
+</span></span><span class="line"><span class="cl">    Assets:Bank:工商银行
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">### 补充：一些合法写法
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```ledger
+</span></span></span><span class="line"><span class="cl">~ every week
+</span></span><span class="line"><span class="cl">~ weekly
+</span></span><span class="line"><span class="cl">~ every month
+</span></span><span class="line"><span class="cl">~ monthly
+</span></span><span class="line"><span class="cl">~ every month on the 15th
+</span></span><span class="line"><span class="cl">~ weekly from 2025/01/01 until 2025/12/31
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="sb">`every`</span> 后面不能直接跟 <span class="sb">`daily`</span> 这种词，必须是 <span class="sb">`day`</span> / <span class="sb">`week`</span> / <span class="sb">`month`</span> 或用简写。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">我还注意到你是在 <span class="sb">`-b 08/31`</span> 这种日期范围里跑的，如果用 periodic transaction，它只会在查询期间自动生成符合条件的虚拟交易，所以日期语法也要匹配你要看的范围。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">如果你愿意，我可以帮你整理一个 <span class="gs">**Ledger 周期交易合法语法速查表**</span>，这样以后就不会踩坑了。
+</span></span><span class="line"><span class="cl">你要我直接写出来吗？</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-4">
+<h4 id="headline-4">
+问答2
+</h4>
+<div id="outline-text-headline-4" class="outline-text-4">
+<p>
+问：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">~/.../2025/05 $ tail ledger.ledger -n <span class="m">4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">~ daily
+</span></span><span class="line"><span class="cl">    Assets:Bank:工商银行                      -49.75 CNY
+</span></span><span class="line"><span class="cl">    Expenses:运营商:中国联通
+</span></span><span class="line"><span class="cl">~/.../2025/05 $</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+答：</p>
+<div class="src src-markdown">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">我看出问题了――你已经写了 <span class="sb">`~ daily`</span> 的周期交易，但运行 <span class="sb">`ledger bal`</span> 时它没显示出来，是因为：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">1.</span> <span class="gs">**Ledger 默认不展开 periodic transaction**</span>
+</span></span><span class="line"><span class="cl">   周期交易（<span class="sb">`~ daily`</span> 这种）只是一个“规则”，Ledger 在报表里只有在**查询区间有符合条件的日期**时才会临时生成虚拟交易。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">2.</span> <span class="gs">**你的命令少了 `--period` 或指定时间范围的方式**</span>
+</span></span><span class="line"><span class="cl">   <span class="sb">`-b 08/13`</span> 只是设置**起始日期**，但 Ledger 只会在该日期或之后符合周期规则的日期里计算。
+</span></span><span class="line"><span class="cl">   如果今天是 8/13，<span class="sb">`~ daily`</span> 会从 8/13 开始每天都加一笔，但 <span class="sb">`bal`</span> 只显示累计余额，不会列出每一天的交易。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">3.</span> <span class="gs">**Periodic transaction 默认不影响总余额（unless `--forecast`）**</span>
+</span></span><span class="line"><span class="cl">   如果你想在余额中看到它的影响，需要加 <span class="sb">`--forecast`</span> 选项。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">### 解决方法
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">#### 如果只是想让它在余额里生效
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```bash
+</span></span></span><span class="line"><span class="cl">ledger -f ledger.ledger bal -b 2025/08/01 --forecast
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="sb">`--forecast`</span> 会把周期规则展开成未来的交易（直到你设定的结束日期）。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">#### 如果想查看具体展开的交易
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```bash
+</span></span></span><span class="line"><span class="cl">ledger -f ledger.ledger register --period <span class="s2">&#34;2025/08/01 to 2025/08/31&#34;</span> --forecast
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">#### 如果要生成实际交易到文件
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```bash
+</span></span></span><span class="line"><span class="cl">ledger -f ledger.ledger print --forecast --period <span class="s2">&#34;2025/08/01 to 2025/08/31&#34;</span> &gt; expanded.ledger
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">这样 <span class="sb">`expanded.ledger`</span> 里就是每天的那笔 49.75 CNY，跟普通交易一样。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">?? 小结：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">,* <span class="sb">`~ daily`</span> 不会自动在原文件变成多行交易，它只是规则。
+</span></span><span class="line"><span class="cl">,* <span class="sb">`--forecast`</span> 是让规则“生效”的关键。
+</span></span><span class="line"><span class="cl">,* 如果要真正存成普通交易，需要用 <span class="sb">`print`</span> 导出。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">我可以帮你写一个 <span class="gs">**自动生成全年循环交易并保存到原账本的命令**</span>，这样以后不需要 <span class="sb">`--forecast`</span> 也能直接算余额。
+</span></span><span class="line"><span class="cl">你要我帮你做这个吗？这样 49.75 CNY 会真的每天出现在账本里。</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+问答3
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<p>
+问：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">~/.../2025/05 $ ledger -f ledger.ledger bal -b 08/13 --forecast
+</span></span><span class="line"><span class="cl">While parsing option <span class="s1">&#39;--forecast&#39;</span>
+</span></span><span class="line"><span class="cl">Error: No argument provided <span class="k">for</span> --forecast-while
+</span></span><span class="line"><span class="cl">~/.../2025/05 $</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+答：</p>
+<div class="src src-markdown">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-markdown" data-lang="markdown"><span class="line"><span class="cl">你这个报错是因为 <span class="ge">**</span><span class="sb">`--forecast`</span> 在新版 ledger-cli 已经被改成 <span class="sb">`--forecast-while`</span>**，而且它不是单独开关，而是需要跟一个“条件表达式”。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">也就是说，旧版本的：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```bash
+</span></span></span><span class="line"><span class="cl">ledger ... --forecast
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">在你这个版本里变成了：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```bash
+</span></span></span><span class="line"><span class="cl">ledger ... --forecast-while &lt;EXPRESSION&gt;
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## 用法示例
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">比如你想让它一直生成交易直到 2025/08/31：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```bash
+</span></span></span><span class="line"><span class="cl">ledger -f ledger.ledger bal <span class="se">\
+</span></span></span><span class="line"><span class="cl">    -b 2025/08/01 <span class="se">\
+</span></span></span><span class="line"><span class="cl">    --forecast-while <span class="s2">&#34;date &lt;= [2025-08-31]&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">这样 ledger 会展开 <span class="sb">`~ daily`</span> 规则，从 8/1 到 8/31 每天一笔。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">如果想看具体的交易明细而不是余额：
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s">```bash
+</span></span></span><span class="line"><span class="cl">ledger -f ledger.ledger register <span class="se">\
+</span></span></span><span class="line"><span class="cl">    --forecast-while <span class="s2">&#34;date &lt;= [2025-08-31]&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s">```</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="gu">## 解释
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">,* <span class="sb">`--forecast-while`</span> 会不断展开 periodic transactions，直到条件不成立。
+</span></span><span class="line"><span class="cl">,* 条件里可以用 <span class="sb">`date`</span>（交易日期）、<span class="sb">`amount`</span> 等 ledger 表达式。
+</span></span><span class="line"><span class="cl">,* 日期要用方括号 <span class="sb">`[YYYY-MM-DD]`</span>，这样它会被当成日期而不是字符串。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">我可以帮你写一个命令，直接**展开全年循环交易并保存到新的 ledger 文件**，这样你就不需要每次都加 <span class="sb">`--forecast-while`</span> 了。
+</span></span><span class="line"><span class="cl">这样要做吗？这样你 ledger 文件里就有真实的每天交易记录了。</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/ledger/">Ledger</a>
+        
+            <a href="/tags/ledger-cli/">Ledger-Cli</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

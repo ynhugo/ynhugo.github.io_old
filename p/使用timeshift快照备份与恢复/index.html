@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 使用Timeshift快照备份与恢复 前言 在 Linux 系统的运维管理中，可靠的快照备份与恢复工具尤为关键。TimeShift 作为一款轻量化却功能强大的快照工具，广泛应用于系统状态的备份与恢复。本文将深入探讨 TimeShift 的原理、备份方式、优缺点，以及如何通过真实操作验证 TimeShift 的备份恢复效果。\n一、TimeShift 的工作原理 TimeShift 通过文件系统快照实现备份与恢复，支持基于 rsync 和 Btrfs 两种模式：\nRsync 模式：利用 rsync 工具的增量备份功能，仅备份变化的文件。 Btrfs 模式：依赖于 Btrfs 文件系统的原生快照功能，以更高的效率完成备份。 优缺点对比：\n优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。 缺点：无法选择备份特定文件或目录，限制较大。 二、TimeShift 的备份方式 TimeShift 的备份分为手动和自动：\n手动备份：通过命令行或图形界面，按需创建快照。 自动备份：根据配置文件中的时间策略自动创建快照。支持按小时、每日、每周和每月等多种频率。 优缺点对比：\n优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。 缺点：无法选择备份特定文件或目录，限制较大。 三、TimeShift 的安装和配置 在 Ubuntu Server 24 系统上，安装 TimeShift：\n1 2 sudo apt update sudo apt install timeshift 配置 TimeShift 时，可以编辑 /etc/timeshift/timeshift.json 文件，将“备份设备”设置为适合的磁盘，并根据需求修改快照的 exclude（排除）项。\n">
+<title>使用Timeshift快照备份与恢复</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/%E4%BD%BF%E7%94%A8timeshift%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="使用Timeshift快照备份与恢复">
+<meta property='og:description' content=" 使用Timeshift快照备份与恢复 前言 在 Linux 系统的运维管理中，可靠的快照备份与恢复工具尤为关键。TimeShift 作为一款轻量化却功能强大的快照工具，广泛应用于系统状态的备份与恢复。本文将深入探讨 TimeShift 的原理、备份方式、优缺点，以及如何通过真实操作验证 TimeShift 的备份恢复效果。\n一、TimeShift 的工作原理 TimeShift 通过文件系统快照实现备份与恢复，支持基于 rsync 和 Btrfs 两种模式：\nRsync 模式：利用 rsync 工具的增量备份功能，仅备份变化的文件。 Btrfs 模式：依赖于 Btrfs 文件系统的原生快照功能，以更高的效率完成备份。 优缺点对比：\n优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。 缺点：无法选择备份特定文件或目录，限制较大。 二、TimeShift 的备份方式 TimeShift 的备份分为手动和自动：\n手动备份：通过命令行或图形界面，按需创建快照。 自动备份：根据配置文件中的时间策略自动创建快照。支持按小时、每日、每周和每月等多种频率。 优缺点对比：\n优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。 缺点：无法选择备份特定文件或目录，限制较大。 三、TimeShift 的安装和配置 在 Ubuntu Server 24 系统上，安装 TimeShift：\n1 2 sudo apt update sudo apt install timeshift 配置 TimeShift 时，可以编辑 /etc/timeshift/timeshift.json 文件，将“备份设备”设置为适合的磁盘，并根据需求修改快照的 exclude（排除）项。\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/%E4%BD%BF%E7%94%A8timeshift%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='timeshift' /><meta property='article:published_time' content='2025-06-22T13:07:14&#43;08:00'/><meta property='article:modified_time' content='2025-06-22T13:07:14&#43;08:00'/>
+<meta name="twitter:title" content="使用Timeshift快照备份与恢复">
+<meta name="twitter:description" content=" 使用Timeshift快照备份与恢复 前言 在 Linux 系统的运维管理中，可靠的快照备份与恢复工具尤为关键。TimeShift 作为一款轻量化却功能强大的快照工具，广泛应用于系统状态的备份与恢复。本文将深入探讨 TimeShift 的原理、备份方式、优缺点，以及如何通过真实操作验证 TimeShift 的备份恢复效果。\n一、TimeShift 的工作原理 TimeShift 通过文件系统快照实现备份与恢复，支持基于 rsync 和 Btrfs 两种模式：\nRsync 模式：利用 rsync 工具的增量备份功能，仅备份变化的文件。 Btrfs 模式：依赖于 Btrfs 文件系统的原生快照功能，以更高的效率完成备份。 优缺点对比：\n优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。 缺点：无法选择备份特定文件或目录，限制较大。 二、TimeShift 的备份方式 TimeShift 的备份分为手动和自动：\n手动备份：通过命令行或图形界面，按需创建快照。 自动备份：根据配置文件中的时间策略自动创建快照。支持按小时、每日、每周和每月等多种频率。 优缺点对比：\n优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。 缺点：无法选择备份特定文件或目录，限制较大。 三、TimeShift 的安装和配置 在 Ubuntu Server 24 系统上，安装 TimeShift：\n1 2 sudo apt update sudo apt install timeshift 配置 TimeShift 时，可以编辑 /etc/timeshift/timeshift.json 文件，将“备份设备”设置为适合的磁盘，并根据需求修改快照的 exclude（排除）项。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">使用Timeshift快照备份与恢复</a>
+<ul>
+<li><a href="#headline-2">前言</a>
+</li>
+<li><a href="#headline-3">一、TimeShift 的工作原理</a>
+</li>
+<li><a href="#headline-4">二、TimeShift 的备份方式</a>
+</li>
+<li><a href="#headline-5">三、TimeShift 的安装和配置</a>
+</li>
+<li><a href="#headline-6">四、TimeShift 的实际操作流程</a>
+<ul>
+<li><a href="#headline-7">创建系统快照</a>
+</li>
+<li><a href="#headline-8">查看已创建的快照</a>
+</li>
+<li><a href="#headline-9">删除旧快照</a>
+</li>
+<li><a href="#headline-10">当系统出现问题时，通过还原快照快速恢复：</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-11">五、TimeShift 快照操作步骤</a>
+<ul>
+<li><a href="#headline-12">设置备份目标目录</a>
+</li>
+<li><a href="#headline-13">自定义备份和排除目录</a>
+</li>
+<li><a href="#headline-14">开始备份操作</a>
+</li>
+<li><a href="#headline-15">还原到指定快照</a>
+</li>
+<li><a href="#headline-16">测试 TimeShift 备份还原的效果</a>
+<ul>
+<li><a href="#headline-17">备份前的系统状态</a>
+</li>
+<li><a href="#headline-18">安装 PHP 并验证</a>
+</li>
+<li><a href="#headline-19">还原到快照并验证</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#headline-20">六、总结</a>
+<ul>
+<li><a href="#headline-21">补充说明：默认不备份的目录与原因</a>
+</li>
+<li><a href="#headline-22">活动目录的备份注意事项</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-23">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E4%BD%BF%E7%94%A8timeshift%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/">使用Timeshift快照备份与恢复</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 22, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+使用Timeshift快照备份与恢复
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+前言
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>
+在 Linux 系统的运维管理中，可靠的快照备份与恢复工具尤为关键。TimeShift 作为一款轻量化却功能强大的快照工具，广泛应用于系统状态的备份与恢复。本文将深入探讨 TimeShift 的原理、备份方式、优缺点，以及如何通过真实操作验证 TimeShift 的备份恢复效果。</p>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+一、TimeShift 的工作原理
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>
+TimeShift 通过文件系统快照实现备份与恢复，支持基于 rsync 和 Btrfs 两种模式：</p>
+<ul>
+<li>Rsync 模式：利用 rsync 工具的增量备份功能，仅备份变化的文件。</li>
+<li>Btrfs 模式：依赖于 Btrfs 文件系统的原生快照功能，以更高的效率完成备份。</li>
+</ul>
+<p>优缺点对比：</p>
+<ul>
+<li>优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。</li>
+<li>缺点：无法选择备份特定文件或目录，限制较大。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+二、TimeShift 的备份方式
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>
+TimeShift 的备份分为手动和自动：</p>
+<ul>
+<li>手动备份：通过命令行或图形界面，按需创建快照。</li>
+<li>自动备份：根据配置文件中的时间策略自动创建快照。支持按小时、每日、每周和每月等多种频率。</li>
+</ul>
+<p>优缺点对比：</p>
+<ul>
+<li>优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。</li>
+<li>缺点：无法选择备份特定文件或目录，限制较大。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+三、TimeShift 的安装和配置
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<p>
+在 Ubuntu Server 24 系统上，安装 TimeShift：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo apt update
+</span></span><span class="line"><span class="cl">  sudo apt install timeshift</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+配置 TimeShift 时，可以编辑 /etc/timeshift/timeshift.json 文件，将“备份设备”设置为适合的磁盘，并根据需求修改快照的 exclude（排除）项。</p>
+<div class="src src-json">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;backup_device_uuid&#34;</span><span class="p">:</span> <span class="s2">&#34;YOUR-DEVICE-UUID&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;btrfs_mode&#34;</span><span class="p">:</span> <span class="s2">&#34;false&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;schedule_daily&#34;</span><span class="p">:</span> <span class="s2">&#34;true&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;count_daily&#34;</span><span class="p">:</span> <span class="s2">&#34;5&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;exclude&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;/home/**&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;/root/**&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+四、TimeShift 的实际操作流程
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<div id="outline-container-headline-7" class="outline-4">
+<h4 id="headline-7">
+创建系统快照
+</h4>
+<div id="outline-text-headline-7" class="outline-text-4">
+<p>
+首先执行一次完整快照：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo timeshift --create --comments <span class="s2">&#34;Initial Snapshot&#34;</span> --tags D</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-4">
+<h4 id="headline-8">
+查看已创建的快照
+</h4>
+<div id="outline-text-headline-8" class="outline-text-4">
+<p>
+使用以下命令查看当前快照：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo timeshift --list</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-4">
+<h4 id="headline-9">
+删除旧快照
+</h4>
+<div id="outline-text-headline-9" class="outline-text-4">
+<p>
+可以使用 –delete 参数删除旧快照，释放空间：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo timeshift --delete --snapshot <span class="s2">&#34;Name（时间）&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># 如下：</span>
+</span></span><span class="line"><span class="cl">  sudo timeshift --delete --snapshot <span class="s1">&#39;2024-11-11_17-23-52&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-4">
+<h4 id="headline-10">
+当系统出现问题时，通过还原快照快速恢复：
+</h4>
+<div id="outline-text-headline-10" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo timeshift --restore --snapshot <span class="s2">&#34;Name（时间）&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># 如下：</span>
+</span></span><span class="line"><span class="cl">  sudo timeshift --restore --snapshot <span class="s1">&#39;2024-11-11_17-23-52&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-3">
+<h3 id="headline-11">
+五、TimeShift 快照操作步骤
+</h3>
+<div id="outline-text-headline-11" class="outline-text-3">
+<p>
+下面是详细的备份和恢复步骤。</p>
+<div id="outline-container-headline-12" class="outline-4">
+<h4 id="headline-12">
+设置备份目标目录
+</h4>
+<div id="outline-text-headline-12" class="outline-text-4">
+<p>
+我们可以通过配置 /etc/timeshift/timeshift.json 中的 backup_device_uuid 来确定备份位置。
+通过如下命令可以查看磁盘 UUID ：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  blkid
+</span></span><span class="line"><span class="cl">  <span class="c1"># 或</span>
+</span></span><span class="line"><span class="cl">  lsblk -o name,mountpoint,size,uuid</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-4">
+<h4 id="headline-13">
+自定义备份和排除目录
+</h4>
+<div id="outline-text-headline-13" class="outline-text-4">
+<p>
+在配置文件中 exclude 参数中可以追加自定义排除的目录：</p>
+<div class="src src-json">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="s2">&#34;exclude&#34;</span><span class="err">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;/home/**&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;/root/**&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-4">
+<h4 id="headline-14">
+开始备份操作
+</h4>
+<div id="outline-text-headline-14" class="outline-text-4">
+<p>
+执行一次完整备份：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo timeshift --create --comments <span class="s2">&#34;Manual Backup&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-4">
+<h4 id="headline-15">
+还原到指定快照
+</h4>
+<div id="outline-text-headline-15" class="outline-text-4">
+<p>
+使用 –restore 命令将系统还原至特定快照：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo timeshift --restore --snapshot <span class="s2">&#34;Name（时间）&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 如下：</span>
+</span></span><span class="line"><span class="cl">sudo timeshift --restore --snapshot <span class="s1">&#39;2024-11-11_17-23-52&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-4">
+<h4 id="headline-16">
+测试 TimeShift 备份还原的效果
+</h4>
+<div id="outline-text-headline-16" class="outline-text-4">
+<p>
+我们可以通过安装一个新的软件（如 PHP），来测试 TimeShift 快照的备份与还原是否正常工作：</p>
+<div id="outline-container-headline-17" class="outline-5">
+<h5 id="headline-17">
+备份前的系统状态
+</h5>
+<div id="outline-text-headline-17" class="outline-text-5">
+<p>
+首先，执行一次完整的系统快照。确保在备份前，系统中还没有安装 PHP，执行以下命令验证：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">php --version</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>若系统返回 “command not found”，说明 PHP 未安装。</p>
+<p>
+现在运行以下命令创建一个快照：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo timeshift --create --comments <span class="s2">&#34;Pre-PHP Installation Snapshot&#34;</span> --tags D</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-18" class="outline-5">
+<h5 id="headline-18">
+安装 PHP 并验证
+</h5>
+<div id="outline-text-headline-18" class="outline-text-5">
+<p>
+接着，我们通过包管理器安装 PHP：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt update
+</span></span><span class="line"><span class="cl">sudo apt install php</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+安装完成后，再次检查 PHP 是否正确安装：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">php --version</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>若显示 PHP 的版本信息，则说明 PHP 安装成功。</p>
+</div>
+</div>
+<div id="outline-container-headline-19" class="outline-5">
+<h5 id="headline-19">
+还原到快照并验证
+</h5>
+<div id="outline-text-headline-19" class="outline-text-5">
+<p>
+现在，我们将系统恢复到安装 PHP 之前的快照状态：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo timeshift --restore --snapshot <span class="s1">&#39;Pre-PHP Installation Snapshot&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+还原过程完成后，系统将恢复到之前的快照状态。在恢复后会重启系统，以确保所有配置正确应用。</p>
+<p>
+重启后，运行以下命令再次检查 PHP 状态：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">php --version</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+如果系统返回 “command not found”，说明 TimeShift 成功还原了快照，PHP 的安装也一并被移除。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-20" class="outline-3">
+<h3 id="headline-20">
+六、总结
+</h3>
+<div id="outline-text-headline-20" class="outline-text-3">
+<p>
+TimeShift 在系统故障恢复和状态回滚方面具有显著优势，特别是可以在不影响当前系统使用的情况下，快速创建快照并恢复系统至任意指定状态。本文通过实际操作展示了 TimeShift 的可靠性和操作简便性，使其成为服务器和工作环境下备份与灾难恢复的理想选择。</p>
+<div id="outline-container-headline-21" class="outline-4">
+<h4 id="headline-21">
+补充说明：默认不备份的目录与原因
+</h4>
+<div id="outline-text-headline-21" class="outline-text-4">
+<p>
+TimeShift 默认会跳过以下一些目录，以确保备份和恢复的效率、空间占用和可靠性：</p>
+<ul>
+<li>/dev、/proc、/sys、/run：这些目录属于动态、虚拟文件系统。它们包含设备文件、内核和进程信息等。备份这些目录并没有实际意义，因为其内容会在系统启动时自动生成，且不包含持久数据。</li>
+<li>/tmp：临时文件目录，用于存放短期使用的文件。系统重启后，该目录内容会被清空，备份它没有实际作用。</li>
+<li>/media、/mnt：挂载点目录，主要用于挂载外部存储设备和临时文件系统。备份它们可能会包含无关的外部数据，占用备份空间。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-22" class="outline-4">
+<h4 id="headline-22">
+活动目录的备份注意事项
+</h4>
+<div id="outline-text-headline-22" class="outline-text-4">
+<p>
+对于一些活动性很强的目录，如 /var 和 /home 下的部分数据（例如数据库和日志文件），TimeShift 也建议谨慎对待：</p>
+<ul>
+<li>活动中的数据库或日志文件：例如 /var/lib/mysql 中的数据库文件，通常需要在数据库服务关闭或停止写入时才能进行一致性备份。如果数据库在运行时备份，可能会导致数据不完整或数据不一致问题。</li>
+<li>动态生成的日志和缓存：例如 /var/log 中的日志文件和 /var/cache 中的缓存文件。这些内容在系统使用过程中持续变化，备份时会浪费大量存储空间，并且在恢复时不会对系统配置和正常功能产生实际影响。</li>
+</ul>
+<p>因此，TimeShift 主要关注系统配置和核心文件，而将频繁更新的活动目录或临时文件排除在备份之外，以优化备份效率和系统稳定性。</p>
+<p>
+TimeShift 非常适合服务器和工作环境的备份和灾难恢复需求。理解这些目录的特性，可以帮助我们更好地使用 TimeShift 进行备份和恢复，确保备份的完整性和有效性。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-23" class="outline-3">
+<h3 id="headline-23">
+参考链接
+</h3>
+<div id="outline-text-headline-23" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/weixin_41004518/article/details/143702369">深入探究 Linux 系统的快照备份与恢复：TimeShift 实践与原理解析</a></p>
+<p>
+<a href="https://blog.csdn.net/zhaominyong/article/details/119577309">Linux 中获取硬盘分区或文件系统的 UUID 的七种方法</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linux/">Linux</a>
+        
+            <a href="/tags/timeshift/">Timeshift</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/jq%E7%94%A8%E6%B3%95/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">jq用法</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

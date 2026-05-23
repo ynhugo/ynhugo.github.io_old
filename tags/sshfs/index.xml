@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Sshfs on Example Site</title>
+        <link>https://ynhugo.github.io/tags/sshfs/</link>
+        <description>Recent content in Sshfs on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 26 Mar 2024 00:24:22 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/sshfs/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>sshfs教程</title>
+        <link>https://ynhugo.github.io/p/sshfs%E6%95%99%E7%A8%8B/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:22 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/sshfs%E6%95%99%E7%A8%8B/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+安装SSHFS
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-2&#34;&gt;
+在Ubuntu / Debian上安装
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;SSHFS是基于Linux的软件，需要安装在本地计算机上。在基于Ubuntu和Debian的系统上，它可以通过apt-get安装。&lt;/p&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo apt-get install sshfs&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-3&#34;&gt;
+在Mac OSX上安装
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;您可以在Mac OSX上安装SSHFS。您需要从这里下载FUSE和SSHFS&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-4&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-4&#34;&gt;
+在Windows上安装
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-4&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;要在Windows中安装SSHFS，您需要从google代码存储库中获取最新的win-sshfs软件包。可以在下面找到下载链接。下载软件包后，双击以启动安装程序。系统可能会提示您下载其他文件，如果是这样，安装程序将下载.NETFramework 4.0并安装。&lt;/p&gt;
+&lt;p&gt;
+下载地址：&lt;a href=&#34;https://github.com/feo-cz/win-sshfs/releases&#34;&gt;https://github.com/feo-cz/win-sshfs/releases&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-5&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-5&#34;&gt;
+Linux
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-5&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;div id=&#34;outline-container-headline-6&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-6&#34;&gt;
+挂载远程文件系统
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-6&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;以下说明适用于Ubuntu/Debian和OSX。有关Windows系统的说明，请参阅本教程的结尾。&lt;/p&gt;
+&lt;p&gt;
+首先，我们需要创建一个本地目录来安装服务器的文件系统。&lt;/p&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo mkdir /mnt/droplet &amp;lt;--replace &lt;span class=&#34;s2&#34;&gt;&amp;#34;droplet&amp;#34;&lt;/span&gt; whatever you prefer&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+现在我们可以使用sshfs命令在本地挂载文件系统。如果您的VPS是使用密码登录创建的，则以下命令将执行此操作。在此步骤中，系统将要求您提供虚拟服务器的root密码。&lt;/p&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo sshfs -o allow_other,defer_permissions root@xxx.xxx.xxx.xxx:/ /mnt/droplet&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+如果您的服务器配置为通过ssh密钥授权进行登录，则需要告诉sshfs命令使用您的公钥。系统会要求您输入在使用ssh-keygen创建密钥期间使用的密码。&lt;/p&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo sshfs -o allow_other,defer_permissions,IdentityFile&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;~/.ssh/id_rsa root@xxx.xxx.xxx.xxx:/ /mnt/droplet&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+现在，您可以使用服务器上的文件，就好像它是连接到本地计算机的物理设备一样。例如，如果移动到本地计算机上的/mnt /droplet目录，在本地创建文件，该文件将同步显示在虚拟服务器上。同样，您可以将文件复制到/mnt/droplet文件夹中，它们将在后台上传到您的服务器。&lt;/p&gt;
+&lt;p&gt;
+请务必注意，此过程仅为您的服务器提供临时挂载点。如果虚拟服务器或本地计算机已关闭或重新启动，则需要使用相同的过程再次挂载它。&lt;/p&gt;
+&lt;p&gt;
+卸载远程文件系统
+当您不再需要安装点时，您只需使用该命令卸载它即可&lt;/p&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo umount /mnt/droplet&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+永久挂载远程文件系统
+SSHFS还允许为远程文件系统设置永久挂载点。这将设置一个挂载点，就算你重新启动本地计算机和服务器它也持续存在。为了设置永久挂载点，我们需要编辑本地计算机上/etc/fstab文件，以便在每次启动系统时自动挂载文件系统。&lt;/p&gt;
+&lt;p&gt;
+首先，我们需要用文本编辑器编辑/etc/fstab文件。&lt;/p&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sudo nano /etc/fstab&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+添加以下条目&lt;/p&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  sshfs#root@xxx.xxx.xxx.xxx:/ /mnt/droplet&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+保存对/etc/fstab文件的更改并在重新启动。&lt;/p&gt;
+&lt;p&gt;
+应该注意的是，在本地永久安装VPS文件系统存在潜在的安全风险。如果您的本地计算机受到攻击，它可能会直接感染到您的服务器。因此，建议不要在生产服务器上设置永久挂载。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-7&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-7&#34;&gt;
+参考链接
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-7&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://cloud.tencent.com/developer/article/1168897&#34;&gt;通过SSHFS远程挂载文件夹，方便远程coding！原创&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-8&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-8&#34;&gt;
+windows
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-8&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;div id=&#34;outline-container-headline-9&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-9&#34;&gt;
+方式一：winfsp + sshfs-win （推荐）
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-9&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;div id=&#34;outline-container-headline-10&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-10&#34;&gt;
+下载
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-10&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+直接前往 github 对应项目的 release 中下载最新版本即可，需注意 sshfs-win 对 winfsp 的最低版本依赖（下载最新版本一般即可满足），另外有GUI（用户图形操作界面）可供下载，建议下载。&lt;/p&gt;
+&lt;p&gt;
+sshfs-win：&lt;a href=&#34;https://github.com/billziss-gh/sshfs-win/releases&#34;&gt;https://github.com/billziss-gh/sshfs-win/releases&lt;/a&gt;
+winfsp：&lt;a href=&#34;https://github.com/billziss-gh/winfsp/releases&#34;&gt;https://github.com/billziss-gh/winfsp/releases&lt;/a&gt;
+SSHFS-Win Manager：&lt;a href=&#34;https://github.com/evsar3/sshfs-win-manager/releases&#34;&gt;https://github.com/evsar3/sshfs-win-manager/releases&lt;/a&gt; (GUI，可选)&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-11&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-11&#34;&gt;
+快速使用
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-11&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+可使用GUI图形界面（方式A），亦可手动挂载（方式B），建议使用GUI图形界面。&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-12&#34; class=&#34;outline-5&#34;&gt;
+&lt;h5 id=&#34;headline-12&#34;&gt;
+方式A：使用GUI（推荐）
+&lt;/h5&gt;
+&lt;div id=&#34;outline-text-headline-12&#34; class=&#34;outline-text-5&#34;&gt;
+&lt;p&gt;新建连接
+安装好上述3个软件后，打开 GUI 界面添加连接，点击 Add Connection：&lt;/p&gt;
+&lt;p&gt;
+依次填写每一项内容：&lt;/p&gt;
+&lt;p&gt;
+NAME：给远程服务器取个名字
+Connection：远程服务器配置，如IP、端口、远程用户名、验证方式（密码，或密钥[参考：SSH密钥管理及免密码登陆]）
+Remote：远程目录配置，挂载后将成为本地对应盘符的根目录
+Local：本地盘符设置（注意不要与现有盘符冲突）&lt;/p&gt;
+&lt;p&gt;
+点击 Save 保存。&lt;/p&gt;
+&lt;p&gt;
+挂载远程目录
+在主界面中点击连接按钮，即可将远程目录挂在到本地&lt;/p&gt;
+&lt;p&gt;
+此时远程目录已经出现在了本地资源管理器中，未出现可刷新一下，或直接点击GUI主界面连接按钮左边的打开文件夹按钮即可进入目录。&lt;/p&gt;
+&lt;p&gt;
+长期使用建议在主界面的设置中打开开机自启&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-13&#34; class=&#34;outline-5&#34;&gt;
+&lt;h5 id=&#34;headline-13&#34;&gt;
+方式B：手动挂载
+&lt;/h5&gt;
+&lt;div id=&#34;outline-text-headline-13&#34; class=&#34;outline-text-5&#34;&gt;
+&lt;p&gt;挂载路径&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;SSH 使用默认端口（22）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;此时，对应的 ssh 登陆命令为 ssh username@remote_ip，那么使用 sshfs-win 挂载远程服务器根目录和 home 目录的地址为：&lt;/p&gt;
+&lt;div class=&#34;src src-txt&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 根目录
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\\sshfs.r\username@remote_ip\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# home 目录
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\\sshfs\username@remote_ip\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 或者 \\sshfs.r\username@remote_ip\home\username\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;例如：\\sshfs.r\xieqk@10.168.9.87\，注意路径里面的分隔符为 windows 使用的反斜杠 \。&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;SSH 使用其它端口（外网端口转发连接内网服务器）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;此时，ssh 登陆命令为 ssh -p port username@remote_ip，对应的 sshfs-win 挂载远程服务器根目录和 home 目录的地址在之前的 remote_ip 后加上 !port 即可：&lt;/p&gt;
+&lt;div class=&#34;src src-txt&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 根目录
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\\sshfs.r\username@remote_ip!port\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# home 目录
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\\sshfs\username@remote_ip!port\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;# 或者：\\sshfs.r\username@remote_ip!port\home\username\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;例如：\\sshfs.r\xieqk@168.10.9.87!34567\。&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+登陆挂载远程目录
+将上述 sshfs 路径输入 windows 文件资源管理器地址栏，输入密码即可进入。（注意：弹窗中的账号显示的为 windows 的本地账号，不用修改。远程服务器的用户名已经包含在之前的 sshfs 路径之中，所以此处只需正常输入远程用户对应的密码即可。）&lt;/p&gt;
+&lt;p&gt;
+对于常用的远程目录，建议通过 映射网络驱动器 长期挂载于本地。&lt;/p&gt;
+&lt;p&gt;
+在 映射网络驱动器 中，可自行分配驱动器盘号，然后在 文件夹 处输入上述 sshfs 路径，点击完成后在弹出的登录框处输入密码即可完成挂载。&lt;/p&gt;
+&lt;p&gt;
+之后，可在 windows 文件浏览器的网络位置中看到已经挂载的所有远程目录：&lt;/p&gt;
+&lt;p&gt;
+详细参数（可跳过，需要时再查看）
+sshfs-win 具体语法形式如下，其中 [] 中的内容为选填项，若为默认值可不填：&lt;/p&gt;
+&lt;div class=&#34;src src-txt&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-txt&#34; data-lang=&#34;txt&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\\sshfs\[LOCUSER=]REMUSER@HOST[!PORT][\PATH]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\\sshfs.r\[LOCUSER=]REMUSER@HOST[!PORT][\PATH]
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\\sshfs.k\[LOCUSER=]REMUSER@HOST[!PORT][\PATH]&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+REMUSER: 即 remote user，指 SSH 登陆远程主机时的用户名。&lt;/p&gt;
+&lt;p&gt;
+HOST：远程服务器，如 IP 地址，DNS 服务器名称 或 DNS 服务器 IP 地址&lt;/p&gt;
+&lt;p&gt;
+PORT：SSH 登陆所使用的端口号 (选填，默认为 SSH(22) 端口).&lt;/p&gt;
+&lt;p&gt;
+PATH：进入的远程服务器路径，可按照如下设置:&lt;/p&gt;
+&lt;p&gt;
+前缀 sshfs 对应为 HOST:~REMUSER/PATH，即远程服务器上相对于该用户 home 目录的相对路径：/home/remote_user/PATH。
+前缀 sshfs.r 对应为 HOST:/PATH 即远程服务器上相对于根(root)目录的路径：/PATH。
+前缀 sshfs.k 与第一项相同，对应为 HOST:~REMUSER/PATH，但它使用 Windows 本地当前用户位于 %USERPROFILE%/.ssh/id_rsa 下的 SSH 密钥进行认证（需进行远程服务器配置，可参靠SSH 密钥管理及免密码登陆），不需要输入密码。（备注：使用前两项连接时，windows 也会提醒记住密码，所以只需要第一次输入密码并记住即可）
+LOCUSER windows本地用户名，可不填。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-14&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-14&#34;&gt;
+方式二：win-sshfs + Dokan（旧，不推荐）
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-14&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;div id=&#34;outline-container-headline-15&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-15&#34;&gt;
+下载
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-15&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+win-sshfs 依赖 Dokan，所以先安装 Dokan 再正常安装 win-sshfs 即可：&lt;/p&gt;
+&lt;p&gt;
+Dokan：&lt;a href=&#34;https://github.com/dokan-dev/dokany/releases&#34;&gt;https://github.com/dokan-dev/dokany/releases&lt;/a&gt;
+win-sshfs：&lt;a href=&#34;https://github.com/dokan-dev/dokany/releases&#34;&gt;https://github.com/dokan-dev/dokany/releases&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-16&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-16&#34;&gt;
+使用
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-16&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+打开win-sshfs，点击Add，在界面输入要链接的服务器的地址、端口号和用户名密码等信息，并设置好要挂载的目录，点击save，在确保可以通过ssh链接的情况下，点击mount，就可以将该目录挂载到本地了，如下图所示：&lt;/p&gt;
+&lt;p&gt;
+查看我的电脑，发现在 设备和驱动器 中多了一个存储设备（与方式一显示在网络位置中不同）&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-17&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-17&#34;&gt;
+参考链接
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-17&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://blog.xieqiaokang.com/posts/505416489.html&#34;&gt;Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://blog.csdn.net/xieqiaokang/article/details/109557482&#34;&gt;Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

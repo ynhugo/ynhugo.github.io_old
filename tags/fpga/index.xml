@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Fpga on Example Site</title>
+        <link>https://ynhugo.github.io/tags/fpga/</link>
+        <description>Recent content in Fpga on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sat, 04 Apr 2026 15:48:45 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/fpga/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>如何根据型号区分 Zynq 与 Zynq MPSoC</title>
+        <link>https://ynhugo.github.io/p/%E5%A6%82%E4%BD%95%E6%A0%B9%E6%8D%AE%E5%9E%8B%E5%8F%B7%E5%8C%BA%E5%88%86-zynq-%E4%B8%8E-zynq-mpsoc/</link>
+        <pubDate>Sat, 04 Apr 2026 15:48:45 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E5%A6%82%E4%BD%95%E6%A0%B9%E6%8D%AE%E5%9E%8B%E5%8F%B7%E5%8C%BA%E5%88%86-zynq-%E4%B8%8E-zynq-mpsoc/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+一句话速查表
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;最直接的方法：看型号开头。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&#34;verbatim&#34;&gt;XC7Z&lt;/code&gt; → Zynq-7000（即通常说的 Zynq）&lt;/li&gt;
+&lt;li&gt;&lt;code class=&#34;verbatim&#34;&gt;XCZU&lt;/code&gt; → Zynq UltraScale+ MPSoC（即 ZynqMP）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-2&#34;&gt;
+详细区分方法
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-3&#34;&gt;
+1. 看前缀：一眼识别
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;前缀特征&lt;/th&gt;
+&lt;th&gt;对应系列&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code class=&#34;verbatim&#34;&gt;XC7Z...&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Zynq-7000&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code class=&#34;verbatim&#34;&gt;XCZU...&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Zynq UltraScale+ MPSoC&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;
+&amp;gt; 特殊前缀说明：
+&amp;gt; - &lt;code class=&#34;verbatim&#34;&gt;XA7Z...&lt;/code&gt; 或 &lt;code class=&#34;verbatim&#34;&gt;XQ7Z...&lt;/code&gt; 仍为 Zynq-7000（车规/军工级）
+&amp;gt; - &lt;code class=&#34;verbatim&#34;&gt;XAZU...&lt;/code&gt; 或 &lt;code class=&#34;verbatim&#34;&gt;XQZU...&lt;/code&gt; 仍为 Zynq MPSoC&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-4&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-4&#34;&gt;
+2. 核心差异速查表
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-4&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;对比项&lt;/th&gt;
+&lt;th&gt;Zynq-7000&lt;/th&gt;
+&lt;th&gt;Zynq MPSoC&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;处理器&lt;/td&gt;
+&lt;td&gt;双核 ARM Cortex-A9&lt;/td&gt;
+&lt;td&gt;四核 Cortex-A53 + 双核 Cortex-R5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;工艺&lt;/td&gt;
+&lt;td&gt;28nm&lt;/td&gt;
+&lt;td&gt;16nm&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;内存支持&lt;/td&gt;
+&lt;td&gt;DDR3&lt;/td&gt;
+&lt;td&gt;DDR4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;典型主频&lt;/td&gt;
+&lt;td&gt;~1GHz&lt;/td&gt;
+&lt;td&gt;A53: ~1.5GHz&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;常见型号&lt;/td&gt;
+&lt;td&gt;XC7Z010, XC7Z020, XC7Z045&lt;/td&gt;
+&lt;td&gt;XCZU2CG, XCZU3EG, XCZU7EG, XCZU19EG&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;高速外设&lt;/td&gt;
+&lt;td&gt;PCIe Gen2, USB 2.0&lt;/td&gt;
+&lt;td&gt;PCIe Gen3/4, USB 3.0, SATA, DP&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;典型应用&lt;/td&gt;
+&lt;td&gt;工业控制、嵌入式视觉、ADAS&lt;/td&gt;
+&lt;td&gt;AI推理、4K/8K视频、云加速、SDR&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-5&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-5&#34;&gt;
+型号示例
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-5&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;div class=&#34;src src-text&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Zynq-7000:     XC7Z010-1CLG400C, XA7Z020-1CLG484Q
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Zynq MPSoC:    XCZU3EG-1SFVC784E, XAZU4EV-1SFVC784Q&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-6&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-6&#34;&gt;
+后缀速查（Zynq MPSoC）
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-6&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;后缀&lt;/th&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;CG&lt;/td&gt;
+&lt;td&gt;仅 Cortex-A53（无 R5 和 GPU）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;EG&lt;/td&gt;
+&lt;td&gt;A53 + R5 + GPU（最常用）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;EV&lt;/td&gt;
+&lt;td&gt;EG + 视频编解码器（H.264/H.265）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-7&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-7&#34;&gt;
+总结
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-7&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;记住一条核心规则：**7Z → 老款 Zynq，ZU → 新款 ZynqMP**&lt;/li&gt;
+&lt;li&gt;选型建议：需要高算力、DDR4、多核异构、AI/视频 → 选 ZynqMP；成本敏感或已有成熟方案 → Zynq-7000&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-8&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-8&#34;&gt;
+参考与扩展
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-8&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.xilinx.com/products/silicon-devices/soc/zynq-7000.html&#34;&gt;Zynq-7000 官方页面&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.xilinx.com/products/silicon-devices/soc/zynq-ultrascale-mpsoc.html&#34;&gt;Zynq UltraScale+ MPSoC 官方页面&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

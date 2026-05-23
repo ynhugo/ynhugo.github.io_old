@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 基于麒麟系统kylin_v10的Qt程序权限问题笔记 问题描述 环境：\n设备：麒麟 ARM64 (Phytium D2000/8 E8C) 程序：Qt5 + Qt Charts，调用 SGDMA 和 Ascend 310P 编译：本机编译，RUNPATH 已配置 现象：\n普通用户运行 ./pcie_sgdma → ACL 库正常，但 SGDMA 设备无权限 sudo 运行 → SGDMA 设备可访问，但环境变量被清除，Ascend 库找不到 Debug 模式下 Qt Charts 波形绘制异常（已通过注释 OpenGL 代码解决） 设备信息\n设备 路径 当前权限 SGDMA C2H 通道 /dev/ydma0_c2h_0~7 crw——- root:root 600 SGDMA H2C 通道 /dev/ydma0_h2c_0~7 crw——- root:root 600 SGDMA User 设备 /dev/ydma0_user crw——- root:root 600 解决方案：udev 规则\n">
+<title>基于麒麟系统kylin_v10的Qt程序权限问题笔记</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/%E5%9F%BA%E4%BA%8E%E9%BA%92%E9%BA%9F%E7%B3%BB%E7%BB%9Fkylin_v10%E7%9A%84qt%E7%A8%8B%E5%BA%8F%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98%E7%AC%94%E8%AE%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="基于麒麟系统kylin_v10的Qt程序权限问题笔记">
+<meta property='og:description' content=" 基于麒麟系统kylin_v10的Qt程序权限问题笔记 问题描述 环境：\n设备：麒麟 ARM64 (Phytium D2000/8 E8C) 程序：Qt5 + Qt Charts，调用 SGDMA 和 Ascend 310P 编译：本机编译，RUNPATH 已配置 现象：\n普通用户运行 ./pcie_sgdma → ACL 库正常，但 SGDMA 设备无权限 sudo 运行 → SGDMA 设备可访问，但环境变量被清除，Ascend 库找不到 Debug 模式下 Qt Charts 波形绘制异常（已通过注释 OpenGL 代码解决） 设备信息\n设备 路径 当前权限 SGDMA C2H 通道 /dev/ydma0_c2h_0~7 crw——- root:root 600 SGDMA H2C 通道 /dev/ydma0_h2c_0~7 crw——- root:root 600 SGDMA User 设备 /dev/ydma0_user crw——- root:root 600 解决方案：udev 规则\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/%E5%9F%BA%E4%BA%8E%E9%BA%92%E9%BA%9F%E7%B3%BB%E7%BB%9Fkylin_v10%E7%9A%84qt%E7%A8%8B%E5%BA%8F%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98%E7%AC%94%E8%AE%B0/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='kylin' /><meta property='article:tag' content='310P' /><meta property='article:tag' content='PCIE' /><meta property='article:published_time' content='2026-05-19T09:59:09&#43;08:00'/><meta property='article:modified_time' content='2026-05-19T09:59:09&#43;08:00'/>
+<meta name="twitter:title" content="基于麒麟系统kylin_v10的Qt程序权限问题笔记">
+<meta name="twitter:description" content=" 基于麒麟系统kylin_v10的Qt程序权限问题笔记 问题描述 环境：\n设备：麒麟 ARM64 (Phytium D2000/8 E8C) 程序：Qt5 + Qt Charts，调用 SGDMA 和 Ascend 310P 编译：本机编译，RUNPATH 已配置 现象：\n普通用户运行 ./pcie_sgdma → ACL 库正常，但 SGDMA 设备无权限 sudo 运行 → SGDMA 设备可访问，但环境变量被清除，Ascend 库找不到 Debug 模式下 Qt Charts 波形绘制异常（已通过注释 OpenGL 代码解决） 设备信息\n设备 路径 当前权限 SGDMA C2H 通道 /dev/ydma0_c2h_0~7 crw——- root:root 600 SGDMA H2C 通道 /dev/ydma0_h2c_0~7 crw——- root:root 600 SGDMA User 设备 /dev/ydma0_user crw——- root:root 600 解决方案：udev 规则\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">基于麒麟系统kylin_v10的Qt程序权限问题笔记</a>
+<ul>
+<li><a href="#headline-2">问题描述</a>
+<ul>
+<li><a href="#headline-3">步骤 1：创建 udev 规则</a>
+</li>
+<li><a href="#headline-4">步骤 2：重载 udev 规则</a>
+</li>
+<li><a href="#headline-5">步骤 3：验证</a>
+</li>
+<li><a href="#headline-6">步骤 4：测试程序</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-7">相关命令</a>
+</li>
+<li><a href="#headline-8">备选方案</a>
+</li>
+<li><a href="#headline-9">架构说明</a>
+</li>
+<li><a href="#headline-10">问题回顾</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E5%9F%BA%E4%BA%8E%E9%BA%92%E9%BA%9F%E7%B3%BB%E7%BB%9Fkylin_v10%E7%9A%84qt%E7%A8%8B%E5%BA%8F%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98%E7%AC%94%E8%AE%B0/">基于麒麟系统kylin_v10的Qt程序权限问题笔记</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">May 19, 2026</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+基于麒麟系统kylin_v10的Qt程序权限问题笔记
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+问题描述
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>
+环境：</p>
+<ul>
+<li>设备：麒麟 ARM64 (Phytium D2000/8 E8C)</li>
+<li>程序：Qt5 + Qt Charts，调用 SGDMA 和 Ascend 310P</li>
+<li>编译：本机编译，RUNPATH 已配置</li>
+</ul>
+<p>现象：</p>
+<ol>
+<li>普通用户运行 ./pcie_sgdma → ACL 库正常，但 SGDMA 设备无权限</li>
+<li>sudo 运行 → SGDMA 设备可访问，但环境变量被清除，Ascend 库找不到</li>
+<li>Debug 模式下 Qt Charts 波形绘制异常（已通过注释 OpenGL 代码解决）</li>
+</ol>
+<p>设备信息</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>设备</th>
+<th>路径</th>
+<th>当前权限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SGDMA C2H 通道</td>
+<td>/dev/ydma0_c2h_0~7</td>
+<td>crw——- root:root 600</td>
+</tr>
+<tr>
+<td>SGDMA H2C 通道</td>
+<td>/dev/ydma0_h2c_0~7</td>
+<td>crw——- root:root 600</td>
+</tr>
+<tr>
+<td>SGDMA User 设备</td>
+<td>/dev/ydma0_user</td>
+<td>crw——- root:root 600</td>
+</tr>
+</tbody>
+</table></div>
+<p>
+解决方案：udev 规则</p>
+<p>
+通过 udev 规则修改设备权限，让普通用户可以直接访问 /dev/ydma0_*，而不需要 sudo。</p>
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+步骤 1：创建 udev 规则
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="p">|</span> sudo tee /etc/udev/rules.d/99-ydma.rules <span class="s">&lt;&lt; &#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">SUBSYSTEM==&#34;ydma&#34;, GROUP=&#34;kylin&#34;, MODE=&#34;0660&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<ul>
+<li>SUBSYSTEM==&#34;ydma&#34; - 匹配 ydma 子系统设备</li>
+<li>GROUP=&#34;kylin&#34; - 设备所属组改为 kylin 组</li>
+<li>MODE=&#34;0660&#34; - 组用户有读写权限</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-4">
+<h4 id="headline-4">
+步骤 2：重载 udev 规则
+</h4>
+<div id="outline-text-headline-4" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo udevadm control --reload-rules
+</span></span><span class="line"><span class="cl">sudo udevadm trigger --subsystem-match<span class="o">=</span>ydma</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+或选择重启系统：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo reboot</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+步骤 3：验证
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ls -la /dev/ydma0_*
+</span></span><span class="line"><span class="cl"><span class="c1"># 预期：root:kylin, crw-rw---- (660)</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-4">
+<h4 id="headline-6">
+步骤 4：测试程序
+</h4>
+<div id="outline-text-headline-6" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> output_exe
+</span></span><span class="line"><span class="cl">./pcie_sgdma</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+相关命令
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>查看设备权限</td>
+<td>ls -la /dev/ydma0_*</td>
+<td></td>
+</tr>
+<tr>
+<td>查看用户组</td>
+<td>whoami &amp;&amp; groups</td>
+<td></td>
+</tr>
+<tr>
+<td>检查库依赖</td>
+<td>ldd ./pcie_sgdma</td>
+<td></td>
+</tr>
+<tr>
+<td>检查 RUNPATH</td>
+<td>readelf -d ./pcie_sgdma \</td>
+<td>grep RUNPATH</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
+备选方案
+</h3>
+<div id="outline-text-headline-8" class="outline-text-3">
+<p>
+临时 chmod（重启后可能失效）：</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chmod <span class="m">660</span> /dev/ydma0_*</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-3">
+<h3 id="headline-9">
+架构说明
+</h3>
+<div id="outline-text-headline-9" class="outline-text-3">
+<p>
+程序同时使用 SGDMA 和 Ascend 310P：</p>
+<ul>
+<li>SGDMA (/dev/ydma0_*) - 需要 root 权限访问 PCI Express 设备</li>
+<li>Ascend 310P (libascendcl.so) - 通过 RUNPATH 嵌入，ACL 初始化在 main.cpp</li>
+</ul>
+<p>关键代码流程：</p>
+<ol>
+<li>main.cpp 调用 aclInit, aclrtSetDevice 初始化 Ascend</li>
+<li>boardoperate.cpp 调用 Pcie_Device_Open/Close 操作 SGDMA</li>
+<li>boardthread.cpp 使用 Pcie_DMA_Read/Write 传输数据，同时使用 aclrtMemcpy</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-3">
+<h3 id="headline-10">
+问题回顾
+</h3>
+<div id="outline-text-headline-10" class="outline-text-3">
+<p>
+环境：麒麟 ARM64 + Qt5 + SGDMA + Ascend 310P</p>
+<p>
+问题 1：Debug 模式下 Qt Charts 波形绘制异常</p>
+<ul>
+<li></li>
+</ul>
+<p>原因：OpenGL 驱动加载失败</p>
+<ul>
+<li></li>
+</ul>
+<p>解决：注释掉调用 OpenGL 的代码</p>
+<hr>
+<p>
+问题 2：普通用户无权限访问 SGDMA 设备</p>
+<ul>
+<li></li>
+</ul>
+<p>原因：/dev/ydma0_* 属于 root，权限 600</p>
+<ul>
+<li></li>
+</ul>
+<p>解决：通过 udev 规则设置设备权限</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;SUBSYSTEM==&#34;ydma&#34;, GROUP=&#34;kylin&#34;, MODE=&#34;0660&#34;&#39;</span> <span class="p">|</span> sudo tee /etc/udev/rules.d/99-ydma.rules
+</span></span><span class="line"><span class="cl">sudo udevadm control --reload-rules</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<hr>
+<p>
+问题 3：Ascend 库（libmsprofiler.so）找不到</p>
+<ul>
+<li></li>
+</ul>
+<p>原因：动态链接器未搜索 RUNPATH 路径</p>
+<ul>
+<li></li>
+</ul>
+<p>解决：配置 ldconfig 永久生效</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;/usr/local/Ascend/ascend-toolkit/latest/aarch64-linux/lib64&#34;</span> <span class="p">|</span> sudo tee /etc/ld.so.conf.d/ascend.conf
+</span></span><span class="line"><span class="cl">sudo ldconfig</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/kylin/">Kylin</a>
+        
+            <a href="/tags/310p/">310P</a>
+        
+            <a href="/tags/pcie/">PCIE</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/%E5%9F%BA%E4%BA%8Ekylin_v10%E7%9A%84qt5%E9%AA%8C%E8%AF%81310p%E5%BA%93/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">基于kylin_v10的Qt5验证310P库</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

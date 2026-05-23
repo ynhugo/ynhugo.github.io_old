@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>五笔 on Example Site</title>
+        <link>https://ynhugo.github.io/tags/%E4%BA%94%E7%AC%94/</link>
+        <description>Recent content in 五笔 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 26 Mar 2024 00:24:26 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/%E4%BA%94%E7%AC%94/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>五笔入门</title>
+        <link>https://ynhugo.github.io/p/%E4%BA%94%E7%AC%94%E5%85%A5%E9%97%A8/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:26 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E4%BA%94%E7%AC%94%E5%85%A5%E9%97%A8/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+参考链接
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.iwubi.net/zigen&#34;&gt; &lt;code class=&#34;verbatim&#34;&gt;五笔字根表&lt;/code&gt; &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.iwubi.net/article/5&#34;&gt; &lt;code class=&#34;verbatim&#34;&gt;五笔字型拆字规则&lt;/code&gt; &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.iwubi.net/shurufa&#34;&gt; &lt;code class=&#34;verbatim&#34;&gt;输入法&lt;/code&gt; &lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+本博客内容大多参考 &lt;a href=&#34;https://www.iwubi.net/article/2&#34;&gt; &lt;code class=&#34;verbatim&#34;&gt;爱五笔&lt;/code&gt; &lt;/a&gt; 网站&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-2&#34;&gt;
+五笔字根表
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+可以先把25个字母背下来，再背对应的字根，按照从左往右，从上往下的顺序记忆25个字母：QWERT、YUIOP、ASDFG、HJKLM、XCVBN，其中字母Z没有分配字根，因此不用管字母Z&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-3&#34;&gt;
+86版五笔口诀
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+五笔字根在键盘上分五个区，对应&amp;#34;横、竖、撇、捺、折&amp;#34;这五个区，以下五个区中字母对应按键，数字对应每个区的第一个按键到第五个按键，例如11表示第一个区的第一个按键，33表示第三个区第三个按键，42代表第四个区第二个按键&lt;/p&gt;
+&lt;div id=&#34;outline-container-headline-4&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-4&#34;&gt;
+横区(一)
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-4&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+G 11 王旁青头戋(兼)五一&lt;/p&gt;
+&lt;p&gt;
+F 12 土士二干十寸雨&lt;/p&gt;
+&lt;p&gt;
+D 13 大犬三(羊)古石厂&lt;/p&gt;
+&lt;p&gt;
+S 14 木丁西&lt;/p&gt;
+&lt;p&gt;
+A 15 工戈草头右框七&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-5&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-5&#34;&gt;
+竖区(丨)
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-5&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+H 21 目具上止卜虎皮&lt;/p&gt;
+&lt;p&gt;
+J 22 日早两竖与虫依&lt;/p&gt;
+&lt;p&gt;
+K 23 口与川，字根稀&lt;/p&gt;
+&lt;p&gt;
+L 24 田甲方框四车力&lt;/p&gt;
+&lt;p&gt;
+M 25 山由贝，下框几&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-6&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-6&#34;&gt;
+撇(丿)
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-6&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+T 31 禾竹一撇双人立，反文条头共三一&lt;/p&gt;
+&lt;p&gt;
+R 32 白手看头三二斤&lt;/p&gt;
+&lt;p&gt;
+E 33 月彡(衫)乃用家衣底&lt;/p&gt;
+&lt;p&gt;
+W 34 人和八，三四里&lt;/p&gt;
+&lt;p&gt;
+Q 35 金勺缺点无尾鱼，犬旁留儿一点夕，氏无七(妻)&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-7&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-7&#34;&gt;
+捺(丶)
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-7&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+Y 41 言文方广在四一，高头一捺谁人去&lt;/p&gt;
+&lt;p&gt;
+U 42 立辛两点六门疒&lt;/p&gt;
+&lt;p&gt;
+I 43 水旁兴头小倒立&lt;/p&gt;
+&lt;p&gt;
+O 44 火业头，四点米&lt;/p&gt;
+&lt;p&gt;
+P 45 之字军盖道建底，摘礻(示)衤(衣)&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-8&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-8&#34;&gt;
+折区(乙)
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-8&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;p&gt;
+N 51 已半巳满不出己，左框折尸心和羽&lt;/p&gt;
+&lt;p&gt;
+B 52 子耳了也框向上&lt;/p&gt;
+&lt;p&gt;
+V 53 女刀九臼山朝西&lt;/p&gt;
+&lt;p&gt;
+C 54 又巴马，丢矢矣&lt;/p&gt;
+&lt;p&gt;
+X 55 慈母无心弓和匕，幼无力&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-9&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-9&#34;&gt;
+86版五笔字型字根表及助记词
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-9&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+&lt;img src=&#34;resources/五笔入门/86wubi.jpg&#34; alt=&#34;resources/五笔入门/86wubi.jpg&#34; title=&#34;resources/五笔入门/86wubi.jpg&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-10&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-10&#34;&gt;
+五笔一级简码表
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-10&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+打出来一个汉字最多要敲四次按键，而一级简码只需要敲一次按键&lt;/p&gt;
+&lt;p&gt;
+在五笔输入法打字中，汉字输入时，出现率最高的文字，被有效的分配了“一级简码”，它充分的利用了26个“字母键（Z键除外）”，使用这项特有的功能可以有效的提高打字速度。&lt;/p&gt;
+&lt;p&gt;
+关于一级简码，这里特别推荐一个网站：&lt;a href=&#34;https://www.iwubi.net/article/2&#34;&gt;https://www.iwubi.net/article/2&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;img src=&#34;resources/五笔入门/wubiyijijijianma.jpg&#34; alt=&#34;resources/五笔入门/wubiyijijijianma.jpg&#34; title=&#34;resources/五笔入门/wubiyijijijianma.jpg&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-11&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-11&#34;&gt;
+五笔拆字原理
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-11&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;p&gt;
+关于五笔拆字原理，这里推荐一个网站，感觉这个网站讲的挺好的：&lt;a href=&#34;https://www.iwubi.net/article/5&#34;&gt;https://www.iwubi.net/article/5&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

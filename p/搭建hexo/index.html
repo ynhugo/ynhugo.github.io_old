@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="笔记文件 点击访问 搭建hexo.pdf\n视频教程 hexo博客搭建教程 准备工作 需要安装：nodejs、git-bash 因官网下载太慢，这里使用nodejs的国内网站和git-bash的镜像网站进行下载 nodejs链接：http://nodejs.cn/download/ nodejs下载地址：https://cdn.npmmirror.com/binaries/node/v16.17.0/node-v16.17.0-x64.msi git-bash链接：https://registry.npmmirror.com/binary.html?path=git-for-windows/ git-bash下载地址：https://cdn.npmmirror.com/binaries/git-for-windows/v2.38.0.windows.1/Git-2.38.0-64-bit.exe 接下来安装nodejs和git-bash nodejs安装教程： git-bash安装教程： 开始搭建 接下来开始搭建hexo： 在git-bash中执行命令 npm install hexo-cli -g\t#安装博客框架 执行 hexo init myBlog\t#生成博客的站点目录 执行命令 hexo s 可以启动本地博客，博客显示的内容 在站点目录的 source/_posts/ 路径下 修改配置文件 准备一个qq邮箱之外的邮箱，邮箱的实用性越高越好，因此我建议的邮箱是微软的Outlook邮箱，官网是 outlook.live.com 可以在注册一个Outlook邮箱,注册完Outlook邮箱之后就可以到 github.com官网 注册了，搭建hexo的前提是在github.com官网 注册并搭建一个用于部署hexo的仓库。 在github注册并新建一个仓库，仓库格式为 用户名.github.io，然后将该仓库生成的\tssh链接复制下来，打开刚刚创建的站点目录下的 _config.yml vim _config.yml 在该文件的最下面，有一段代码： 1 2 3 4 # Deployment ## Docs: https://hexo.io/docs/one-command-deployment deploy: type: &#39; &#39; 将代码更改为： 1 2 3 4 5 6 # Deployment ## Docs: https://hexo.io/docs/one-command-deployment deploy: type: &#39;git&#39;\t#部署博客类型 repo: git@github.com:zzfxdyn/zzfxdyn.github.io.git\t#仓库生成的链接 branch: main\t#仓库默认分支 同时将该文件中url：http://example.com改为 https://仓库名 npm install hexo-deployer-git --save\t#安装博客部署插件 生成ssh密钥 ssh-keygen -t rsa -C &quot;注册github时的邮箱&quot; 连续多次回车，生成ssh密钥在，按照提示的路径进入该路径下复制 id_rsa.pub 的内容 默认路径为 ~/.ssh,在git-bash中通过命令 cd ~/.ssh 进入该路径 cat id_rsa.pub\t#显示id_rsa.pub的内容，然后鼠标选中复制 复制的内容为生成的密钥的公钥，回到浏览器，打开github的设置，点击SSH and GPG Keys， 添加新的密钥，自定义一个名字，粘贴密钥并确定 回到git-bash，配置好站点目录文件后执行命令 git config --global user.email &quot;you@example.com&quot; git config --global user.name &quot;Your Name&quot; 执行 hexo clean &amp;&amp; hexo g &amp;&amp; hexo d 测试博客部署插件是否安装成功 vim编辑器的使用方法 vim之所以被称之为强大的编辑器是因为本身支持很多的模式 命令模式 命令行模式(底行模式) 编辑模式(插入模式) 可视 可视块 可视行 注意 : 不要使用vim打开目录文件 注意 : 用vim编写完成的文件内容要用正常的保存退出方式,不要直接关闭终端 否则会生成交换文件(交换文件是隐藏文件) vim hello.c | 按iIoOaA\tV\t按: 编辑模式&lt;----------命令模式----------&gt;命令行模式 ---------&gt;\t&lt;---------\t按esc\t按esc或者删掉: 命令行模式的操作 :w\t保存 :q\t退出 :wq\t保存并且退出 如何修改hosts文件 第一种方法 也是网上推荐较多的，比较常用的方法 ">
+<title>搭建hexo</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/%E6%90%AD%E5%BB%BAhexo/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="搭建hexo">
+<meta property='og:description' content="笔记文件 点击访问 搭建hexo.pdf\n视频教程 hexo博客搭建教程 准备工作 需要安装：nodejs、git-bash 因官网下载太慢，这里使用nodejs的国内网站和git-bash的镜像网站进行下载 nodejs链接：http://nodejs.cn/download/ nodejs下载地址：https://cdn.npmmirror.com/binaries/node/v16.17.0/node-v16.17.0-x64.msi git-bash链接：https://registry.npmmirror.com/binary.html?path=git-for-windows/ git-bash下载地址：https://cdn.npmmirror.com/binaries/git-for-windows/v2.38.0.windows.1/Git-2.38.0-64-bit.exe 接下来安装nodejs和git-bash nodejs安装教程： git-bash安装教程： 开始搭建 接下来开始搭建hexo： 在git-bash中执行命令 npm install hexo-cli -g\t#安装博客框架 执行 hexo init myBlog\t#生成博客的站点目录 执行命令 hexo s 可以启动本地博客，博客显示的内容 在站点目录的 source/_posts/ 路径下 修改配置文件 准备一个qq邮箱之外的邮箱，邮箱的实用性越高越好，因此我建议的邮箱是微软的Outlook邮箱，官网是 outlook.live.com 可以在注册一个Outlook邮箱,注册完Outlook邮箱之后就可以到 github.com官网 注册了，搭建hexo的前提是在github.com官网 注册并搭建一个用于部署hexo的仓库。 在github注册并新建一个仓库，仓库格式为 用户名.github.io，然后将该仓库生成的\tssh链接复制下来，打开刚刚创建的站点目录下的 _config.yml vim _config.yml 在该文件的最下面，有一段代码： 1 2 3 4 # Deployment ## Docs: https://hexo.io/docs/one-command-deployment deploy: type: &#39; &#39; 将代码更改为： 1 2 3 4 5 6 # Deployment ## Docs: https://hexo.io/docs/one-command-deployment deploy: type: &#39;git&#39;\t#部署博客类型 repo: git@github.com:zzfxdyn/zzfxdyn.github.io.git\t#仓库生成的链接 branch: main\t#仓库默认分支 同时将该文件中url：http://example.com改为 https://仓库名 npm install hexo-deployer-git --save\t#安装博客部署插件 生成ssh密钥 ssh-keygen -t rsa -C &quot;注册github时的邮箱&quot; 连续多次回车，生成ssh密钥在，按照提示的路径进入该路径下复制 id_rsa.pub 的内容 默认路径为 ~/.ssh,在git-bash中通过命令 cd ~/.ssh 进入该路径 cat id_rsa.pub\t#显示id_rsa.pub的内容，然后鼠标选中复制 复制的内容为生成的密钥的公钥，回到浏览器，打开github的设置，点击SSH and GPG Keys， 添加新的密钥，自定义一个名字，粘贴密钥并确定 回到git-bash，配置好站点目录文件后执行命令 git config --global user.email &quot;you@example.com&quot; git config --global user.name &quot;Your Name&quot; 执行 hexo clean &amp;&amp; hexo g &amp;&amp; hexo d 测试博客部署插件是否安装成功 vim编辑器的使用方法 vim之所以被称之为强大的编辑器是因为本身支持很多的模式 命令模式 命令行模式(底行模式) 编辑模式(插入模式) 可视 可视块 可视行 注意 : 不要使用vim打开目录文件 注意 : 用vim编写完成的文件内容要用正常的保存退出方式,不要直接关闭终端 否则会生成交换文件(交换文件是隐藏文件) vim hello.c | 按iIoOaA\tV\t按: 编辑模式&lt;----------命令模式----------&gt;命令行模式 ---------&gt;\t&lt;---------\t按esc\t按esc或者删掉: 命令行模式的操作 :w\t保存 :q\t退出 :wq\t保存并且退出 如何修改hosts文件 第一种方法 也是网上推荐较多的，比较常用的方法 ">
+<meta property='og:url' content='https://ynhugo.github.io/p/%E6%90%AD%E5%BB%BAhexo/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='hexo' /><meta property='article:published_time' content='2025-07-08T18:57:42&#43;08:00'/><meta property='article:modified_time' content='2025-07-08T18:57:42&#43;08:00'/>
+<meta name="twitter:title" content="搭建hexo">
+<meta name="twitter:description" content="笔记文件 点击访问 搭建hexo.pdf\n视频教程 hexo博客搭建教程 准备工作 需要安装：nodejs、git-bash 因官网下载太慢，这里使用nodejs的国内网站和git-bash的镜像网站进行下载 nodejs链接：http://nodejs.cn/download/ nodejs下载地址：https://cdn.npmmirror.com/binaries/node/v16.17.0/node-v16.17.0-x64.msi git-bash链接：https://registry.npmmirror.com/binary.html?path=git-for-windows/ git-bash下载地址：https://cdn.npmmirror.com/binaries/git-for-windows/v2.38.0.windows.1/Git-2.38.0-64-bit.exe 接下来安装nodejs和git-bash nodejs安装教程： git-bash安装教程： 开始搭建 接下来开始搭建hexo： 在git-bash中执行命令 npm install hexo-cli -g\t#安装博客框架 执行 hexo init myBlog\t#生成博客的站点目录 执行命令 hexo s 可以启动本地博客，博客显示的内容 在站点目录的 source/_posts/ 路径下 修改配置文件 准备一个qq邮箱之外的邮箱，邮箱的实用性越高越好，因此我建议的邮箱是微软的Outlook邮箱，官网是 outlook.live.com 可以在注册一个Outlook邮箱,注册完Outlook邮箱之后就可以到 github.com官网 注册了，搭建hexo的前提是在github.com官网 注册并搭建一个用于部署hexo的仓库。 在github注册并新建一个仓库，仓库格式为 用户名.github.io，然后将该仓库生成的\tssh链接复制下来，打开刚刚创建的站点目录下的 _config.yml vim _config.yml 在该文件的最下面，有一段代码： 1 2 3 4 # Deployment ## Docs: https://hexo.io/docs/one-command-deployment deploy: type: &#39; &#39; 将代码更改为： 1 2 3 4 5 6 # Deployment ## Docs: https://hexo.io/docs/one-command-deployment deploy: type: &#39;git&#39;\t#部署博客类型 repo: git@github.com:zzfxdyn/zzfxdyn.github.io.git\t#仓库生成的链接 branch: main\t#仓库默认分支 同时将该文件中url：http://example.com改为 https://仓库名 npm install hexo-deployer-git --save\t#安装博客部署插件 生成ssh密钥 ssh-keygen -t rsa -C &quot;注册github时的邮箱&quot; 连续多次回车，生成ssh密钥在，按照提示的路径进入该路径下复制 id_rsa.pub 的内容 默认路径为 ~/.ssh,在git-bash中通过命令 cd ~/.ssh 进入该路径 cat id_rsa.pub\t#显示id_rsa.pub的内容，然后鼠标选中复制 复制的内容为生成的密钥的公钥，回到浏览器，打开github的设置，点击SSH and GPG Keys， 添加新的密钥，自定义一个名字，粘贴密钥并确定 回到git-bash，配置好站点目录文件后执行命令 git config --global user.email &quot;you@example.com&quot; git config --global user.name &quot;Your Name&quot; 执行 hexo clean &amp;&amp; hexo g &amp;&amp; hexo d 测试博客部署插件是否安装成功 vim编辑器的使用方法 vim之所以被称之为强大的编辑器是因为本身支持很多的模式 命令模式 命令行模式(底行模式) 编辑模式(插入模式) 可视 可视块 可视行 注意 : 不要使用vim打开目录文件 注意 : 用vim编写完成的文件内容要用正常的保存退出方式,不要直接关闭终端 否则会生成交换文件(交换文件是隐藏文件) vim hello.c | 按iIoOaA\tV\t按: 编辑模式&lt;----------命令模式----------&gt;命令行模式 ---------&gt;\t&lt;---------\t按esc\t按esc或者删掉: 命令行模式的操作 :w\t保存 :q\t退出 :wq\t保存并且退出 如何修改hosts文件 第一种方法 也是网上推荐较多的，比较常用的方法 ">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#准备工作">准备工作</a>
+      <ol>
+        <li><a href="#nodejs安装教程">nodejs安装教程：</a></li>
+        <li><a href="#git-bash安装教程">git-bash安装教程：</a></li>
+      </ol>
+    </li>
+    <li><a href="#开始搭建">开始搭建</a></li>
+    <li><a href="#vim编辑器的使用方法">vim编辑器的使用方法</a></li>
+    <li><a href="#如何修改hosts文件">如何修改hosts文件</a>
+      <ol>
+        <li><a href="#第一种方法">第一种方法</a></li>
+        <li><a href="#第二种方法">第二种方法</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E6%90%AD%E5%BB%BAhexo/">搭建hexo</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 08, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="笔记文件">笔记文件
+</h1><p><a class="link" href="/images/%e6%90%ad%e5%bb%bahexo.pdf" >点击访问 搭建hexo.pdf</a></p>
+<h1 id="视频教程">视频教程
+</h1><div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe
+    src="//player.bilibili.com/player.html?bvid=BV1tG4y1h7UE&page=1"
+    scrolling="no"
+    border="0"
+    frameborder="no"
+    framespacing="0"
+    allowfullscreen="true"
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+  </iframe>
+</div>
+
+<h1 id="hexo博客搭建教程">hexo博客搭建教程
+</h1><h2 id="准备工作">准备工作
+</h2><pre><code>需要安装：nodejs、git-bash
+因官网下载太慢，这里使用nodejs的国内网站和git-bash的镜像网站进行下载
+nodejs链接：http://nodejs.cn/download/
+	nodejs下载地址：https://cdn.npmmirror.com/binaries/node/v16.17.0/node-v16.17.0-x64.msi
+git-bash链接：https://registry.npmmirror.com/binary.html?path=git-for-windows/
+	git-bash下载地址：https://cdn.npmmirror.com/binaries/git-for-windows/v2.38.0.windows.1/Git-2.38.0-64-bit.exe
+
+接下来安装nodejs和git-bash
+</code></pre>
+<h3 id="nodejs安装教程">nodejs安装教程：
+</h3><p><img src="/images/nodejs/%e6%8d%95%e8%8e%b71.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/nodejs/%e6%8d%95%e8%8e%b72.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/nodejs/%e6%8d%95%e8%8e%b73.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/nodejs/%e6%8d%95%e8%8e%b74.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/nodejs/%e6%8d%95%e8%8e%b75.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/nodejs/%e6%8d%95%e8%8e%b76.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/nodejs/%e6%8d%95%e8%8e%b77.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/nodejs/%e6%8d%95%e8%8e%b78.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h3 id="git-bash安装教程">git-bash安装教程：
+</h3><p><img src="/images/git-bash/%e6%8d%95%e8%8e%b71.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b72.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b73.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b74.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b75.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b76.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b77.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b78.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b79.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b710.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b711.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b712.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b713.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b714.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b715.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b716.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/git-bash/%e6%8d%95%e8%8e%b717.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h2 id="开始搭建">开始搭建
+</h2><pre><code>接下来开始搭建hexo：
+	在git-bash中执行命令
+		npm install hexo-cli -g	#安装博客框架
+			执行 hexo init myBlog		#生成博客的站点目录
+			执行命令 hexo s 可以启动本地博客，博客显示的内容
+				在站点目录的 source/_posts/ 路径下
+
+		修改配置文件
+			准备一个qq邮箱之外的邮箱，邮箱的实用性越高越好，因此我建议的邮箱是微软的Outlook邮箱，官网是 outlook.live.com 可以在注册一个Outlook邮箱,注册完Outlook邮箱之后就可以到 github.com官网 注册了，搭建hexo的前提是在github.com官网 注册并搭建一个用于部署hexo的仓库。
+			在github注册并新建一个仓库，仓库格式为 用户名.github.io，然后将该仓库生成的	ssh链接复制下来，打开刚刚创建的站点目录下的 _config.yml
+				vim _config.yml
+				在该文件的最下面，有一段代码：
+</code></pre>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># Deployment
+</span></span><span class="line"><span class="cl">## Docs: https://hexo.io/docs/one-command-deployment
+</span></span><span class="line"><span class="cl">deploy:
+</span></span><span class="line"><span class="cl">  type: &#39; &#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><pre><code>				将代码更改为：
+</code></pre>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># Deployment
+</span></span><span class="line"><span class="cl">## Docs: https://hexo.io/docs/one-command-deployment
+</span></span><span class="line"><span class="cl">deploy:
+</span></span><span class="line"><span class="cl">  type: &#39;git&#39;	#部署博客类型
+</span></span><span class="line"><span class="cl">  repo: git@github.com:zzfxdyn/zzfxdyn.github.io.git	#仓库生成的链接
+</span></span><span class="line"><span class="cl">  branch: main		#仓库默认分支
+</span></span></code></pre></td></tr></table>
+</div>
+</div><pre><code>				同时将该文件中url：http://example.com改为 https://仓库名
+				
+		npm install hexo-deployer-git --save	#安装博客部署插件
+
+		生成ssh密钥
+			ssh-keygen -t rsa -C &quot;注册github时的邮箱&quot;
+			连续多次回车，生成ssh密钥在，按照提示的路径进入该路径下复制 id_rsa.pub 的内容
+			默认路径为 ~/.ssh,在git-bash中通过命令 cd ~/.ssh 进入该路径
+			cat id_rsa.pub		#显示id_rsa.pub的内容，然后鼠标选中复制
+			复制的内容为生成的密钥的公钥，回到浏览器，打开github的设置，点击SSH and GPG Keys，
+			添加新的密钥，自定义一个名字，粘贴密钥并确定
+
+		
+		回到git-bash，配置好站点目录文件后执行命令
+		git config --global user.email &quot;you@example.com&quot;
+		git config --global user.name &quot;Your Name&quot;
+		执行 hexo clean &amp;&amp; hexo g &amp;&amp; hexo d 测试博客部署插件是否安装成功
+</code></pre>
+<h2 id="vim编辑器的使用方法">vim编辑器的使用方法
+</h2><pre><code>vim之所以被称之为强大的编辑器是因为本身支持很多的模式
+命令模式 命令行模式(底行模式) 编辑模式(插入模式) 可视 可视块 可视行
+注意 : 不要使用vim打开目录文件
+注意 : 用vim编写完成的文件内容要用正常的保存退出方式,不要直接关闭终端
+	否则会生成交换文件(交换文件是隐藏文件)
+				vim hello.c
+					|
+按iIoOaA				V				按:
+编辑模式&lt;----------命令模式----------&gt;命令行模式
+		---------&gt;		&lt;---------	
+			按esc		按esc或者删掉:
+
+命令行模式的操作
+	:w		保存
+	:q		退出
+	:wq		保存并且退出
+</code></pre>
+<h2 id="如何修改hosts文件">如何修改hosts文件
+</h2><h3 id="第一种方法">第一种方法
+</h3><pre><code>也是网上推荐较多的，比较常用的方法
+</code></pre>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b71.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b72.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b73.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b74.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b75.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b76.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b77.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b78.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b79.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b710.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b711.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b712.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b713.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b714.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b715.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b716.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b717.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b718.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b719.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b720.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b721.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%b8%80%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b722.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<h3 id="第二种方法">第二种方法
+</h3><pre><code>通过网站获得github网站的ip，我用的是 ipaddress.com 这个网站，点击进入网站后会显示一个403页面，再点击 Go to Homepage 即可真正进入网站。
+</code></pre>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b71.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b72.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b73.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b74.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b75.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b76.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b77.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b78.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b79.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b710.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b711.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b712.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b713.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b714.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b715.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b716.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b717.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b718.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b719.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b720.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b721.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+<p><img src="/images/%e4%bf%ae%e6%94%b9hosts%e6%96%87%e4%bb%b6%e7%9a%84%e6%95%99%e7%a8%8b/%e7%ac%ac%e4%ba%8c%e7%a7%8d%e6%96%b9%e6%b3%95/%e6%8d%95%e8%8e%b722.PNG"
+	
+	
+	
+	loading="lazy"
+	
+	
+></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/hexo/">Hexo</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 注意：该博客在hugo博客框架下，该文章内org-mode下的公式在hugo博客中不能正常显示html效果的公式，如果想要感受公式效果，可以下载该文章页面，然后在html文件中插入以下代码，再从新加载html文件就可以看到公式效果了\n1 2 3 &lt;script type=&#34;text/javascript&#34; src=&#34;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#34;&gt; &lt;/script&gt; 添加该代码的作用是启动MathJax，MathJax 是一个 JavaScript 库，可以让你使用 LaTeX 风格的语法，在网页的 HTML （或者 Markdown）的源码中显示数学表达式。因为它是一个纯 Javascript 的库，在 Hugo 中是可以直接使用的。\norg mode 使用latex org mode写技术文章，经常需要编写数学公式和希腊字母。下面介绍如何使用.\n拉丁、希腊字母 可以使用转义符\n1 Angles are written as Greek letters \\alpha, \\beta and \\gamma. 获得的结果是：\n1 Angles are written as Greek letters α, β and γ. 输入M-x命令，可以查看完整的entities\n1 org-entities-help 在letters里面可以看到拉丁和希腊字符。\n使用转义字符的公式\n1 a\\sup2 + b\\sup2 = c\\sup2 导出html查看效果\n">
+<title>org-mode使用latex</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/org-mode%E4%BD%BF%E7%94%A8latex/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="org-mode使用latex">
+<meta property='og:description' content=" 注意：该博客在hugo博客框架下，该文章内org-mode下的公式在hugo博客中不能正常显示html效果的公式，如果想要感受公式效果，可以下载该文章页面，然后在html文件中插入以下代码，再从新加载html文件就可以看到公式效果了\n1 2 3 &lt;script type=&#34;text/javascript&#34; src=&#34;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#34;&gt; &lt;/script&gt; 添加该代码的作用是启动MathJax，MathJax 是一个 JavaScript 库，可以让你使用 LaTeX 风格的语法，在网页的 HTML （或者 Markdown）的源码中显示数学表达式。因为它是一个纯 Javascript 的库，在 Hugo 中是可以直接使用的。\norg mode 使用latex org mode写技术文章，经常需要编写数学公式和希腊字母。下面介绍如何使用.\n拉丁、希腊字母 可以使用转义符\n1 Angles are written as Greek letters \\alpha, \\beta and \\gamma. 获得的结果是：\n1 Angles are written as Greek letters α, β and γ. 输入M-x命令，可以查看完整的entities\n1 org-entities-help 在letters里面可以看到拉丁和希腊字符。\n使用转义字符的公式\n1 a\\sup2 + b\\sup2 = c\\sup2 导出html查看效果\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/org-mode%E4%BD%BF%E7%94%A8latex/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='emacs' /><meta property='article:tag' content='org-mode' /><meta property='article:published_time' content='2024-09-24T10:00:05&#43;08:00'/><meta property='article:modified_time' content='2024-09-24T10:00:05&#43;08:00'/>
+<meta name="twitter:title" content="org-mode使用latex">
+<meta name="twitter:description" content=" 注意：该博客在hugo博客框架下，该文章内org-mode下的公式在hugo博客中不能正常显示html效果的公式，如果想要感受公式效果，可以下载该文章页面，然后在html文件中插入以下代码，再从新加载html文件就可以看到公式效果了\n1 2 3 &lt;script type=&#34;text/javascript&#34; src=&#34;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#34;&gt; &lt;/script&gt; 添加该代码的作用是启动MathJax，MathJax 是一个 JavaScript 库，可以让你使用 LaTeX 风格的语法，在网页的 HTML （或者 Markdown）的源码中显示数学表达式。因为它是一个纯 Javascript 的库，在 Hugo 中是可以直接使用的。\norg mode 使用latex org mode写技术文章，经常需要编写数学公式和希腊字母。下面介绍如何使用.\n拉丁、希腊字母 可以使用转义符\n1 Angles are written as Greek letters \\alpha, \\beta and \\gamma. 获得的结果是：\n1 Angles are written as Greek letters α, β and γ. 输入M-x命令，可以查看完整的entities\n1 org-entities-help 在letters里面可以看到拉丁和希腊字符。\n使用转义字符的公式\n1 a\\sup2 + b\\sup2 = c\\sup2 导出html查看效果\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">org mode 使用latex</a>
+<ul>
+<li><a href="#headline-2">拉丁、希腊字母</a>
+</li>
+<li><a href="#headline-3">org-mode行内公式</a>
+</li>
+<li><a href="#headline-4">LaTex关于数学公式的使用（10）—求和，求积</a>
+<ul>
+<li><a href="#headline-5">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/org-mode%E4%BD%BF%E7%94%A8latex/">org-mode使用latex</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Sep 24, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 2 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<p>
+注意：该博客在hugo博客框架下，该文章内org-mode下的公式在hugo博客中不能正常显示html效果的公式，如果想要感受公式效果，可以下载该文章页面，然后在html文件中插入以下代码，再从新加载html文件就可以看到公式效果了</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">&lt;script type=&#34;text/javascript&#34;
+</span></span><span class="line"><span class="cl">  src=&#34;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#34;&gt;
+</span></span><span class="line"><span class="cl">&lt;/script&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>添加该代码的作用是启动MathJax，MathJax 是一个 JavaScript 库，可以让你使用 LaTeX 风格的语法，在网页的 HTML （或者 Markdown）的源码中显示数学表达式。因为它是一个纯 Javascript 的库，在 Hugo 中是可以直接使用的。</p>
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+org mode 使用latex
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>org mode写技术文章，经常需要编写数学公式和希腊字母。下面介绍如何使用.</p>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+拉丁、希腊字母
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>可以使用转义符</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Angles are written as Greek letters \alpha, \beta and \gamma.</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+获得的结果是：</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Angles are written as Greek letters α, β and γ.</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+输入M-x命令，可以查看完整的entities</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">org-entities-help</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>在letters里面可以看到拉丁和希腊字符。</p>
+<p>
+使用转义字符的公式</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">a\sup2 + b\sup2 = c\sup2</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+导出html查看效果</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">a² + b² = c²</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>使用转义字符的公式导出html的效果可以将公式视作普通文本复制下来，如果是使用latex公式，导出的html效果中公式不能被复制下来，但是可以在电脑端浏览器网页中设置公式的样式和效果</p>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+org-mode行内公式
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>使用org-mode输入</p>
+<div class="src src-latex">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-latex" data-lang="latex"><span class="line"><span class="cl"><span class="s">$</span><span class="nb">a^</span><span class="m">2</span><span class="nb"> </span><span class="o">+</span><span class="nb"> b^</span><span class="m">2</span><span class="nb"> </span><span class="o">=</span><span class="nb"> c^</span><span class="m">2</span><span class="s">$</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>导出html查看效果</p>
+<p>
+$a^2 + b^2 = c^2$</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+LaTex关于数学公式的使用（10）—求和，求积
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>关于求和符号和求积符号的创建(结合3学习)
+1、求和符号及其范围的创建，两种方式</p>
+<ol>
+<li>基本的求和</li>
+</ol>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">\begin{equation}
+</span></span><span class="line"><span class="cl">\sum_{0 \lt i \lt m \ 0 \lt j \lt n}x_{ij}
+</span></span><span class="line"><span class="cl">\end{equation}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+\begin{equation}
+\sum_{0 \lt i \lt m \ 0 \lt j \lt n}x_{ij}
+\end{equation}
+<ol>
+<li>将范围表示叠层处理</li>
+</ol>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">\begin{equation}
+</span></span><span class="line"><span class="cl">\sum_{0 \lt i \lt m \\ 0 \lt j \lt n}x_{ij}
+</span></span><span class="line"><span class="cl">\end{equation}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+\begin{equation}
+\sum_{0 \lt i \lt m \\ 0 \lt j \lt n}x_{ij}
+\end{equation}
+<p>
+2、两种和2）同样功能的实现方式</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">\begin{equation}
+</span></span><span class="line"><span class="cl">\sum_{\begin{subarray}{l}0 \lt i \lt m\\0 \lt j \lt n\end{subarray}}x_{ij}
+</span></span><span class="line"><span class="cl">\end{equation}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">\begin{equation}
+</span></span><span class="line"><span class="cl">\sum_{\begin{subarray}{c}i\\0 \lt j \lt n\end{subarray}} x_{ij}
+</span></span><span class="line"><span class="cl">\end{equation}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+\begin{equation}
+\sum_{\begin{subarray}{l}0 \lt i \lt m\\0 \lt j \lt n\end{subarray}}x_{ij}
+\end{equation}
+\begin{equation}
+\sum_{\begin{subarray}{c}i\\0 \lt j \lt n\end{subarray}} x_{ij}
+\end{equation}
+<p>
+3、累积符号的创建</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">\begin{equation}
+</span></span><span class="line"><span class="cl">\sideset{_a^b}{_x^d}\prod_i^N x_i 
+</span></span><span class="line"><span class="cl">\end{equation}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">\begin{equation}
+</span></span><span class="line"><span class="cl">\sideset{_a^b}{_c&#39;}\prod_i^N x_i 
+</span></span><span class="line"><span class="cl">\end{equation}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+\begin{equation}
+\sideset{_a^b}{_x^d}\prod_i^N x_i 
+\end{equation}
+\begin{equation}
+\sideset{_a^b}{_c&#39;}\prod_i^N x_i 
+\end{equation}
+<p>
+4、关于求和的另外表示方式</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">\begin{equation} 
+</span></span><span class="line"><span class="cl">\sum\thinspace&#39;x_i\hspace{1cm}\sum{&#39;}x_i %第一行图
+</span></span><span class="line"><span class="cl">\end{equation}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">\begin{equation}
+</span></span><span class="line"><span class="cl">\sum\nolimits &#39;x_i %第二行图
+</span></span><span class="line"><span class="cl">\end{equation}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">\begin{equation}
+</span></span><span class="line"><span class="cl">\sideset{}{&#39;}\sum_i x_i %第二行图
+</span></span><span class="line"><span class="cl">\end{equation}</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+\begin{equation} 
+\sum\thinspace&#39;x_i\hspace{1cm}\sum{&#39;}x_i %第一行图
+\end{equation}
+\begin{equation}
+\sum\nolimits &#39;x_i %第二行图
+\end{equation}
+\begin{equation}
+\sideset{}{&#39;}\sum_i x_i %第二行图
+\end{equation}
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+参考链接
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<p>
+<a href="https://blog.csdn.net/csfreebird/article/details/43636615">org mode 使用latex</a></p>
+<p>
+<a href="https://www.doc88.com/p-74187927705291.html">org mode 使用 latex</a></p>
+<p>
+<a href="https://forum.ubuntu.com.cn/viewtopic.php?t=343290">org-mode下如何输入数学公式和特殊符号并且在导出了html中可以正常显示？</a></p>
+<p>
+<a href="https://blog.csdn.net/little_ox/article/details/105020289">LaTex关于数学公式的使用（10）—求和，求积</a></p>
+<p>
+<a href="https://www.gohugo.org/doc/tutorials/mathjax/">MathJax Support</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/emacs/">Emacs</a>
+        
+            <a href="/tags/org-mode/">Org-Mode</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/emacs%E7%9A%84org-mode%E5%BD%92%E6%A1%A3/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Emacs的org-mode归档</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/org-mode%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">org-mode任务管理</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/%E5%9C%A8org-mode%E4%B8%AD%E5%BF%AB%E9%80%9F%E6%8F%92%E5%85%A5%E4%BA%A4%E5%8F%89%E5%BC%95%E7%94%A8/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">在org-mode中快速插入交叉引用</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>脚本 on Example Site</title>
+        <link>https://ynhugo.github.io/tags/%E8%84%9A%E6%9C%AC/</link>
+        <description>Recent content in 脚本 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Wed, 27 Nov 2024 00:27:35 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/%E8%84%9A%E6%9C%AC/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>PowerShell如何运行脚本</title>
+        <link>https://ynhugo.github.io/p/powershell%E5%A6%82%E4%BD%95%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC/</link>
+        <pubDate>Wed, 27 Nov 2024 00:27:35 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/powershell%E5%A6%82%E4%BD%95%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+PowerShell如何运行脚本
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-2&#34;&gt;
+简短说明
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;介绍如何在 PowerShell 中运行和编写脚本。具体可以查看参考链接。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-3&#34;&gt;
+长说明
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;脚本是包含一个或多个 PowerShell 命令的纯文本文件。 PowerShell 脚本具有 .ps1 文件扩展名。&lt;/p&gt;
+&lt;p&gt;
+运行脚本与运行 cmdlet 非常类似。 键入脚本的路径和文件名，然后使用参数提交数据和设置选项。 可以在你的计算机上运行脚本，也可以在另一台计算机上的远程会话中运行脚本。&lt;/p&gt;
+&lt;p&gt;
+编写脚本可以保存命令以供以后使用，并且可以轻松与他人共享。 最重要的是，只需输入脚本路径和文件名即可运行命令。 脚本可以像文件中的单个命令一样简单，也可以像复杂的程序一样广泛。&lt;/p&gt;
+&lt;p&gt;
+脚本具有附加功能，例如 #Requires 特殊注释、参数的使用、对数据部分的支持以及用于安全的数字签名。 还可以为脚本以及脚本中的任何函数编写帮助主题。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-4&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-4&#34;&gt;
+如何运行脚本
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-4&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;在 Windows 上运行脚本之前，需要更改默认的 PowerShell 执行策略。 执行策略不适用于在非 Windows 平台上运行的 PowerShell。&lt;/p&gt;
+&lt;p&gt;
+默认执行策略 Restricted会阻止所有脚本运行，包括在本地计算机上编写的脚本。 有关更多信息，请参阅 about_Execution_Policies。&lt;/p&gt;
+&lt;p&gt;
+执行策略保存在注册表中，因此只需在每台计算机上更改一次。&lt;/p&gt;
+&lt;p&gt;
+若要更改执行策略，请遵循以下过程。&lt;/p&gt;
+&lt;p&gt;
+以管理员身份打开PowerSehll，在命令提示符处，键入：&lt;/p&gt;
+&lt;div class=&#34;src src-text&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Set-ExecutionPolicy AllSigned&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;执行后根据提示输入 A 并回车
+、&lt;/p&gt;
+&lt;div class=&#34;src src-text&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Set-ExecutionPolicy RemoteSigned&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;执行后根据提示输入 A 并回车&lt;/p&gt;
+&lt;p&gt;
+更改立即生效。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-5&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-5&#34;&gt;
+参考链接
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-5&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://learn.microsoft.com/zh-cn/powershell/module/microsoft.powershell.core/about/about_scripts?view=powershell-7.4&#34;&gt;about_Scripts&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

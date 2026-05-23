@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 网页留言板源码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 280 281 282 283 284 285 286 287 288 289 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 327 328 329 330 331 332 333 334 335 336 337 338 339 340 341 342 343 344 345 346 347 348 349 350 351 352 353 354 355 356 357 358 359 360 361 362 363 364 365 366 367 368 369 370 371 372 373 374 375 376 377 378 379 380 381 382 383 384 385 386 387 388 389 390 391 392 393 394 395 396 397 398 399 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 419 420 421 422 423 424 425 426 427 428 429 430 431 432 433 434 435 436 437 438 439 440 441 442 443 444 445 446 447 448 449 450 451 452 453 454 455 456 457 458 459 460 461 462 463 464 465 466 467 468 469 470 471 472 473 474 475 476 477 478 479 480 481 482 483 484 &lt;!DOCTYPE html&gt; &lt;html lang=&#34;en&#34;&gt; &lt;head&gt; &lt;meta charset=&#34;UTF-8&#34; /&gt; &lt;meta http-equiv=&#34;X-UA-Compatible&#34; content=&#34;IE=edge&#34; /&gt; &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0, user-scalable=0&#34; /&gt; &lt;title&gt;网页留言板&lt;/title&gt; &lt;style&gt; html, body { height: 100%; margin: 0; padding: 5px; box-sizing: border-box; } textarea { background-color: #333; border-radius: 10px; width: 80%; height: 80%; display: block; margin: 0 auto; color: #fff; padding: 20px; font-size: 16px; box-sizing: border-box; } textarea::-webkit-input-placeholder { color: #eee; } .action { width: 80%; margin: 10px auto; text-align: right; } .btn { padding: 0 10px; height: 38px; line-height: 38px; min-width: 100px; text-align: center; border: none; border-radius: 4px; user-select: none; -webkit-user-select:none; -moz-user-select:none; -o-user-select:none; } .btn-save { background-color: #409eff; color: #fff; } .btn-del { background-color: #f56c6c; color: #fff; } .btn-copy { background-color: #409eff; color: #fff; height: 20px; line-height: 20px; width: 50px; font-size: 12px; margin-left: 5px; } .copy-box { display: flex; margin-top: 5px; } .copy-input { flex: 1; border: none; padding: 0 10px; border: 1px solid #ddd; } .operation-btn { display: flex; align-items: center; margin-top: 20px; justify-content: space-between; } .time-select { flex: 1; height: 38px; margin-right: 5px; max-width: 220px; } .message-box { position: fixed; top: 50%; left: 50%; transform: translate(-50%); background-color: #fff; padding: 5px; max-width: 250px; border-radius: 4px; z-index: 9999; display: none; } @media (max-width: 900px) { textarea { width: 95%; } .action { width: 95%; } } &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;textarea id=&#34;text-box&#34; class=&#34;&#34; placeholder=&#34;请留言&#34;&gt; &lt;/textarea&gt; &lt;div class=&#34;action copy-box&#34;&gt; &lt;input class=&#34;copy-input&#34; readonly value=&#34;&#34; /&gt; &lt;button class=&#34;btn btn-copy&#34;&gt;分享留言&lt;/button&gt; &lt;/div&gt; &lt;div class=&#34;action operation-btn&#34;&gt; &lt;select class=&#34;time-select&#34;&gt; &lt;option value=&#34;1&#34;&gt;5分钟销毁&lt;/option&gt; &lt;option value=&#34;2&#34;&gt;15分钟销毁&lt;/option&gt; &lt;option value=&#34;3&#34;&gt;1小时销毁&lt;/option&gt; &lt;option value=&#34;4&#34;&gt;24小时销毁&lt;/option&gt; &lt;option value=&#34;5&#34;&gt;7天后销毁&lt;/option&gt; &lt;option value=&#34;6&#34;&gt;30天后销毁&lt;/option&gt; &lt;option value=&#34;7&#34;&gt;一年后销毁&lt;/option&gt; &lt;/select&gt; &lt;div onselectstart=&#34;return false;&#34;&gt; &lt;button class=&#34;btn btn-del&#34;&gt;清空/删除&lt;/button&gt; &lt;button class=&#34;btn btn-save&#34;&gt;留言&lt;/button&gt; &lt;/div&gt; &lt;/div&gt; &lt;!-- 错误信息 --&gt; &lt;div class=&#34;message-box&#34;&gt;&lt;/div&gt; &lt;script src=&#34;/clipboard.min.js&#34;&gt;&lt;/script&gt; &lt;script&gt; const baseUrl = window.location.origin let btnSave = document.querySelector(&#39;.btn-save&#39;) let btnDel = document.querySelector(&#39;.btn-del&#39;) let textBox = document.querySelector(&#39;#text-box&#39;) let timeSelect = document.querySelector(&#39;.time-select&#39;) let copyInput = document.querySelector(&#39;.copy-input&#39;) let btnCopy = document.querySelector(&#39;.btn-copy&#39;) let messageBox = document.querySelector(&#39;.message-box&#39;) let timerid = null let needCopy = false function showMessage(text, time = 1500) { if(timerid){ clearTimeout(timerid) timerid = null } messageBox.innerHTML = text messageBox.style.display = &#39;block&#39; timerid = setTimeout(() =&gt; { messageBox.style.display = &#39;none&#39; }, time) } function getValue(reload=false) { let key = this.getQueryByKey(window.location.href, &#39;k&#39;) if (!key) { key = getQueryByKey(window.location.href, &#39;key&#39;) } if(!key){ textBox.value = &#34;&#34; return } fetch(baseUrl + &#39;/get?k=&#39; + encodeURIComponent(key), { method: &#39;GET&#39;, }).then(function (res) { return res.text() }).then((val) =&gt; { // 赋值 if(!val){ if(!reload){ getValue(true) }else{ textBox.value = val // history.replaceState(&#39;&#39;, &#39;&#39;, baseUrl) } return } textBox.value = val // 赋值内容 let shareUrl = baseUrl + &#39;/?k=&#39; + encodeURIComponent(key) let is_block_key = getQueryByKey(window.location.href, &#39;block&#39;) if (!is_block_key){ is_block_key = getQueryByKey(window.location.href, &#39;b&#39;) if (is_block_key){ shareUrl = shareUrl + &#34;&amp;b=&#34; + is_block_key } } copyInput.value = shareUrl // 读取消息有效时间 fetch(baseUrl + &#39;/get?k=time_index_&#39; + encodeURIComponent(key), { method: &#39;GET&#39;, }).then(function (res) { return res.text() }).then((val) =&gt; { if(val){ timeSelect.selectedIndex = val } }) }) } function getQueryByKey(url, name) { if(!url){ return &#34;&#34; } var paths=url.split(&#39;?&#39;) if(paths.length &lt; 2){ return &#34;&#34; } var str = paths[1] var keys = str.split(&#39;&amp;&#39;) var obj = {} keys.forEach((item, idx, data) =&gt; { var arr = item.split(&#39;=&#39;) obj[arr[0]] = decodeURI(arr[1]) }) return obj[name] } function getTime() { var index = timeSelect.selectedIndex let time = timeSelect.options[index].value switch (time) { case &#39;1&#39;: return 5 * 60 case &#39;2&#39;: return 15 * 60 case &#39;3&#39;: return 1 * 60 * 60 case &#39;4&#39;: return 24 * 60 * 60 case &#39;5&#39;: return 7 * 24 * 60 * 60 case &#39;6&#39;: return 30 * 24 * 60 * 60 case &#39;7&#39;: return 12 * 30 * 24 * 60 * 60 default: return 60 * 60 } } function getRandom(m) { // 随机数字 // m = m &gt; 16 ? 16 : m; // var num = Math.random().toString(); // return num.substring(num.length - m); // 随机数字+小写字母 // let letter = [&#34;A&#34;,&#34;B&#34;,&#34;C&#34;,&#34;D&#34;,&#34;E&#34;,&#34;F&#34;,&#34;G&#34;,&#34;H&#34;,&#34;I&#34;,&#34;J&#34;,&#34;K&#34;,&#34;L&#34;,&#34;M&#34;,&#34;N&#34;,&#34;O&#34;,&#34;P&#34;,&#34;Q&#34;,&#34;R&#34;,&#34;S&#34;,&#34;T&#34;,&#34;U&#34;,&#34;V&#34;,&#34;W&#34;,&#34;X&#34;,&#34;Y&#34;,&#34;Z&#34;] var data = [ &#39;0&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;, &#39;6&#39;, &#39;7&#39;, &#39;8&#39;, &#39;9&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;, &#39;f&#39;, &#39;g&#39;, &#39;h&#39;, &#39;i&#39;, &#39;j&#39;, &#39;k&#39;, &#39;l&#39;, &#39;m&#39;, &#39;n&#39;, &#39;o&#39;, &#39;p&#39;, &#39;q&#39;, &#39;r&#39;, &#39;s&#39;, &#39;t&#39;, &#39;u&#39;, &#39;v&#39;, &#39;w&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, ] m = m &gt; 16 ? 16 : m var str = &#39;&#39; let endnum = data.length - 1 let startnum = 0 for (var i = 0; i &lt; m; i++) { var ram = Math.floor( Math.random() * (endnum - startnum + 1 + startnum) ) str += data[ram] } return str.toUpperCase() } btnSave.addEventListener(&#39;click&#39;, function () { let text = textBox.value let is_block_key = getQueryByKey(window.location.href, &#39;block&#39;) if (!is_block_key) { is_block_key = getQueryByKey(window.location.href, &#39;b&#39;) } let key; if (is_block_key == &#39;true&#39;){ key = getQueryByKey(window.location.href, &#39;key&#39;) if (!key){ key = getQueryByKey(window.location.href, &#39;k&#39;) } } if (!key){ key = getRandom(8) } let shareUrl = baseUrl + &#39;/?k=&#39; + encodeURIComponent(key) if (is_block_key){ shareUrl = shareUrl + &#39;&amp;b=&#39; + encodeURIComponent(is_block_key) } copyInput.value = shareUrl history.replaceState(&#39;&#39;, &#39;&#39;, shareUrl) fetch(baseUrl + &#39;/set&#39;, { method: &#39;POST&#39;, headers: {&#39;Content-Type&#39;: &#39;application/json&#39;}, body: JSON.stringify({ &#39;t&#39;: getTime(), &#39;k&#39;: key, &#39;v&#39;: text }) }).then(function () { needCopy = true showMessage(&#39;留言成功，请分享链接&#39;) }) fetch(baseUrl + &#39;/set&#39;, { method: &#39;POST&#39;, headers: {&#39;Content-Type&#39;: &#39;application/json&#39;}, body: JSON.stringify({ &#39;t&#39;: getTime(), &#39;k&#39;: &#39;time_index_&#39;+key, &#39;v&#39;: &#39;&#39;+timeSelect.selectedIndex })}) }); // var saveClipboard = new ClipboardJS(&#39;.btn-save&#39;, { // text: function() { // return shareUrl; // } // }); btnDel.addEventListener(&#39;click&#39;, function () { textBox.value = &#39;&#39; showMessage(&#39;清空成功，长按可删除&#39;) }) var copyClipboard = new ClipboardJS(&#39;.btn-copy&#39;, { text: function() { return copyInput.value; } }); copyClipboard.on(&#39;success&#39;, function(e) { showMessage(&#39;复制成功，请分享链接&#39;) }); timeSelect.addEventListener(&#39;change&#39;, function () { localStorage.setItem(&#39;timeselection&#39;, timeSelect.selectedIndex) }) var lastTouchEnd=0; var btntouchtime=0; function touchstart(){ if(event.touches.length&gt;1){ event.preventDefault(); } } function touchend(){ var now=(new Date()).getTime(); if(now-lastTouchEnd&lt;=300){ event.preventDefault(); } lastTouchEnd=now; } function btntouchstart(){ var now=(new Date()).getTime(); if(event.touches.length&gt;1){ event.preventDefault(); } if(now-btntouchtime&lt;=300){ event.preventDefault(); } btntouchtime = now } //function btntouchend(e){ // var now=(new Date()).getTime(); // if(now-btntouchtime&lt;=300){ // event.preventDefault(); // } //} var timer=null; var touchtime=null; var touchx=0; var touchy=0; var touchstartHander=function(event){ // event.preventDefault(); var now=(new Date()).getTime(); touchtime = now timer=setTimeout(LongPress,500); touchx=0; touchy=0; } var touchmoveHander=function(event){ if(touchx!=0 &amp;&amp; touchy!=0){ event.preventDefault(); clearTimeout(timer); timer=null; } touchx = event.changedTouches[0].pageX; touchy = event.changedTouches[0].pageY; } var touchendHander=function(event){ var now=(new Date()).getTime(); clearTimeout(timer); timer=null; if(now-touchtime&gt;=500){ event.preventDefault(); event.target.disabled = true; setTimeout(function(){ event.target.disabled = false; },100); } return false; } function LongPress(){ let key = getQueryByKey(copyInput.value, &#39;k&#39;) if (!key) { key = getQueryByKey(copyInput.value, &#39;key&#39;) } var supportsVibrate = &#34;vibrate&#34; in window.navigator; if (supportsVibrate) { window.navigator.vibrate(100); } fetch(baseUrl + &#39;/del?k=&#39; + encodeURIComponent(key), { method: &#39;GET&#39;, }).then(function () { copyInput.value = &#39;&#39; textBox.value = &#39;&#39; showMessage(&#39;删除成功&#39;) }) } window.onload = function () { getValue() timeSelect.selectedIndex = localStorage.getItem(&#39;timeselection&#39;) || 6 // 其他功能 document.addEventListener(&#39;touchstart&#39;,touchstart); document.addEventListener(&#39;touchend&#39;,touchend,false); btnCopy.addEventListener(&#39;touchstart&#39;,btntouchstart); // btnCopy.addEventListener(&#39;touchend&#39;,btntouchend,false); btnDel.addEventListener(&#39;touchstart&#39;,btntouchstart); // btnDel.addEventListener(&#39;touchend&#39;,btntouchend,false); btnSave.addEventListener(&#39;touchstart&#39;,btntouchstart); // btnSave.addEventListener(&#39;touchend&#39;,btntouchend,false); // 长按删除 btnDel.addEventListener(&#34;touchstart&#34;,touchstartHander,false); btnDel.addEventListener(&#34;touchmove&#34;,touchmoveHander,false); btnDel.addEventListener(&#34;touchend&#34;,touchendHander,false); btnDel.addEventListener(&#34;mousedown&#34;,touchstartHander,false); btnDel.addEventListener(&#34;mousemove&#34;,touchmoveHander,false); btnDel.addEventListener(&#34;mouseup&#34;,touchendHander,false); document.addEventListener(&#39;gesturestart&#39;, function (event) { event.preventDefault(); }); } function copyText() { if(needCopy){ needCopy = false if (navigator.clipboard) { navigator.clipboard.writeText(copyInput.value) } else { // 选中 copyInput.select() // 复制 document.execCommand(&#39;copy&#39;, true) } } } // document.body.addEventListener(&#39;mouseup&#39;,copyText, true); &lt;/script&gt; &lt;/body&gt; &lt;/html&gt; 参考链接 网页在线留言板-工具分享\n">
+<title>网页留言板源码</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/%E7%BD%91%E9%A1%B5%E7%95%99%E8%A8%80%E6%9D%BF%E6%BA%90%E7%A0%81/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="网页留言板源码">
+<meta property='og:description' content=" 网页留言板源码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 280 281 282 283 284 285 286 287 288 289 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 327 328 329 330 331 332 333 334 335 336 337 338 339 340 341 342 343 344 345 346 347 348 349 350 351 352 353 354 355 356 357 358 359 360 361 362 363 364 365 366 367 368 369 370 371 372 373 374 375 376 377 378 379 380 381 382 383 384 385 386 387 388 389 390 391 392 393 394 395 396 397 398 399 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 419 420 421 422 423 424 425 426 427 428 429 430 431 432 433 434 435 436 437 438 439 440 441 442 443 444 445 446 447 448 449 450 451 452 453 454 455 456 457 458 459 460 461 462 463 464 465 466 467 468 469 470 471 472 473 474 475 476 477 478 479 480 481 482 483 484 &lt;!DOCTYPE html&gt; &lt;html lang=&#34;en&#34;&gt; &lt;head&gt; &lt;meta charset=&#34;UTF-8&#34; /&gt; &lt;meta http-equiv=&#34;X-UA-Compatible&#34; content=&#34;IE=edge&#34; /&gt; &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0, user-scalable=0&#34; /&gt; &lt;title&gt;网页留言板&lt;/title&gt; &lt;style&gt; html, body { height: 100%; margin: 0; padding: 5px; box-sizing: border-box; } textarea { background-color: #333; border-radius: 10px; width: 80%; height: 80%; display: block; margin: 0 auto; color: #fff; padding: 20px; font-size: 16px; box-sizing: border-box; } textarea::-webkit-input-placeholder { color: #eee; } .action { width: 80%; margin: 10px auto; text-align: right; } .btn { padding: 0 10px; height: 38px; line-height: 38px; min-width: 100px; text-align: center; border: none; border-radius: 4px; user-select: none; -webkit-user-select:none; -moz-user-select:none; -o-user-select:none; } .btn-save { background-color: #409eff; color: #fff; } .btn-del { background-color: #f56c6c; color: #fff; } .btn-copy { background-color: #409eff; color: #fff; height: 20px; line-height: 20px; width: 50px; font-size: 12px; margin-left: 5px; } .copy-box { display: flex; margin-top: 5px; } .copy-input { flex: 1; border: none; padding: 0 10px; border: 1px solid #ddd; } .operation-btn { display: flex; align-items: center; margin-top: 20px; justify-content: space-between; } .time-select { flex: 1; height: 38px; margin-right: 5px; max-width: 220px; } .message-box { position: fixed; top: 50%; left: 50%; transform: translate(-50%); background-color: #fff; padding: 5px; max-width: 250px; border-radius: 4px; z-index: 9999; display: none; } @media (max-width: 900px) { textarea { width: 95%; } .action { width: 95%; } } &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;textarea id=&#34;text-box&#34; class=&#34;&#34; placeholder=&#34;请留言&#34;&gt; &lt;/textarea&gt; &lt;div class=&#34;action copy-box&#34;&gt; &lt;input class=&#34;copy-input&#34; readonly value=&#34;&#34; /&gt; &lt;button class=&#34;btn btn-copy&#34;&gt;分享留言&lt;/button&gt; &lt;/div&gt; &lt;div class=&#34;action operation-btn&#34;&gt; &lt;select class=&#34;time-select&#34;&gt; &lt;option value=&#34;1&#34;&gt;5分钟销毁&lt;/option&gt; &lt;option value=&#34;2&#34;&gt;15分钟销毁&lt;/option&gt; &lt;option value=&#34;3&#34;&gt;1小时销毁&lt;/option&gt; &lt;option value=&#34;4&#34;&gt;24小时销毁&lt;/option&gt; &lt;option value=&#34;5&#34;&gt;7天后销毁&lt;/option&gt; &lt;option value=&#34;6&#34;&gt;30天后销毁&lt;/option&gt; &lt;option value=&#34;7&#34;&gt;一年后销毁&lt;/option&gt; &lt;/select&gt; &lt;div onselectstart=&#34;return false;&#34;&gt; &lt;button class=&#34;btn btn-del&#34;&gt;清空/删除&lt;/button&gt; &lt;button class=&#34;btn btn-save&#34;&gt;留言&lt;/button&gt; &lt;/div&gt; &lt;/div&gt; &lt;!-- 错误信息 --&gt; &lt;div class=&#34;message-box&#34;&gt;&lt;/div&gt; &lt;script src=&#34;/clipboard.min.js&#34;&gt;&lt;/script&gt; &lt;script&gt; const baseUrl = window.location.origin let btnSave = document.querySelector(&#39;.btn-save&#39;) let btnDel = document.querySelector(&#39;.btn-del&#39;) let textBox = document.querySelector(&#39;#text-box&#39;) let timeSelect = document.querySelector(&#39;.time-select&#39;) let copyInput = document.querySelector(&#39;.copy-input&#39;) let btnCopy = document.querySelector(&#39;.btn-copy&#39;) let messageBox = document.querySelector(&#39;.message-box&#39;) let timerid = null let needCopy = false function showMessage(text, time = 1500) { if(timerid){ clearTimeout(timerid) timerid = null } messageBox.innerHTML = text messageBox.style.display = &#39;block&#39; timerid = setTimeout(() =&gt; { messageBox.style.display = &#39;none&#39; }, time) } function getValue(reload=false) { let key = this.getQueryByKey(window.location.href, &#39;k&#39;) if (!key) { key = getQueryByKey(window.location.href, &#39;key&#39;) } if(!key){ textBox.value = &#34;&#34; return } fetch(baseUrl + &#39;/get?k=&#39; + encodeURIComponent(key), { method: &#39;GET&#39;, }).then(function (res) { return res.text() }).then((val) =&gt; { // 赋值 if(!val){ if(!reload){ getValue(true) }else{ textBox.value = val // history.replaceState(&#39;&#39;, &#39;&#39;, baseUrl) } return } textBox.value = val // 赋值内容 let shareUrl = baseUrl + &#39;/?k=&#39; + encodeURIComponent(key) let is_block_key = getQueryByKey(window.location.href, &#39;block&#39;) if (!is_block_key){ is_block_key = getQueryByKey(window.location.href, &#39;b&#39;) if (is_block_key){ shareUrl = shareUrl + &#34;&amp;b=&#34; + is_block_key } } copyInput.value = shareUrl // 读取消息有效时间 fetch(baseUrl + &#39;/get?k=time_index_&#39; + encodeURIComponent(key), { method: &#39;GET&#39;, }).then(function (res) { return res.text() }).then((val) =&gt; { if(val){ timeSelect.selectedIndex = val } }) }) } function getQueryByKey(url, name) { if(!url){ return &#34;&#34; } var paths=url.split(&#39;?&#39;) if(paths.length &lt; 2){ return &#34;&#34; } var str = paths[1] var keys = str.split(&#39;&amp;&#39;) var obj = {} keys.forEach((item, idx, data) =&gt; { var arr = item.split(&#39;=&#39;) obj[arr[0]] = decodeURI(arr[1]) }) return obj[name] } function getTime() { var index = timeSelect.selectedIndex let time = timeSelect.options[index].value switch (time) { case &#39;1&#39;: return 5 * 60 case &#39;2&#39;: return 15 * 60 case &#39;3&#39;: return 1 * 60 * 60 case &#39;4&#39;: return 24 * 60 * 60 case &#39;5&#39;: return 7 * 24 * 60 * 60 case &#39;6&#39;: return 30 * 24 * 60 * 60 case &#39;7&#39;: return 12 * 30 * 24 * 60 * 60 default: return 60 * 60 } } function getRandom(m) { // 随机数字 // m = m &gt; 16 ? 16 : m; // var num = Math.random().toString(); // return num.substring(num.length - m); // 随机数字+小写字母 // let letter = [&#34;A&#34;,&#34;B&#34;,&#34;C&#34;,&#34;D&#34;,&#34;E&#34;,&#34;F&#34;,&#34;G&#34;,&#34;H&#34;,&#34;I&#34;,&#34;J&#34;,&#34;K&#34;,&#34;L&#34;,&#34;M&#34;,&#34;N&#34;,&#34;O&#34;,&#34;P&#34;,&#34;Q&#34;,&#34;R&#34;,&#34;S&#34;,&#34;T&#34;,&#34;U&#34;,&#34;V&#34;,&#34;W&#34;,&#34;X&#34;,&#34;Y&#34;,&#34;Z&#34;] var data = [ &#39;0&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;, &#39;6&#39;, &#39;7&#39;, &#39;8&#39;, &#39;9&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;, &#39;f&#39;, &#39;g&#39;, &#39;h&#39;, &#39;i&#39;, &#39;j&#39;, &#39;k&#39;, &#39;l&#39;, &#39;m&#39;, &#39;n&#39;, &#39;o&#39;, &#39;p&#39;, &#39;q&#39;, &#39;r&#39;, &#39;s&#39;, &#39;t&#39;, &#39;u&#39;, &#39;v&#39;, &#39;w&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, ] m = m &gt; 16 ? 16 : m var str = &#39;&#39; let endnum = data.length - 1 let startnum = 0 for (var i = 0; i &lt; m; i++) { var ram = Math.floor( Math.random() * (endnum - startnum + 1 + startnum) ) str += data[ram] } return str.toUpperCase() } btnSave.addEventListener(&#39;click&#39;, function () { let text = textBox.value let is_block_key = getQueryByKey(window.location.href, &#39;block&#39;) if (!is_block_key) { is_block_key = getQueryByKey(window.location.href, &#39;b&#39;) } let key; if (is_block_key == &#39;true&#39;){ key = getQueryByKey(window.location.href, &#39;key&#39;) if (!key){ key = getQueryByKey(window.location.href, &#39;k&#39;) } } if (!key){ key = getRandom(8) } let shareUrl = baseUrl + &#39;/?k=&#39; + encodeURIComponent(key) if (is_block_key){ shareUrl = shareUrl + &#39;&amp;b=&#39; + encodeURIComponent(is_block_key) } copyInput.value = shareUrl history.replaceState(&#39;&#39;, &#39;&#39;, shareUrl) fetch(baseUrl + &#39;/set&#39;, { method: &#39;POST&#39;, headers: {&#39;Content-Type&#39;: &#39;application/json&#39;}, body: JSON.stringify({ &#39;t&#39;: getTime(), &#39;k&#39;: key, &#39;v&#39;: text }) }).then(function () { needCopy = true showMessage(&#39;留言成功，请分享链接&#39;) }) fetch(baseUrl + &#39;/set&#39;, { method: &#39;POST&#39;, headers: {&#39;Content-Type&#39;: &#39;application/json&#39;}, body: JSON.stringify({ &#39;t&#39;: getTime(), &#39;k&#39;: &#39;time_index_&#39;+key, &#39;v&#39;: &#39;&#39;+timeSelect.selectedIndex })}) }); // var saveClipboard = new ClipboardJS(&#39;.btn-save&#39;, { // text: function() { // return shareUrl; // } // }); btnDel.addEventListener(&#39;click&#39;, function () { textBox.value = &#39;&#39; showMessage(&#39;清空成功，长按可删除&#39;) }) var copyClipboard = new ClipboardJS(&#39;.btn-copy&#39;, { text: function() { return copyInput.value; } }); copyClipboard.on(&#39;success&#39;, function(e) { showMessage(&#39;复制成功，请分享链接&#39;) }); timeSelect.addEventListener(&#39;change&#39;, function () { localStorage.setItem(&#39;timeselection&#39;, timeSelect.selectedIndex) }) var lastTouchEnd=0; var btntouchtime=0; function touchstart(){ if(event.touches.length&gt;1){ event.preventDefault(); } } function touchend(){ var now=(new Date()).getTime(); if(now-lastTouchEnd&lt;=300){ event.preventDefault(); } lastTouchEnd=now; } function btntouchstart(){ var now=(new Date()).getTime(); if(event.touches.length&gt;1){ event.preventDefault(); } if(now-btntouchtime&lt;=300){ event.preventDefault(); } btntouchtime = now } //function btntouchend(e){ // var now=(new Date()).getTime(); // if(now-btntouchtime&lt;=300){ // event.preventDefault(); // } //} var timer=null; var touchtime=null; var touchx=0; var touchy=0; var touchstartHander=function(event){ // event.preventDefault(); var now=(new Date()).getTime(); touchtime = now timer=setTimeout(LongPress,500); touchx=0; touchy=0; } var touchmoveHander=function(event){ if(touchx!=0 &amp;&amp; touchy!=0){ event.preventDefault(); clearTimeout(timer); timer=null; } touchx = event.changedTouches[0].pageX; touchy = event.changedTouches[0].pageY; } var touchendHander=function(event){ var now=(new Date()).getTime(); clearTimeout(timer); timer=null; if(now-touchtime&gt;=500){ event.preventDefault(); event.target.disabled = true; setTimeout(function(){ event.target.disabled = false; },100); } return false; } function LongPress(){ let key = getQueryByKey(copyInput.value, &#39;k&#39;) if (!key) { key = getQueryByKey(copyInput.value, &#39;key&#39;) } var supportsVibrate = &#34;vibrate&#34; in window.navigator; if (supportsVibrate) { window.navigator.vibrate(100); } fetch(baseUrl + &#39;/del?k=&#39; + encodeURIComponent(key), { method: &#39;GET&#39;, }).then(function () { copyInput.value = &#39;&#39; textBox.value = &#39;&#39; showMessage(&#39;删除成功&#39;) }) } window.onload = function () { getValue() timeSelect.selectedIndex = localStorage.getItem(&#39;timeselection&#39;) || 6 // 其他功能 document.addEventListener(&#39;touchstart&#39;,touchstart); document.addEventListener(&#39;touchend&#39;,touchend,false); btnCopy.addEventListener(&#39;touchstart&#39;,btntouchstart); // btnCopy.addEventListener(&#39;touchend&#39;,btntouchend,false); btnDel.addEventListener(&#39;touchstart&#39;,btntouchstart); // btnDel.addEventListener(&#39;touchend&#39;,btntouchend,false); btnSave.addEventListener(&#39;touchstart&#39;,btntouchstart); // btnSave.addEventListener(&#39;touchend&#39;,btntouchend,false); // 长按删除 btnDel.addEventListener(&#34;touchstart&#34;,touchstartHander,false); btnDel.addEventListener(&#34;touchmove&#34;,touchmoveHander,false); btnDel.addEventListener(&#34;touchend&#34;,touchendHander,false); btnDel.addEventListener(&#34;mousedown&#34;,touchstartHander,false); btnDel.addEventListener(&#34;mousemove&#34;,touchmoveHander,false); btnDel.addEventListener(&#34;mouseup&#34;,touchendHander,false); document.addEventListener(&#39;gesturestart&#39;, function (event) { event.preventDefault(); }); } function copyText() { if(needCopy){ needCopy = false if (navigator.clipboard) { navigator.clipboard.writeText(copyInput.value) } else { // 选中 copyInput.select() // 复制 document.execCommand(&#39;copy&#39;, true) } } } // document.body.addEventListener(&#39;mouseup&#39;,copyText, true); &lt;/script&gt; &lt;/body&gt; &lt;/html&gt; 参考链接 网页在线留言板-工具分享\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/%E7%BD%91%E9%A1%B5%E7%95%99%E8%A8%80%E6%9D%BF%E6%BA%90%E7%A0%81/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='html' /><meta property='article:tag' content='网页' /><meta property='article:tag' content='留言' /><meta property='article:published_time' content='2024-11-20T18:31:12&#43;08:00'/><meta property='article:modified_time' content='2024-11-20T18:31:12&#43;08:00'/>
+<meta name="twitter:title" content="网页留言板源码">
+<meta name="twitter:description" content=" 网页留言板源码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166 167 168 169 170 171 172 173 174 175 176 177 178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 193 194 195 196 197 198 199 200 201 202 203 204 205 206 207 208 209 210 211 212 213 214 215 216 217 218 219 220 221 222 223 224 225 226 227 228 229 230 231 232 233 234 235 236 237 238 239 240 241 242 243 244 245 246 247 248 249 250 251 252 253 254 255 256 257 258 259 260 261 262 263 264 265 266 267 268 269 270 271 272 273 274 275 276 277 278 279 280 281 282 283 284 285 286 287 288 289 290 291 292 293 294 295 296 297 298 299 300 301 302 303 304 305 306 307 308 309 310 311 312 313 314 315 316 317 318 319 320 321 322 323 324 325 326 327 328 329 330 331 332 333 334 335 336 337 338 339 340 341 342 343 344 345 346 347 348 349 350 351 352 353 354 355 356 357 358 359 360 361 362 363 364 365 366 367 368 369 370 371 372 373 374 375 376 377 378 379 380 381 382 383 384 385 386 387 388 389 390 391 392 393 394 395 396 397 398 399 400 401 402 403 404 405 406 407 408 409 410 411 412 413 414 415 416 417 418 419 420 421 422 423 424 425 426 427 428 429 430 431 432 433 434 435 436 437 438 439 440 441 442 443 444 445 446 447 448 449 450 451 452 453 454 455 456 457 458 459 460 461 462 463 464 465 466 467 468 469 470 471 472 473 474 475 476 477 478 479 480 481 482 483 484 &lt;!DOCTYPE html&gt; &lt;html lang=&#34;en&#34;&gt; &lt;head&gt; &lt;meta charset=&#34;UTF-8&#34; /&gt; &lt;meta http-equiv=&#34;X-UA-Compatible&#34; content=&#34;IE=edge&#34; /&gt; &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0, user-scalable=0&#34; /&gt; &lt;title&gt;网页留言板&lt;/title&gt; &lt;style&gt; html, body { height: 100%; margin: 0; padding: 5px; box-sizing: border-box; } textarea { background-color: #333; border-radius: 10px; width: 80%; height: 80%; display: block; margin: 0 auto; color: #fff; padding: 20px; font-size: 16px; box-sizing: border-box; } textarea::-webkit-input-placeholder { color: #eee; } .action { width: 80%; margin: 10px auto; text-align: right; } .btn { padding: 0 10px; height: 38px; line-height: 38px; min-width: 100px; text-align: center; border: none; border-radius: 4px; user-select: none; -webkit-user-select:none; -moz-user-select:none; -o-user-select:none; } .btn-save { background-color: #409eff; color: #fff; } .btn-del { background-color: #f56c6c; color: #fff; } .btn-copy { background-color: #409eff; color: #fff; height: 20px; line-height: 20px; width: 50px; font-size: 12px; margin-left: 5px; } .copy-box { display: flex; margin-top: 5px; } .copy-input { flex: 1; border: none; padding: 0 10px; border: 1px solid #ddd; } .operation-btn { display: flex; align-items: center; margin-top: 20px; justify-content: space-between; } .time-select { flex: 1; height: 38px; margin-right: 5px; max-width: 220px; } .message-box { position: fixed; top: 50%; left: 50%; transform: translate(-50%); background-color: #fff; padding: 5px; max-width: 250px; border-radius: 4px; z-index: 9999; display: none; } @media (max-width: 900px) { textarea { width: 95%; } .action { width: 95%; } } &lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;textarea id=&#34;text-box&#34; class=&#34;&#34; placeholder=&#34;请留言&#34;&gt; &lt;/textarea&gt; &lt;div class=&#34;action copy-box&#34;&gt; &lt;input class=&#34;copy-input&#34; readonly value=&#34;&#34; /&gt; &lt;button class=&#34;btn btn-copy&#34;&gt;分享留言&lt;/button&gt; &lt;/div&gt; &lt;div class=&#34;action operation-btn&#34;&gt; &lt;select class=&#34;time-select&#34;&gt; &lt;option value=&#34;1&#34;&gt;5分钟销毁&lt;/option&gt; &lt;option value=&#34;2&#34;&gt;15分钟销毁&lt;/option&gt; &lt;option value=&#34;3&#34;&gt;1小时销毁&lt;/option&gt; &lt;option value=&#34;4&#34;&gt;24小时销毁&lt;/option&gt; &lt;option value=&#34;5&#34;&gt;7天后销毁&lt;/option&gt; &lt;option value=&#34;6&#34;&gt;30天后销毁&lt;/option&gt; &lt;option value=&#34;7&#34;&gt;一年后销毁&lt;/option&gt; &lt;/select&gt; &lt;div onselectstart=&#34;return false;&#34;&gt; &lt;button class=&#34;btn btn-del&#34;&gt;清空/删除&lt;/button&gt; &lt;button class=&#34;btn btn-save&#34;&gt;留言&lt;/button&gt; &lt;/div&gt; &lt;/div&gt; &lt;!-- 错误信息 --&gt; &lt;div class=&#34;message-box&#34;&gt;&lt;/div&gt; &lt;script src=&#34;/clipboard.min.js&#34;&gt;&lt;/script&gt; &lt;script&gt; const baseUrl = window.location.origin let btnSave = document.querySelector(&#39;.btn-save&#39;) let btnDel = document.querySelector(&#39;.btn-del&#39;) let textBox = document.querySelector(&#39;#text-box&#39;) let timeSelect = document.querySelector(&#39;.time-select&#39;) let copyInput = document.querySelector(&#39;.copy-input&#39;) let btnCopy = document.querySelector(&#39;.btn-copy&#39;) let messageBox = document.querySelector(&#39;.message-box&#39;) let timerid = null let needCopy = false function showMessage(text, time = 1500) { if(timerid){ clearTimeout(timerid) timerid = null } messageBox.innerHTML = text messageBox.style.display = &#39;block&#39; timerid = setTimeout(() =&gt; { messageBox.style.display = &#39;none&#39; }, time) } function getValue(reload=false) { let key = this.getQueryByKey(window.location.href, &#39;k&#39;) if (!key) { key = getQueryByKey(window.location.href, &#39;key&#39;) } if(!key){ textBox.value = &#34;&#34; return } fetch(baseUrl + &#39;/get?k=&#39; + encodeURIComponent(key), { method: &#39;GET&#39;, }).then(function (res) { return res.text() }).then((val) =&gt; { // 赋值 if(!val){ if(!reload){ getValue(true) }else{ textBox.value = val // history.replaceState(&#39;&#39;, &#39;&#39;, baseUrl) } return } textBox.value = val // 赋值内容 let shareUrl = baseUrl + &#39;/?k=&#39; + encodeURIComponent(key) let is_block_key = getQueryByKey(window.location.href, &#39;block&#39;) if (!is_block_key){ is_block_key = getQueryByKey(window.location.href, &#39;b&#39;) if (is_block_key){ shareUrl = shareUrl + &#34;&amp;b=&#34; + is_block_key } } copyInput.value = shareUrl // 读取消息有效时间 fetch(baseUrl + &#39;/get?k=time_index_&#39; + encodeURIComponent(key), { method: &#39;GET&#39;, }).then(function (res) { return res.text() }).then((val) =&gt; { if(val){ timeSelect.selectedIndex = val } }) }) } function getQueryByKey(url, name) { if(!url){ return &#34;&#34; } var paths=url.split(&#39;?&#39;) if(paths.length &lt; 2){ return &#34;&#34; } var str = paths[1] var keys = str.split(&#39;&amp;&#39;) var obj = {} keys.forEach((item, idx, data) =&gt; { var arr = item.split(&#39;=&#39;) obj[arr[0]] = decodeURI(arr[1]) }) return obj[name] } function getTime() { var index = timeSelect.selectedIndex let time = timeSelect.options[index].value switch (time) { case &#39;1&#39;: return 5 * 60 case &#39;2&#39;: return 15 * 60 case &#39;3&#39;: return 1 * 60 * 60 case &#39;4&#39;: return 24 * 60 * 60 case &#39;5&#39;: return 7 * 24 * 60 * 60 case &#39;6&#39;: return 30 * 24 * 60 * 60 case &#39;7&#39;: return 12 * 30 * 24 * 60 * 60 default: return 60 * 60 } } function getRandom(m) { // 随机数字 // m = m &gt; 16 ? 16 : m; // var num = Math.random().toString(); // return num.substring(num.length - m); // 随机数字+小写字母 // let letter = [&#34;A&#34;,&#34;B&#34;,&#34;C&#34;,&#34;D&#34;,&#34;E&#34;,&#34;F&#34;,&#34;G&#34;,&#34;H&#34;,&#34;I&#34;,&#34;J&#34;,&#34;K&#34;,&#34;L&#34;,&#34;M&#34;,&#34;N&#34;,&#34;O&#34;,&#34;P&#34;,&#34;Q&#34;,&#34;R&#34;,&#34;S&#34;,&#34;T&#34;,&#34;U&#34;,&#34;V&#34;,&#34;W&#34;,&#34;X&#34;,&#34;Y&#34;,&#34;Z&#34;] var data = [ &#39;0&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;, &#39;6&#39;, &#39;7&#39;, &#39;8&#39;, &#39;9&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;, &#39;e&#39;, &#39;f&#39;, &#39;g&#39;, &#39;h&#39;, &#39;i&#39;, &#39;j&#39;, &#39;k&#39;, &#39;l&#39;, &#39;m&#39;, &#39;n&#39;, &#39;o&#39;, &#39;p&#39;, &#39;q&#39;, &#39;r&#39;, &#39;s&#39;, &#39;t&#39;, &#39;u&#39;, &#39;v&#39;, &#39;w&#39;, &#39;x&#39;, &#39;y&#39;, &#39;z&#39;, ] m = m &gt; 16 ? 16 : m var str = &#39;&#39; let endnum = data.length - 1 let startnum = 0 for (var i = 0; i &lt; m; i++) { var ram = Math.floor( Math.random() * (endnum - startnum + 1 + startnum) ) str += data[ram] } return str.toUpperCase() } btnSave.addEventListener(&#39;click&#39;, function () { let text = textBox.value let is_block_key = getQueryByKey(window.location.href, &#39;block&#39;) if (!is_block_key) { is_block_key = getQueryByKey(window.location.href, &#39;b&#39;) } let key; if (is_block_key == &#39;true&#39;){ key = getQueryByKey(window.location.href, &#39;key&#39;) if (!key){ key = getQueryByKey(window.location.href, &#39;k&#39;) } } if (!key){ key = getRandom(8) } let shareUrl = baseUrl + &#39;/?k=&#39; + encodeURIComponent(key) if (is_block_key){ shareUrl = shareUrl + &#39;&amp;b=&#39; + encodeURIComponent(is_block_key) } copyInput.value = shareUrl history.replaceState(&#39;&#39;, &#39;&#39;, shareUrl) fetch(baseUrl + &#39;/set&#39;, { method: &#39;POST&#39;, headers: {&#39;Content-Type&#39;: &#39;application/json&#39;}, body: JSON.stringify({ &#39;t&#39;: getTime(), &#39;k&#39;: key, &#39;v&#39;: text }) }).then(function () { needCopy = true showMessage(&#39;留言成功，请分享链接&#39;) }) fetch(baseUrl + &#39;/set&#39;, { method: &#39;POST&#39;, headers: {&#39;Content-Type&#39;: &#39;application/json&#39;}, body: JSON.stringify({ &#39;t&#39;: getTime(), &#39;k&#39;: &#39;time_index_&#39;+key, &#39;v&#39;: &#39;&#39;+timeSelect.selectedIndex })}) }); // var saveClipboard = new ClipboardJS(&#39;.btn-save&#39;, { // text: function() { // return shareUrl; // } // }); btnDel.addEventListener(&#39;click&#39;, function () { textBox.value = &#39;&#39; showMessage(&#39;清空成功，长按可删除&#39;) }) var copyClipboard = new ClipboardJS(&#39;.btn-copy&#39;, { text: function() { return copyInput.value; } }); copyClipboard.on(&#39;success&#39;, function(e) { showMessage(&#39;复制成功，请分享链接&#39;) }); timeSelect.addEventListener(&#39;change&#39;, function () { localStorage.setItem(&#39;timeselection&#39;, timeSelect.selectedIndex) }) var lastTouchEnd=0; var btntouchtime=0; function touchstart(){ if(event.touches.length&gt;1){ event.preventDefault(); } } function touchend(){ var now=(new Date()).getTime(); if(now-lastTouchEnd&lt;=300){ event.preventDefault(); } lastTouchEnd=now; } function btntouchstart(){ var now=(new Date()).getTime(); if(event.touches.length&gt;1){ event.preventDefault(); } if(now-btntouchtime&lt;=300){ event.preventDefault(); } btntouchtime = now } //function btntouchend(e){ // var now=(new Date()).getTime(); // if(now-btntouchtime&lt;=300){ // event.preventDefault(); // } //} var timer=null; var touchtime=null; var touchx=0; var touchy=0; var touchstartHander=function(event){ // event.preventDefault(); var now=(new Date()).getTime(); touchtime = now timer=setTimeout(LongPress,500); touchx=0; touchy=0; } var touchmoveHander=function(event){ if(touchx!=0 &amp;&amp; touchy!=0){ event.preventDefault(); clearTimeout(timer); timer=null; } touchx = event.changedTouches[0].pageX; touchy = event.changedTouches[0].pageY; } var touchendHander=function(event){ var now=(new Date()).getTime(); clearTimeout(timer); timer=null; if(now-touchtime&gt;=500){ event.preventDefault(); event.target.disabled = true; setTimeout(function(){ event.target.disabled = false; },100); } return false; } function LongPress(){ let key = getQueryByKey(copyInput.value, &#39;k&#39;) if (!key) { key = getQueryByKey(copyInput.value, &#39;key&#39;) } var supportsVibrate = &#34;vibrate&#34; in window.navigator; if (supportsVibrate) { window.navigator.vibrate(100); } fetch(baseUrl + &#39;/del?k=&#39; + encodeURIComponent(key), { method: &#39;GET&#39;, }).then(function () { copyInput.value = &#39;&#39; textBox.value = &#39;&#39; showMessage(&#39;删除成功&#39;) }) } window.onload = function () { getValue() timeSelect.selectedIndex = localStorage.getItem(&#39;timeselection&#39;) || 6 // 其他功能 document.addEventListener(&#39;touchstart&#39;,touchstart); document.addEventListener(&#39;touchend&#39;,touchend,false); btnCopy.addEventListener(&#39;touchstart&#39;,btntouchstart); // btnCopy.addEventListener(&#39;touchend&#39;,btntouchend,false); btnDel.addEventListener(&#39;touchstart&#39;,btntouchstart); // btnDel.addEventListener(&#39;touchend&#39;,btntouchend,false); btnSave.addEventListener(&#39;touchstart&#39;,btntouchstart); // btnSave.addEventListener(&#39;touchend&#39;,btntouchend,false); // 长按删除 btnDel.addEventListener(&#34;touchstart&#34;,touchstartHander,false); btnDel.addEventListener(&#34;touchmove&#34;,touchmoveHander,false); btnDel.addEventListener(&#34;touchend&#34;,touchendHander,false); btnDel.addEventListener(&#34;mousedown&#34;,touchstartHander,false); btnDel.addEventListener(&#34;mousemove&#34;,touchmoveHander,false); btnDel.addEventListener(&#34;mouseup&#34;,touchendHander,false); document.addEventListener(&#39;gesturestart&#39;, function (event) { event.preventDefault(); }); } function copyText() { if(needCopy){ needCopy = false if (navigator.clipboard) { navigator.clipboard.writeText(copyInput.value) } else { // 选中 copyInput.select() // 复制 document.execCommand(&#39;copy&#39;, true) } } } // document.body.addEventListener(&#39;mouseup&#39;,copyText, true); &lt;/script&gt; &lt;/body&gt; &lt;/html&gt; 参考链接 网页在线留言板-工具分享\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">网页留言板源码</a>
+<ul>
+<li><a href="#headline-2">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/%E7%BD%91%E9%A1%B5%E7%95%99%E8%A8%80%E6%9D%BF%E6%BA%90%E7%A0%81/">网页留言板源码</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 20, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 8 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+网页留言板源码
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
+</span><span class="lnt">264
+</span><span class="lnt">265
+</span><span class="lnt">266
+</span><span class="lnt">267
+</span><span class="lnt">268
+</span><span class="lnt">269
+</span><span class="lnt">270
+</span><span class="lnt">271
+</span><span class="lnt">272
+</span><span class="lnt">273
+</span><span class="lnt">274
+</span><span class="lnt">275
+</span><span class="lnt">276
+</span><span class="lnt">277
+</span><span class="lnt">278
+</span><span class="lnt">279
+</span><span class="lnt">280
+</span><span class="lnt">281
+</span><span class="lnt">282
+</span><span class="lnt">283
+</span><span class="lnt">284
+</span><span class="lnt">285
+</span><span class="lnt">286
+</span><span class="lnt">287
+</span><span class="lnt">288
+</span><span class="lnt">289
+</span><span class="lnt">290
+</span><span class="lnt">291
+</span><span class="lnt">292
+</span><span class="lnt">293
+</span><span class="lnt">294
+</span><span class="lnt">295
+</span><span class="lnt">296
+</span><span class="lnt">297
+</span><span class="lnt">298
+</span><span class="lnt">299
+</span><span class="lnt">300
+</span><span class="lnt">301
+</span><span class="lnt">302
+</span><span class="lnt">303
+</span><span class="lnt">304
+</span><span class="lnt">305
+</span><span class="lnt">306
+</span><span class="lnt">307
+</span><span class="lnt">308
+</span><span class="lnt">309
+</span><span class="lnt">310
+</span><span class="lnt">311
+</span><span class="lnt">312
+</span><span class="lnt">313
+</span><span class="lnt">314
+</span><span class="lnt">315
+</span><span class="lnt">316
+</span><span class="lnt">317
+</span><span class="lnt">318
+</span><span class="lnt">319
+</span><span class="lnt">320
+</span><span class="lnt">321
+</span><span class="lnt">322
+</span><span class="lnt">323
+</span><span class="lnt">324
+</span><span class="lnt">325
+</span><span class="lnt">326
+</span><span class="lnt">327
+</span><span class="lnt">328
+</span><span class="lnt">329
+</span><span class="lnt">330
+</span><span class="lnt">331
+</span><span class="lnt">332
+</span><span class="lnt">333
+</span><span class="lnt">334
+</span><span class="lnt">335
+</span><span class="lnt">336
+</span><span class="lnt">337
+</span><span class="lnt">338
+</span><span class="lnt">339
+</span><span class="lnt">340
+</span><span class="lnt">341
+</span><span class="lnt">342
+</span><span class="lnt">343
+</span><span class="lnt">344
+</span><span class="lnt">345
+</span><span class="lnt">346
+</span><span class="lnt">347
+</span><span class="lnt">348
+</span><span class="lnt">349
+</span><span class="lnt">350
+</span><span class="lnt">351
+</span><span class="lnt">352
+</span><span class="lnt">353
+</span><span class="lnt">354
+</span><span class="lnt">355
+</span><span class="lnt">356
+</span><span class="lnt">357
+</span><span class="lnt">358
+</span><span class="lnt">359
+</span><span class="lnt">360
+</span><span class="lnt">361
+</span><span class="lnt">362
+</span><span class="lnt">363
+</span><span class="lnt">364
+</span><span class="lnt">365
+</span><span class="lnt">366
+</span><span class="lnt">367
+</span><span class="lnt">368
+</span><span class="lnt">369
+</span><span class="lnt">370
+</span><span class="lnt">371
+</span><span class="lnt">372
+</span><span class="lnt">373
+</span><span class="lnt">374
+</span><span class="lnt">375
+</span><span class="lnt">376
+</span><span class="lnt">377
+</span><span class="lnt">378
+</span><span class="lnt">379
+</span><span class="lnt">380
+</span><span class="lnt">381
+</span><span class="lnt">382
+</span><span class="lnt">383
+</span><span class="lnt">384
+</span><span class="lnt">385
+</span><span class="lnt">386
+</span><span class="lnt">387
+</span><span class="lnt">388
+</span><span class="lnt">389
+</span><span class="lnt">390
+</span><span class="lnt">391
+</span><span class="lnt">392
+</span><span class="lnt">393
+</span><span class="lnt">394
+</span><span class="lnt">395
+</span><span class="lnt">396
+</span><span class="lnt">397
+</span><span class="lnt">398
+</span><span class="lnt">399
+</span><span class="lnt">400
+</span><span class="lnt">401
+</span><span class="lnt">402
+</span><span class="lnt">403
+</span><span class="lnt">404
+</span><span class="lnt">405
+</span><span class="lnt">406
+</span><span class="lnt">407
+</span><span class="lnt">408
+</span><span class="lnt">409
+</span><span class="lnt">410
+</span><span class="lnt">411
+</span><span class="lnt">412
+</span><span class="lnt">413
+</span><span class="lnt">414
+</span><span class="lnt">415
+</span><span class="lnt">416
+</span><span class="lnt">417
+</span><span class="lnt">418
+</span><span class="lnt">419
+</span><span class="lnt">420
+</span><span class="lnt">421
+</span><span class="lnt">422
+</span><span class="lnt">423
+</span><span class="lnt">424
+</span><span class="lnt">425
+</span><span class="lnt">426
+</span><span class="lnt">427
+</span><span class="lnt">428
+</span><span class="lnt">429
+</span><span class="lnt">430
+</span><span class="lnt">431
+</span><span class="lnt">432
+</span><span class="lnt">433
+</span><span class="lnt">434
+</span><span class="lnt">435
+</span><span class="lnt">436
+</span><span class="lnt">437
+</span><span class="lnt">438
+</span><span class="lnt">439
+</span><span class="lnt">440
+</span><span class="lnt">441
+</span><span class="lnt">442
+</span><span class="lnt">443
+</span><span class="lnt">444
+</span><span class="lnt">445
+</span><span class="lnt">446
+</span><span class="lnt">447
+</span><span class="lnt">448
+</span><span class="lnt">449
+</span><span class="lnt">450
+</span><span class="lnt">451
+</span><span class="lnt">452
+</span><span class="lnt">453
+</span><span class="lnt">454
+</span><span class="lnt">455
+</span><span class="lnt">456
+</span><span class="lnt">457
+</span><span class="lnt">458
+</span><span class="lnt">459
+</span><span class="lnt">460
+</span><span class="lnt">461
+</span><span class="lnt">462
+</span><span class="lnt">463
+</span><span class="lnt">464
+</span><span class="lnt">465
+</span><span class="lnt">466
+</span><span class="lnt">467
+</span><span class="lnt">468
+</span><span class="lnt">469
+</span><span class="lnt">470
+</span><span class="lnt">471
+</span><span class="lnt">472
+</span><span class="lnt">473
+</span><span class="lnt">474
+</span><span class="lnt">475
+</span><span class="lnt">476
+</span><span class="lnt">477
+</span><span class="lnt">478
+</span><span class="lnt">479
+</span><span class="lnt">480
+</span><span class="lnt">481
+</span><span class="lnt">482
+</span><span class="lnt">483
+</span><span class="lnt">484
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">&lt;!DOCTYPE html&gt;
+</span></span><span class="line"><span class="cl">&lt;html lang=&#34;en&#34;&gt;
+</span></span><span class="line"><span class="cl">  &lt;head&gt;
+</span></span><span class="line"><span class="cl">    &lt;meta charset=&#34;UTF-8&#34; /&gt;
+</span></span><span class="line"><span class="cl">    &lt;meta http-equiv=&#34;X-UA-Compatible&#34; content=&#34;IE=edge&#34; /&gt;
+</span></span><span class="line"><span class="cl">    &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1.0, user-scalable=0&#34; /&gt;
+</span></span><span class="line"><span class="cl">    &lt;title&gt;网页留言板&lt;/title&gt;
+</span></span><span class="line"><span class="cl">    &lt;style&gt;
+</span></span><span class="line"><span class="cl">      html,
+</span></span><span class="line"><span class="cl">      body {
+</span></span><span class="line"><span class="cl">        height: 100%;
+</span></span><span class="line"><span class="cl">        margin: 0;
+</span></span><span class="line"><span class="cl">        padding: 5px;
+</span></span><span class="line"><span class="cl">        box-sizing: border-box;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      textarea {
+</span></span><span class="line"><span class="cl">        background-color: #333;
+</span></span><span class="line"><span class="cl">        border-radius: 10px;
+</span></span><span class="line"><span class="cl">        width: 80%;
+</span></span><span class="line"><span class="cl">        height: 80%;
+</span></span><span class="line"><span class="cl">        display: block;
+</span></span><span class="line"><span class="cl">        margin: 0 auto;
+</span></span><span class="line"><span class="cl">        color: #fff;
+</span></span><span class="line"><span class="cl">        padding: 20px;
+</span></span><span class="line"><span class="cl">        font-size: 16px;
+</span></span><span class="line"><span class="cl">        box-sizing: border-box;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      textarea::-webkit-input-placeholder {
+</span></span><span class="line"><span class="cl">        color: #eee;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      .action {
+</span></span><span class="line"><span class="cl">        width: 80%;
+</span></span><span class="line"><span class="cl">        margin: 10px auto;
+</span></span><span class="line"><span class="cl">        text-align: right;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      .btn {
+</span></span><span class="line"><span class="cl">        padding: 0 10px;
+</span></span><span class="line"><span class="cl">        height: 38px;
+</span></span><span class="line"><span class="cl">        line-height: 38px;
+</span></span><span class="line"><span class="cl">        min-width: 100px;
+</span></span><span class="line"><span class="cl">        text-align: center;
+</span></span><span class="line"><span class="cl">        border: none;
+</span></span><span class="line"><span class="cl">        border-radius: 4px;
+</span></span><span class="line"><span class="cl">        user-select: none;
+</span></span><span class="line"><span class="cl">        -webkit-user-select:none;
+</span></span><span class="line"><span class="cl">        -moz-user-select:none;
+</span></span><span class="line"><span class="cl">        -o-user-select:none;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      .btn-save {
+</span></span><span class="line"><span class="cl">        background-color: #409eff;
+</span></span><span class="line"><span class="cl">        color: #fff;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      .btn-del {
+</span></span><span class="line"><span class="cl">        background-color: #f56c6c;
+</span></span><span class="line"><span class="cl">        color: #fff;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      .btn-copy {
+</span></span><span class="line"><span class="cl">        background-color: #409eff;
+</span></span><span class="line"><span class="cl">        color: #fff;
+</span></span><span class="line"><span class="cl">        height: 20px;
+</span></span><span class="line"><span class="cl">        line-height: 20px;
+</span></span><span class="line"><span class="cl">        width: 50px;
+</span></span><span class="line"><span class="cl">        font-size: 12px;
+</span></span><span class="line"><span class="cl">        margin-left: 5px;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      .copy-box {
+</span></span><span class="line"><span class="cl">        display: flex;
+</span></span><span class="line"><span class="cl">        margin-top: 5px;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      .copy-input {
+</span></span><span class="line"><span class="cl">        flex: 1;
+</span></span><span class="line"><span class="cl">        border: none;
+</span></span><span class="line"><span class="cl">        padding: 0 10px;
+</span></span><span class="line"><span class="cl">        border: 1px solid #ddd;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      .operation-btn {
+</span></span><span class="line"><span class="cl">        display: flex;
+</span></span><span class="line"><span class="cl">        align-items: center;
+</span></span><span class="line"><span class="cl">        margin-top: 20px;
+</span></span><span class="line"><span class="cl">        justify-content: space-between;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      .time-select {
+</span></span><span class="line"><span class="cl">        flex: 1;
+</span></span><span class="line"><span class="cl">        height: 38px;
+</span></span><span class="line"><span class="cl">        margin-right: 5px;
+</span></span><span class="line"><span class="cl">        max-width: 220px;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      .message-box {
+</span></span><span class="line"><span class="cl">        position: fixed;
+</span></span><span class="line"><span class="cl">        top: 50%;
+</span></span><span class="line"><span class="cl">        left: 50%;
+</span></span><span class="line"><span class="cl">        transform: translate(-50%);
+</span></span><span class="line"><span class="cl">        background-color: #fff;
+</span></span><span class="line"><span class="cl">        padding: 5px;
+</span></span><span class="line"><span class="cl">        max-width: 250px;
+</span></span><span class="line"><span class="cl">        border-radius: 4px;
+</span></span><span class="line"><span class="cl">        z-index: 9999;
+</span></span><span class="line"><span class="cl">        display: none;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      @media (max-width: 900px) {
+</span></span><span class="line"><span class="cl">        textarea {
+</span></span><span class="line"><span class="cl">          width: 95%;
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        .action {
+</span></span><span class="line"><span class="cl">          width: 95%;
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">    &lt;/style&gt;
+</span></span><span class="line"><span class="cl">  &lt;/head&gt;
+</span></span><span class="line"><span class="cl">  &lt;body&gt;
+</span></span><span class="line"><span class="cl">    &lt;textarea id=&#34;text-box&#34; class=&#34;&#34; placeholder=&#34;请留言&#34;&gt; &lt;/textarea&gt;
+</span></span><span class="line"><span class="cl">    &lt;div class=&#34;action copy-box&#34;&gt;
+</span></span><span class="line"><span class="cl">      &lt;input class=&#34;copy-input&#34; readonly value=&#34;&#34; /&gt;
+</span></span><span class="line"><span class="cl">      &lt;button class=&#34;btn btn-copy&#34;&gt;分享留言&lt;/button&gt;
+</span></span><span class="line"><span class="cl">    &lt;/div&gt;
+</span></span><span class="line"><span class="cl">    &lt;div class=&#34;action operation-btn&#34;&gt;
+</span></span><span class="line"><span class="cl">      &lt;select class=&#34;time-select&#34;&gt;
+</span></span><span class="line"><span class="cl">        &lt;option value=&#34;1&#34;&gt;5分钟销毁&lt;/option&gt;
+</span></span><span class="line"><span class="cl">        &lt;option value=&#34;2&#34;&gt;15分钟销毁&lt;/option&gt;
+</span></span><span class="line"><span class="cl">        &lt;option value=&#34;3&#34;&gt;1小时销毁&lt;/option&gt;
+</span></span><span class="line"><span class="cl">        &lt;option value=&#34;4&#34;&gt;24小时销毁&lt;/option&gt;
+</span></span><span class="line"><span class="cl">        &lt;option value=&#34;5&#34;&gt;7天后销毁&lt;/option&gt;
+</span></span><span class="line"><span class="cl">        &lt;option value=&#34;6&#34;&gt;30天后销毁&lt;/option&gt;
+</span></span><span class="line"><span class="cl">        &lt;option value=&#34;7&#34;&gt;一年后销毁&lt;/option&gt;
+</span></span><span class="line"><span class="cl">      &lt;/select&gt;
+</span></span><span class="line"><span class="cl">      &lt;div onselectstart=&#34;return false;&#34;&gt;
+</span></span><span class="line"><span class="cl">        &lt;button class=&#34;btn btn-del&#34;&gt;清空/删除&lt;/button&gt;
+</span></span><span class="line"><span class="cl">        &lt;button class=&#34;btn btn-save&#34;&gt;留言&lt;/button&gt;
+</span></span><span class="line"><span class="cl">      &lt;/div&gt;
+</span></span><span class="line"><span class="cl">    &lt;/div&gt;
+</span></span><span class="line"><span class="cl">    &lt;!-- 错误信息 --&gt;
+</span></span><span class="line"><span class="cl">    &lt;div class=&#34;message-box&#34;&gt;&lt;/div&gt;
+</span></span><span class="line"><span class="cl">    &lt;script src=&#34;/clipboard.min.js&#34;&gt;&lt;/script&gt;
+</span></span><span class="line"><span class="cl">    &lt;script&gt;
+</span></span><span class="line"><span class="cl">      const baseUrl = window.location.origin
+</span></span><span class="line"><span class="cl">      let btnSave = document.querySelector(&#39;.btn-save&#39;)
+</span></span><span class="line"><span class="cl">      let btnDel = document.querySelector(&#39;.btn-del&#39;)
+</span></span><span class="line"><span class="cl">      let textBox = document.querySelector(&#39;#text-box&#39;)
+</span></span><span class="line"><span class="cl">      let timeSelect = document.querySelector(&#39;.time-select&#39;)
+</span></span><span class="line"><span class="cl">      let copyInput = document.querySelector(&#39;.copy-input&#39;)
+</span></span><span class="line"><span class="cl">      let btnCopy = document.querySelector(&#39;.btn-copy&#39;)
+</span></span><span class="line"><span class="cl">      let messageBox = document.querySelector(&#39;.message-box&#39;)
+</span></span><span class="line"><span class="cl">      let timerid = null
+</span></span><span class="line"><span class="cl">      let needCopy = false
+</span></span><span class="line"><span class="cl">      function showMessage(text, time = 1500) {
+</span></span><span class="line"><span class="cl">        if(timerid){
+</span></span><span class="line"><span class="cl">            clearTimeout(timerid)
+</span></span><span class="line"><span class="cl">            timerid = null
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        messageBox.innerHTML = text
+</span></span><span class="line"><span class="cl">        messageBox.style.display = &#39;block&#39;
+</span></span><span class="line"><span class="cl">        timerid = setTimeout(() =&gt; {
+</span></span><span class="line"><span class="cl">          messageBox.style.display = &#39;none&#39;
+</span></span><span class="line"><span class="cl">        }, time)
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      function getValue(reload=false) {
+</span></span><span class="line"><span class="cl">        let key = this.getQueryByKey(window.location.href, &#39;k&#39;)
+</span></span><span class="line"><span class="cl">        if (!key) {
+</span></span><span class="line"><span class="cl">          key = getQueryByKey(window.location.href, &#39;key&#39;)
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        if(!key){
+</span></span><span class="line"><span class="cl">            textBox.value = &#34;&#34;
+</span></span><span class="line"><span class="cl">            return
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        fetch(baseUrl + &#39;/get?k=&#39; + encodeURIComponent(key), {
+</span></span><span class="line"><span class="cl">          method: &#39;GET&#39;,
+</span></span><span class="line"><span class="cl">        }).then(function (res) {
+</span></span><span class="line"><span class="cl">            return res.text()
+</span></span><span class="line"><span class="cl">        }).then((val) =&gt; {
+</span></span><span class="line"><span class="cl">          // 赋值
+</span></span><span class="line"><span class="cl">          if(!val){
+</span></span><span class="line"><span class="cl">            if(!reload){
+</span></span><span class="line"><span class="cl">              getValue(true)
+</span></span><span class="line"><span class="cl">            }else{
+</span></span><span class="line"><span class="cl">              textBox.value = val
+</span></span><span class="line"><span class="cl">              // history.replaceState(&#39;&#39;, &#39;&#39;, baseUrl)
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">            return
+</span></span><span class="line"><span class="cl">          }
+</span></span><span class="line"><span class="cl">          textBox.value = val
+</span></span><span class="line"><span class="cl">          // 赋值内容
+</span></span><span class="line"><span class="cl">          let shareUrl = baseUrl + &#39;/?k=&#39; + encodeURIComponent(key)
+</span></span><span class="line"><span class="cl">          let is_block_key = getQueryByKey(window.location.href, &#39;block&#39;)
+</span></span><span class="line"><span class="cl">          if (!is_block_key){
+</span></span><span class="line"><span class="cl">              is_block_key = getQueryByKey(window.location.href, &#39;b&#39;)
+</span></span><span class="line"><span class="cl">              if (is_block_key){
+</span></span><span class="line"><span class="cl">                 shareUrl = shareUrl + &#34;&amp;b=&#34; + is_block_key
+</span></span><span class="line"><span class="cl">              }
+</span></span><span class="line"><span class="cl">          }
+</span></span><span class="line"><span class="cl">          copyInput.value = shareUrl
+</span></span><span class="line"><span class="cl">          // 读取消息有效时间
+</span></span><span class="line"><span class="cl">          fetch(baseUrl + &#39;/get?k=time_index_&#39; + encodeURIComponent(key), {
+</span></span><span class="line"><span class="cl">            method: &#39;GET&#39;,
+</span></span><span class="line"><span class="cl">          }).then(function (res) {
+</span></span><span class="line"><span class="cl">            return res.text()
+</span></span><span class="line"><span class="cl">          }).then((val) =&gt; {
+</span></span><span class="line"><span class="cl">            if(val){
+</span></span><span class="line"><span class="cl">              timeSelect.selectedIndex = val
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">          })
+</span></span><span class="line"><span class="cl">        })
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      function getQueryByKey(url, name) {
+</span></span><span class="line"><span class="cl">        if(!url){
+</span></span><span class="line"><span class="cl">            return &#34;&#34;
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        var paths=url.split(&#39;?&#39;)
+</span></span><span class="line"><span class="cl">        if(paths.length &lt; 2){
+</span></span><span class="line"><span class="cl">            return &#34;&#34;
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        var str = paths[1]
+</span></span><span class="line"><span class="cl">        var keys = str.split(&#39;&amp;&#39;)
+</span></span><span class="line"><span class="cl">        var obj = {}
+</span></span><span class="line"><span class="cl">        keys.forEach((item, idx, data) =&gt; {
+</span></span><span class="line"><span class="cl">          var arr = item.split(&#39;=&#39;)
+</span></span><span class="line"><span class="cl">          obj[arr[0]] = decodeURI(arr[1])
+</span></span><span class="line"><span class="cl">        })
+</span></span><span class="line"><span class="cl">        return obj[name]
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      function getTime() {
+</span></span><span class="line"><span class="cl">        var index = timeSelect.selectedIndex
+</span></span><span class="line"><span class="cl">        let time = timeSelect.options[index].value
+</span></span><span class="line"><span class="cl">        switch (time) {
+</span></span><span class="line"><span class="cl">          case &#39;1&#39;:
+</span></span><span class="line"><span class="cl">            return 5 * 60
+</span></span><span class="line"><span class="cl">          case &#39;2&#39;:
+</span></span><span class="line"><span class="cl">            return 15 * 60
+</span></span><span class="line"><span class="cl">          case &#39;3&#39;:
+</span></span><span class="line"><span class="cl">            return 1 * 60 * 60
+</span></span><span class="line"><span class="cl">          case &#39;4&#39;:
+</span></span><span class="line"><span class="cl">            return 24 * 60 * 60
+</span></span><span class="line"><span class="cl">          case &#39;5&#39;:
+</span></span><span class="line"><span class="cl">            return 7 * 24 * 60 * 60
+</span></span><span class="line"><span class="cl">          case &#39;6&#39;:
+</span></span><span class="line"><span class="cl">            return 30 * 24 * 60 * 60
+</span></span><span class="line"><span class="cl">          case &#39;7&#39;:
+</span></span><span class="line"><span class="cl">            return 12 * 30 * 24 * 60 * 60
+</span></span><span class="line"><span class="cl">          default:
+</span></span><span class="line"><span class="cl">            return 60 * 60
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      function getRandom(m) {
+</span></span><span class="line"><span class="cl">        // 随机数字
+</span></span><span class="line"><span class="cl">        // m = m &gt; 16 ? 16 : m;
+</span></span><span class="line"><span class="cl">        // var num = Math.random().toString();
+</span></span><span class="line"><span class="cl">        // return num.substring(num.length - m);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        // 随机数字+小写字母
+</span></span><span class="line"><span class="cl">        // let letter = [&#34;A&#34;,&#34;B&#34;,&#34;C&#34;,&#34;D&#34;,&#34;E&#34;,&#34;F&#34;,&#34;G&#34;,&#34;H&#34;,&#34;I&#34;,&#34;J&#34;,&#34;K&#34;,&#34;L&#34;,&#34;M&#34;,&#34;N&#34;,&#34;O&#34;,&#34;P&#34;,&#34;Q&#34;,&#34;R&#34;,&#34;S&#34;,&#34;T&#34;,&#34;U&#34;,&#34;V&#34;,&#34;W&#34;,&#34;X&#34;,&#34;Y&#34;,&#34;Z&#34;]
+</span></span><span class="line"><span class="cl">        var data = [
+</span></span><span class="line"><span class="cl">          &#39;0&#39;,
+</span></span><span class="line"><span class="cl">          &#39;1&#39;,
+</span></span><span class="line"><span class="cl">          &#39;2&#39;,
+</span></span><span class="line"><span class="cl">          &#39;3&#39;,
+</span></span><span class="line"><span class="cl">          &#39;4&#39;,
+</span></span><span class="line"><span class="cl">          &#39;5&#39;,
+</span></span><span class="line"><span class="cl">          &#39;6&#39;,
+</span></span><span class="line"><span class="cl">          &#39;7&#39;,
+</span></span><span class="line"><span class="cl">          &#39;8&#39;,
+</span></span><span class="line"><span class="cl">          &#39;9&#39;,
+</span></span><span class="line"><span class="cl">          &#39;a&#39;,
+</span></span><span class="line"><span class="cl">          &#39;b&#39;,
+</span></span><span class="line"><span class="cl">          &#39;c&#39;,
+</span></span><span class="line"><span class="cl">          &#39;d&#39;,
+</span></span><span class="line"><span class="cl">          &#39;e&#39;,
+</span></span><span class="line"><span class="cl">          &#39;f&#39;,
+</span></span><span class="line"><span class="cl">          &#39;g&#39;,
+</span></span><span class="line"><span class="cl">          &#39;h&#39;,
+</span></span><span class="line"><span class="cl">          &#39;i&#39;,
+</span></span><span class="line"><span class="cl">          &#39;j&#39;,
+</span></span><span class="line"><span class="cl">          &#39;k&#39;,
+</span></span><span class="line"><span class="cl">          &#39;l&#39;,
+</span></span><span class="line"><span class="cl">          &#39;m&#39;,
+</span></span><span class="line"><span class="cl">          &#39;n&#39;,
+</span></span><span class="line"><span class="cl">          &#39;o&#39;,
+</span></span><span class="line"><span class="cl">          &#39;p&#39;,
+</span></span><span class="line"><span class="cl">          &#39;q&#39;,
+</span></span><span class="line"><span class="cl">          &#39;r&#39;,
+</span></span><span class="line"><span class="cl">          &#39;s&#39;,
+</span></span><span class="line"><span class="cl">          &#39;t&#39;,
+</span></span><span class="line"><span class="cl">          &#39;u&#39;,
+</span></span><span class="line"><span class="cl">          &#39;v&#39;,
+</span></span><span class="line"><span class="cl">          &#39;w&#39;,
+</span></span><span class="line"><span class="cl">          &#39;x&#39;,
+</span></span><span class="line"><span class="cl">          &#39;y&#39;,
+</span></span><span class="line"><span class="cl">          &#39;z&#39;,
+</span></span><span class="line"><span class="cl">        ]
+</span></span><span class="line"><span class="cl">        m = m &gt; 16 ? 16 : m
+</span></span><span class="line"><span class="cl">        var str = &#39;&#39;
+</span></span><span class="line"><span class="cl">        let endnum = data.length - 1
+</span></span><span class="line"><span class="cl">        let startnum = 0
+</span></span><span class="line"><span class="cl">        for (var i = 0; i &lt; m; i++) {
+</span></span><span class="line"><span class="cl">          var ram = Math.floor(
+</span></span><span class="line"><span class="cl">            Math.random() * (endnum - startnum + 1 + startnum)
+</span></span><span class="line"><span class="cl">          )
+</span></span><span class="line"><span class="cl">          str += data[ram]
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        return str.toUpperCase()
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      btnSave.addEventListener(&#39;click&#39;, function () {
+</span></span><span class="line"><span class="cl">        let text = textBox.value
+</span></span><span class="line"><span class="cl">        let is_block_key = getQueryByKey(window.location.href, &#39;block&#39;)
+</span></span><span class="line"><span class="cl">        if (!is_block_key) {
+</span></span><span class="line"><span class="cl">            is_block_key = getQueryByKey(window.location.href, &#39;b&#39;)
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        let key;
+</span></span><span class="line"><span class="cl">        if (is_block_key == &#39;true&#39;){
+</span></span><span class="line"><span class="cl">            key = getQueryByKey(window.location.href, &#39;key&#39;)
+</span></span><span class="line"><span class="cl">            if (!key){
+</span></span><span class="line"><span class="cl">                key = getQueryByKey(window.location.href, &#39;k&#39;)
+</span></span><span class="line"><span class="cl">            }
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        if (!key){
+</span></span><span class="line"><span class="cl">            key = getRandom(8)
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        let shareUrl = baseUrl + &#39;/?k=&#39; + encodeURIComponent(key)
+</span></span><span class="line"><span class="cl">        if (is_block_key){
+</span></span><span class="line"><span class="cl">            shareUrl = shareUrl + &#39;&amp;b=&#39; + encodeURIComponent(is_block_key)
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        copyInput.value = shareUrl
+</span></span><span class="line"><span class="cl">        history.replaceState(&#39;&#39;, &#39;&#39;, shareUrl)
+</span></span><span class="line"><span class="cl">        fetch(baseUrl + &#39;/set&#39;, {
+</span></span><span class="line"><span class="cl">              method: &#39;POST&#39;,
+</span></span><span class="line"><span class="cl">              headers: {&#39;Content-Type&#39;: &#39;application/json&#39;},
+</span></span><span class="line"><span class="cl">              body: JSON.stringify({
+</span></span><span class="line"><span class="cl">                  &#39;t&#39;: getTime(),
+</span></span><span class="line"><span class="cl">                  &#39;k&#39;: key,
+</span></span><span class="line"><span class="cl">                  &#39;v&#39;: text
+</span></span><span class="line"><span class="cl">              })
+</span></span><span class="line"><span class="cl">        }).then(function () {
+</span></span><span class="line"><span class="cl">            needCopy = true
+</span></span><span class="line"><span class="cl">            showMessage(&#39;留言成功，请分享链接&#39;)
+</span></span><span class="line"><span class="cl">        })
+</span></span><span class="line"><span class="cl">        fetch(baseUrl + &#39;/set&#39;, {
+</span></span><span class="line"><span class="cl">              method: &#39;POST&#39;,
+</span></span><span class="line"><span class="cl">              headers: {&#39;Content-Type&#39;: &#39;application/json&#39;},
+</span></span><span class="line"><span class="cl">              body: JSON.stringify({
+</span></span><span class="line"><span class="cl">                  &#39;t&#39;: getTime(),
+</span></span><span class="line"><span class="cl">                  &#39;k&#39;: &#39;time_index_&#39;+key,
+</span></span><span class="line"><span class="cl">                  &#39;v&#39;: &#39;&#39;+timeSelect.selectedIndex
+</span></span><span class="line"><span class="cl">              })})
+</span></span><span class="line"><span class="cl">      });
+</span></span><span class="line"><span class="cl">      // var saveClipboard = new ClipboardJS(&#39;.btn-save&#39;, {
+</span></span><span class="line"><span class="cl">      //     text: function() {
+</span></span><span class="line"><span class="cl">      //       return shareUrl;
+</span></span><span class="line"><span class="cl">      //     }
+</span></span><span class="line"><span class="cl">      // });
+</span></span><span class="line"><span class="cl">      btnDel.addEventListener(&#39;click&#39;, function () {
+</span></span><span class="line"><span class="cl">        textBox.value = &#39;&#39;
+</span></span><span class="line"><span class="cl">        showMessage(&#39;清空成功，长按可删除&#39;)
+</span></span><span class="line"><span class="cl">      })
+</span></span><span class="line"><span class="cl">      var copyClipboard = new ClipboardJS(&#39;.btn-copy&#39;, {
+</span></span><span class="line"><span class="cl">          text: function() {
+</span></span><span class="line"><span class="cl">              return copyInput.value;
+</span></span><span class="line"><span class="cl">          }
+</span></span><span class="line"><span class="cl">      });
+</span></span><span class="line"><span class="cl">      copyClipboard.on(&#39;success&#39;, function(e) {
+</span></span><span class="line"><span class="cl">        showMessage(&#39;复制成功，请分享链接&#39;)
+</span></span><span class="line"><span class="cl">      });
+</span></span><span class="line"><span class="cl">      timeSelect.addEventListener(&#39;change&#39;, function () {
+</span></span><span class="line"><span class="cl">        localStorage.setItem(&#39;timeselection&#39;, timeSelect.selectedIndex)
+</span></span><span class="line"><span class="cl">      })
+</span></span><span class="line"><span class="cl">      var lastTouchEnd=0;
+</span></span><span class="line"><span class="cl">      var btntouchtime=0;
+</span></span><span class="line"><span class="cl">      function touchstart(){
+</span></span><span class="line"><span class="cl">          if(event.touches.length&gt;1){
+</span></span><span class="line"><span class="cl">            event.preventDefault();
+</span></span><span class="line"><span class="cl">          }
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      function touchend(){
+</span></span><span class="line"><span class="cl">          var now=(new Date()).getTime();
+</span></span><span class="line"><span class="cl">          if(now-lastTouchEnd&lt;=300){
+</span></span><span class="line"><span class="cl">            event.preventDefault();
+</span></span><span class="line"><span class="cl">          }
+</span></span><span class="line"><span class="cl">          lastTouchEnd=now;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      function btntouchstart(){
+</span></span><span class="line"><span class="cl">          var now=(new Date()).getTime();
+</span></span><span class="line"><span class="cl">          if(event.touches.length&gt;1){
+</span></span><span class="line"><span class="cl">            event.preventDefault();
+</span></span><span class="line"><span class="cl">          }
+</span></span><span class="line"><span class="cl">          if(now-btntouchtime&lt;=300){
+</span></span><span class="line"><span class="cl">            event.preventDefault();
+</span></span><span class="line"><span class="cl">          }
+</span></span><span class="line"><span class="cl">          btntouchtime = now
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      //function btntouchend(e){
+</span></span><span class="line"><span class="cl">      //    var now=(new Date()).getTime();
+</span></span><span class="line"><span class="cl">      //    if(now-btntouchtime&lt;=300){
+</span></span><span class="line"><span class="cl">      //      event.preventDefault();
+</span></span><span class="line"><span class="cl">      //    }
+</span></span><span class="line"><span class="cl">      //}
+</span></span><span class="line"><span class="cl">      var timer=null;
+</span></span><span class="line"><span class="cl">      var touchtime=null;
+</span></span><span class="line"><span class="cl">      var touchx=0; var touchy=0;
+</span></span><span class="line"><span class="cl">      var touchstartHander=function(event){
+</span></span><span class="line"><span class="cl">      	// event.preventDefault();
+</span></span><span class="line"><span class="cl">        var now=(new Date()).getTime();
+</span></span><span class="line"><span class="cl">        touchtime = now
+</span></span><span class="line"><span class="cl">      	timer=setTimeout(LongPress,500);
+</span></span><span class="line"><span class="cl">        touchx=0; touchy=0;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      var touchmoveHander=function(event){
+</span></span><span class="line"><span class="cl">        if(touchx!=0 &amp;&amp; touchy!=0){
+</span></span><span class="line"><span class="cl">      	    event.preventDefault();
+</span></span><span class="line"><span class="cl">      	    clearTimeout(timer);
+</span></span><span class="line"><span class="cl">            timer=null;
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        touchx = event.changedTouches[0].pageX;
+</span></span><span class="line"><span class="cl">        touchy = event.changedTouches[0].pageY;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      var touchendHander=function(event){
+</span></span><span class="line"><span class="cl">        var now=(new Date()).getTime();
+</span></span><span class="line"><span class="cl">      	clearTimeout(timer);
+</span></span><span class="line"><span class="cl">        timer=null;
+</span></span><span class="line"><span class="cl">        if(now-touchtime&gt;=500){
+</span></span><span class="line"><span class="cl">          event.preventDefault();
+</span></span><span class="line"><span class="cl">          event.target.disabled = true;
+</span></span><span class="line"><span class="cl">          setTimeout(function(){
+</span></span><span class="line"><span class="cl">            event.target.disabled = false;
+</span></span><span class="line"><span class="cl">          },100);
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        return false;
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      function LongPress(){
+</span></span><span class="line"><span class="cl">        let key = getQueryByKey(copyInput.value, &#39;k&#39;)
+</span></span><span class="line"><span class="cl">        if (!key) {
+</span></span><span class="line"><span class="cl">          key = getQueryByKey(copyInput.value, &#39;key&#39;)
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">        var supportsVibrate = &#34;vibrate&#34; in window.navigator;
+</span></span><span class="line"><span class="cl">        if (supportsVibrate) {
+</span></span><span class="line"><span class="cl">          window.navigator.vibrate(100);
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        fetch(baseUrl + &#39;/del?k=&#39; + encodeURIComponent(key), {
+</span></span><span class="line"><span class="cl">          method: &#39;GET&#39;,
+</span></span><span class="line"><span class="cl">        }).then(function () {
+</span></span><span class="line"><span class="cl">          copyInput.value = &#39;&#39;
+</span></span><span class="line"><span class="cl">          textBox.value = &#39;&#39;
+</span></span><span class="line"><span class="cl">          showMessage(&#39;删除成功&#39;)
+</span></span><span class="line"><span class="cl">        })
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      window.onload = function () {
+</span></span><span class="line"><span class="cl">        getValue()
+</span></span><span class="line"><span class="cl">        timeSelect.selectedIndex = localStorage.getItem(&#39;timeselection&#39;) || 6
+</span></span><span class="line"><span class="cl">        // 其他功能
+</span></span><span class="line"><span class="cl">        document.addEventListener(&#39;touchstart&#39;,touchstart);
+</span></span><span class="line"><span class="cl">        document.addEventListener(&#39;touchend&#39;,touchend,false);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        btnCopy.addEventListener(&#39;touchstart&#39;,btntouchstart);
+</span></span><span class="line"><span class="cl">        // btnCopy.addEventListener(&#39;touchend&#39;,btntouchend,false);
+</span></span><span class="line"><span class="cl">        btnDel.addEventListener(&#39;touchstart&#39;,btntouchstart);
+</span></span><span class="line"><span class="cl">        // btnDel.addEventListener(&#39;touchend&#39;,btntouchend,false);
+</span></span><span class="line"><span class="cl">        btnSave.addEventListener(&#39;touchstart&#39;,btntouchstart);
+</span></span><span class="line"><span class="cl">        // btnSave.addEventListener(&#39;touchend&#39;,btntouchend,false);
+</span></span><span class="line"><span class="cl">        // 长按删除
+</span></span><span class="line"><span class="cl">        btnDel.addEventListener(&#34;touchstart&#34;,touchstartHander,false);
+</span></span><span class="line"><span class="cl">        btnDel.addEventListener(&#34;touchmove&#34;,touchmoveHander,false);
+</span></span><span class="line"><span class="cl">        btnDel.addEventListener(&#34;touchend&#34;,touchendHander,false);
+</span></span><span class="line"><span class="cl">        btnDel.addEventListener(&#34;mousedown&#34;,touchstartHander,false);
+</span></span><span class="line"><span class="cl">        btnDel.addEventListener(&#34;mousemove&#34;,touchmoveHander,false);
+</span></span><span class="line"><span class="cl">        btnDel.addEventListener(&#34;mouseup&#34;,touchendHander,false);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        document.addEventListener(&#39;gesturestart&#39;, function (event) {
+</span></span><span class="line"><span class="cl">          event.preventDefault();
+</span></span><span class="line"><span class="cl">        });
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      function copyText() {
+</span></span><span class="line"><span class="cl">        if(needCopy){
+</span></span><span class="line"><span class="cl">          needCopy = false
+</span></span><span class="line"><span class="cl">          if (navigator.clipboard) {
+</span></span><span class="line"><span class="cl">            navigator.clipboard.writeText(copyInput.value)
+</span></span><span class="line"><span class="cl">          } else {
+</span></span><span class="line"><span class="cl">            // 选中
+</span></span><span class="line"><span class="cl">            copyInput.select()
+</span></span><span class="line"><span class="cl">            // 复制
+</span></span><span class="line"><span class="cl">            document.execCommand(&#39;copy&#39;, true)
+</span></span><span class="line"><span class="cl">          }
+</span></span><span class="line"><span class="cl">        }
+</span></span><span class="line"><span class="cl">      }
+</span></span><span class="line"><span class="cl">      // document.body.addEventListener(&#39;mouseup&#39;,copyText, true);
+</span></span><span class="line"><span class="cl">    &lt;/script&gt;
+</span></span><span class="line"><span class="cl">  &lt;/body&gt;
+</span></span><span class="line"><span class="cl">&lt;/html&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+参考链接
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>
+<a href="https://zwc365.com/2022/11/14/网页在线留言板-工具分享">网页在线留言板-工具分享</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/html/">Html</a>
+        
+            <a href="/tags/%E7%BD%91%E9%A1%B5/">网页</a>
+        
+            <a href="/tags/%E7%95%99%E8%A8%80/">留言</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

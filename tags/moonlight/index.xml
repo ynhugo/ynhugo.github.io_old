@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Moonlight on Example Site</title>
+        <link>https://ynhugo.github.io/tags/moonlight/</link>
+        <description>Recent content in Moonlight on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Sat, 27 Jul 2024 01:34:59 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/moonlight/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Zerotier&#43;Moonlight 远控方案畅玩游戏</title>
+        <link>https://ynhugo.github.io/p/zerotier-moonlight-%E8%BF%9C%E6%8E%A7%E6%96%B9%E6%A1%88%E7%95%85%E7%8E%A9%E6%B8%B8%E6%88%8F/</link>
+        <pubDate>Sat, 27 Jul 2024 01:34:59 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/zerotier-moonlight-%E8%BF%9C%E6%8E%A7%E6%96%B9%E6%A1%88%E7%95%85%E7%8E%A9%E6%B8%B8%E6%88%8F/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+Zerotier+Moonlight 远控方案畅玩游戏，一文看懂如何配置操作！
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-2&#34;&gt;
+方案
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+使用的是 Zerotier One + moonlight 的一套控制方案，被控端（PC）使用 Zerotier One + sunshine 的一个输出&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-3&#34;&gt;
+配置
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+主控端：Moonlight     &lt;a href=&#34;https://github.com/moonlight-stream&#34;&gt;https://github.com/moonlight-stream&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+被控端：Sunshine      &lt;a href=&#34;https://github.com/LizardByte/Sunshine&#34;&gt;https://github.com/LizardByte/Sunshine&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-4&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-4&#34;&gt;
+Steam link 方案
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-4&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+主控端：Steamlink app 或者客户端，官方下载地址：&lt;a href=&#34;https://help.steampowered.com/en/faqs/view/7112-CD02-7B57-59F8&#34;&gt;https://help.steampowered.com/en/faqs/view/7112-CD02-7B57-59F8&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+被控端：Steam 客户端，并在客户端内开启远程畅玩：设置 ——&amp;gt; 远程畅玩&lt;/p&gt;
+&lt;p&gt;
+注意！Sunshine 推流的时候要在防火墙给对应端口放行！直接把防火墙关了就行！&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-5&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-5&#34;&gt;
+打洞方案的软件配置
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-5&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;div id=&#34;outline-container-headline-6&#34; class=&#34;outline-4&#34;&gt;
+&lt;h4 id=&#34;headline-6&#34;&gt;
+局域网下软件配置
+&lt;/h4&gt;
+&lt;div id=&#34;outline-text-headline-6&#34; class=&#34;outline-text-4&#34;&gt;
+&lt;div id=&#34;outline-container-headline-7&#34; class=&#34;outline-5&#34;&gt;
+&lt;h5 id=&#34;headline-7&#34;&gt;
+被控端
+&lt;/h5&gt;
+&lt;div id=&#34;outline-text-headline-7&#34; class=&#34;outline-text-5&#34;&gt;
+&lt;p&gt;
+安装并启动Sunshine，然后在你的浏览器输入  &lt;a href=&#34;https://localhost:47990&#34;&gt;https://localhost:47990&lt;/a&gt; ，进行一番密码设置，便能进入 Sunshine 的控制界面啦！点击网页菜单的PIN按钮，然后输入主控（Moonlight）那边的 PIN 码即可配对连接&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-8&#34; class=&#34;outline-5&#34;&gt;
+&lt;h5 id=&#34;headline-8&#34;&gt;
+主控端
+&lt;/h5&gt;
+&lt;div id=&#34;outline-text-headline-8&#34; class=&#34;outline-text-5&#34;&gt;
+&lt;p&gt;
+移动端下好 moonlight app 并启动，点击 “+” 号，进入后输入对应的被控端 IP 地址即可，公网下的 IP 地址在 Zerotier 这种虚拟组网软件上查看，对应 IP 由路由器分配，输入至上方 Moonlight 内即可识别&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-9&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-9&#34;&gt;
+参考链接
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-9&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://www.bilibili.com/read/cv27006894/&#34;&gt;Zerotier+Moonlight 远控方案畅玩游戏，一文看懂如何配置操作！&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

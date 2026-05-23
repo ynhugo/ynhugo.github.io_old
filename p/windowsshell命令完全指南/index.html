@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Windows Shell 命令完全指南 WindowsShell命令完全指南 什么是 Shell 命令 Windows 的 shell: 命令是一种特殊的快捷方式，用于直接访问系统文件夹。\n使用方法 按下 &lt;kbd&gt;Win&lt;/br&gt; + &lt;/kbd&gt;R&lt;kbd&gt; 打开“运行”对话框，输入 shell:programs 后回车。\n核心作用 快速访问 Windows 中的特定系统文件夹。\n常用 Shell 命令列表 下表列出最常用的 shell: 命令及其作用。\n命令 作用 范围 shell:Desktop 桌面 当前用户 shell:Downloads 下载文件夹 当前用户 shell:Personal 文档文件夹 当前用户 shell:My Music 我的音乐 当前用户 shell:My Pictures 我的图片 当前用户 shell:My Video 我的视频 当前用户 shell:Favorites 收藏夹 当前用户 shell:Recent 最近使用的项目 当前用户 shell:Startup 启动文件夹（开机自启） 当前用户 shell:Programs 开始菜单程序文件夹 当前用户 shell:SendTo 发送到菜单 当前用户 shell:AppData AppData/Roaming 当前用户 shell:Local AppData AppData/Local 当前用户 shell:Common Desktop 公用桌面 所有用户 shell:Common Programs 公用开始菜单程序文件夹 所有用户 shell:Common Startup 公用启动文件夹 所有用户 shell:Windows Windows 安装目录 系统 shell:System System32 文件夹 系统 shell:RecycleBinFolder 回收站 系统 shell:Fonts 字体文件夹 系统 shell:ControlPanelFolder 控制面板 系统 shell:PrintersFolder 打印机和设备 系统 实用示例：快速打开公用程序文件夹 场景 你想打开以下路径：\n">
+<title>WindowsShell命令完全指南</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/windowsshell%E5%91%BD%E4%BB%A4%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="WindowsShell命令完全指南">
+<meta property='og:description' content="Windows Shell 命令完全指南 WindowsShell命令完全指南 什么是 Shell 命令 Windows 的 shell: 命令是一种特殊的快捷方式，用于直接访问系统文件夹。\n使用方法 按下 &lt;kbd&gt;Win&lt;/br&gt; + &lt;/kbd&gt;R&lt;kbd&gt; 打开“运行”对话框，输入 shell:programs 后回车。\n核心作用 快速访问 Windows 中的特定系统文件夹。\n常用 Shell 命令列表 下表列出最常用的 shell: 命令及其作用。\n命令 作用 范围 shell:Desktop 桌面 当前用户 shell:Downloads 下载文件夹 当前用户 shell:Personal 文档文件夹 当前用户 shell:My Music 我的音乐 当前用户 shell:My Pictures 我的图片 当前用户 shell:My Video 我的视频 当前用户 shell:Favorites 收藏夹 当前用户 shell:Recent 最近使用的项目 当前用户 shell:Startup 启动文件夹（开机自启） 当前用户 shell:Programs 开始菜单程序文件夹 当前用户 shell:SendTo 发送到菜单 当前用户 shell:AppData AppData/Roaming 当前用户 shell:Local AppData AppData/Local 当前用户 shell:Common Desktop 公用桌面 所有用户 shell:Common Programs 公用开始菜单程序文件夹 所有用户 shell:Common Startup 公用启动文件夹 所有用户 shell:Windows Windows 安装目录 系统 shell:System System32 文件夹 系统 shell:RecycleBinFolder 回收站 系统 shell:Fonts 字体文件夹 系统 shell:ControlPanelFolder 控制面板 系统 shell:PrintersFolder 打印机和设备 系统 实用示例：快速打开公用程序文件夹 场景 你想打开以下路径：\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/windowsshell%E5%91%BD%E4%BB%A4%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='windows' /><meta property='article:tag' content='shell' /><meta property='article:published_time' content='2026-05-13T10:48:31&#43;08:00'/><meta property='article:modified_time' content='2026-05-13T10:48:31&#43;08:00'/>
+<meta name="twitter:title" content="WindowsShell命令完全指南">
+<meta name="twitter:description" content="Windows Shell 命令完全指南 WindowsShell命令完全指南 什么是 Shell 命令 Windows 的 shell: 命令是一种特殊的快捷方式，用于直接访问系统文件夹。\n使用方法 按下 &lt;kbd&gt;Win&lt;/br&gt; + &lt;/kbd&gt;R&lt;kbd&gt; 打开“运行”对话框，输入 shell:programs 后回车。\n核心作用 快速访问 Windows 中的特定系统文件夹。\n常用 Shell 命令列表 下表列出最常用的 shell: 命令及其作用。\n命令 作用 范围 shell:Desktop 桌面 当前用户 shell:Downloads 下载文件夹 当前用户 shell:Personal 文档文件夹 当前用户 shell:My Music 我的音乐 当前用户 shell:My Pictures 我的图片 当前用户 shell:My Video 我的视频 当前用户 shell:Favorites 收藏夹 当前用户 shell:Recent 最近使用的项目 当前用户 shell:Startup 启动文件夹（开机自启） 当前用户 shell:Programs 开始菜单程序文件夹 当前用户 shell:SendTo 发送到菜单 当前用户 shell:AppData AppData/Roaming 当前用户 shell:Local AppData AppData/Local 当前用户 shell:Common Desktop 公用桌面 所有用户 shell:Common Programs 公用开始菜单程序文件夹 所有用户 shell:Common Startup 公用启动文件夹 所有用户 shell:Windows Windows 安装目录 系统 shell:System System32 文件夹 系统 shell:RecycleBinFolder 回收站 系统 shell:Fonts 字体文件夹 系统 shell:ControlPanelFolder 控制面板 系统 shell:PrintersFolder 打印机和设备 系统 实用示例：快速打开公用程序文件夹 场景 你想打开以下路径：\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">WindowsShell命令完全指南</a>
+<ul>
+<li><a href="#headline-2">什么是 Shell 命令</a>
+<ul>
+<li><a href="#headline-3">使用方法</a>
+</li>
+<li><a href="#headline-4">核心作用</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-5">常用 Shell 命令列表</a>
+</li>
+<li><a href="#headline-6">实用示例：快速打开公用程序文件夹</a>
+<ul>
+<li><a href="#headline-7">场景</a>
+</li>
+<li><a href="#headline-8">解决方案</a>
+</li>
+<li><a href="#headline-9">与 <code>shell:programs</code> 的区别</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-10">如何获取所有 Shell 命令</a>
+<ul>
+<li><a href="#headline-11">方法一：使用 HTML 脚本自动提取</a>
+</li>
+<li><a href="#headline-12">方法二：手动尝试</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-13">相关手册与权威文档</a>
+<ul>
+<li><a href="#headline-14">微软官方文档（Microsoft Learn）</a>
+</li>
+<li><a href="#headline-15">内置 help 命令</a>
+</li>
+<li><a href="#headline-16">TechNet 库（旧版存档）</a>
+</li>
+<li><a href="#headline-17">PowerToys Command Palette</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-18">注意事项</a>
+</li>
+<li><a href="#headline-19">总结</a>
+<ul>
+<li><a href="#headline-20">快速回顾</a>
+</li>
+<li><a href="#headline-21">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-22">什么是 Shell 命令</a>
+<ul>
+<li><a href="#headline-23">使用方法</a>
+</li>
+<li><a href="#headline-24">核心作用</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-25">常用 Shell 命令列表</a>
+</li>
+<li><a href="#headline-26">实用示例：快速打开公用程序文件夹</a>
+<ul>
+<li><a href="#headline-27">场景</a>
+</li>
+<li><a href="#headline-28">解决方案</a>
+</li>
+<li><a href="#headline-29">与 <code>shell:programs</code> 的区别</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-30">如何获取所有 Shell 命令</a>
+<ul>
+<li><a href="#headline-31">方法一：使用 HTML 脚本自动提取</a>
+</li>
+<li><a href="#headline-32">方法二：手动尝试</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-33">相关手册与权威文档</a>
+<ul>
+<li><a href="#headline-34">微软官方文档（Microsoft Learn）</a>
+</li>
+<li><a href="#headline-35">内置 help 命令</a>
+</li>
+<li><a href="#headline-36">TechNet 库（旧版存档）</a>
+</li>
+<li><a href="#headline-37">PowerToys Command Palette</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-38">注意事项</a>
+</li>
+<li><a href="#headline-39">总结</a>
+</li>
+<li><a href="#headline-40">快速回顾</a>
+</li>
+<li><a href="#headline-41">参考链接</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/windowsshell%E5%91%BD%E4%BB%A4%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/">WindowsShell命令完全指南</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">May 13, 2026</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 class="title">Windows Shell 命令完全指南</h1>
+
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+WindowsShell命令完全指南
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+什么是 Shell 命令
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>
+Windows 的 <code>shell:</code> 命令是一种特殊的快捷方式，用于直接访问系统文件夹。</p>
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+使用方法
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<p>
+按下 &lt;kbd&gt;Win&lt;/br&gt; + &lt;/kbd&gt;R&lt;kbd&gt; 打开“运行”对话框，输入 <code>shell:programs</code> 后回车。</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-4">
+<h4 id="headline-4">
+核心作用
+</h4>
+<div id="outline-text-headline-4" class="outline-text-4">
+<p>
+快速访问 Windows 中的特定系统文件夹。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+常用 Shell 命令列表
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<p>
+下表列出最常用的 <code>shell:</code> 命令及其作用。</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>shell:Desktop</code></td>
+<td>桌面</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Downloads</code></td>
+<td>下载文件夹</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Personal</code></td>
+<td>文档文件夹</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:My Music</code></td>
+<td>我的音乐</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:My Pictures</code></td>
+<td>我的图片</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:My Video</code></td>
+<td>我的视频</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Favorites</code></td>
+<td>收藏夹</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Recent</code></td>
+<td>最近使用的项目</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Startup</code></td>
+<td>启动文件夹（开机自启）</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Programs</code></td>
+<td>开始菜单程序文件夹</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:SendTo</code></td>
+<td>发送到菜单</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:AppData</code></td>
+<td>AppData/Roaming</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Local AppData</code></td>
+<td>AppData/Local</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Common Desktop</code></td>
+<td>公用桌面</td>
+<td>所有用户</td>
+</tr>
+<tr>
+<td><code>shell:Common Programs</code></td>
+<td>公用开始菜单程序文件夹</td>
+<td>所有用户</td>
+</tr>
+<tr>
+<td><code>shell:Common Startup</code></td>
+<td>公用启动文件夹</td>
+<td>所有用户</td>
+</tr>
+<tr>
+<td><code>shell:Windows</code></td>
+<td>Windows 安装目录</td>
+<td>系统</td>
+</tr>
+<tr>
+<td><code>shell:System</code></td>
+<td>System32 文件夹</td>
+<td>系统</td>
+</tr>
+<tr>
+<td><code>shell:RecycleBinFolder</code></td>
+<td>回收站</td>
+<td>系统</td>
+</tr>
+<tr>
+<td><code>shell:Fonts</code></td>
+<td>字体文件夹</td>
+<td>系统</td>
+</tr>
+<tr>
+<td><code>shell:ControlPanelFolder</code></td>
+<td>控制面板</td>
+<td>系统</td>
+</tr>
+<tr>
+<td><code>shell:PrintersFolder</code></td>
+<td>打印机和设备</td>
+<td>系统</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+实用示例：快速打开公用程序文件夹
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<div id="outline-container-headline-7" class="outline-4">
+<h4 id="headline-7">
+场景
+</h4>
+<div id="outline-text-headline-7" class="outline-text-4">
+<p>
+你想打开以下路径：</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">C:\ProgramData\Microsoft\Windows\Start Menu\Programs</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-4">
+<h4 id="headline-8">
+解决方案
+</h4>
+<div id="outline-text-headline-8" class="outline-text-4">
+<p>
+执行命令：</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">shell:common programs</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-4">
+<h4 id="headline-9">
+与 <code>shell:programs</code> 的区别
+</h4>
+<div id="outline-text-headline-9" class="outline-text-4">
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>路径</th>
+<th>作用范围</th>
+<th>权限要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>shell:programs</code></td>
+<td><code>C:\Users\[用户名]\AppData\Roaming\Microsoft\Windows\Start Menu\Programs</code></td>
+<td>仅当前用户</td>
+<td>普通用户</td>
+</tr>
+<tr>
+<td><code>shell:common programs</code></td>
+<td><code>C:\ProgramData\Microsoft\Windows\Start Menu\Programs</code></td>
+<td>所有用户</td>
+<td>管理员权限</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-3">
+<h3 id="headline-10">
+如何获取所有 Shell 命令
+</h3>
+<div id="outline-text-headline-10" class="outline-text-3">
+<p>
+Windows 官方没有提供完整的 <code>shell:</code> 命令列表文档。以下是几种获取完整列表的方法。</p>
+<div id="outline-container-headline-11" class="outline-4">
+<h4 id="headline-11">
+方法一：使用 HTML 脚本自动提取
+</h4>
+<div id="outline-text-headline-11" class="outline-text-4">
+<p>
+复制以下代码，保存为 <code>shell_commands.html~，用浏览器打开即可获得当前系统支持的所有 ~shell:</code> 命令列表（带可点击链接）。</p>
+<div class="src src-html">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Windows Shell 命令列表<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Windows Shell 命令列表 (点击链接即可打开)<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">ul</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;cmdList&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;cmdList&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="kd">let</span> <span class="nx">foundCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">knownShells</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;AddNewProgramsFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Administrative Tools&#34;</span><span class="p">,</span> <span class="s2">&#34;AppData&#34;</span><span class="p">,</span> <span class="s2">&#34;AppsFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Cache&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;CD Burning&#34;</span><span class="p">,</span> <span class="s2">&#34;ChangeRemoveProgramsFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Common Administrative Tools&#34;</span><span class="p">,</span> <span class="s2">&#34;Common AppData&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;Common Desktop&#34;</span><span class="p">,</span> <span class="s2">&#34;Common Documents&#34;</span><span class="p">,</span> <span class="s2">&#34;Common Programs&#34;</span><span class="p">,</span> <span class="s2">&#34;Common Start Menu&#34;</span><span class="p">,</span> <span class="s2">&#34;Common Startup&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;CommonMusic&#34;</span><span class="p">,</span> <span class="s2">&#34;CommonPictures&#34;</span><span class="p">,</span> <span class="s2">&#34;CommonVideo&#34;</span><span class="p">,</span> <span class="s2">&#34;ConflictFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;ConnectionsFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Contacts&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;ControlPanelFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Cookies&#34;</span><span class="p">,</span> <span class="s2">&#34;CredentialManager&#34;</span><span class="p">,</span> <span class="s2">&#34;CryptoKeys&#34;</span><span class="p">,</span> <span class="s2">&#34;CSCFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Desktop&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;Downloads&#34;</span><span class="p">,</span> <span class="s2">&#34;DpapiKeys&#34;</span><span class="p">,</span> <span class="s2">&#34;Favorites&#34;</span><span class="p">,</span> <span class="s2">&#34;Fonts&#34;</span><span class="p">,</span> <span class="s2">&#34;Games&#34;</span><span class="p">,</span> <span class="s2">&#34;GameTasks&#34;</span><span class="p">,</span> <span class="s2">&#34;Gadgets&#34;</span><span class="p">,</span> <span class="s2">&#34;History&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;InternetFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Links&#34;</span><span class="p">,</span> <span class="s2">&#34;Local AppData&#34;</span><span class="p">,</span> <span class="s2">&#34;LocalAppDataLow&#34;</span><span class="p">,</span> <span class="s2">&#34;LocalizedResourcesDir&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;MAPIFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;My Computer&#34;</span><span class="p">,</span> <span class="s2">&#34;My Music&#34;</span><span class="p">,</span> <span class="s2">&#34;My Pictures&#34;</span><span class="p">,</span> <span class="s2">&#34;My Video&#34;</span><span class="p">,</span> <span class="s2">&#34;NetHood&#34;</span><span class="p">,</span> <span class="s2">&#34;NetworkPlacesFolder&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;OEM Links&#34;</span><span class="p">,</span> <span class="s2">&#34;Original Images&#34;</span><span class="p">,</span> <span class="s2">&#34;Personal&#34;</span><span class="p">,</span> <span class="s2">&#34;PhotoAlbums&#34;</span><span class="p">,</span> <span class="s2">&#34;Playlists&#34;</span><span class="p">,</span> <span class="s2">&#34;PrintersFolder&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;PrintHood&#34;</span><span class="p">,</span> <span class="s2">&#34;Profile&#34;</span><span class="p">,</span> <span class="s2">&#34;ProgramFiles&#34;</span><span class="p">,</span> <span class="s2">&#34;ProgramFilesCommon&#34;</span><span class="p">,</span> <span class="s2">&#34;ProgramFilesCommonX86&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;ProgramFilesX86&#34;</span><span class="p">,</span> <span class="s2">&#34;Programs&#34;</span><span class="p">,</span> <span class="s2">&#34;Public&#34;</span><span class="p">,</span> <span class="s2">&#34;PublicGameTasks&#34;</span><span class="p">,</span> <span class="s2">&#34;Quick Launch&#34;</span><span class="p">,</span> <span class="s2">&#34;Recent&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;RecycleBinFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;ResourceDir&#34;</span><span class="p">,</span> <span class="s2">&#34;SampleMusic&#34;</span><span class="p">,</span> <span class="s2">&#34;SamplePictures&#34;</span><span class="p">,</span> <span class="s2">&#34;SamplePlaylists&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;SampleVideos&#34;</span><span class="p">,</span> <span class="s2">&#34;SavedGames&#34;</span><span class="p">,</span> <span class="s2">&#34;Searches&#34;</span><span class="p">,</span> <span class="s2">&#34;SearchHomeFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;SendTo&#34;</span><span class="p">,</span> <span class="s2">&#34;Start Menu&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;Startup&#34;</span><span class="p">,</span> <span class="s2">&#34;SyncCenterFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;SyncResultsFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;SyncSetupFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;System&#34;</span><span class="p">,</span> <span class="s2">&#34;SystemCertificates&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;SystemX86&#34;</span><span class="p">,</span> <span class="s2">&#34;Templates&#34;</span><span class="p">,</span> <span class="s2">&#34;TreePropertiesFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;UserProfiles&#34;</span><span class="p">,</span> <span class="s2">&#34;UsersFilesFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Windows&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="nx">knownShells</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">cmd</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kr">const</span> <span class="nx">li</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="kr">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">a</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="sb">`shell:</span><span class="si">${</span><span class="nx">cmd</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">a</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="sb">`shell:</span><span class="si">${</span><span class="nx">cmd</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">li</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">list</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">li</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">foundCount</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">summary</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`&lt;strong&gt;共找到 </span><span class="si">${</span><span class="nx">foundCount</span><span class="si">}</span><span class="sb"> 个 Shell 命令。&lt;/strong&gt;&lt;br&gt;注意：部分命令在你的系统版本上可能无效。`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">list</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">summary</span><span class="p">,</span> <span class="nx">list</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">})();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-4">
+<h4 id="headline-12">
+方法二：手动尝试
+</h4>
+<div id="outline-text-headline-12" class="outline-text-4">
+<p>
+使用 <code>shell:FolderName</code> 的格式尝试常见名称，如 <code>shell:OneDrive~、~shell:Screenshots</code> 等。此方法不够全面。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-3">
+<h3 id="headline-13">
+相关手册与权威文档
+</h3>
+<div id="outline-text-headline-13" class="outline-text-3">
+<div id="outline-container-headline-14" class="outline-4">
+<h4 id="headline-14">
+微软官方文档（Microsoft Learn）
+</h4>
+<div id="outline-text-headline-14" class="outline-text-4">
+<p>
+最权威的来源。搜索关键词：~Windows 命令 site:learn.microsoft.com~</p>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-4">
+<h4 id="headline-15">
+内置 help 命令
+</h4>
+<div id="outline-text-headline-15" class="outline-text-4">
+<p>
+在命令提示符（~cmd~）中：</p>
+<ul>
+<li>列出所有命令：~help~</li>
+<li>查看具体命令帮助：~help &lt;命令名&gt;~ 或 <code>&lt;命令名&gt; /?</code></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-4">
+<h4 id="headline-16">
+TechNet 库（旧版存档）
+</h4>
+<div id="outline-text-headline-16" class="outline-text-4">
+<p>
+包含大量 <code>shell:</code> 命令的深入介绍。</p>
+</div>
+</div>
+<div id="outline-container-headline-17" class="outline-4">
+<h4 id="headline-17">
+PowerToys Command Palette
+</h4>
+<div id="outline-text-headline-17" class="outline-text-4">
+<p>
+安装微软官方工具 <a href="https://learn.microsoft.com/en-us/windows/powertoys/">PowerToys</a>，使用其中的 Command Palette 快速搜索并运行 shell 命令。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-18" class="outline-3">
+<h3 id="headline-18">
+注意事项
+</h3>
+<div id="outline-text-headline-18" class="outline-text-3">
+<ol>
+<li>**官方无完整列表**：微软未发布过官方版的“所有 <code>shell:</code> 命令大全”</li>
+<li>**版本差异**：不同 Windows 版本支持的 <code>shell:</code> 命令有差异</li>
+<li>**区分概念**：~shell:~ 命令与 <code>cmd</code> 中的命令行工具（如 ~ping~、~ipconfig~）是两个不同的概念</li>
+<li>**实践建议**：直接在运行对话框（&lt;kbd&gt;Win&lt;/kbd&gt; + &lt;kbd&gt;R&lt;/kbd&gt;）中输入测试，能打开即为有效</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-headline-19" class="outline-3">
+<h3 id="headline-19">
+总结
+</h3>
+<div id="outline-text-headline-19" class="outline-text-3">
+<p>
+<code>shell:</code> 命令是 Windows 系统管理的高效工具。掌握常用命令可以大幅提升操作效率。虽然没有官方完整列表，但通过本文提供的 HTML 脚本，你可以轻松获取当前系统支持的所有命令。</p>
+<div id="outline-container-headline-20" class="outline-4">
+<h4 id="headline-20">
+快速回顾
+</h4>
+<div id="outline-text-headline-20" class="outline-text-4">
+<ul>
+<li>打开运行：&lt;kbd&gt;Win&lt;/kbd&gt; + &lt;kbd&gt;R&lt;/kbd&gt;</li>
+<li>查看当前用户程序文件夹：~shell:programs~</li>
+<li>查看所有用户程序文件夹：~shell:common programs~</li>
+<li>获取完整列表：使用本文提供的 HTML 脚本</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-21" class="outline-4">
+<h4 id="headline-21">
+参考链接
+</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-22" class="outline-3">
+<h3 id="headline-22">
+什么是 Shell 命令
+</h3>
+<div id="outline-text-headline-22" class="outline-text-3">
+<p>
+Windows 的 <code>shell:</code> 命令是一种特殊的快捷方式，用于直接访问系统文件夹。</p>
+<div id="outline-container-headline-23" class="outline-4">
+<h4 id="headline-23">
+使用方法
+</h4>
+<div id="outline-text-headline-23" class="outline-text-4">
+<p>
+按下 &lt;kbd&gt;Win&lt;/br&gt; + &lt;/kbd&gt;R&lt;kbd&gt; 打开“运行”对话框，输入 <code>shell:programs</code> 后回车。</p>
+</div>
+</div>
+<div id="outline-container-headline-24" class="outline-4">
+<h4 id="headline-24">
+核心作用
+</h4>
+<div id="outline-text-headline-24" class="outline-text-4">
+<p>
+快速访问 Windows 中的特定系统文件夹。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-25" class="outline-3">
+<h3 id="headline-25">
+常用 Shell 命令列表
+</h3>
+<div id="outline-text-headline-25" class="outline-text-3">
+<p>
+下表列出最常用的 <code>shell:</code> 命令及其作用。</p>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>shell:Desktop</code></td>
+<td>桌面</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Downloads</code></td>
+<td>下载文件夹</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Personal</code></td>
+<td>文档文件夹</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:My Music</code></td>
+<td>我的音乐</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:My Pictures</code></td>
+<td>我的图片</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:My Video</code></td>
+<td>我的视频</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Favorites</code></td>
+<td>收藏夹</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Recent</code></td>
+<td>最近使用的项目</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Startup</code></td>
+<td>启动文件夹（开机自启）</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Programs</code></td>
+<td>开始菜单程序文件夹</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:SendTo</code></td>
+<td>发送到菜单</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:AppData</code></td>
+<td>AppData/Roaming</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Local AppData</code></td>
+<td>AppData/Local</td>
+<td>当前用户</td>
+</tr>
+<tr>
+<td><code>shell:Common Desktop</code></td>
+<td>公用桌面</td>
+<td>所有用户</td>
+</tr>
+<tr>
+<td><code>shell:Common Programs</code></td>
+<td>公用开始菜单程序文件夹</td>
+<td>所有用户</td>
+</tr>
+<tr>
+<td><code>shell:Common Startup</code></td>
+<td>公用启动文件夹</td>
+<td>所有用户</td>
+</tr>
+<tr>
+<td><code>shell:Windows</code></td>
+<td>Windows 安装目录</td>
+<td>系统</td>
+</tr>
+<tr>
+<td><code>shell:System</code></td>
+<td>System32 文件夹</td>
+<td>系统</td>
+</tr>
+<tr>
+<td><code>shell:RecycleBinFolder</code></td>
+<td>回收站</td>
+<td>系统</td>
+</tr>
+<tr>
+<td><code>shell:Fonts</code></td>
+<td>字体文件夹</td>
+<td>系统</td>
+</tr>
+<tr>
+<td><code>shell:ControlPanelFolder</code></td>
+<td>控制面板</td>
+<td>系统</td>
+</tr>
+<tr>
+<td><code>shell:PrintersFolder</code></td>
+<td>打印机和设备</td>
+<td>系统</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div id="outline-container-headline-26" class="outline-3">
+<h3 id="headline-26">
+实用示例：快速打开公用程序文件夹
+</h3>
+<div id="outline-text-headline-26" class="outline-text-3">
+<div id="outline-container-headline-27" class="outline-4">
+<h4 id="headline-27">
+场景
+</h4>
+<div id="outline-text-headline-27" class="outline-text-4">
+<p>
+你想打开以下路径：</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">C:\ProgramData\Microsoft\Windows\Start Menu\Programs</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-28" class="outline-4">
+<h4 id="headline-28">
+解决方案
+</h4>
+<div id="outline-text-headline-28" class="outline-text-4">
+<p>
+执行命令：</p>
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">shell:common programs</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-29" class="outline-4">
+<h4 id="headline-29">
+与 <code>shell:programs</code> 的区别
+</h4>
+<div id="outline-text-headline-29" class="outline-text-4">
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>路径</th>
+<th>作用范围</th>
+<th>权限要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>shell:programs</code></td>
+<td><code>C:\Users\[用户名]\AppData\Roaming\Microsoft\Windows\Start Menu\Programs</code></td>
+<td>仅当前用户</td>
+<td>普通用户</td>
+</tr>
+<tr>
+<td><code>shell:common programs</code></td>
+<td><code>C:\ProgramData\Microsoft\Windows\Start Menu\Programs</code></td>
+<td>所有用户</td>
+<td>管理员权限</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-30" class="outline-3">
+<h3 id="headline-30">
+如何获取所有 Shell 命令
+</h3>
+<div id="outline-text-headline-30" class="outline-text-3">
+<p>
+Windows 官方没有提供完整的 <code>shell:</code> 命令列表文档。以下是几种获取完整列表的方法。</p>
+<div id="outline-container-headline-31" class="outline-4">
+<h4 id="headline-31">
+方法一：使用 HTML 脚本自动提取
+</h4>
+<div id="outline-text-headline-31" class="outline-text-4">
+<p>
+复制以下代码，保存为 <code>shell_commands.html~，用浏览器打开即可获得当前系统支持的所有 ~shell:</code> 命令列表（带可点击链接）。</p>
+<div class="src src-html">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Windows Shell 命令列表<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Windows Shell 命令列表 (点击链接即可打开)<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">ul</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;cmdList&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;cmdList&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="kd">let</span> <span class="nx">foundCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">knownShells</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;AddNewProgramsFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Administrative Tools&#34;</span><span class="p">,</span> <span class="s2">&#34;AppData&#34;</span><span class="p">,</span> <span class="s2">&#34;AppsFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Cache&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;CD Burning&#34;</span><span class="p">,</span> <span class="s2">&#34;ChangeRemoveProgramsFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Common Administrative Tools&#34;</span><span class="p">,</span> <span class="s2">&#34;Common AppData&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;Common Desktop&#34;</span><span class="p">,</span> <span class="s2">&#34;Common Documents&#34;</span><span class="p">,</span> <span class="s2">&#34;Common Programs&#34;</span><span class="p">,</span> <span class="s2">&#34;Common Start Menu&#34;</span><span class="p">,</span> <span class="s2">&#34;Common Startup&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;CommonMusic&#34;</span><span class="p">,</span> <span class="s2">&#34;CommonPictures&#34;</span><span class="p">,</span> <span class="s2">&#34;CommonVideo&#34;</span><span class="p">,</span> <span class="s2">&#34;ConflictFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;ConnectionsFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Contacts&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;ControlPanelFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Cookies&#34;</span><span class="p">,</span> <span class="s2">&#34;CredentialManager&#34;</span><span class="p">,</span> <span class="s2">&#34;CryptoKeys&#34;</span><span class="p">,</span> <span class="s2">&#34;CSCFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Desktop&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;Downloads&#34;</span><span class="p">,</span> <span class="s2">&#34;DpapiKeys&#34;</span><span class="p">,</span> <span class="s2">&#34;Favorites&#34;</span><span class="p">,</span> <span class="s2">&#34;Fonts&#34;</span><span class="p">,</span> <span class="s2">&#34;Games&#34;</span><span class="p">,</span> <span class="s2">&#34;GameTasks&#34;</span><span class="p">,</span> <span class="s2">&#34;Gadgets&#34;</span><span class="p">,</span> <span class="s2">&#34;History&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;InternetFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Links&#34;</span><span class="p">,</span> <span class="s2">&#34;Local AppData&#34;</span><span class="p">,</span> <span class="s2">&#34;LocalAppDataLow&#34;</span><span class="p">,</span> <span class="s2">&#34;LocalizedResourcesDir&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;MAPIFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;My Computer&#34;</span><span class="p">,</span> <span class="s2">&#34;My Music&#34;</span><span class="p">,</span> <span class="s2">&#34;My Pictures&#34;</span><span class="p">,</span> <span class="s2">&#34;My Video&#34;</span><span class="p">,</span> <span class="s2">&#34;NetHood&#34;</span><span class="p">,</span> <span class="s2">&#34;NetworkPlacesFolder&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;OEM Links&#34;</span><span class="p">,</span> <span class="s2">&#34;Original Images&#34;</span><span class="p">,</span> <span class="s2">&#34;Personal&#34;</span><span class="p">,</span> <span class="s2">&#34;PhotoAlbums&#34;</span><span class="p">,</span> <span class="s2">&#34;Playlists&#34;</span><span class="p">,</span> <span class="s2">&#34;PrintersFolder&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;PrintHood&#34;</span><span class="p">,</span> <span class="s2">&#34;Profile&#34;</span><span class="p">,</span> <span class="s2">&#34;ProgramFiles&#34;</span><span class="p">,</span> <span class="s2">&#34;ProgramFilesCommon&#34;</span><span class="p">,</span> <span class="s2">&#34;ProgramFilesCommonX86&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;ProgramFilesX86&#34;</span><span class="p">,</span> <span class="s2">&#34;Programs&#34;</span><span class="p">,</span> <span class="s2">&#34;Public&#34;</span><span class="p">,</span> <span class="s2">&#34;PublicGameTasks&#34;</span><span class="p">,</span> <span class="s2">&#34;Quick Launch&#34;</span><span class="p">,</span> <span class="s2">&#34;Recent&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;RecycleBinFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;ResourceDir&#34;</span><span class="p">,</span> <span class="s2">&#34;SampleMusic&#34;</span><span class="p">,</span> <span class="s2">&#34;SamplePictures&#34;</span><span class="p">,</span> <span class="s2">&#34;SamplePlaylists&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;SampleVideos&#34;</span><span class="p">,</span> <span class="s2">&#34;SavedGames&#34;</span><span class="p">,</span> <span class="s2">&#34;Searches&#34;</span><span class="p">,</span> <span class="s2">&#34;SearchHomeFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;SendTo&#34;</span><span class="p">,</span> <span class="s2">&#34;Start Menu&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;Startup&#34;</span><span class="p">,</span> <span class="s2">&#34;SyncCenterFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;SyncResultsFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;SyncSetupFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;System&#34;</span><span class="p">,</span> <span class="s2">&#34;SystemCertificates&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;SystemX86&#34;</span><span class="p">,</span> <span class="s2">&#34;Templates&#34;</span><span class="p">,</span> <span class="s2">&#34;TreePropertiesFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;UserProfiles&#34;</span><span class="p">,</span> <span class="s2">&#34;UsersFilesFolder&#34;</span><span class="p">,</span> <span class="s2">&#34;Windows&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="nx">knownShells</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">cmd</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kr">const</span> <span class="nx">li</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="kr">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">a</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="sb">`shell:</span><span class="si">${</span><span class="nx">cmd</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">a</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="sb">`shell:</span><span class="si">${</span><span class="nx">cmd</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">li</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">list</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">li</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">foundCount</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kr">const</span> <span class="nx">summary</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">summary</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="sb">`&lt;strong&gt;共找到 </span><span class="si">${</span><span class="nx">foundCount</span><span class="si">}</span><span class="sb"> 个 Shell 命令。&lt;/strong&gt;&lt;br&gt;注意：部分命令在你的系统版本上可能无效。`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">list</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">summary</span><span class="p">,</span> <span class="nx">list</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">})();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-32" class="outline-4">
+<h4 id="headline-32">
+方法二：手动尝试
+</h4>
+<div id="outline-text-headline-32" class="outline-text-4">
+<p>
+使用 <code>shell:FolderName</code> 的格式尝试常见名称，如 <code>shell:OneDrive~、~shell:Screenshots</code> 等。此方法不够全面。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-33" class="outline-3">
+<h3 id="headline-33">
+相关手册与权威文档
+</h3>
+<div id="outline-text-headline-33" class="outline-text-3">
+<div id="outline-container-headline-34" class="outline-4">
+<h4 id="headline-34">
+微软官方文档（Microsoft Learn）
+</h4>
+<div id="outline-text-headline-34" class="outline-text-4">
+<p>
+最权威的来源。搜索关键词：~Windows 命令 site:learn.microsoft.com~</p>
+</div>
+</div>
+<div id="outline-container-headline-35" class="outline-4">
+<h4 id="headline-35">
+内置 help 命令
+</h4>
+<div id="outline-text-headline-35" class="outline-text-4">
+<p>
+在命令提示符（~cmd~）中：</p>
+<ul>
+<li>列出所有命令：~help~</li>
+<li>查看具体命令帮助：~help &lt;命令名&gt;~ 或 <code>&lt;命令名&gt; /?</code></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-36" class="outline-4">
+<h4 id="headline-36">
+TechNet 库（旧版存档）
+</h4>
+<div id="outline-text-headline-36" class="outline-text-4">
+<p>
+包含大量 <code>shell:</code> 命令的深入介绍。</p>
+</div>
+</div>
+<div id="outline-container-headline-37" class="outline-4">
+<h4 id="headline-37">
+PowerToys Command Palette
+</h4>
+<div id="outline-text-headline-37" class="outline-text-4">
+<p>
+安装微软官方工具 <a href="https://learn.microsoft.com/en-us/windows/powertoys/">PowerToys</a>，使用其中的 Command Palette 快速搜索并运行 shell 命令。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-38" class="outline-3">
+<h3 id="headline-38">
+注意事项
+</h3>
+<div id="outline-text-headline-38" class="outline-text-3">
+<ol>
+<li>**官方无完整列表**：微软未发布过官方版的“所有 <code>shell:</code> 命令大全”</li>
+<li>**版本差异**：不同 Windows 版本支持的 <code>shell:</code> 命令有差异</li>
+<li>**区分概念**：~shell:~ 命令与 <code>cmd</code> 中的命令行工具（如 ~ping~、~ipconfig~）是两个不同的概念</li>
+<li>**实践建议**：直接在运行对话框（&lt;kbd&gt;Win&lt;/kbd&gt; + &lt;kbd&gt;R&lt;/kbd&gt;）中输入测试，能打开即为有效</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-headline-39" class="outline-3">
+<h3 id="headline-39">
+总结
+</h3>
+<div id="outline-text-headline-39" class="outline-text-3">
+<p>
+<code>shell:</code> 命令是 Windows 系统管理的高效工具。掌握常用命令可以大幅提升操作效率。虽然没有官方完整列表，但通过本文提供的 HTML 脚本，你可以轻松获取当前系统支持的所有命令。</p>
+</div>
+</div>
+<div id="outline-container-headline-40" class="outline-3">
+<h3 id="headline-40">
+快速回顾
+</h3>
+<div id="outline-text-headline-40" class="outline-text-3">
+<ul>
+<li>打开运行：&lt;kbd&gt;Win&lt;/kbd&gt; + &lt;kbd&gt;R&lt;/kbd&gt;</li>
+<li>查看当前用户程序文件夹：~shell:programs~</li>
+<li>查看所有用户程序文件夹：~shell:common programs~</li>
+<li>获取完整列表：使用本文提供的 HTML 脚本</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-41" class="outline-3">
+<h3 id="headline-41">
+参考链接
+</h3>
+<div id="outline-text-headline-41" class="outline-text-3">
+<p>
+<a href="https://chat.deepseek.com/share/syu09xk3q946s51vd7">shell programs命令解析</a></p>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/windows/">Windows</a>
+        
+            <a href="/tags/shell/">Shell</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/windows%E5%A4%9A%E7%94%A8%E6%88%B7%E5%85%B1%E4%BA%AB%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Windows多用户共享应用程序完全指南</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

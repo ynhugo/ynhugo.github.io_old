@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>炸金花 on Example Site</title>
+        <link>https://ynhugo.github.io/tags/%E7%82%B8%E9%87%91%E8%8A%B1/</link>
+        <description>Recent content in 炸金花 on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Mon, 15 Sep 2025 00:07:31 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/%E7%82%B8%E9%87%91%E8%8A%B1/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>炸金花</title>
+        <link>https://ynhugo.github.io/p/%E7%82%B8%E9%87%91%E8%8A%B1/</link>
+        <pubDate>Mon, 15 Sep 2025 00:07:31 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E7%82%B8%E9%87%91%E8%8A%B1/</guid>
+        <description>
+&lt;div id=&#34;outline-container-headline-1&#34; class=&#34;outline-2&#34;&gt;
+&lt;h2 id=&#34;headline-1&#34;&gt;
+炸金花
+&lt;/h2&gt;
+&lt;div id=&#34;outline-text-headline-1&#34; class=&#34;outline-text-2&#34;&gt;
+&lt;div id=&#34;outline-container-headline-2&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-2&#34;&gt;
+游戏准备
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-2&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;玩家人数：2至6人，适合小型聚会或在线多人对战。
+牌组：使用一副52张扑克牌，去除大小王。
+发牌：每位玩家获得三张暗牌（牌面朝下），由庄家逆时针发牌。首次游戏随机选择庄家，之后由上一局胜者担任。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-3&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-3&#34;&gt;
+游戏流程
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-3&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;底注：游戏开始前，每位玩家需投入约定的底注，形成初始奖池。
+操作选项：
+看牌：玩家可查看自己的三张牌，了解牌型。
+跟注：匹配当前轮的单注金额。看牌后跟注为“明注”，未看牌为“暗注”（暗注金额为明注的两倍）。
+加注：增加下注金额，最高不超过单注上限。
+比牌：支付双倍当前单注，与另一玩家比较牌型，输者失去操作权。
+弃牌：放弃本局，损失已投入的筹码。
+胜负判定：
+当只剩两名玩家时，可随时比牌决定胜负。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-4&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-4&#34;&gt;
+牌型与大小
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-4&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+炸金花的牌型从大到小依次为：&lt;/p&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;牌型&lt;/td&gt;
+&lt;td&gt;描述&lt;/td&gt;
+&lt;td&gt;示例&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;豹子&lt;/td&gt;
+&lt;td&gt;三张点数相同的牌&lt;/td&gt;
+&lt;td&gt;AAA、222&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;顺金&lt;/td&gt;
+&lt;td&gt;花色相同且连续的牌&lt;/td&gt;
+&lt;td&gt;黑桃456、红桃QKA&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;金花&lt;/td&gt;
+&lt;td&gt;花色相同但不连续的牌&lt;/td&gt;
+&lt;td&gt;黑桃368&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;顺子&lt;/td&gt;
+&lt;td&gt;花色不同但连续的牌&lt;/td&gt;
+&lt;td&gt;黑桃5、红桃6、方块7&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;对子&lt;/td&gt;
+&lt;td&gt;两张点数相同，一张不同&lt;/td&gt;
+&lt;td&gt;223、778&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;单张&lt;/td&gt;
+&lt;td&gt;三张点数不同且不连续&lt;/td&gt;
+&lt;td&gt;258&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;特殊牌型&lt;/td&gt;
+&lt;td&gt;235（不同花色），可击败豹子&lt;/td&gt;
+&lt;td&gt;黑桃2、红桃3、方块5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;
+点数与花色比较：
+点数大小：A &amp;gt; K &amp;gt; Q &amp;gt; J &amp;gt; 10 &amp;gt; 9 &amp;gt; 8 &amp;gt; 7 &amp;gt; 6 &amp;gt; 5 &amp;gt; 4 &amp;gt; 3 &amp;gt; 2。
+花色大小（同牌型时比较）：黑桃 &amp;gt; 红桃 &amp;gt; 梅花 &amp;gt; 方块。
+相同牌型比较：按最大点数依次比较，若完全相同，主动比牌者负。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-5&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-5&#34;&gt;
+基础策略
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-5&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;控制情绪：保持冷静，避免因冲动而做出错误决定。
+合理下注：根据牌力和局势选择跟注、加注或弃牌，避免盲目投入。
+观察对手：注意对手的下注模式和行为习惯，推测其牌型。
+适时比牌：在牌力较强或对手表现出犹豫时，选择比牌以淘汰对手。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-6&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-6&#34;&gt;
+进阶技巧
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-6&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;诈牌（Bluffing）：即使牌型一般，也可通过加注制造压力，迫使对手弃牌。但需在建立可靠形象后谨慎使用。
+节奏控制：在早期保持低调，隐藏实力，吸引更多玩家跟注，增加奖池。
+牌型概率：了解牌型出现的概率。例如，豹子出现的概率仅为0.24%（腾讯新闻），因此拿到强牌时应大胆加注。
+心理战
+炸金花被称为“诈金花”，心理战是其核心。玩家可以通过表情、语速或下注节奏误导对手。例如，快速加注可能让对手误以为你持有强牌，从而选择弃牌。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-7&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-7&#34;&gt;
+多媒体资源：学习与娱乐并重
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-7&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://youtu.be/EXuSTjaVuNY&#34;&gt;https://youtu.be/EXuSTjaVuNY&lt;/a&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=EXuSTjaVuNY&#34;&gt;炸金花技巧&lt;/a&gt;：分享实用策略，帮助玩家提升胜率。&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=LUjyFjK8HhY&#34;&gt;炸金花 Win 3 Cards – 遊戲規則與獲利策略&lt;/a&gt;：结合规则与进阶技巧，适合希望深入学习的玩家。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;outline-container-headline-8&#34; class=&#34;outline-3&#34;&gt;
+&lt;h3 id=&#34;headline-8&#34;&gt;
+参考链接
+&lt;/h3&gt;
+&lt;div id=&#34;outline-text-headline-8&#34; class=&#34;outline-text-3&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://zhuanlan.zhihu.com/p/717171407&#34;&gt;炸金花规则速览，朋友休闲必看！（切勿赌博）&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://qipaidian.com/zhajinhua-zaixian&#34;&gt;炸金花在线：探索中国最受欢迎的在线纸牌游戏&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>

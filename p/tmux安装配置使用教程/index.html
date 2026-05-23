@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 基本用法 启动与退出 在终端键入tmux命令，启动 Tmux\nCtrl+d或者输入exit命令，退出 Tmux\n前缀键 Tmux 窗口有大量的快捷键，默认的前缀键是Ctrl+b，即先按下Ctrl+b，然后再按下其他按键\n比如，帮助命令的快捷键是Ctrl+b ?。在Tmux窗口中，先按下Ctrl+b，再按下?，就会显示帮助信息，然后，按下 ESC 键或q键，就可以退出帮助。\ntmux滚动窗口 按Ctrl+b，再按[，就可以用鼠标滑轮滚动了，按q退出。\n参考链接 tmux滚动窗口\ntmux调整多窗格比例 按Ctrl+b，再按方向键就可以调整窗格比例了，例如调整上下两个窗格的比例，按Ctrl+b，再按上下方向键就可以了，如果是调整左右两个窗格的比例，按Ctrl+b，再按左右方向键就可以了，\n会话管理 新建会话 第一个启动的 Tmux窗口，编号是0，第二个窗口的编号是1\n除默认运行tmux是以编号进行区分，还可以创建指定名称的会话。\n1 tmux new -s &lt;session-name&gt; 离线创建会话 1 2 3 tmux new -d 或 tmux new -d -s &lt;session-name&gt; 分离会话 Tmux 窗口中，按下Ctrl+b d或者输入&#34;tmux detach&#34;命令，就会将当前会话与窗口分离。 tmux ls命令可以查看当前所有的 Tmux 会话。\n">
+<title>Tmux安装配置使用教程</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/tmux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Tmux安装配置使用教程">
+<meta property='og:description' content=" 基本用法 启动与退出 在终端键入tmux命令，启动 Tmux\nCtrl+d或者输入exit命令，退出 Tmux\n前缀键 Tmux 窗口有大量的快捷键，默认的前缀键是Ctrl+b，即先按下Ctrl+b，然后再按下其他按键\n比如，帮助命令的快捷键是Ctrl+b ?。在Tmux窗口中，先按下Ctrl+b，再按下?，就会显示帮助信息，然后，按下 ESC 键或q键，就可以退出帮助。\ntmux滚动窗口 按Ctrl+b，再按[，就可以用鼠标滑轮滚动了，按q退出。\n参考链接 tmux滚动窗口\ntmux调整多窗格比例 按Ctrl+b，再按方向键就可以调整窗格比例了，例如调整上下两个窗格的比例，按Ctrl+b，再按上下方向键就可以了，如果是调整左右两个窗格的比例，按Ctrl+b，再按左右方向键就可以了，\n会话管理 新建会话 第一个启动的 Tmux窗口，编号是0，第二个窗口的编号是1\n除默认运行tmux是以编号进行区分，还可以创建指定名称的会话。\n1 tmux new -s &lt;session-name&gt; 离线创建会话 1 2 3 tmux new -d 或 tmux new -d -s &lt;session-name&gt; 分离会话 Tmux 窗口中，按下Ctrl+b d或者输入&#34;tmux detach&#34;命令，就会将当前会话与窗口分离。 tmux ls命令可以查看当前所有的 Tmux 会话。\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/tmux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-11-22T01:26:22&#43;08:00'/><meta property='article:modified_time' content='2023-11-22T01:26:22&#43;08:00'/>
+<meta name="twitter:title" content="Tmux安装配置使用教程">
+<meta name="twitter:description" content=" 基本用法 启动与退出 在终端键入tmux命令，启动 Tmux\nCtrl+d或者输入exit命令，退出 Tmux\n前缀键 Tmux 窗口有大量的快捷键，默认的前缀键是Ctrl+b，即先按下Ctrl+b，然后再按下其他按键\n比如，帮助命令的快捷键是Ctrl+b ?。在Tmux窗口中，先按下Ctrl+b，再按下?，就会显示帮助信息，然后，按下 ESC 键或q键，就可以退出帮助。\ntmux滚动窗口 按Ctrl+b，再按[，就可以用鼠标滑轮滚动了，按q退出。\n参考链接 tmux滚动窗口\ntmux调整多窗格比例 按Ctrl+b，再按方向键就可以调整窗格比例了，例如调整上下两个窗格的比例，按Ctrl+b，再按上下方向键就可以了，如果是调整左右两个窗格的比例，按Ctrl+b，再按左右方向键就可以了，\n会话管理 新建会话 第一个启动的 Tmux窗口，编号是0，第二个窗口的编号是1\n除默认运行tmux是以编号进行区分，还可以创建指定名称的会话。\n1 tmux new -s &lt;session-name&gt; 离线创建会话 1 2 3 tmux new -d 或 tmux new -d -s &lt;session-name&gt; 分离会话 Tmux 窗口中，按下Ctrl+b d或者输入&#34;tmux detach&#34;命令，就会将当前会话与窗口分离。 tmux ls命令可以查看当前所有的 Tmux 会话。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+<ul>
+<li><a href="#headline-1">基本用法</a>
+<ul>
+<li><a href="#headline-2">启动与退出</a>
+</li>
+<li><a href="#headline-3">前缀键</a>
+</li>
+<li><a href="#headline-4">tmux滚动窗口</a>
+<ul>
+<li><a href="#headline-5">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-6">tmux调整多窗格比例</a>
+</li>
+<li><a href="#headline-7">会话管理</a>
+<ul>
+<li><a href="#headline-8">新建会话</a>
+</li>
+<li><a href="#headline-9">离线创建会话</a>
+</li>
+<li><a href="#headline-10">分离会话</a>
+</li>
+<li><a href="#headline-11">接入会话</a>
+</li>
+<li><a href="#headline-12">杀死会话</a>
+</li>
+<li><a href="#headline-13">切换会话</a>
+</li>
+<li><a href="#headline-14">会话快捷键</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-15">最简操作流程</a>
+</li>
+<li><a href="#headline-16">窗格操作</a>
+<ul>
+<li><a href="#headline-17">移动光标</a>
+</li>
+<li><a href="#headline-18">交换窗格位置</a>
+</li>
+<li><a href="#headline-19">窗格快捷键</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-20">窗口管理</a>
+<ul>
+<li><a href="#headline-21">切换窗口</a>
+</li>
+<li><a href="#headline-22">重命名窗口</a>
+</li>
+<li><a href="#headline-23">窗口快捷键</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-24">其他命令</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-25">tmux发送到某个会话指定命令/按键</a>
+<ul>
+<li><a href="#headline-26">参考链接</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-27">安装方法</a>
+<ul>
+<li><a href="#headline-28">安装</a>
+</li>
+<li><a href="#headline-29">git-bash安装tmux</a>
+<ul>
+<li><a href="#headline-30">配置tmux</a>
+</li>
+<li><a href="#headline-31">复制如下配置到刚才新建的配置文件中即可</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-32">一键安装配置脚本</a>
+</li>
+<li><a href="#headline-33">Ubuntu 或 Debian</a>
+</li>
+<li><a href="#headline-34">CentOS 或 Fedora</a>
+</li>
+<li><a href="#headline-35">Mac</a>
+</li>
+</ul>
+</li>
+<li><a href="#headline-36">参考链接</a>
+</li>
+</ul>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/tmux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/">Tmux安装配置使用教程</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 22, 2023</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+基本用法
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+启动与退出
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>
+在终端键入tmux命令，启动 Tmux</p>
+<p>
+Ctrl+d或者输入exit命令，退出 Tmux</p>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+前缀键
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>
+Tmux
+窗口有大量的快捷键，默认的前缀键是Ctrl+b，即先按下Ctrl+b，然后再按下其他按键</p>
+<p>
+比如，帮助命令的快捷键是Ctrl+b ?。在Tmux窗口中，先按下Ctrl+b，再按下?，就会显示帮助信息，然后，按下 ESC 键或q键，就可以退出帮助。</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+tmux滚动窗口
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>
+按Ctrl+b，再按[，就可以用鼠标滑轮滚动了，按q退出。</p>
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+参考链接
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<p>
+<a href="https://blog.csdn.net/weixin_40833196/article/details/88079785">tmux滚动窗口</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+tmux调整多窗格比例
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<p>
+按Ctrl+b，再按方向键就可以调整窗格比例了，例如调整上下两个窗格的比例，按Ctrl+b，再按上下方向键就可以了，如果是调整左右两个窗格的比例，按Ctrl+b，再按左右方向键就可以了，</p>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+会话管理
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<div id="outline-container-headline-8" class="outline-4">
+<h4 id="headline-8">
+新建会话
+</h4>
+<div id="outline-text-headline-8" class="outline-text-4">
+<p>
+第一个启动的 Tmux窗口，编号是0，第二个窗口的编号是1</p>
+<p>
+除默认运行tmux是以编号进行区分，还可以创建指定名称的会话。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux new -s &lt;session-name&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-4">
+<h4 id="headline-9">
+离线创建会话
+</h4>
+<div id="outline-text-headline-9" class="outline-text-4">
+<div class="src src-text">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">tmux new -d
+</span></span><span class="line"><span class="cl">或
+</span></span><span class="line"><span class="cl">tmux new -d -s &lt;session-name&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-4">
+<h4 id="headline-10">
+分离会话
+</h4>
+<div id="outline-text-headline-10" class="outline-text-4">
+<p>
+Tmux 窗口中，按下Ctrl+b d或者输入&#34;tmux detach&#34;命令，就会将当前会话与窗口分离。 </p>
+<p>
+tmux ls命令可以查看当前所有的 Tmux 会话。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux ls
+</span></span><span class="line"><span class="cl">  或者
+</span></span><span class="line"><span class="cl">  tmux list-session</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-4">
+<h4 id="headline-11">
+接入会话
+</h4>
+<div id="outline-text-headline-11" class="outline-text-4">
+<p>
+tmux attach命令用于重新接入某个已存在即之前分离的会话。</p>
+<p>
+通过会话编号接入会话</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux attach -t <span class="m">0</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+通过会话名称接入会话</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux attach -t &lt;session-name&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-4">
+<h4 id="headline-12">
+杀死会话
+</h4>
+<div id="outline-text-headline-12" class="outline-text-4">
+<p>
+通过会话编号杀死会话</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux kill-session -t <span class="m">0</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+通过会话名称杀死会话</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux kill-session -t &lt;session-name&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-4">
+<h4 id="headline-13">
+切换会话
+</h4>
+<div id="outline-text-headline-13" class="outline-text-4">
+<p>
+通过会话编号切换会话</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux switch -t <span class="m">0</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+通过会话名称切换会话</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux switch -t &lt;session-name&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+重命名会话</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux rename-session -t <span class="m">0</span> &lt;new-name&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+上面命令将0号会话重命名。</p>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-4">
+<h4 id="headline-14">
+会话快捷键
+</h4>
+<div id="outline-text-headline-14" class="outline-text-4">
+<p>
+下面是一些会话相关的快捷键。</p>
+<ul>
+<li>Ctrl+b d：分离当前会话。</li>
+<li>Ctrl+b s：列出所有会话。</li>
+<li>Ctrl+b $：重命名当前会话。</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-3">
+<h3 id="headline-15">
+最简操作流程
+</h3>
+<div id="outline-text-headline-15" class="outline-text-3">
+<p>
+综上所述，以下是 Tmux 的最简操作流程。</p>
+<p>
+新建会话tmux new -s my_session。
+在 Tmux 窗口运行所需的程序。
+按下快捷键Ctrl+b d将会话分离。
+下次使用时，重新连接到会话tmux attach-session -t my_session。</p>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-3">
+<h3 id="headline-16">
+窗格操作
+</h3>
+<div id="outline-text-headline-16" class="outline-text-3">
+<p>
+Tmux可以将窗口分成多个窗格（pane），每个窗格运行不同的命令。以下命令都是在 Tmux 窗口中执行。</p>
+<p>
+划分上下两个窗格</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux split-window</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+划分左右两个窗格</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux split-window -h</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-17" class="outline-4">
+<h4 id="headline-17">
+移动光标
+</h4>
+<div id="outline-text-headline-17" class="outline-text-4">
+<p>
+光标切换到上方窗格</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux <span class="k">select</span>-pane -U</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+光标切换到下方窗格</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux <span class="k">select</span>-pane -D</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+光标切换到左边窗格</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux <span class="k">select</span>-pane -L</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+光标切换到右边窗格</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux <span class="k">select</span>-pane -R</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-18" class="outline-4">
+<h4 id="headline-18">
+交换窗格位置
+</h4>
+<div id="outline-text-headline-18" class="outline-text-4">
+<p>
+当前窗格上移</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux swap-pane -U</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+当前窗格下移</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux swap-pane -D</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-19" class="outline-4">
+<h4 id="headline-19">
+窗格快捷键
+</h4>
+<div id="outline-text-headline-19" class="outline-text-4">
+<p>
+下面是一些窗格操作的快捷键。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  Ctrl+b %：划分左右两个窗格。
+</span></span><span class="line"><span class="cl">  Ctrl+b <span class="s2">&#34;：划分上下两个窗格。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b &lt;arrow key&gt;：光标切换到其他窗格。&lt;arrow
+</span></span></span><span class="line"><span class="cl"><span class="s2">  key&gt;是指向要切换到的窗格的方向键，比如切换到下方窗格，就按方向键↓。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b ;：光标切换到上一个窗格。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b o：光标切换到下一个窗格。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b {：当前窗格与上一个窗格交换位置。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b }：当前窗格与下一个窗格交换位置。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+o：所有窗格向前移动一个位置，第一个窗格变成最后一个窗格。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Alt+o：所有窗格向后移动一个位置，最后一个窗格变成第一个窗格。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b x：关闭当前窗格。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b !：将当前窗格拆分为一个独立窗口。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b z：当前窗格全屏显示，再使用一次会变回原来大小。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b Ctrl+&lt;arrow key&gt;：按箭头方向调整窗格大小。
+</span></span></span><span class="line"><span class="cl"><span class="s2">  Ctrl+b q：显示窗格编号。</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-20" class="outline-3">
+<h3 id="headline-20">
+窗口管理
+</h3>
+<div id="outline-text-headline-20" class="outline-text-3">
+<p>
+除了将一个窗口划分成多个窗格，Tmux 也允许新建多个窗口。</p>
+<p>
+新建一个指定名称的窗口</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux new-window -n &lt;window-name&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-21" class="outline-4">
+<h4 id="headline-21">
+切换窗口
+</h4>
+<div id="outline-text-headline-21" class="outline-text-4">
+<p>
+切换到指定编号的窗口</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux <span class="k">select</span>-window -t &lt;window-number&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+切换到指定名称的窗口</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux <span class="k">select</span>-window -t &lt;window-name&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-22" class="outline-4">
+<h4 id="headline-22">
+重命名窗口
+</h4>
+<div id="outline-text-headline-22" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux rename-window &lt;new-name&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-23" class="outline-4">
+<h4 id="headline-23">
+窗口快捷键
+</h4>
+<div id="outline-text-headline-23" class="outline-text-4">
+<p>
+下面是一些窗口操作的快捷键。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  Ctrl+b c：创建一个新窗口，状态栏会显示多个窗口的信息。
+</span></span><span class="line"><span class="cl">  Ctrl+b p：切换到上一个窗口（按照状态栏上的顺序）。
+</span></span><span class="line"><span class="cl">  Ctrl+b n：切换到下一个窗口。
+</span></span><span class="line"><span class="cl">  Ctrl+b
+</span></span><span class="line"><span class="cl">  &lt;number&gt;：切换到指定编号的窗口，其中的&lt;number&gt;是状态栏上的窗口编号。
+</span></span><span class="line"><span class="cl">  Ctrl+b w：从列表中选择窗口。
+</span></span><span class="line"><span class="cl">  Ctrl+b ,：窗口重命名。</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-24" class="outline-3">
+<h3 id="headline-24">
+其他命令
+</h3>
+<div id="outline-text-headline-24" class="outline-text-3">
+<p>
+列出所有快捷键，及其对应的 Tmux 命令</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux list-keys</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+列出所有 Tmux 命令及其参数</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux list-commands</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+列出当前所有 Tmux 会话的信息</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux info</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+重新加载当前的 Tmux 配置</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux source-file ~/.tmux.conf</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-25" class="outline-2">
+<h2 id="headline-25">
+tmux发送到某个会话指定命令/按键
+</h2>
+<div id="outline-text-headline-25" class="outline-text-2">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tmux send-keys <span class="o">[</span>-t &lt;session-name&gt;<span class="o">]</span> &lt;key&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+例如，向会话mc发送指令ls并按回车执行</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tmux send-keys -t mc ls Enter</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<p>
+向会话mc发送bash start.sh并按回车执行</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tmux send-keys -t mc bash Space start.sh Enter</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-26" class="outline-3">
+<h3 id="headline-26">
+参考链接
+</h3>
+<div id="outline-text-headline-26" class="outline-text-3">
+<p>
+<a href="https://www.cnblogs.com/wangbingbing/p/16473526.html">tmux发送到某个会话指定命令/按键</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-27" class="outline-2">
+<h2 id="headline-27">
+安装方法
+</h2>
+<div id="outline-text-headline-27" class="outline-text-2">
+<div id="outline-container-headline-28" class="outline-3">
+<h3 id="headline-28">
+安装
+</h3>
+<div id="outline-text-headline-28" class="outline-text-3">
+<p>
+Tmux 一般需要自己安装。</p>
+</div>
+</div>
+<div id="outline-container-headline-29" class="outline-3">
+<h3 id="headline-29">
+git-bash安装tmux
+</h3>
+<div id="outline-text-headline-29" class="outline-text-3">
+<p>
+git bash中执行以下命令，即可安装tmux。如果以下操作完tmux没法使用，注意git升级到最新版，我遇到的坑就是git2.9版本安装完tmux后打tmux命令没反应。升级完git2.26后即可。</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  git clone https://github.com/xnng/bash.git
+</span></span><span class="line"><span class="cl">  <span class="nb">cd</span> bash
+</span></span><span class="line"><span class="cl">  cp tmux/bin/* /usr/bin
+</span></span><span class="line"><span class="cl">  cp tmux/share/* /usr/share -r</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-30" class="outline-4">
+<h4 id="headline-30">
+配置tmux
+</h4>
+<div id="outline-text-headline-30" class="outline-text-4">
+<p>
+新建tmux配置文件</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  vim ~/.tmux.conf</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-31" class="outline-4">
+<h4 id="headline-31">
+复制如下配置到刚才新建的配置文件中即可
+</h4>
+<div id="outline-text-headline-31" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  setw -g mouse
+</span></span><span class="line"><span class="cl">  set-option -g history-limit <span class="m">20000</span>
+</span></span><span class="line"><span class="cl">  set-option -g mouse on
+</span></span><span class="line"><span class="cl">  <span class="nb">bind</span> -n WheelUpPane <span class="k">select</span>-pane -t<span class="o">=</span> <span class="se">\;</span> copy-mode -e <span class="se">\;</span> send-keys -M
+</span></span><span class="line"><span class="cl">  <span class="nb">bind</span> -n WheelDownPane <span class="k">select</span>-pane -t<span class="o">=</span> <span class="se">\;</span> send-keys -M</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-32" class="outline-3">
+<h3 id="headline-32">
+一键安装配置脚本
+</h3>
+<div id="outline-text-headline-32" class="outline-text-3">
+<p>
+为便安装与配置tmux，特地将所有需要操作的内容都写到脚本里了，到时候只要打开git-bash，然后运行该脚本就可以了</p>
+<p>
+<a href="resources/install_tmux.zip">点击下载脚本</a></p>
+<p>
+执行脚本</p>
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nb">source</span> install_tmux.sh</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-33" class="outline-3">
+<h3 id="headline-33">
+Ubuntu 或 Debian
+</h3>
+<div id="outline-text-headline-33" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo apt-get install tmux</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-34" class="outline-3">
+<h3 id="headline-34">
+CentOS 或 Fedora
+</h3>
+<div id="outline-text-headline-34" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo yum install tmux</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-35" class="outline-3">
+<h3 id="headline-35">
+Mac
+</h3>
+<div id="outline-text-headline-35" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  brew install tmux</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-36" class="outline-2">
+<h2 id="headline-36">
+参考链接
+</h2>
+<div id="outline-text-headline-36" class="outline-text-2">
+<p>
+<a href="https://www.jianshu.com/p/2defec71e2de">git bash安装tmux实现多标签</a></p>
+<p>
+<a href="https://www.ruanyifeng.com/blog/2019/10/tmux.html">Tmux 使用教程</a></p>
+</div>
+</div>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

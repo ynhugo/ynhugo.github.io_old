@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content=" 如果没有安装vmware的话可以看我的另一篇文章：vmware安装教程\nwindows10下载链接(需要用迅雷下载)：ed2k://|file|zh-cn_windows_10_consumer_editions_version_22h2_updated_dec_2023_x64_dvd_3045f975.iso|6235348992|A12E47ED16415F13D4965AC629897278|/\n下载好的windows10映像，映像内含专业版，也是准备安装的版本\n打开vmware后，点击&#34;文件&#34;的新建虚拟机\n以&#34;自定义(高级)(C)&#34;类型配置安装windows10，然后&#34;下一步&#34;\n&#34;虚拟机硬件兼容性&#34;不需要更改，默认即可，然后&#34;下一步&#34;\n选择&#34;稍后安装操作系统(S)&#34;，然后&#34;下一步&#34;\n&#34;客户机操作系统&#34;选择&#34;Microsoft Windows(W)&#34;\n&#34;客户机操作系统&#34;的&#34;版本(V)&#34;选择&#34;Windows 10 x64&#34;，然后&#34;下一步&#34;\n虚拟机的位置更改一下，可以更改到D盘，这个路径要提要创建好，得是真实的路径，然后&#34;下一步&#34;\n&#34;固件类型&#34;选择&#34;BIOS(O)&#34;，然后&#34;下一步&#34;\n&#34;处理器配置&#34;可以根据电脑性能进行配置，比如&#34;处理器数量(P)&#34;选择为1，&#34;每个处理器的内核数量(C)&#34;对应的个数尽可能大，软件不报警告即可，然后&#34;下一步&#34;\n内存可以点击设置为&#34;4 GB&#34;，然后下一步\n&#34;网络类型&#34;默认为&#34;使用网络地址转换(NAT)(E)&#34;即可，然后下一步\n&#34;I/O控制器类型&#34;默认推荐的即可，不需要更改，然后&#34;下一步&#34;\n&#34;磁盘类型&#34;也按照默认推荐的即可\n选择&#34;创建新的虚拟磁盘(V)&#34;，然后&#34;下一步&#34;\n设置磁盘容量，至少30GB，这里我按照推荐的来，如果准备长期使用现在正在安装的虚拟机的话，可以将磁盘容量设置的再大一些，如100GB、150GB、200GB都可以，只要电脑本身有足够大的空闲空间就行，然后选择&#34;将虚拟磁盘存储为单个文件&#34;，接着&#34;下一步&#34;\n&#34;磁盘文件&#34;名称不需要更改，但是需要将&#34;磁盘文件&#34;保存的路径更改一下，&#34;磁盘文件&#34;保存&#34;windows10虚拟机安装位置&#34;，与前边设置的&#34;虚拟机位置&#34;为同一路径，然后&#34;下一步&#34;\n点击&#34;自定义硬件(C)…&#34;\n然后点击&#34;新CD/DVD (SATA)&#34;，选择&#34;使用ISO映像文件&#34;，接着点击&#34;浏览&#34;，找到刚刚下载好的windows10映像文件，我将下载好的windows10映像文件移动到了虚拟机位置的上一级目录，此我为准备好的windows10映像的实际路径，路径建议不要包含中文字符，然后点击&#34;关闭&#34;，关闭当前页面\n设置完成后点击&#34;完成&#34;\n快照部分可跳过，鼠标右键虚拟机的标签页，给制作好的虚拟机做一个快照，这样如果安装过程中出现问题了可以恢复快照重新安装\n快照部分可跳过，添加描述信息后点击&#34;拍摄快照&#34;，添加描述信息是为了方便恢复快照的时候进行选择，恢复快照的时候可以选择恢复到哪个版本的快照\n快照部分可跳过，鼠标右键虚拟机标签页，打开快照管理器\n快照部分可跳过，选择要恢复的快照，然后点击&#34;转到&#34;即可恢复到对应的快照\n虚拟机配置好后就可以可以进行安装了，直接点击&#34;开启此虚拟机&#34;即可\n点击&#34;开启此虚拟机&#34;后经过加载进入到了windows10的安装界面，安装界面要求选择&#34;要安装的语言(E)&#34;、&#34;时间和货币格式(T)&#34;、&#34;键盘和输入方法(K)&#34;，这些都不用更改，默认即可，如果有不一样的使用习惯可以根据自己的使用习惯进行配置，然后点击&#34;下一页&#34;\n然后点击&#34;现在安装&#34;\n选择&#34;我没有产品密钥(I)&#34;，这样可以跳过输入产品密钥，等安装完windows10系统后再激活\n选择要安装的windows10系统版本，建议选择&#34;windows 10 专业版&#34;，因为家庭版会有一些功能限制，这是家庭版系统本身决定的，与虚拟机无关，而专业版会更方便配置，不像家庭版会有功能限制，选择了&#34;windows 10 专业版&#34;后点击&#34;下一页(N)&#34;\n同意条款后点击&#34;下一页&#34;\n">
+<title>vmware安装windows10教程</title>
+
+<link rel='canonical' href='https://ynhugo.github.io/p/vmware%E5%AE%89%E8%A3%85windows10%E6%95%99%E7%A8%8B/'>
+
+<link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="vmware安装windows10教程">
+<meta property='og:description' content=" 如果没有安装vmware的话可以看我的另一篇文章：vmware安装教程\nwindows10下载链接(需要用迅雷下载)：ed2k://|file|zh-cn_windows_10_consumer_editions_version_22h2_updated_dec_2023_x64_dvd_3045f975.iso|6235348992|A12E47ED16415F13D4965AC629897278|/\n下载好的windows10映像，映像内含专业版，也是准备安装的版本\n打开vmware后，点击&#34;文件&#34;的新建虚拟机\n以&#34;自定义(高级)(C)&#34;类型配置安装windows10，然后&#34;下一步&#34;\n&#34;虚拟机硬件兼容性&#34;不需要更改，默认即可，然后&#34;下一步&#34;\n选择&#34;稍后安装操作系统(S)&#34;，然后&#34;下一步&#34;\n&#34;客户机操作系统&#34;选择&#34;Microsoft Windows(W)&#34;\n&#34;客户机操作系统&#34;的&#34;版本(V)&#34;选择&#34;Windows 10 x64&#34;，然后&#34;下一步&#34;\n虚拟机的位置更改一下，可以更改到D盘，这个路径要提要创建好，得是真实的路径，然后&#34;下一步&#34;\n&#34;固件类型&#34;选择&#34;BIOS(O)&#34;，然后&#34;下一步&#34;\n&#34;处理器配置&#34;可以根据电脑性能进行配置，比如&#34;处理器数量(P)&#34;选择为1，&#34;每个处理器的内核数量(C)&#34;对应的个数尽可能大，软件不报警告即可，然后&#34;下一步&#34;\n内存可以点击设置为&#34;4 GB&#34;，然后下一步\n&#34;网络类型&#34;默认为&#34;使用网络地址转换(NAT)(E)&#34;即可，然后下一步\n&#34;I/O控制器类型&#34;默认推荐的即可，不需要更改，然后&#34;下一步&#34;\n&#34;磁盘类型&#34;也按照默认推荐的即可\n选择&#34;创建新的虚拟磁盘(V)&#34;，然后&#34;下一步&#34;\n设置磁盘容量，至少30GB，这里我按照推荐的来，如果准备长期使用现在正在安装的虚拟机的话，可以将磁盘容量设置的再大一些，如100GB、150GB、200GB都可以，只要电脑本身有足够大的空闲空间就行，然后选择&#34;将虚拟磁盘存储为单个文件&#34;，接着&#34;下一步&#34;\n&#34;磁盘文件&#34;名称不需要更改，但是需要将&#34;磁盘文件&#34;保存的路径更改一下，&#34;磁盘文件&#34;保存&#34;windows10虚拟机安装位置&#34;，与前边设置的&#34;虚拟机位置&#34;为同一路径，然后&#34;下一步&#34;\n点击&#34;自定义硬件(C)…&#34;\n然后点击&#34;新CD/DVD (SATA)&#34;，选择&#34;使用ISO映像文件&#34;，接着点击&#34;浏览&#34;，找到刚刚下载好的windows10映像文件，我将下载好的windows10映像文件移动到了虚拟机位置的上一级目录，此我为准备好的windows10映像的实际路径，路径建议不要包含中文字符，然后点击&#34;关闭&#34;，关闭当前页面\n设置完成后点击&#34;完成&#34;\n快照部分可跳过，鼠标右键虚拟机的标签页，给制作好的虚拟机做一个快照，这样如果安装过程中出现问题了可以恢复快照重新安装\n快照部分可跳过，添加描述信息后点击&#34;拍摄快照&#34;，添加描述信息是为了方便恢复快照的时候进行选择，恢复快照的时候可以选择恢复到哪个版本的快照\n快照部分可跳过，鼠标右键虚拟机标签页，打开快照管理器\n快照部分可跳过，选择要恢复的快照，然后点击&#34;转到&#34;即可恢复到对应的快照\n虚拟机配置好后就可以可以进行安装了，直接点击&#34;开启此虚拟机&#34;即可\n点击&#34;开启此虚拟机&#34;后经过加载进入到了windows10的安装界面，安装界面要求选择&#34;要安装的语言(E)&#34;、&#34;时间和货币格式(T)&#34;、&#34;键盘和输入方法(K)&#34;，这些都不用更改，默认即可，如果有不一样的使用习惯可以根据自己的使用习惯进行配置，然后点击&#34;下一页&#34;\n然后点击&#34;现在安装&#34;\n选择&#34;我没有产品密钥(I)&#34;，这样可以跳过输入产品密钥，等安装完windows10系统后再激活\n选择要安装的windows10系统版本，建议选择&#34;windows 10 专业版&#34;，因为家庭版会有一些功能限制，这是家庭版系统本身决定的，与虚拟机无关，而专业版会更方便配置，不像家庭版会有功能限制，选择了&#34;windows 10 专业版&#34;后点击&#34;下一页(N)&#34;\n同意条款后点击&#34;下一页&#34;\n">
+<meta property='og:url' content='https://ynhugo.github.io/p/vmware%E5%AE%89%E8%A3%85windows10%E6%95%99%E7%A8%8B/'>
+<meta property='og:site_name' content='Example Site'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='vmware' /><meta property='article:published_time' content='2024-03-26T00:24:24&#43;08:00'/><meta property='article:modified_time' content='2024-03-26T00:24:24&#43;08:00'/>
+<meta name="twitter:title" content="vmware安装windows10教程">
+<meta name="twitter:description" content=" 如果没有安装vmware的话可以看我的另一篇文章：vmware安装教程\nwindows10下载链接(需要用迅雷下载)：ed2k://|file|zh-cn_windows_10_consumer_editions_version_22h2_updated_dec_2023_x64_dvd_3045f975.iso|6235348992|A12E47ED16415F13D4965AC629897278|/\n下载好的windows10映像，映像内含专业版，也是准备安装的版本\n打开vmware后，点击&#34;文件&#34;的新建虚拟机\n以&#34;自定义(高级)(C)&#34;类型配置安装windows10，然后&#34;下一步&#34;\n&#34;虚拟机硬件兼容性&#34;不需要更改，默认即可，然后&#34;下一步&#34;\n选择&#34;稍后安装操作系统(S)&#34;，然后&#34;下一步&#34;\n&#34;客户机操作系统&#34;选择&#34;Microsoft Windows(W)&#34;\n&#34;客户机操作系统&#34;的&#34;版本(V)&#34;选择&#34;Windows 10 x64&#34;，然后&#34;下一步&#34;\n虚拟机的位置更改一下，可以更改到D盘，这个路径要提要创建好，得是真实的路径，然后&#34;下一步&#34;\n&#34;固件类型&#34;选择&#34;BIOS(O)&#34;，然后&#34;下一步&#34;\n&#34;处理器配置&#34;可以根据电脑性能进行配置，比如&#34;处理器数量(P)&#34;选择为1，&#34;每个处理器的内核数量(C)&#34;对应的个数尽可能大，软件不报警告即可，然后&#34;下一步&#34;\n内存可以点击设置为&#34;4 GB&#34;，然后下一步\n&#34;网络类型&#34;默认为&#34;使用网络地址转换(NAT)(E)&#34;即可，然后下一步\n&#34;I/O控制器类型&#34;默认推荐的即可，不需要更改，然后&#34;下一步&#34;\n&#34;磁盘类型&#34;也按照默认推荐的即可\n选择&#34;创建新的虚拟磁盘(V)&#34;，然后&#34;下一步&#34;\n设置磁盘容量，至少30GB，这里我按照推荐的来，如果准备长期使用现在正在安装的虚拟机的话，可以将磁盘容量设置的再大一些，如100GB、150GB、200GB都可以，只要电脑本身有足够大的空闲空间就行，然后选择&#34;将虚拟磁盘存储为单个文件&#34;，接着&#34;下一步&#34;\n&#34;磁盘文件&#34;名称不需要更改，但是需要将&#34;磁盘文件&#34;保存的路径更改一下，&#34;磁盘文件&#34;保存&#34;windows10虚拟机安装位置&#34;，与前边设置的&#34;虚拟机位置&#34;为同一路径，然后&#34;下一步&#34;\n点击&#34;自定义硬件(C)…&#34;\n然后点击&#34;新CD/DVD (SATA)&#34;，选择&#34;使用ISO映像文件&#34;，接着点击&#34;浏览&#34;，找到刚刚下载好的windows10映像文件，我将下载好的windows10映像文件移动到了虚拟机位置的上一级目录，此我为准备好的windows10映像的实际路径，路径建议不要包含中文字符，然后点击&#34;关闭&#34;，关闭当前页面\n设置完成后点击&#34;完成&#34;\n快照部分可跳过，鼠标右键虚拟机的标签页，给制作好的虚拟机做一个快照，这样如果安装过程中出现问题了可以恢复快照重新安装\n快照部分可跳过，添加描述信息后点击&#34;拍摄快照&#34;，添加描述信息是为了方便恢复快照的时候进行选择，恢复快照的时候可以选择恢复到哪个版本的快照\n快照部分可跳过，鼠标右键虚拟机标签页，打开快照管理器\n快照部分可跳过，选择要恢复的快照，然后点击&#34;转到&#34;即可恢复到对应的快照\n虚拟机配置好后就可以可以进行安装了，直接点击&#34;开启此虚拟机&#34;即可\n点击&#34;开启此虚拟机&#34;后经过加载进入到了windows10的安装界面，安装界面要求选择&#34;要安装的语言(E)&#34;、&#34;时间和货币格式(T)&#34;、&#34;键盘和输入方法(K)&#34;，这些都不用更改，默认即可，如果有不一样的使用习惯可以根据自己的使用习惯进行配置，然后点击&#34;下一页&#34;\n然后点击&#34;现在安装&#34;\n选择&#34;我没有产品密钥(I)&#34;，这样可以跳过输入产品密钥，等安装完windows10系统后再激活\n选择要安装的windows10系统版本，建议选择&#34;windows 10 专业版&#34;，因为家庭版会有一些功能限制，这是家庭版系统本身决定的，与虚拟机无关，而专业版会更方便配置，不像家庭版会有功能限制，选择了&#34;windows 10 专业版&#34;后点击&#34;下一页(N)&#34;\n同意条款后点击&#34;下一页&#34;\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_b5976aa1afdc1d2e.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Example Site</a></h1>
+            <h2 class="site-description">Example description</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+                    
+                        <li id="i18n-switch">  
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                            <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
+                                
+                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                
+                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                
+                                    <option value="https://ynhugo.github.io/ar/" >عربي</option>
+                                
+                            </select>
+                        </li>
+                    
+                
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/vmware%E5%AE%89%E8%A3%85windows10%E6%95%99%E7%A8%8B/">vmware安装windows10教程</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 26, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 1 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>
+如果没有安装vmware的话可以看我的另一篇文章：<a href="https://ynhugo.github.io/p/vmware安装教程/">vmware安装教程</a></p>
+<p>
+windows10下载链接(需要用迅雷下载)：ed2k://|file|zh-cn_windows_10_consumer_editions_version_22h2_updated_dec_2023_x64_dvd_3045f975.iso|6235348992|A12E47ED16415F13D4965AC629897278|/</p>
+<p>
+下载好的windows10映像，映像内含专业版，也是准备安装的版本</p>
+<p>
+<img src="resources/vmware安装windows10教程/png1.png" alt="resources/vmware安装windows10教程/png1.png" title="resources/vmware安装windows10教程/png1.png" /></p>
+<p>
+打开vmware后，点击&#34;文件&#34;的新建虚拟机</p>
+<p>
+<img src="resources/vmware安装windows10教程/png2.png" alt="resources/vmware安装windows10教程/png2.png" title="resources/vmware安装windows10教程/png2.png" /></p>
+<p>
+以&#34;自定义(高级)(C)&#34;类型配置安装windows10，然后&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png3.png" alt="resources/vmware安装windows10教程/png3.png" title="resources/vmware安装windows10教程/png3.png" /></p>
+<p>
+&#34;虚拟机硬件兼容性&#34;不需要更改，默认即可，然后&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png4.png" alt="resources/vmware安装windows10教程/png4.png" title="resources/vmware安装windows10教程/png4.png" /></p>
+<p>
+选择&#34;稍后安装操作系统(S)&#34;，然后&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png5.png" alt="resources/vmware安装windows10教程/png5.png" title="resources/vmware安装windows10教程/png5.png" /></p>
+<p>
+&#34;客户机操作系统&#34;选择&#34;Microsoft Windows(W)&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png6.png" alt="resources/vmware安装windows10教程/png6.png" title="resources/vmware安装windows10教程/png6.png" /></p>
+<p>
+&#34;客户机操作系统&#34;的&#34;版本(V)&#34;选择&#34;Windows 10 x64&#34;，然后&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png7.png" alt="resources/vmware安装windows10教程/png7.png" title="resources/vmware安装windows10教程/png7.png" /></p>
+<p>
+虚拟机的位置更改一下，可以更改到D盘，这个路径要提要创建好，得是真实的路径，然后&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png8.png" alt="resources/vmware安装windows10教程/png8.png" title="resources/vmware安装windows10教程/png8.png" /></p>
+<p>
+&#34;固件类型&#34;选择&#34;BIOS(O)&#34;，然后&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png9.png" alt="resources/vmware安装windows10教程/png9.png" title="resources/vmware安装windows10教程/png9.png" /></p>
+<p>
+&#34;处理器配置&#34;可以根据电脑性能进行配置，比如&#34;处理器数量(P)&#34;选择为1，&#34;每个处理器的内核数量(C)&#34;对应的个数尽可能大，软件不报警告即可，然后&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png10.png" alt="resources/vmware安装windows10教程/png10.png" title="resources/vmware安装windows10教程/png10.png" /></p>
+<p>
+内存可以点击设置为&#34;4 GB&#34;，然后下一步</p>
+<p>
+<img src="resources/vmware安装windows10教程/png11.png" alt="resources/vmware安装windows10教程/png11.png" title="resources/vmware安装windows10教程/png11.png" /></p>
+<p>
+&#34;网络类型&#34;默认为&#34;使用网络地址转换(NAT)(E)&#34;即可，然后下一步</p>
+<p>
+<img src="resources/vmware安装windows10教程/png12.png" alt="resources/vmware安装windows10教程/png12.png" title="resources/vmware安装windows10教程/png12.png" /></p>
+<p>
+&#34;I/O控制器类型&#34;默认推荐的即可，不需要更改，然后&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png13.png" alt="resources/vmware安装windows10教程/png13.png" title="resources/vmware安装windows10教程/png13.png" /></p>
+<p>
+&#34;磁盘类型&#34;也按照默认推荐的即可</p>
+<p>
+<img src="resources/vmware安装windows10教程/png14.png" alt="resources/vmware安装windows10教程/png14.png" title="resources/vmware安装windows10教程/png14.png" /></p>
+<p>
+选择&#34;创建新的虚拟磁盘(V)&#34;，然后&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png15.png" alt="resources/vmware安装windows10教程/png15.png" title="resources/vmware安装windows10教程/png15.png" /></p>
+<p>
+设置磁盘容量，至少30GB，这里我按照推荐的来，如果准备长期使用现在正在安装的虚拟机的话，可以将磁盘容量设置的再大一些，如100GB、150GB、200GB都可以，只要电脑本身有足够大的空闲空间就行，然后选择&#34;将虚拟磁盘存储为单个文件&#34;，接着&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png16.png" alt="resources/vmware安装windows10教程/png16.png" title="resources/vmware安装windows10教程/png16.png" /></p>
+<p>
+&#34;磁盘文件&#34;名称不需要更改，但是需要将&#34;磁盘文件&#34;保存的路径更改一下，&#34;磁盘文件&#34;保存&#34;windows10虚拟机安装位置&#34;，与前边设置的&#34;虚拟机位置&#34;为同一路径，然后&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png17.png" alt="resources/vmware安装windows10教程/png17.png" title="resources/vmware安装windows10教程/png17.png" /></p>
+<p>
+点击&#34;自定义硬件(C)…&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png18.png" alt="resources/vmware安装windows10教程/png18.png" title="resources/vmware安装windows10教程/png18.png" /></p>
+<p>
+然后点击&#34;新CD/DVD (SATA)&#34;，选择&#34;使用ISO映像文件&#34;，接着点击&#34;浏览&#34;，找到刚刚下载好的windows10映像文件，我将下载好的windows10映像文件移动到了虚拟机位置的上一级目录，此我为准备好的windows10映像的实际路径，路径建议不要包含中文字符，然后点击&#34;关闭&#34;，关闭当前页面</p>
+<p>
+<img src="resources/vmware安装windows10教程/png19.png" alt="resources/vmware安装windows10教程/png19.png" title="resources/vmware安装windows10教程/png19.png" /></p>
+<p>
+设置完成后点击&#34;完成&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png20.png" alt="resources/vmware安装windows10教程/png20.png" title="resources/vmware安装windows10教程/png20.png" /></p>
+<p>
+快照部分可跳过，鼠标右键虚拟机的标签页，给制作好的虚拟机做一个快照，这样如果安装过程中出现问题了可以恢复快照重新安装</p>
+<p>
+<img src="resources/vmware安装windows10教程/png21.png" alt="resources/vmware安装windows10教程/png21.png" title="resources/vmware安装windows10教程/png21.png" /></p>
+<p>
+快照部分可跳过，添加描述信息后点击&#34;拍摄快照&#34;，添加描述信息是为了方便恢复快照的时候进行选择，恢复快照的时候可以选择恢复到哪个版本的快照</p>
+<p>
+<img src="resources/vmware安装windows10教程/png22.png" alt="resources/vmware安装windows10教程/png22.png" title="resources/vmware安装windows10教程/png22.png" /></p>
+<p>
+快照部分可跳过，鼠标右键虚拟机标签页，打开快照管理器</p>
+<p>
+<img src="resources/vmware安装windows10教程/png23.png" alt="resources/vmware安装windows10教程/png23.png" title="resources/vmware安装windows10教程/png23.png" /></p>
+<p>
+快照部分可跳过，选择要恢复的快照，然后点击&#34;转到&#34;即可恢复到对应的快照</p>
+<p>
+<img src="resources/vmware安装windows10教程/png24.png" alt="resources/vmware安装windows10教程/png24.png" title="resources/vmware安装windows10教程/png24.png" /></p>
+<p>
+虚拟机配置好后就可以可以进行安装了，直接点击&#34;开启此虚拟机&#34;即可</p>
+<p>
+<img src="resources/vmware安装windows10教程/png25.png" alt="resources/vmware安装windows10教程/png25.png" title="resources/vmware安装windows10教程/png25.png" /></p>
+<p>
+点击&#34;开启此虚拟机&#34;后经过加载进入到了windows10的安装界面，安装界面要求选择&#34;要安装的语言(E)&#34;、&#34;时间和货币格式(T)&#34;、&#34;键盘和输入方法(K)&#34;，这些都不用更改，默认即可，如果有不一样的使用习惯可以根据自己的使用习惯进行配置，然后点击&#34;下一页&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png26.png" alt="resources/vmware安装windows10教程/png26.png" title="resources/vmware安装windows10教程/png26.png" /></p>
+<p>
+然后点击&#34;现在安装&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png27.png" alt="resources/vmware安装windows10教程/png27.png" title="resources/vmware安装windows10教程/png27.png" /></p>
+<p>
+选择&#34;我没有产品密钥(I)&#34;，这样可以跳过输入产品密钥，等安装完windows10系统后再激活</p>
+<p>
+<img src="resources/vmware安装windows10教程/png28.png" alt="resources/vmware安装windows10教程/png28.png" title="resources/vmware安装windows10教程/png28.png" /></p>
+<p>
+选择要安装的windows10系统版本，建议选择&#34;windows 10 专业版&#34;，因为家庭版会有一些功能限制，这是家庭版系统本身决定的，与虚拟机无关，而专业版会更方便配置，不像家庭版会有功能限制，选择了&#34;windows 10 专业版&#34;后点击&#34;下一页(N)&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png29.png" alt="resources/vmware安装windows10教程/png29.png" title="resources/vmware安装windows10教程/png29.png" /></p>
+<p>
+同意条款后点击&#34;下一页&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png30.png" alt="resources/vmware安装windows10教程/png30.png" title="resources/vmware安装windows10教程/png30.png" /></p>
+<p>
+选择&#34;自定义&#34;安装方式</p>
+<p>
+<img src="resources/vmware安装windows10教程/png31.png" alt="resources/vmware安装windows10教程/png31.png" title="resources/vmware安装windows10教程/png31.png" /></p>
+<p>
+默认已经选中磁盘了，什么都不需要做，直接点击&#34;下一页&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png32.png" alt="resources/vmware安装windows10教程/png32.png" title="resources/vmware安装windows10教程/png32.png" /></p>
+<p>
+然后系统就开始安装了，安装过程中会自动重启虚拟机，耐心等待即可</p>
+<p>
+<img src="resources/vmware安装windows10教程/png33.png" alt="resources/vmware安装windows10教程/png33.png" title="resources/vmware安装windows10教程/png33.png" /></p>
+<p>
+系统重启直到加载到这个页面，默认区域设置选中为&#34;中国&#34;，不需要更改，点击&#34;是&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png34.png" alt="resources/vmware安装windows10教程/png34.png" title="resources/vmware安装windows10教程/png34.png" /></p>
+<p>
+键盘布局默认选中&#34;微软拼音&#34;，也不需要更改，如果喜欢使用五笔拼音的可以自行选择，然后点击&#34;是&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png35.png" alt="resources/vmware安装windows10教程/png35.png" title="resources/vmware安装windows10教程/png35.png" /></p>
+<p>
+询问是否添加&#34;第二种键盘布局&#34;，直接点击&#34;跳过&#34;即可</p>
+<p>
+<img src="resources/vmware安装windows10教程/png36.png" alt="resources/vmware安装windows10教程/png36.png" title="resources/vmware安装windows10教程/png36.png" /></p>
+<p>
+加载一段时间后到这个页面，选择&#34;针对个人使用进行设置&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png37.png" alt="resources/vmware安装windows10教程/png37.png" title="resources/vmware安装windows10教程/png37.png" /></p>
+<p>
+选择&#34;脱机账户&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png38.png" alt="resources/vmware安装windows10教程/png38.png" title="resources/vmware安装windows10教程/png38.png" /></p>
+<p>
+选择&#34;有限的体验&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png39.png" alt="resources/vmware安装windows10教程/png39.png" title="resources/vmware安装windows10教程/png39.png" /></p>
+<p>
+设置一个不包含中文字符的用户名，如果设置中文用户名的话，以后使用国外某些软件可能会报异常，国外某些软件会在用户目录下创建数据文件夹，如果国外软件不支持包含中文字符的用户目录就会报错，因此用户名建议不要包含中文字符，设置完用户名后点击&#34;下一页&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png40.png" alt="resources/vmware安装windows10教程/png40.png" title="resources/vmware安装windows10教程/png40.png" /></p>
+<p>
+随便设置一个简单的密码，然后点击&#34;下一页&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png41.png" alt="resources/vmware安装windows10教程/png41.png" title="resources/vmware安装windows10教程/png41.png" /></p>
+<p>
+确认密码后点击&#34;下一页&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png42.png" alt="resources/vmware安装windows10教程/png42.png" title="resources/vmware安装windows10教程/png42.png" /></p>
+<p>
+接下来设置三个安全问题，自行设置</p>
+<p>
+<img src="resources/vmware安装windows10教程/png43.png" alt="resources/vmware安装windows10教程/png43.png" title="resources/vmware安装windows10教程/png43.png" /></p>
+<p>
+申请访问数据选择&#34;以后再说&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png44.png" alt="resources/vmware安装windows10教程/png44.png" title="resources/vmware安装windows10教程/png44.png" /></p>
+<p>
+取消这些隐私设置后点击&#34;接受&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png45.png" alt="resources/vmware安装windows10教程/png45.png" title="resources/vmware安装windows10教程/png45.png" /></p>
+<p>
+跳过&#34;自定义的体验&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png46.png" alt="resources/vmware安装windows10教程/png46.png" title="resources/vmware安装windows10教程/png46.png" /></p>
+<p>
+点击&#34;以后再说&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png47.png" alt="resources/vmware安装windows10教程/png47.png" title="resources/vmware安装windows10教程/png47.png" /></p>
+<p>
+这里必须点击&#34;下一步&#34;，否则无法完成虚拟机的安装，事实上当你开始使用windows系统开始，你就默认&#34;同意个人数据跨境传输&#34;了，因此不必在意这个，直接点击&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png48.png" alt="resources/vmware安装windows10教程/png48.png" title="resources/vmware安装windows10教程/png48.png" /></p>
+<p>
+至此，windows10虚拟机安装完成</p>
+<p>
+<img src="resources/vmware安装windows10教程/png49.png" alt="resources/vmware安装windows10教程/png49.png" title="resources/vmware安装windows10教程/png49.png" /></p>
+<p>
+接下来要想有更改的虚拟机体验，还需要安装vmware-tools，右键虚拟机标签页，点击&#34;安装VMware Tools(T)…&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png50.png" alt="resources/vmware安装windows10教程/png50.png" title="resources/vmware安装windows10教程/png50.png" /></p>
+<p>
+这个时候打开虚拟机的&#34;文件资源管理器&#34;的&#34;此电脑&#34;就会发现多出来了一个&#34;DVD驱动器(D:)VMware Tools&#34;，鼠标左键双击运行该驱动器</p>
+<p>
+<img src="resources/vmware安装windows10教程/png51.png" alt="resources/vmware安装windows10教程/png51.png" title="resources/vmware安装windows10教程/png51.png" /></p>
+<p>
+点击&#34;是&#34;继续运行</p>
+<p>
+<img src="resources/vmware安装windows10教程/png52.png" alt="resources/vmware安装windows10教程/png52.png" title="resources/vmware安装windows10教程/png52.png" /></p>
+<p>
+默认&#34;下一步(N)&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png53.png" alt="resources/vmware安装windows10教程/png53.png" title="resources/vmware安装windows10教程/png53.png" /></p>
+<p>
+选择&#34;典型安装&#34;，然后&#34;下一步&#34;</p>
+<p>
+<img src="resources/vmware安装windows10教程/png54.png" alt="resources/vmware安装windows10教程/png54.png" title="resources/vmware安装windows10教程/png54.png" /></p>
+<p>
+最后点击&#34;安装&#34;进行安装</p>
+<p>
+<img src="resources/vmware安装windows10教程/png55.png" alt="resources/vmware安装windows10教程/png55.png" title="resources/vmware安装windows10教程/png55.png" /></p>
+<p>
+最后点击&#34;完成&#34;，完成安装</p>
+<p>
+<img src="resources/vmware安装windows10教程/png56.png" alt="resources/vmware安装windows10教程/png56.png" title="resources/vmware安装windows10教程/png56.png" /></p>
+<p>
+提示重启系统，按照提示点击&#34;是&#34;重启即可</p>
+<p>
+<img src="resources/vmware安装windows10教程/png57.png" alt="resources/vmware安装windows10教程/png57.png" title="resources/vmware安装windows10教程/png57.png" /></p>
+<p>
+重启系统后，正常登录系统使用即可</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/vmware/">Vmware</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2026 Example Person
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.27.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

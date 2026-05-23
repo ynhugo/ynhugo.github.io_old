@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Github on Example Site</title>
+        <link>https://ynhugo.github.io/tags/github/</link>
+        <description>Recent content in Github on Example Site</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>Example Person</copyright>
+        <lastBuildDate>Tue, 26 Mar 2024 00:24:18 +0800</lastBuildDate><atom:link href="https://ynhugo.github.io/tags/github/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>记录ubuntu通过ssh密钥链接github仓库的遇到的问题</title>
+        <link>https://ynhugo.github.io/p/%E8%AE%B0%E5%BD%95ubuntu%E9%80%9A%E8%BF%87ssh%E5%AF%86%E9%92%A5%E9%93%BE%E6%8E%A5github%E4%BB%93%E5%BA%93%E7%9A%84%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</link>
+        <pubDate>Tue, 26 Mar 2024 00:24:18 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/p/%E8%AE%B0%E5%BD%95ubuntu%E9%80%9A%E8%BF%87ssh%E5%AF%86%E9%92%A5%E9%93%BE%E6%8E%A5github%E4%BB%93%E5%BA%93%E7%9A%84%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</guid>
+        <description>&lt;p&gt;
+记录ubuntu通过ssh密钥链接github仓库的遇到的问题&lt;/p&gt;
+&lt;p&gt;
+原本是正常的生成密钥，然后将密钥的公钥添加到github仓库中的&lt;/p&gt;
+&lt;p&gt;
+正常到这里就可以了，接下来只需要正常操作仓库就可以了，但是仓库拉取不下来分支&lt;/p&gt;
+&lt;p&gt;
+但是遇到了问题，遇到了终端打印&amp;#34;sign_and_send_pubkey: signing failed: agent refused operation&amp;#34;的问题&lt;/p&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://blog.csdn.net/someby/article/details/85329063&#34;&gt;Ubuntu下解决sign_and_send_pubkey: signing failed: agent refused operation问题&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+解决方法，只需要如下操作即可&lt;/p&gt;
+&lt;div class=&#34;src src-bash&#34;&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nb&#34;&gt;eval&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;$(&lt;/span&gt;ssh-agent -s&lt;span class=&#34;k&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ssh-add ~/.ssh/github_id_rsa
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ssh -T git@github.com&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;
+然后重新去pull仓库就可以成功了&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
