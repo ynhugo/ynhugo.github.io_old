@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Linux服务器上安装Anaconda">
 <meta property='og:description' content=" 安装Anaconda 1.1 下载anaconda的安装包\n这里我们需要在官网上查找自己需要的版本，地址链接在下面:\nhttps://repo.anaconda.com/archive/\n这里以我自己安装的版本为例：\nhttps://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh\n这是我选择的版本，然后我们在控制台输入这句话：\nwget https://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh\n如果使用wget下载不下来的话，可以手动下载安装文件\n1.3 安装anaconda\n接下来我们需要首先赋权再执行安装程序，依次输入下面两句命令:\nchmod +x Anaconda3-5.3.0-Linux-x86_64.sh\n./Anaconda3-5.3.0-Linux-x86_64.sh\n1.4 点击Enter（回车键）\n此时显示Anaconda的信息，并且会出现More，继续按Enter，直到提示输入yes/no\n1.5 输入 yes\n1.6 继续点击 Enter\n1.7 输入 yes，添加环境变量\n这里需要注意点的就是如果你直接跳过这部设置环境变量的话：\n[no ] &gt;&gt;&gt;\n那你需要自己到这个文件夹设置你安装Anaconda路径（比如上面显示我的是）\nhome/wangke.bashrc\n单击进去，在最后一行添加：\nexport PATH=/home/anaconda3/bin:$PATH\n需要把之前的那句话给注释掉如下所示：\n1 # export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/sbin:/sbin:$PATH export PATH=/root/anaconda3/bin:$PATH\n这里只是个示例，具体的还是要看你们自己安装的路径。\n然后保存更改，输入下面这句指令：\nsource ~/.bashrc\n1.8 完成安装以及检测是否安装成功\n打开新的终端后，进入自己的文件夹目录下，输入anaconda -V（注意a要小写，V要大写），conda -V ,显示版本信息，若显示则表示安装成功。\nroot@dev-wyf-react:~/wyf# conda -V\nconda 4.5.11\nubuntu下conda如何设置镜像源（清华镜像源） ubuntu下如何设置镜像源 首先贴出.condarc，直接给出清华的镜像源，需要的小伙伴直接使用，别看内容了\n1 2 3 4 5 6 # ~/.condarc channels: - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free show_channel_urls: True 添加conda镜像源命令（直接使用）\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/linux%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E5%AE%89%E8%A3%85anaconda/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Linux' /><meta property='article:tag' content='Anaconda' /><meta property='article:tag' content='conda' /><meta property='article:published_time' content='2024-08-21T00:46:14&#43;08:00'/><meta property='article:modified_time' content='2024-08-21T00:46:14&#43;08:00'/>
 <meta name="twitter:title" content="Linux服务器上安装Anaconda">
 <meta name="twitter:description" content=" 安装Anaconda 1.1 下载anaconda的安装包\n这里我们需要在官网上查找自己需要的版本，地址链接在下面:\nhttps://repo.anaconda.com/archive/\n这里以我自己安装的版本为例：\nhttps://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh\n这是我选择的版本，然后我们在控制台输入这句话：\nwget https://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh\n如果使用wget下载不下来的话，可以手动下载安装文件\n1.3 安装anaconda\n接下来我们需要首先赋权再执行安装程序，依次输入下面两句命令:\nchmod +x Anaconda3-5.3.0-Linux-x86_64.sh\n./Anaconda3-5.3.0-Linux-x86_64.sh\n1.4 点击Enter（回车键）\n此时显示Anaconda的信息，并且会出现More，继续按Enter，直到提示输入yes/no\n1.5 输入 yes\n1.6 继续点击 Enter\n1.7 输入 yes，添加环境变量\n这里需要注意点的就是如果你直接跳过这部设置环境变量的话：\n[no ] &gt;&gt;&gt;\n那你需要自己到这个文件夹设置你安装Anaconda路径（比如上面显示我的是）\nhome/wangke.bashrc\n单击进去，在最后一行添加：\nexport PATH=/home/anaconda3/bin:$PATH\n需要把之前的那句话给注释掉如下所示：\n1 # export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/sbin:/sbin:$PATH export PATH=/root/anaconda3/bin:$PATH\n这里只是个示例，具体的还是要看你们自己安装的路径。\n然后保存更改，输入下面这句指令：\nsource ~/.bashrc\n1.8 完成安装以及检测是否安装成功\n打开新的终端后，进入自己的文件夹目录下，输入anaconda -V（注意a要小写，V要大写），conda -V ,显示版本信息，若显示则表示安装成功。\nroot@dev-wyf-react:~/wyf# conda -V\nconda 4.5.11\nubuntu下conda如何设置镜像源（清华镜像源） ubuntu下如何设置镜像源 首先贴出.condarc，直接给出清华的镜像源，需要的小伙伴直接使用，别看内容了\n1 2 3 4 5 6 # ~/.condarc channels: - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free show_channel_urls: True 添加conda镜像源命令（直接使用）\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

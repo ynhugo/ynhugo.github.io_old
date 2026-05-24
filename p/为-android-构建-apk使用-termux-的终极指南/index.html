@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="为 Android 构建 APK：使用 Termux 的终极指南">
 <meta property='og:description' content=" 为 Android 构建 APK：使用 Termux 的终极指南 配置编译环境部分可以忽略，原本想配置android-sdk的，但是下载的文件跟安卓架构好像不是很匹配，先略过。\n第 1 部分：下载并安装 Termux 获取 Termux Termux 可从 Google Play 商店或 F-Droid 获取。安装后，启动 Termux 并等待初始化过程完成。\n第 2 部分：安装 Gradle 安装 Gradle Gradle 是构建、测试和部署 Android 应用程序的构建自动化工具。在 Termux 中，使用以下命令安装 Gradle：\n1 pkg install gradle Termux配置安卓编译环境 直接复制粘贴到终端运行即可\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 if [ ! &#34;$(env | grep --color=always &#34;cmdline-tools/latest/bin&#34;)&#34; ]; then if [ ! -f &#34;$(basename $HOME/commandlinetools*.zip)&#34; ]; then cd $HOME curl -O https://googledownloads.cn/android/repository/commandlinetools-linux-13114758_latest.zip ANDROID_HOME=~/android/sdk mkdir -p ${ANDROID_HOME}/latest unzip $(basename commandlinetools*.zip) -d $ANDROID_HOME # cmdline-tools 的产物需要移动到cmdline-tools/latest目录中，这是android sdk固定的路径组织形式 # 压缩包没有包含在latest文件夹中，自己移动一下 mv $ANDROID_HOME/cmdline-tools/* $ANDROID_HOME/latest mv $ANDROID_HOME/latest $ANDROID_HOME/cmdline-tools # 双引号与单引号不要动，单引号是为了避免通过echo命令重定向到~/.bashrc的内容中的变量被执行 echo &#34;export ANDROID_HOME=~/android/sdk&#34; &gt;&gt; ~/.bashrc echo &#39;export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH&#39; &gt;&gt; ~/.bashrc source ~/.bashrc rm $(basename $HOME/commandlinetools*.zip) fi fi 参考链接 Termux配置安卓编译环境\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E4%B8%BA-android-%E6%9E%84%E5%BB%BA-apk%E4%BD%BF%E7%94%A8-termux-%E7%9A%84%E7%BB%88%E6%9E%81%E6%8C%87%E5%8D%97/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='android' /><meta property='article:tag' content='termux' /><meta property='article:tag' content='gradle' /><meta property='article:published_time' content='2025-07-06T17:12:23&#43;08:00'/><meta property='article:modified_time' content='2025-07-06T17:12:23&#43;08:00'/>
 <meta name="twitter:title" content="为 Android 构建 APK：使用 Termux 的终极指南">
 <meta name="twitter:description" content=" 为 Android 构建 APK：使用 Termux 的终极指南 配置编译环境部分可以忽略，原本想配置android-sdk的，但是下载的文件跟安卓架构好像不是很匹配，先略过。\n第 1 部分：下载并安装 Termux 获取 Termux Termux 可从 Google Play 商店或 F-Droid 获取。安装后，启动 Termux 并等待初始化过程完成。\n第 2 部分：安装 Gradle 安装 Gradle Gradle 是构建、测试和部署 Android 应用程序的构建自动化工具。在 Termux 中，使用以下命令安装 Gradle：\n1 pkg install gradle Termux配置安卓编译环境 直接复制粘贴到终端运行即可\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 if [ ! &#34;$(env | grep --color=always &#34;cmdline-tools/latest/bin&#34;)&#34; ]; then if [ ! -f &#34;$(basename $HOME/commandlinetools*.zip)&#34; ]; then cd $HOME curl -O https://googledownloads.cn/android/repository/commandlinetools-linux-13114758_latest.zip ANDROID_HOME=~/android/sdk mkdir -p ${ANDROID_HOME}/latest unzip $(basename commandlinetools*.zip) -d $ANDROID_HOME # cmdline-tools 的产物需要移动到cmdline-tools/latest目录中，这是android sdk固定的路径组织形式 # 压缩包没有包含在latest文件夹中，自己移动一下 mv $ANDROID_HOME/cmdline-tools/* $ANDROID_HOME/latest mv $ANDROID_HOME/latest $ANDROID_HOME/cmdline-tools # 双引号与单引号不要动，单引号是为了避免通过echo命令重定向到~/.bashrc的内容中的变量被执行 echo &#34;export ANDROID_HOME=~/android/sdk&#34; &gt;&gt; ~/.bashrc echo &#39;export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH&#39; &gt;&gt; ~/.bashrc source ~/.bashrc rm $(basename $HOME/commandlinetools*.zip) fi fi 参考链接 Termux配置安卓编译环境\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

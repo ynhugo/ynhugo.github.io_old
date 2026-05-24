@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Emacs使用本地elpa镜像">
 <meta property='og:description' content=" Emacs使用本地elpa镜像 搭建本地镜像源 可以将国内的elpa镜像同步到本地作为自己的镜像源，以清华elpa镜像源为例。\n同步镜像源 国内的elpa镜像源都有同步地址，如清华镜像同步地址为rsync://mirrors.tuna.tsinghua.edu.cn/elpa/,使用 rsync 命令进行同步。\n1 2 3 4 // 查看同步内容 rsync rsync://mirrors.tuna.tsinghua.edu.cn/elpa/ // 将镜像内容同步到本机 ~/elpa 目录下 rsync -avz rsync://mirrors.tuna.tsinghua.edu.cn/elpa/ ~/elpa 等待一段时间即可同步完成。注意同步时要仔细阅读同步要求，尽量不要对镜像服务器造成流量压力。\nemacs 中使用本地镜像 1 2 3 4 5 6 7 ;; emacs 初始化文件中添加以下代码 (setq package-archives &#39;((&#34;gnu&#34; . &#34;~/elpa/gnu/&#34;) (&#34;melpa&#34; . &#34;~/elpa/melpa/&#34;) (&#34;nongnu&#34; . &#34;~/elpa/nongnu/&#34;) (&#34;org&#34; . &#34;~/elpa/org/&#34;) (&#34;melpa-stable&#34; . &#34;~/elpa/stable-melpa/&#34;))) (package-initialize) 添加完成后保存重启emacs，然后使用 M-x package-list-packages 命令既可以查看本地melpa等镜像中的包，而且如果电脑处于断网离线状态，依然可以安装本地镜像中存在的包。\n参考链接 1. Emacs使用本地elpa镜像\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/emacs%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0elpa%E9%95%9C%E5%83%8F/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Emacs' /><meta property='article:tag' content='elpa' /><meta property='article:tag' content='package' /><meta property='article:published_time' content='2024-12-07T23:34:29&#43;08:00'/><meta property='article:modified_time' content='2024-12-07T23:34:29&#43;08:00'/>
 <meta name="twitter:title" content="Emacs使用本地elpa镜像">
 <meta name="twitter:description" content=" Emacs使用本地elpa镜像 搭建本地镜像源 可以将国内的elpa镜像同步到本地作为自己的镜像源，以清华elpa镜像源为例。\n同步镜像源 国内的elpa镜像源都有同步地址，如清华镜像同步地址为rsync://mirrors.tuna.tsinghua.edu.cn/elpa/,使用 rsync 命令进行同步。\n1 2 3 4 // 查看同步内容 rsync rsync://mirrors.tuna.tsinghua.edu.cn/elpa/ // 将镜像内容同步到本机 ~/elpa 目录下 rsync -avz rsync://mirrors.tuna.tsinghua.edu.cn/elpa/ ~/elpa 等待一段时间即可同步完成。注意同步时要仔细阅读同步要求，尽量不要对镜像服务器造成流量压力。\nemacs 中使用本地镜像 1 2 3 4 5 6 7 ;; emacs 初始化文件中添加以下代码 (setq package-archives &#39;((&#34;gnu&#34; . &#34;~/elpa/gnu/&#34;) (&#34;melpa&#34; . &#34;~/elpa/melpa/&#34;) (&#34;nongnu&#34; . &#34;~/elpa/nongnu/&#34;) (&#34;org&#34; . &#34;~/elpa/org/&#34;) (&#34;melpa-stable&#34; . &#34;~/elpa/stable-melpa/&#34;))) (package-initialize) 添加完成后保存重启emacs，然后使用 M-x package-list-packages 命令既可以查看本地melpa等镜像中的包，而且如果电脑处于断网离线状态，依然可以安装本地镜像中存在的包。\n参考链接 1. Emacs使用本地elpa镜像\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

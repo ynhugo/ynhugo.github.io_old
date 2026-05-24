@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="使用Timeshift快照备份与恢复">
 <meta property='og:description' content=" 使用Timeshift快照备份与恢复 前言 在 Linux 系统的运维管理中，可靠的快照备份与恢复工具尤为关键。TimeShift 作为一款轻量化却功能强大的快照工具，广泛应用于系统状态的备份与恢复。本文将深入探讨 TimeShift 的原理、备份方式、优缺点，以及如何通过真实操作验证 TimeShift 的备份恢复效果。\n一、TimeShift 的工作原理 TimeShift 通过文件系统快照实现备份与恢复，支持基于 rsync 和 Btrfs 两种模式：\nRsync 模式：利用 rsync 工具的增量备份功能，仅备份变化的文件。 Btrfs 模式：依赖于 Btrfs 文件系统的原生快照功能，以更高的效率完成备份。 优缺点对比：\n优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。 缺点：无法选择备份特定文件或目录，限制较大。 二、TimeShift 的备份方式 TimeShift 的备份分为手动和自动：\n手动备份：通过命令行或图形界面，按需创建快照。 自动备份：根据配置文件中的时间策略自动创建快照。支持按小时、每日、每周和每月等多种频率。 优缺点对比：\n优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。 缺点：无法选择备份特定文件或目录，限制较大。 三、TimeShift 的安装和配置 在 Ubuntu Server 24 系统上，安装 TimeShift：\n1 2 sudo apt update sudo apt install timeshift 配置 TimeShift 时，可以编辑 /etc/timeshift/timeshift.json 文件，将“备份设备”设置为适合的磁盘，并根据需求修改快照的 exclude（排除）项。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E4%BD%BF%E7%94%A8timeshift%E5%BF%AB%E7%85%A7%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='timeshift' /><meta property='article:published_time' content='2025-06-22T13:07:14&#43;08:00'/><meta property='article:modified_time' content='2025-06-22T13:07:14&#43;08:00'/>
 <meta name="twitter:title" content="使用Timeshift快照备份与恢复">
 <meta name="twitter:description" content=" 使用Timeshift快照备份与恢复 前言 在 Linux 系统的运维管理中，可靠的快照备份与恢复工具尤为关键。TimeShift 作为一款轻量化却功能强大的快照工具，广泛应用于系统状态的备份与恢复。本文将深入探讨 TimeShift 的原理、备份方式、优缺点，以及如何通过真实操作验证 TimeShift 的备份恢复效果。\n一、TimeShift 的工作原理 TimeShift 通过文件系统快照实现备份与恢复，支持基于 rsync 和 Btrfs 两种模式：\nRsync 模式：利用 rsync 工具的增量备份功能，仅备份变化的文件。 Btrfs 模式：依赖于 Btrfs 文件系统的原生快照功能，以更高的效率完成备份。 优缺点对比：\n优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。 缺点：无法选择备份特定文件或目录，限制较大。 二、TimeShift 的备份方式 TimeShift 的备份分为手动和自动：\n手动备份：通过命令行或图形界面，按需创建快照。 自动备份：根据配置文件中的时间策略自动创建快照。支持按小时、每日、每周和每月等多种频率。 优缺点对比：\n优点：自动化程度高，增量备份占用存储小，支持多版本快照管理。 缺点：无法选择备份特定文件或目录，限制较大。 三、TimeShift 的安装和配置 在 Ubuntu Server 24 系统上，安装 TimeShift：\n1 2 sudo apt update sudo apt install timeshift 配置 TimeShift 时，可以编辑 /etc/timeshift/timeshift.json 文件，将“备份设备”设置为适合的磁盘，并根据需求修改快照的 exclude（排除）项。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

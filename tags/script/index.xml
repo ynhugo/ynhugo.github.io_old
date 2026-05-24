@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Script on Example Site</title>
+        <title>Script on ynhugo.github.io</title>
         <link>https://ynhugo.github.io/tags/script/</link>
-        <description>Recent content in Script on Example Site</description>
+        <description>Recent content in Script on ynhugo.github.io</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Example Person</copyright>

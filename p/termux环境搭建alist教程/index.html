@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="termux环境搭建alist教程">
 <meta property='og:description' content="搭建alist教程 alist配置官方文档。\n安装alist 安装程序后在命令行界面运行就可以了，第一次运行的时候先获取到用户名和密码，然后根据提供的用户名和密码进行网页访问并修改密码。\n后台运行 在termux的家目录编辑&quot;.bashrc&quot;文件，如果没有这个文件可以创建这个文件，该命名的文件在启动termux后可以自动运行，不过alist不能重复启动，为避免使用ssh连接termux时再次启动启动alist，我写了一个脚本进行判断，如果alist已经运行就不再重复运行，执行命令时产生的附带文件如nohup.out和null也通过判断是否存在，如果存在则删除，在这一部分我在网上找了两个链接参考了一下，分别是shell判断进程是否存在，不存在则启动和Shell脚本实用小技巧-教你屏蔽执行命令的所有显示信息，包含错误信息和Shell 判断文件或文件夹是否存在（不存在则创建），这样这个脚本就可以实现alist在后台运行了，并且不需要自己手动做任何操作了。 想要完成上面描述的效果，则需要将下面的脚本内容添加到&quot;.bashrc&quot;中\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 #!/data/data/com.termux/files/usr/bin/bash ps -ef | grep &#34;alist&#34; | grep -v &#34;grep&#34; &gt; /dev/null 2&gt;&amp;1 if [ $? -ne 0 ] then nohup alist server &amp; fi if [ -e &#34;/data/data/com.termux/files/home/null&#34; ] then rm /data/data/com.termux/files/home/null fi if [ -e &#34;/data/data/com.termux/files/home/nohup.out&#34; ] then rm /data/data/com.termux/files/home/nohup.out fi[&lt;35;177;4m 最后启动该文件即可\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/termux%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAalist%E6%95%99%E7%A8%8B/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='alist' /><meta property='article:published_time' content='2025-07-08T18:57:42&#43;08:00'/><meta property='article:modified_time' content='2025-07-08T18:57:42&#43;08:00'/>
 <meta name="twitter:title" content="termux环境搭建alist教程">
 <meta name="twitter:description" content="搭建alist教程 alist配置官方文档。\n安装alist 安装程序后在命令行界面运行就可以了，第一次运行的时候先获取到用户名和密码，然后根据提供的用户名和密码进行网页访问并修改密码。\n后台运行 在termux的家目录编辑&quot;.bashrc&quot;文件，如果没有这个文件可以创建这个文件，该命名的文件在启动termux后可以自动运行，不过alist不能重复启动，为避免使用ssh连接termux时再次启动启动alist，我写了一个脚本进行判断，如果alist已经运行就不再重复运行，执行命令时产生的附带文件如nohup.out和null也通过判断是否存在，如果存在则删除，在这一部分我在网上找了两个链接参考了一下，分别是shell判断进程是否存在，不存在则启动和Shell脚本实用小技巧-教你屏蔽执行命令的所有显示信息，包含错误信息和Shell 判断文件或文件夹是否存在（不存在则创建），这样这个脚本就可以实现alist在后台运行了，并且不需要自己手动做任何操作了。 想要完成上面描述的效果，则需要将下面的脚本内容添加到&quot;.bashrc&quot;中\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 #!/data/data/com.termux/files/usr/bin/bash ps -ef | grep &#34;alist&#34; | grep -v &#34;grep&#34; &gt; /dev/null 2&gt;&amp;1 if [ $? -ne 0 ] then nohup alist server &amp; fi if [ -e &#34;/data/data/com.termux/files/home/null&#34; ] then rm /data/data/com.termux/files/home/null fi if [ -e &#34;/data/data/com.termux/files/home/nohup.out&#34; ] then rm /data/data/com.termux/files/home/nohup.out fi[&lt;35;177;4m 最后启动该文件即可\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

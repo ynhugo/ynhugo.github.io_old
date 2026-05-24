@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="PowerShell如何运行脚本">
 <meta property='og:description' content=" PowerShell如何运行脚本 简短说明 介绍如何在 PowerShell 中运行和编写脚本。具体可以查看参考链接。\n长说明 脚本是包含一个或多个 PowerShell 命令的纯文本文件。 PowerShell 脚本具有 .ps1 文件扩展名。\n运行脚本与运行 cmdlet 非常类似。 键入脚本的路径和文件名，然后使用参数提交数据和设置选项。 可以在你的计算机上运行脚本，也可以在另一台计算机上的远程会话中运行脚本。\n编写脚本可以保存命令以供以后使用，并且可以轻松与他人共享。 最重要的是，只需输入脚本路径和文件名即可运行命令。 脚本可以像文件中的单个命令一样简单，也可以像复杂的程序一样广泛。\n脚本具有附加功能，例如 #Requires 特殊注释、参数的使用、对数据部分的支持以及用于安全的数字签名。 还可以为脚本以及脚本中的任何函数编写帮助主题。\n如何运行脚本 在 Windows 上运行脚本之前，需要更改默认的 PowerShell 执行策略。 执行策略不适用于在非 Windows 平台上运行的 PowerShell。\n默认执行策略 Restricted会阻止所有脚本运行，包括在本地计算机上编写的脚本。 有关更多信息，请参阅 about_Execution_Policies。\n执行策略保存在注册表中，因此只需在每台计算机上更改一次。\n若要更改执行策略，请遵循以下过程。\n以管理员身份打开PowerSehll，在命令提示符处，键入：\n1 Set-ExecutionPolicy AllSigned 执行后根据提示输入 A 并回车 、\n1 Set-ExecutionPolicy RemoteSigned 执行后根据提示输入 A 并回车\n更改立即生效。\n参考链接 about_Scripts\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/powershell%E5%A6%82%E4%BD%95%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='windows' /><meta property='article:tag' content='PowerShell' /><meta property='article:tag' content='脚本' /><meta property='article:tag' content='script' /><meta property='article:published_time' content='2024-11-27T00:27:35&#43;08:00'/><meta property='article:modified_time' content='2024-11-27T00:27:35&#43;08:00'/>
 <meta name="twitter:title" content="PowerShell如何运行脚本">
 <meta name="twitter:description" content=" PowerShell如何运行脚本 简短说明 介绍如何在 PowerShell 中运行和编写脚本。具体可以查看参考链接。\n长说明 脚本是包含一个或多个 PowerShell 命令的纯文本文件。 PowerShell 脚本具有 .ps1 文件扩展名。\n运行脚本与运行 cmdlet 非常类似。 键入脚本的路径和文件名，然后使用参数提交数据和设置选项。 可以在你的计算机上运行脚本，也可以在另一台计算机上的远程会话中运行脚本。\n编写脚本可以保存命令以供以后使用，并且可以轻松与他人共享。 最重要的是，只需输入脚本路径和文件名即可运行命令。 脚本可以像文件中的单个命令一样简单，也可以像复杂的程序一样广泛。\n脚本具有附加功能，例如 #Requires 特殊注释、参数的使用、对数据部分的支持以及用于安全的数字签名。 还可以为脚本以及脚本中的任何函数编写帮助主题。\n如何运行脚本 在 Windows 上运行脚本之前，需要更改默认的 PowerShell 执行策略。 执行策略不适用于在非 Windows 平台上运行的 PowerShell。\n默认执行策略 Restricted会阻止所有脚本运行，包括在本地计算机上编写的脚本。 有关更多信息，请参阅 about_Execution_Policies。\n执行策略保存在注册表中，因此只需在每台计算机上更改一次。\n若要更改执行策略，请遵循以下过程。\n以管理员身份打开PowerSehll，在命令提示符处，键入：\n1 Set-ExecutionPolicy AllSigned 执行后根据提示输入 A 并回车 、\n1 Set-ExecutionPolicy RemoteSigned 执行后根据提示输入 A 并回车\n更改立即生效。\n参考链接 about_Scripts\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

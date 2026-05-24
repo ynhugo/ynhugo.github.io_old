@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="谷歌api翻译">
 <meta property='og:description' content=" 使用方式 1 curl &#34;http://translate.google.com/translate_a/single?client=gtx&amp;sl=en&amp;tl=zh-CN&amp;dt=t&amp;q=good&#34; 使用示例 使用门槛，该api由谷歌提供，因此使用的话需要具备一定的上网条件\n1 2 3 ┌──(root💀adm-RecipeKit)-[~] └─# curl &#34;http://translate.google.com/translate_a/single?client=gtx&amp;sl=en&amp;tl=zh-CN&amp;dt=t&amp;q=good&#34; [[[&#34;好的&#34;,&#34;good&#34;,null,null,10]],null,&#34;en&#34;,null,null,null,null,[]] 翻译单词-脚本实现 1 curl &#34;http://translate.google.com/translate_a/single?client=gtx&amp;sl=en&amp;tl=zh-CN&amp;dt=t&amp;q=$1&#34; 使用示例 1 2 3 ┌──(root💀adm-RecipeKit)-[~] └─# ./translate.sh good [[[&#34;好的&#34;,&#34;good&#34;,null,null,10]],null,&#34;en&#34;,null,null,null,null,[]] 翻译句子-脚本实现-1 1 2 date=&#34;$(echo &#34;$1&#34; | sed -e &#39;s/ /%20/g&#39;)&#34; curl &#34;http://translate.google.com/translate_a/single?client=gtx&amp;sl=en&amp;tl=zh-CN&amp;dt=t&amp;q=${date}&#34; 使用示例 1 2 3 ┌──(root💀adm-RecipeKit)-[~] └─# ./translate.sh &#34;HOW old are you?&#34; [[[&#34;你今年多大？&#34;,&#34;HOW old are you.&#34;,null,null,10]],null,&#34;en&#34;,null,null,null,null,[]] 使用示例-VPS 1 2 3 4 $ ssh sdf &#39;./translate.sh &#34;How old are you?&#34;&#39; % Total % Received % Xferd Average Speed Time Time Time Current Dload Upload Total Spent Left Speed 100 91 0 91 0 0 1101 0 --:--:-- --:--:-[[[&#34;你今年多大？&#34;,&#34;How old are you?&#34;,null,null,10]],null,&#34;en&#34;,null,null,null,null,[]]- --:--:-- 1109 翻译句子-脚本实现-2 1 2 3 4 5 6 7 8 9 10 #!/usr/bin/bash args=&#34;$#&#34; for ((i = 1; i &lt; args; i++)); do data+=&#34;${!i}%20&#34; done # echo &#34;${data}${!#}&#34; curl &#34;http://translate.google.com/translate_a/single?client=gtx&amp;sl=en&amp;tl=zh-CN&amp;dt=t&amp;q=${data} 使用示例 1 2 3 ┌──(root💀adm-RecipeKit)-[~] └─# echo &#34;How old are you?&#34; | xargs ./translate.sh [[[&#34;几岁了&#34;,&#34;How old are&#34;,null,null,3,null,null,[[]],[[[&#34;6ffafab0da7e640be86ac09d0d5e539c&#34;,&#34;en_zh_2023q1.md&#34;]]]]],null,&#34;en&#34;,null,null,null,null,[]] 参考链接 Google 单词翻译 API.py\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E8%B0%B7%E6%AD%8Capi%E7%BF%BB%E8%AF%91/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='tools' /><meta property='article:tag' content='程序员' /><meta property='article:published_time' content='2024-04-05T17:38:21&#43;08:00'/><meta property='article:modified_time' content='2024-04-05T17:38:21&#43;08:00'/>
 <meta name="twitter:title" content="谷歌api翻译">
 <meta name="twitter:description" content=" 使用方式 1 curl &#34;http://translate.google.com/translate_a/single?client=gtx&amp;sl=en&amp;tl=zh-CN&amp;dt=t&amp;q=good&#34; 使用示例 使用门槛，该api由谷歌提供，因此使用的话需要具备一定的上网条件\n1 2 3 ┌──(root💀adm-RecipeKit)-[~] └─# curl &#34;http://translate.google.com/translate_a/single?client=gtx&amp;sl=en&amp;tl=zh-CN&amp;dt=t&amp;q=good&#34; [[[&#34;好的&#34;,&#34;good&#34;,null,null,10]],null,&#34;en&#34;,null,null,null,null,[]] 翻译单词-脚本实现 1 curl &#34;http://translate.google.com/translate_a/single?client=gtx&amp;sl=en&amp;tl=zh-CN&amp;dt=t&amp;q=$1&#34; 使用示例 1 2 3 ┌──(root💀adm-RecipeKit)-[~] └─# ./translate.sh good [[[&#34;好的&#34;,&#34;good&#34;,null,null,10]],null,&#34;en&#34;,null,null,null,null,[]] 翻译句子-脚本实现-1 1 2 date=&#34;$(echo &#34;$1&#34; | sed -e &#39;s/ /%20/g&#39;)&#34; curl &#34;http://translate.google.com/translate_a/single?client=gtx&amp;sl=en&amp;tl=zh-CN&amp;dt=t&amp;q=${date}&#34; 使用示例 1 2 3 ┌──(root💀adm-RecipeKit)-[~] └─# ./translate.sh &#34;HOW old are you?&#34; [[[&#34;你今年多大？&#34;,&#34;HOW old are you.&#34;,null,null,10]],null,&#34;en&#34;,null,null,null,null,[]] 使用示例-VPS 1 2 3 4 $ ssh sdf &#39;./translate.sh &#34;How old are you?&#34;&#39; % Total % Received % Xferd Average Speed Time Time Time Current Dload Upload Total Spent Left Speed 100 91 0 91 0 0 1101 0 --:--:-- --:--:-[[[&#34;你今年多大？&#34;,&#34;How old are you?&#34;,null,null,10]],null,&#34;en&#34;,null,null,null,null,[]]- --:--:-- 1109 翻译句子-脚本实现-2 1 2 3 4 5 6 7 8 9 10 #!/usr/bin/bash args=&#34;$#&#34; for ((i = 1; i &lt; args; i++)); do data+=&#34;${!i}%20&#34; done # echo &#34;${data}${!#}&#34; curl &#34;http://translate.google.com/translate_a/single?client=gtx&amp;sl=en&amp;tl=zh-CN&amp;dt=t&amp;q=${data} 使用示例 1 2 3 ┌──(root💀adm-RecipeKit)-[~] └─# echo &#34;How old are you?&#34; | xargs ./translate.sh [[[&#34;几岁了&#34;,&#34;How old are&#34;,null,null,3,null,null,[[]],[[[&#34;6ffafab0da7e640be86ac09d0d5e539c&#34;,&#34;en_zh_2023q1.md&#34;]]]]],null,&#34;en&#34;,null,null,null,null,[]] 参考链接 Google 单词翻译 API.py\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

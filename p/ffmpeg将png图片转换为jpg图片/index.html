@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="ffmpeg将png图片转换为jpg图片">
 <meta property='og:description' content=" 1 ffmpeg -i black.png -s 400x400 -filter_complex &#34;scale=sws_flags=lanczos&#34; -update 1 -y black.jpg -i black.png -i 选项后跟的是输入文件，在这里是 black.png。它告诉 ffmpeg 要读取的源文件是一个 PNG 图像。\n-s 400x400 -s 选项用于设置输出文件的分辨率。在这里，它将输出图像的尺寸设置为 400x400 像素。即使输入图像的尺寸不是 400x400，ffmpeg 会将其缩放到指定的大小。\n-filter_complex &#34;scale=sws_flags=lanczos&#34; -filter_complex 选项用于指定复杂的过滤器链。在这个命令中，scale=sws_flags=lanczos 是一个图像缩放操作，具体含义如下：\nscale：这是一个 ffmpeg 内置的缩放滤镜，用于调整图像的分辨率。 sws_flags=lanczos：这是 scale 滤镜的参数，sws_flags 选项指定了图像缩放时使用的算法。lanczos 是一种高质量的缩放算法，特别适合用于图像的下采样或上采样，它通常能保持较好的图像质量，减少锯齿现象。 lanczos 算法 lanczos 是一种高质量的滤波算法，使用了三次插值，通常用于图像缩放时提供较好的锐度和较少的失真。它特别适合于需要保持图像细节和质量的情况下进行缩放。\n-update 1 -update 1 选项指示 ffmpeg 使用单个文件输出。每次执行时，它会更新并覆盖目标文件，而不是生成多个文件。适用于输出序列更新，尤其在使用 GIF 或某些类型的图像时有用。\n在这个命令中，-update 1 表示将输入文件处理后，生成并覆盖目标文件 black.jpg。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/ffmpeg%E5%B0%86png%E5%9B%BE%E7%89%87%E8%BD%AC%E6%8D%A2%E4%B8%BAjpg%E5%9B%BE%E7%89%87/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ffmpeg' /><meta property='article:tag' content='png' /><meta property='article:tag' content='jpg' /><meta property='article:published_time' content='2024-12-27T14:45:14&#43;08:00'/><meta property='article:modified_time' content='2024-12-27T14:45:14&#43;08:00'/>
 <meta name="twitter:title" content="ffmpeg将png图片转换为jpg图片">
 <meta name="twitter:description" content=" 1 ffmpeg -i black.png -s 400x400 -filter_complex &#34;scale=sws_flags=lanczos&#34; -update 1 -y black.jpg -i black.png -i 选项后跟的是输入文件，在这里是 black.png。它告诉 ffmpeg 要读取的源文件是一个 PNG 图像。\n-s 400x400 -s 选项用于设置输出文件的分辨率。在这里，它将输出图像的尺寸设置为 400x400 像素。即使输入图像的尺寸不是 400x400，ffmpeg 会将其缩放到指定的大小。\n-filter_complex &#34;scale=sws_flags=lanczos&#34; -filter_complex 选项用于指定复杂的过滤器链。在这个命令中，scale=sws_flags=lanczos 是一个图像缩放操作，具体含义如下：\nscale：这是一个 ffmpeg 内置的缩放滤镜，用于调整图像的分辨率。 sws_flags=lanczos：这是 scale 滤镜的参数，sws_flags 选项指定了图像缩放时使用的算法。lanczos 是一种高质量的缩放算法，特别适合用于图像的下采样或上采样，它通常能保持较好的图像质量，减少锯齿现象。 lanczos 算法 lanczos 是一种高质量的滤波算法，使用了三次插值，通常用于图像缩放时提供较好的锐度和较少的失真。它特别适合于需要保持图像细节和质量的情况下进行缩放。\n-update 1 -update 1 选项指示 ffmpeg 使用单个文件输出。每次执行时，它会更新并覆盖目标文件，而不是生成多个文件。适用于输出序列更新，尤其在使用 GIF 或某些类型的图像时有用。\n在这个命令中，-update 1 表示将输入文件处理后，生成并覆盖目标文件 black.jpg。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

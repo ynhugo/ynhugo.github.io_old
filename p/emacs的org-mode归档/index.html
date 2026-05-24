@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Emacs的org-mode归档">
 <meta property='og:description' content=" Emacs的org-mode归档 如果你用org-mode来做TODO管理，那么无法避免的是，随着时间的流逝，被DONE的事件会越来越多，那么TODO被会被夹杂在DONE之间，难以查找。同时，由于后期回顾的需要，你也不想简单地将DONE事件删除掉。这个时候，你就需要归档命令了。归档，就是把你不想天天看到的东西，放到你看不到了，或者不怎么影响你的注意力的地方去。org-mode提供了两种归档方式。\n内部归档 内部归档是在本文件内部给特定子树打上ACHIVED标签或者移动到名为achived的子树中去并打上标签。\n这个被认为是ACIVED的子树，会被移动了本级子树的最末端。 例如有这么一个子树，由三个TODO项目组成。\n1 2 3 4 * blog ** TODO 匈牙利命名法 ** TODO org-mode 归档 ** TODO BillG审查 C-c C-x a 将某一个节点打上ARCHIVE标签。\n1 2 3 4 * blog ** TODO 匈牙利命名法 ** TODO org-mode 归档\t:ARCHIVE: ** TODO BillG审查 C-c C-x A 将当前节点归入一个名为Archive的子树中，并且这个子树是位于当前级别子树的最下方。\n1 2 3 4 5 6 7 8 * blog ** TODO org-mode 归档\t:ARCHIVE: ** TODO BillG审查 ** Archive\t:ARCHIVE: *** TODO 匈牙利命名法 :PROPERTIES: :ARCHIVE_TIME: 2010-01-02 六 18:14 :END: 外部归档 外部归档是指把子树移动到另一个org文件中去。文件名可以自定义。默认情况下，归档的子树会被移动到名为“当年文件名_archived”的文件中去。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/emacs%E7%9A%84org-mode%E5%BD%92%E6%A1%A3/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='emacs' /><meta property='article:tag' content='org-mode' /><meta property='article:published_time' content='2024-11-26T03:14:07&#43;08:00'/><meta property='article:modified_time' content='2024-11-26T03:14:07&#43;08:00'/>
 <meta name="twitter:title" content="Emacs的org-mode归档">
 <meta name="twitter:description" content=" Emacs的org-mode归档 如果你用org-mode来做TODO管理，那么无法避免的是，随着时间的流逝，被DONE的事件会越来越多，那么TODO被会被夹杂在DONE之间，难以查找。同时，由于后期回顾的需要，你也不想简单地将DONE事件删除掉。这个时候，你就需要归档命令了。归档，就是把你不想天天看到的东西，放到你看不到了，或者不怎么影响你的注意力的地方去。org-mode提供了两种归档方式。\n内部归档 内部归档是在本文件内部给特定子树打上ACHIVED标签或者移动到名为achived的子树中去并打上标签。\n这个被认为是ACIVED的子树，会被移动了本级子树的最末端。 例如有这么一个子树，由三个TODO项目组成。\n1 2 3 4 * blog ** TODO 匈牙利命名法 ** TODO org-mode 归档 ** TODO BillG审查 C-c C-x a 将某一个节点打上ARCHIVE标签。\n1 2 3 4 * blog ** TODO 匈牙利命名法 ** TODO org-mode 归档\t:ARCHIVE: ** TODO BillG审查 C-c C-x A 将当前节点归入一个名为Archive的子树中，并且这个子树是位于当前级别子树的最下方。\n1 2 3 4 5 6 7 8 * blog ** TODO org-mode 归档\t:ARCHIVE: ** TODO BillG审查 ** Archive\t:ARCHIVE: *** TODO 匈牙利命名法 :PROPERTIES: :ARCHIVE_TIME: 2010-01-02 六 18:14 :END: 外部归档 外部归档是指把子树移动到另一个org文件中去。文件名可以自定义。默认情况下，归档的子树会被移动到名为“当年文件名_archived”的文件中去。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

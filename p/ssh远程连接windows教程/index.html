@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="ssh远程连接windows教程">
 <meta property='og:description' content=" 实验环境 在虚拟机(vmware)中做的实验，同时运行ubuntu16.04.3虚拟操作系统和windows10专业版虚拟操作系统\n这两个虚拟操作系统都是格接模式，并且勾选&#34;复制物理网络连接状态(P)&#34;选项\nwindows10虚拟操作系统为了使实验更顺利，保险起见，将防火墙给关闭，关闭防火墙的办法就是将防火墙的三个网络分别是&#34;域网络&#34;、&#34;专用网络&#34;、&#34;公用网络&#34;给关闭就可以了\n实验步骤 安装Windows OpenSSH 首先通过powershell安装OpenSSH的服务端\n在开始图标上点击右键，选择Windows PowerShell(管理员)(A)\n在powershell中输入：\n1 2 3 4 5 # 安装OpenSSH客户端 Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0 # 安装OpenSSH服务端 Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0 在powershell中输入：\n1 Get-WindowsCapability -Online | ? Name -like &#39;OpenSSH*&#39; 若返回为：\n1 2 3 4 5 Name : OpenSSH.Client~~~~0.0.1.0 State : Installed Name : OpenSSH.Server~~~~0.0.1.0 State : Installed 则表示安装成功，若返回为：\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/ssh%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5windows%E6%95%99%E7%A8%8B/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssh' /><meta property='article:published_time' content='2024-03-26T00:24:26&#43;08:00'/><meta property='article:modified_time' content='2024-03-26T00:24:26&#43;08:00'/>
 <meta name="twitter:title" content="ssh远程连接windows教程">
 <meta name="twitter:description" content=" 实验环境 在虚拟机(vmware)中做的实验，同时运行ubuntu16.04.3虚拟操作系统和windows10专业版虚拟操作系统\n这两个虚拟操作系统都是格接模式，并且勾选&#34;复制物理网络连接状态(P)&#34;选项\nwindows10虚拟操作系统为了使实验更顺利，保险起见，将防火墙给关闭，关闭防火墙的办法就是将防火墙的三个网络分别是&#34;域网络&#34;、&#34;专用网络&#34;、&#34;公用网络&#34;给关闭就可以了\n实验步骤 安装Windows OpenSSH 首先通过powershell安装OpenSSH的服务端\n在开始图标上点击右键，选择Windows PowerShell(管理员)(A)\n在powershell中输入：\n1 2 3 4 5 # 安装OpenSSH客户端 Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0 # 安装OpenSSH服务端 Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0 在powershell中输入：\n1 Get-WindowsCapability -Online | ? Name -like &#39;OpenSSH*&#39; 若返回为：\n1 2 3 4 5 Name : OpenSSH.Client~~~~0.0.1.0 State : Installed Name : OpenSSH.Server~~~~0.0.1.0 State : Installed 则表示安装成功，若返回为：\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

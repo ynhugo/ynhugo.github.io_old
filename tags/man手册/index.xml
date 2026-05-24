@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Man手册 on Example Site</title>
+        <title>Man手册 on ynhugo.github.io</title>
         <link>https://ynhugo.github.io/tags/man%E6%89%8B%E5%86%8C/</link>
-        <description>Recent content in Man手册 on Example Site</description>
+        <description>Recent content in Man手册 on ynhugo.github.io</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Example Person</copyright>

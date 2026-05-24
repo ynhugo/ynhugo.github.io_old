@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="adb教程">
 <meta property='og:description' content=" 初识adb adb shell下载链接：https://wws.lanzoui.com/iNYNiq9l3yd\n打开文件所在文件夹，将地址栏清空并键入cmd，然后回车，在cmd窗口键入adb shell测试use调试是否连接成功，如果出现美元符号表示连接成功。\nadb命令 adb shell am monitor #执行该命令后在手机上打开要卸载的应用，获取包名\nadb shell pm disable-user 包名 #停用应用\nadb shell pm enable 包名 #恢复应用\nadb install -r apk文件路径 #安装应用，直接将文件拖入cmd窗口可直接实现插入路径\nadb shell pm list packages #显示包名列表\nadb uninstall 包名 #卸载应用\nadb安装软件实操 emulator代表实际序列号，如果有多个序号号的话需要指定一下，序列号可以通过&#34;adb devices&#34;查看\n1 adb -s emulator-5554 install rustdesk-1.2.7-aarch64-signed.apk adb命令安装apk脚本 1 mapfile -t files &lt; &lt;(find ./ -name &#34;*.apk&#34; | awk -F &#34;/&#34; &#39;{print $2}&#39;); for i in &#34;${files[@]}&#34;; do adb install &#34;${i}&#34;; done Android adb 查看已经安装的应用、安装应用、卸载应用 adb shell pm list packages -[option] 命令查看已经安装的应用，列出包名，后面加不同的后缀输出不同信息。 adb shell pm list packages ####查看当前连接设备或者虚拟机的所有包\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/adb%E6%95%99%E7%A8%8B/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-03-31T15:56:35&#43;08:00'/><meta property='article:modified_time' content='2024-03-31T15:56:35&#43;08:00'/>
 <meta name="twitter:title" content="adb教程">
 <meta name="twitter:description" content=" 初识adb adb shell下载链接：https://wws.lanzoui.com/iNYNiq9l3yd\n打开文件所在文件夹，将地址栏清空并键入cmd，然后回车，在cmd窗口键入adb shell测试use调试是否连接成功，如果出现美元符号表示连接成功。\nadb命令 adb shell am monitor #执行该命令后在手机上打开要卸载的应用，获取包名\nadb shell pm disable-user 包名 #停用应用\nadb shell pm enable 包名 #恢复应用\nadb install -r apk文件路径 #安装应用，直接将文件拖入cmd窗口可直接实现插入路径\nadb shell pm list packages #显示包名列表\nadb uninstall 包名 #卸载应用\nadb安装软件实操 emulator代表实际序列号，如果有多个序号号的话需要指定一下，序列号可以通过&#34;adb devices&#34;查看\n1 adb -s emulator-5554 install rustdesk-1.2.7-aarch64-signed.apk adb命令安装apk脚本 1 mapfile -t files &lt; &lt;(find ./ -name &#34;*.apk&#34; | awk -F &#34;/&#34; &#39;{print $2}&#39;); for i in &#34;${files[@]}&#34;; do adb install &#34;${i}&#34;; done Android adb 查看已经安装的应用、安装应用、卸载应用 adb shell pm list packages -[option] 命令查看已经安装的应用，列出包名，后面加不同的后缀输出不同信息。 adb shell pm list packages ####查看当前连接设备或者虚拟机的所有包\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

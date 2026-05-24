@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="搭建hexo">
 <meta property='og:description' content="笔记文件 点击访问 搭建hexo.pdf\n视频教程 hexo博客搭建教程 准备工作 需要安装：nodejs、git-bash 因官网下载太慢，这里使用nodejs的国内网站和git-bash的镜像网站进行下载 nodejs链接：http://nodejs.cn/download/ nodejs下载地址：https://cdn.npmmirror.com/binaries/node/v16.17.0/node-v16.17.0-x64.msi git-bash链接：https://registry.npmmirror.com/binary.html?path=git-for-windows/ git-bash下载地址：https://cdn.npmmirror.com/binaries/git-for-windows/v2.38.0.windows.1/Git-2.38.0-64-bit.exe 接下来安装nodejs和git-bash nodejs安装教程： git-bash安装教程： 开始搭建 接下来开始搭建hexo： 在git-bash中执行命令 npm install hexo-cli -g\t#安装博客框架 执行 hexo init myBlog\t#生成博客的站点目录 执行命令 hexo s 可以启动本地博客，博客显示的内容 在站点目录的 source/_posts/ 路径下 修改配置文件 准备一个qq邮箱之外的邮箱，邮箱的实用性越高越好，因此我建议的邮箱是微软的Outlook邮箱，官网是 outlook.live.com 可以在注册一个Outlook邮箱,注册完Outlook邮箱之后就可以到 github.com官网 注册了，搭建hexo的前提是在github.com官网 注册并搭建一个用于部署hexo的仓库。 在github注册并新建一个仓库，仓库格式为 用户名.github.io，然后将该仓库生成的\tssh链接复制下来，打开刚刚创建的站点目录下的 _config.yml vim _config.yml 在该文件的最下面，有一段代码： 1 2 3 4 # Deployment ## Docs: https://hexo.io/docs/one-command-deployment deploy: type: &#39; &#39; 将代码更改为： 1 2 3 4 5 6 # Deployment ## Docs: https://hexo.io/docs/one-command-deployment deploy: type: &#39;git&#39;\t#部署博客类型 repo: git@github.com:zzfxdyn/zzfxdyn.github.io.git\t#仓库生成的链接 branch: main\t#仓库默认分支 同时将该文件中url：http://example.com改为 https://仓库名 npm install hexo-deployer-git --save\t#安装博客部署插件 生成ssh密钥 ssh-keygen -t rsa -C &quot;注册github时的邮箱&quot; 连续多次回车，生成ssh密钥在，按照提示的路径进入该路径下复制 id_rsa.pub 的内容 默认路径为 ~/.ssh,在git-bash中通过命令 cd ~/.ssh 进入该路径 cat id_rsa.pub\t#显示id_rsa.pub的内容，然后鼠标选中复制 复制的内容为生成的密钥的公钥，回到浏览器，打开github的设置，点击SSH and GPG Keys， 添加新的密钥，自定义一个名字，粘贴密钥并确定 回到git-bash，配置好站点目录文件后执行命令 git config --global user.email &quot;you@example.com&quot; git config --global user.name &quot;Your Name&quot; 执行 hexo clean &amp;&amp; hexo g &amp;&amp; hexo d 测试博客部署插件是否安装成功 vim编辑器的使用方法 vim之所以被称之为强大的编辑器是因为本身支持很多的模式 命令模式 命令行模式(底行模式) 编辑模式(插入模式) 可视 可视块 可视行 注意 : 不要使用vim打开目录文件 注意 : 用vim编写完成的文件内容要用正常的保存退出方式,不要直接关闭终端 否则会生成交换文件(交换文件是隐藏文件) vim hello.c | 按iIoOaA\tV\t按: 编辑模式&lt;----------命令模式----------&gt;命令行模式 ---------&gt;\t&lt;---------\t按esc\t按esc或者删掉: 命令行模式的操作 :w\t保存 :q\t退出 :wq\t保存并且退出 如何修改hosts文件 第一种方法 也是网上推荐较多的，比较常用的方法 ">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E6%90%AD%E5%BB%BAhexo/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='hexo' /><meta property='article:published_time' content='2025-07-08T18:57:42&#43;08:00'/><meta property='article:modified_time' content='2025-07-08T18:57:42&#43;08:00'/>
 <meta name="twitter:title" content="搭建hexo">
 <meta name="twitter:description" content="笔记文件 点击访问 搭建hexo.pdf\n视频教程 hexo博客搭建教程 准备工作 需要安装：nodejs、git-bash 因官网下载太慢，这里使用nodejs的国内网站和git-bash的镜像网站进行下载 nodejs链接：http://nodejs.cn/download/ nodejs下载地址：https://cdn.npmmirror.com/binaries/node/v16.17.0/node-v16.17.0-x64.msi git-bash链接：https://registry.npmmirror.com/binary.html?path=git-for-windows/ git-bash下载地址：https://cdn.npmmirror.com/binaries/git-for-windows/v2.38.0.windows.1/Git-2.38.0-64-bit.exe 接下来安装nodejs和git-bash nodejs安装教程： git-bash安装教程： 开始搭建 接下来开始搭建hexo： 在git-bash中执行命令 npm install hexo-cli -g\t#安装博客框架 执行 hexo init myBlog\t#生成博客的站点目录 执行命令 hexo s 可以启动本地博客，博客显示的内容 在站点目录的 source/_posts/ 路径下 修改配置文件 准备一个qq邮箱之外的邮箱，邮箱的实用性越高越好，因此我建议的邮箱是微软的Outlook邮箱，官网是 outlook.live.com 可以在注册一个Outlook邮箱,注册完Outlook邮箱之后就可以到 github.com官网 注册了，搭建hexo的前提是在github.com官网 注册并搭建一个用于部署hexo的仓库。 在github注册并新建一个仓库，仓库格式为 用户名.github.io，然后将该仓库生成的\tssh链接复制下来，打开刚刚创建的站点目录下的 _config.yml vim _config.yml 在该文件的最下面，有一段代码： 1 2 3 4 # Deployment ## Docs: https://hexo.io/docs/one-command-deployment deploy: type: &#39; &#39; 将代码更改为： 1 2 3 4 5 6 # Deployment ## Docs: https://hexo.io/docs/one-command-deployment deploy: type: &#39;git&#39;\t#部署博客类型 repo: git@github.com:zzfxdyn/zzfxdyn.github.io.git\t#仓库生成的链接 branch: main\t#仓库默认分支 同时将该文件中url：http://example.com改为 https://仓库名 npm install hexo-deployer-git --save\t#安装博客部署插件 生成ssh密钥 ssh-keygen -t rsa -C &quot;注册github时的邮箱&quot; 连续多次回车，生成ssh密钥在，按照提示的路径进入该路径下复制 id_rsa.pub 的内容 默认路径为 ~/.ssh,在git-bash中通过命令 cd ~/.ssh 进入该路径 cat id_rsa.pub\t#显示id_rsa.pub的内容，然后鼠标选中复制 复制的内容为生成的密钥的公钥，回到浏览器，打开github的设置，点击SSH and GPG Keys， 添加新的密钥，自定义一个名字，粘贴密钥并确定 回到git-bash，配置好站点目录文件后执行命令 git config --global user.email &quot;you@example.com&quot; git config --global user.name &quot;Your Name&quot; 执行 hexo clean &amp;&amp; hexo g &amp;&amp; hexo d 测试博客部署插件是否安装成功 vim编辑器的使用方法 vim之所以被称之为强大的编辑器是因为本身支持很多的模式 命令模式 命令行模式(底行模式) 编辑模式(插入模式) 可视 可视块 可视行 注意 : 不要使用vim打开目录文件 注意 : 用vim编写完成的文件内容要用正常的保存退出方式,不要直接关闭终端 否则会生成交换文件(交换文件是隐藏文件) vim hello.c | 按iIoOaA\tV\t按: 编辑模式&lt;----------命令模式----------&gt;命令行模式 ---------&gt;\t&lt;---------\t按esc\t按esc或者删掉: 命令行模式的操作 :w\t保存 :q\t退出 :wq\t保存并且退出 如何修改hosts文件 第一种方法 也是网上推荐较多的，比较常用的方法 ">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

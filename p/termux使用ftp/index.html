@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="termux使用ftp">
 <meta property='og:description' content=" termux使用ftp 一键实现脚本 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 # 先安装依赖 pkg install -y busybox termux-services # 通过下面命令更新会话或重新打开termux source $PREFIX/etc/profile.d/start-services.sh cat - &gt;&gt; ~/.bashrc &lt;&lt;&#39;EOF&#39; alias ftpd=&#34;exec busybox tcpsvd -vE 0.0.0.0 8021 busybox ftpd -w&#34; alias kftpd=&#39;ps aux | grep -v grep | grep -E &#34;busybox|ftpd&#34; | awk &#39;\\&#39;&#39;{print $2}&#39;\\&#39;&#39; | xargs kill -9&#39; EOF source ~/.bashrc # # 使用示例： # # 映射当前路径 # ftpd # # 或，映射指定路径 # ftpd ~/temp 正文 一键安装脚本 1 2 3 4 5 # 先安装依赖 pkg install -y busybox termux-services # 通过下面命令更新会话或重新打开termux source $PREFIX/etc/profile.d/start-services.sh ftpd参考 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 # 可以使用 MT管理器/ES文件浏览器 通过 8021 端口连接到ftp服务 # 可以在 $PREFIX/var/service/ftpd/run 看到使用的命令，其中 -w 表示允许读写，不带则只读 busybox ftpd &lt;&lt;&#39;CONTENT&#39; BusyBox v1.37.0 (2025-12-06 14:22:18 UTC) multi-call binary. Usage: ftpd [-wvS] [-t SEC] [-T SEC] [DIR] Anonymous FTP server. Client access occurs under ftpd&#39;s UID. Chroots to DIR, if this fails (run by non-root), cds to it. It is an inetd service, inetd.conf line: 21 stream tcp nowait root ftpd ftpd /files/to/serve Can be run from tcpsvd: tcpsvd -vE 0.0.0.0 21 ftpd /files/to/serve -w Allow upload -v Log errors to stderr. -vv: verbose log -S Log errors to syslog. -SS: verbose log -t,-T N Idle and absolute timeout CONTENT # 使用示例： exec busybox tcpsvd -vE 0.0.0.0 8021 busybox ftpd -w $HOME # 启动服务 sv-enable ftpd sv up ftpd # 停止服务 sv-disable ftpd sv down ftpd 使用示例 1 2 3 4 5 6 7 8 9 10 cat - &gt;&gt; ~/.bashrc &lt;&lt;&#39;EOF&#39; alias ftpd=&#34;exec busybox tcpsvd -vE 0.0.0.0 8021 busybox ftpd -w&#34; alias kftpd=&#39;ps aux | grep -v grep | grep -E &#34;busybox|ftpd&#34; | awk &#39;\\&#39;&#39;{print $2}&#39;\\&#39;&#39; | xargs kill -9&#39; EOF source ~/.bashrc # 映射当前路径 ftpd # 或，映射指定路径 ftpd ~/temp 参考链接 termux启用ftp\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/termux%E4%BD%BF%E7%94%A8ftp/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='termux' /><meta property='article:tag' content='ftp' /><meta property='article:published_time' content='2026-05-15T00:53:50&#43;08:00'/><meta property='article:modified_time' content='2026-05-15T00:53:50&#43;08:00'/>
 <meta name="twitter:title" content="termux使用ftp">
 <meta name="twitter:description" content=" termux使用ftp 一键实现脚本 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 # 先安装依赖 pkg install -y busybox termux-services # 通过下面命令更新会话或重新打开termux source $PREFIX/etc/profile.d/start-services.sh cat - &gt;&gt; ~/.bashrc &lt;&lt;&#39;EOF&#39; alias ftpd=&#34;exec busybox tcpsvd -vE 0.0.0.0 8021 busybox ftpd -w&#34; alias kftpd=&#39;ps aux | grep -v grep | grep -E &#34;busybox|ftpd&#34; | awk &#39;\\&#39;&#39;{print $2}&#39;\\&#39;&#39; | xargs kill -9&#39; EOF source ~/.bashrc # # 使用示例： # # 映射当前路径 # ftpd # # 或，映射指定路径 # ftpd ~/temp 正文 一键安装脚本 1 2 3 4 5 # 先安装依赖 pkg install -y busybox termux-services # 通过下面命令更新会话或重新打开termux source $PREFIX/etc/profile.d/start-services.sh ftpd参考 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 # 可以使用 MT管理器/ES文件浏览器 通过 8021 端口连接到ftp服务 # 可以在 $PREFIX/var/service/ftpd/run 看到使用的命令，其中 -w 表示允许读写，不带则只读 busybox ftpd &lt;&lt;&#39;CONTENT&#39; BusyBox v1.37.0 (2025-12-06 14:22:18 UTC) multi-call binary. Usage: ftpd [-wvS] [-t SEC] [-T SEC] [DIR] Anonymous FTP server. Client access occurs under ftpd&#39;s UID. Chroots to DIR, if this fails (run by non-root), cds to it. It is an inetd service, inetd.conf line: 21 stream tcp nowait root ftpd ftpd /files/to/serve Can be run from tcpsvd: tcpsvd -vE 0.0.0.0 21 ftpd /files/to/serve -w Allow upload -v Log errors to stderr. -vv: verbose log -S Log errors to syslog. -SS: verbose log -t,-T N Idle and absolute timeout CONTENT # 使用示例： exec busybox tcpsvd -vE 0.0.0.0 8021 busybox ftpd -w $HOME # 启动服务 sv-enable ftpd sv up ftpd # 停止服务 sv-disable ftpd sv down ftpd 使用示例 1 2 3 4 5 6 7 8 9 10 cat - &gt;&gt; ~/.bashrc &lt;&lt;&#39;EOF&#39; alias ftpd=&#34;exec busybox tcpsvd -vE 0.0.0.0 8021 busybox ftpd -w&#34; alias kftpd=&#39;ps aux | grep -v grep | grep -E &#34;busybox|ftpd&#34; | awk &#39;\\&#39;&#39;{print $2}&#39;\\&#39;&#39; | xargs kill -9&#39; EOF source ~/.bashrc # 映射当前路径 ftpd # 或，映射指定路径 ftpd ~/temp 参考链接 termux启用ftp\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

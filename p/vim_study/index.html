@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="vim_study">
 <meta property='og:description' content=" vim_studay vim常用命令 `u` 撤销上次命令 `Ctrl+r` 恢复撤销命令 `x` 删除光标所在的字符或选中文字 `d(移动命令)` 删除移动命令对应的内容 `dd` 删除光标所在行，可以ndd复制多行 `D` 删除至行尾 `dw` 从光标位置删除到单词末尾 `d0` 从光标位置删除到一行的起始位置 `d}` 从光标位置删除到段落结尾 `ndd` 从光标位置向下连续删除 n 行 `d代码行G` 从光标所在行 删除到 指定代码行 之间的所有代码 `d’a` 从光标所在行 删除到 标记a 之间的所有代码 `touch 文件名(或文件名+后缀)` 建立空文件 `echo &#39;内容&#39; &gt; 文件` 将内容写入文件 `x,X` #在一行字当中，x为向后删除-个字符,X为向前删除 `nx` #n为数字，连续向后删除n个字符 `dd` #删除游标所在的那一 -整列(常用) `ndd` #n为数字,删除光标所在的向下n列 `d1G` #删除光标所在到第一行的所有数据 `dG` #删除光标所在到最后一行的所有数据 `d$` #删除游标所在处，到该行的最后一个字符 `d0` #那个是数字的0，删除游标所在处，到该行的最前面一个字符 `vy` #复制游标所在的那- -行(常用) `nyy` #n为数字。 复制光标所在的向下n列，例如20yy则是复制20 列(常用) `y1G` #复制游标所在列到第- 列的所有数据 `yG` #复制游标所在列到最后一列的所有数据 `y0` #复制光标所在的那个字符到该行行首的所有数据 `y$` #复制光标所在的那个字符到该行行尾的所有数据 `p,P` #p为将已复制的数据在光标下一行贴上，P则为贴在游标上一行!举例来说，我目前光标在第20行，且己经复制了10行数据。则按下p后，那10行数据会贴在原本的20标在第20行，且己经复制了10行数据。则按下p后，那10行数据会贴在原本的20行之后，亦即由21行开始贴。但如果是按下P呢?那么原本的第20行会被推到变成30行 ( 常用) `J` #将光标所在列与下一列的数据结合成同一列 `c` #重复删除多个数据，例如向下删除10行，[10c] `u` #复原前一个动作。(常用)\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/vim_study/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='vim' /><meta property='article:published_time' content='2024-03-26T00:24:34&#43;08:00'/><meta property='article:modified_time' content='2024-03-26T00:24:34&#43;08:00'/>
 <meta name="twitter:title" content="vim_study">
 <meta name="twitter:description" content=" vim_studay vim常用命令 `u` 撤销上次命令 `Ctrl+r` 恢复撤销命令 `x` 删除光标所在的字符或选中文字 `d(移动命令)` 删除移动命令对应的内容 `dd` 删除光标所在行，可以ndd复制多行 `D` 删除至行尾 `dw` 从光标位置删除到单词末尾 `d0` 从光标位置删除到一行的起始位置 `d}` 从光标位置删除到段落结尾 `ndd` 从光标位置向下连续删除 n 行 `d代码行G` 从光标所在行 删除到 指定代码行 之间的所有代码 `d’a` 从光标所在行 删除到 标记a 之间的所有代码 `touch 文件名(或文件名+后缀)` 建立空文件 `echo &#39;内容&#39; &gt; 文件` 将内容写入文件 `x,X` #在一行字当中，x为向后删除-个字符,X为向前删除 `nx` #n为数字，连续向后删除n个字符 `dd` #删除游标所在的那一 -整列(常用) `ndd` #n为数字,删除光标所在的向下n列 `d1G` #删除光标所在到第一行的所有数据 `dG` #删除光标所在到最后一行的所有数据 `d$` #删除游标所在处，到该行的最后一个字符 `d0` #那个是数字的0，删除游标所在处，到该行的最前面一个字符 `vy` #复制游标所在的那- -行(常用) `nyy` #n为数字。 复制光标所在的向下n列，例如20yy则是复制20 列(常用) `y1G` #复制游标所在列到第- 列的所有数据 `yG` #复制游标所在列到最后一列的所有数据 `y0` #复制光标所在的那个字符到该行行首的所有数据 `y$` #复制光标所在的那个字符到该行行尾的所有数据 `p,P` #p为将已复制的数据在光标下一行贴上，P则为贴在游标上一行!举例来说，我目前光标在第20行，且己经复制了10行数据。则按下p后，那10行数据会贴在原本的20标在第20行，且己经复制了10行数据。则按下p后，那10行数据会贴在原本的20行之后，亦即由21行开始贴。但如果是按下P呢?那么原本的第20行会被推到变成30行 ( 常用) `J` #将光标所在列与下一列的数据结合成同一列 `c` #重复删除多个数据，例如向下删除10行，[10c] `u` #复原前一个动作。(常用)\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

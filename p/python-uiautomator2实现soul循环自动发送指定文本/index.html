@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="python+uiautomator2实现soul循环自动发送指定文本">
 <meta property='og:description' content=" python+uiautomator2实现soul循环自动发送指定文本 环境要求 支持设备：安卓\n手机要求：支持无线调试\n运行环境：Termux\nTermux环境搭建 1 2 3 pkg install -y libxml2 libxslt pkg install libjpeg-turbo libtiff libwebp openjpeg pip install uiautomator2 Windows搭建环境 自行查找相关教程安装anaconda，版本最新即可，这里不过多赘述。\n1 2 3 4 5 6 7 8 9 10 # 创建一个名为uiautomator2的指定版本的环境，-y选项自动安装环境依赖 conda create -n uiautomator2 python=3.8 -y # 激活环境 conda activate uiautomator2 pip install --pre uiautomator2 -i https://pypi.tuna.tsinghua.edu.cn/simple pip install keyboard -i https://pypi.tuna.tsinghua.edu.cn/simple python -m uiautomator2 init\t# 前提是USB调试打开的情况下已经连接无线调试或者USB连接电脑 git -c http.proxy=&#34;127.0.0.1:10808&#34; clone https://github.com/openatx/weditor pip install -e weditor -i https://pypi.tuna.tsinghua.edu.cn/simple 参考链接 python安装weditor失败\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/python-uiautomator2%E5%AE%9E%E7%8E%B0soul%E5%BE%AA%E7%8E%AF%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81%E6%8C%87%E5%AE%9A%E6%96%87%E6%9C%AC/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='python' /><meta property='article:tag' content='uiautomator2' /><meta property='article:tag' content='soul' /><meta property='article:published_time' content='2025-09-21T23:49:56&#43;08:00'/><meta property='article:modified_time' content='2025-09-21T23:49:56&#43;08:00'/>
 <meta name="twitter:title" content="python+uiautomator2实现soul循环自动发送指定文本">
 <meta name="twitter:description" content=" python+uiautomator2实现soul循环自动发送指定文本 环境要求 支持设备：安卓\n手机要求：支持无线调试\n运行环境：Termux\nTermux环境搭建 1 2 3 pkg install -y libxml2 libxslt pkg install libjpeg-turbo libtiff libwebp openjpeg pip install uiautomator2 Windows搭建环境 自行查找相关教程安装anaconda，版本最新即可，这里不过多赘述。\n1 2 3 4 5 6 7 8 9 10 # 创建一个名为uiautomator2的指定版本的环境，-y选项自动安装环境依赖 conda create -n uiautomator2 python=3.8 -y # 激活环境 conda activate uiautomator2 pip install --pre uiautomator2 -i https://pypi.tuna.tsinghua.edu.cn/simple pip install keyboard -i https://pypi.tuna.tsinghua.edu.cn/simple python -m uiautomator2 init\t# 前提是USB调试打开的情况下已经连接无线调试或者USB连接电脑 git -c http.proxy=&#34;127.0.0.1:10808&#34; clone https://github.com/openatx/weditor pip install -e weditor -i https://pypi.tuna.tsinghua.edu.cn/simple 参考链接 python安装weditor失败\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

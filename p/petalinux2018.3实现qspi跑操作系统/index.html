@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="petalinux2018.3实现QSPI跑操作系统">
 <meta property='og:description' content=" petalinux2018.3实现QSPI跑操作系统 -&gt;Subsystem AUTO Hardware Settings -&gt;Flash Settings 1 2 3 4 5 6 7 8 9 10 11 12 *** partition 0 *** (boot) name (0x300000) size *** partition 1 *** (bootenv) name (0x10000) size *** partition 2 *** (kernel) name (0xD00000) size *** partition 3 *** (bootscr) name (0x10000) size -&gt;Subsystem AUTO Hardware Settings -&gt;Flash Settings -&gt;Advanced bootable images storage Settings 1 2 3 4 5 boot image settings -&gt;image storage media (primary flash) u-boot env paratition settings -&gt;image storage media (primary flash)\tkernel image settings -&gt;image storage media (primary flash) jffs2 rootfs image settings -&gt;image storage media (primary flash)\tdtb image settings -&gt;image storage media (from boot image) Image Packaging Configuration 1 Root filesystem type (INITRAMFS) petalinux-build 1 petalinux-build petalinux-package 1 petalinux-package --boot --format BIN --fsbl --fpga --u-boot --kernel --force copy script 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 pc_path=&#34;/mnt/hgfs/00_zdk/vivado/TES801/finish/version_8/Vivado_SL/TES801CH569_ETH_F0/prj/top.sdk&#34; pc_image_path=&#34;$pc_path/petalinux_images/qspi/prj_1&#34; echo &#34;copy hdf:&#34; echo &#34;cp -rf $pc_path ./&#34; echo &#34;&#34; echo &#34;clone xilinx_axidma:&#34; echo &#34;git clone https://gitcode.com/gh_mirrors/xil/xilinx_axidma.git&#34; echo &#34;&#34; echo &#34;copy driver:&#34; echo &#34;cp -vf ./build/tmp/sysroots-components/plnx_zynq7/xilinx-axidma/lib/modules/4.14.0-xilinx-v2018.3/extra/xilinx-axidma.ko $pc_image_path&#34; echo &#34;&#34; echo &#34;copy image:&#34; echo &#34;cp -vf images/linux/BOOT.BIN $pc_image_path&#34; echo &#34;cp -vf images/linux/zynq_fsbl.elf $pc_image_path&#34; echo &#34;或&#34; echo &#34;cp -vf images/linux/BOOT.BIN images/linux/zynq_fsbl.elf $pc_image_path&#34; echo &#34;&#34; echo &#34;copy rootfs.tar.gz:&#34; echo &#34;cp -vf images/linux/rootfs.tar.gz $pc_image_path&#34; echo &#34;&#34; echo &#34;copy xilinx_axidma examples:&#34; echo &#34;cp -vrf xilinx_axidma/outputs/ $pc_image_path&#34; echo &#34;&#34; echo &#34;&#34; echo &#34;sftp使用技巧:&#34; echo &#34;cat ~/.ssh/known_hosts &gt; ~/.ssh/known_hosts; ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.10&#34; echo &#34;sftp root@192.168.1.10 &lt;&lt; EOF&#34; # echo &#34;cd /run/media/mmcblk0p1&#34; echo &#34;put -r outputs/axidma_transfer&#34; echo &#34;EOF&#34; 参考链接 ZYNQ_LINUX的根文件系统设置为QSPI_FLASH，JFFS2。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/petalinux2018.3%E5%AE%9E%E7%8E%B0qspi%E8%B7%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='petalinux' /><meta property='article:published_time' content='2025-03-26T01:15:42&#43;08:00'/><meta property='article:modified_time' content='2025-03-26T01:15:42&#43;08:00'/>
 <meta name="twitter:title" content="petalinux2018.3实现QSPI跑操作系统">
 <meta name="twitter:description" content=" petalinux2018.3实现QSPI跑操作系统 -&gt;Subsystem AUTO Hardware Settings -&gt;Flash Settings 1 2 3 4 5 6 7 8 9 10 11 12 *** partition 0 *** (boot) name (0x300000) size *** partition 1 *** (bootenv) name (0x10000) size *** partition 2 *** (kernel) name (0xD00000) size *** partition 3 *** (bootscr) name (0x10000) size -&gt;Subsystem AUTO Hardware Settings -&gt;Flash Settings -&gt;Advanced bootable images storage Settings 1 2 3 4 5 boot image settings -&gt;image storage media (primary flash) u-boot env paratition settings -&gt;image storage media (primary flash)\tkernel image settings -&gt;image storage media (primary flash) jffs2 rootfs image settings -&gt;image storage media (primary flash)\tdtb image settings -&gt;image storage media (from boot image) Image Packaging Configuration 1 Root filesystem type (INITRAMFS) petalinux-build 1 petalinux-build petalinux-package 1 petalinux-package --boot --format BIN --fsbl --fpga --u-boot --kernel --force copy script 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 pc_path=&#34;/mnt/hgfs/00_zdk/vivado/TES801/finish/version_8/Vivado_SL/TES801CH569_ETH_F0/prj/top.sdk&#34; pc_image_path=&#34;$pc_path/petalinux_images/qspi/prj_1&#34; echo &#34;copy hdf:&#34; echo &#34;cp -rf $pc_path ./&#34; echo &#34;&#34; echo &#34;clone xilinx_axidma:&#34; echo &#34;git clone https://gitcode.com/gh_mirrors/xil/xilinx_axidma.git&#34; echo &#34;&#34; echo &#34;copy driver:&#34; echo &#34;cp -vf ./build/tmp/sysroots-components/plnx_zynq7/xilinx-axidma/lib/modules/4.14.0-xilinx-v2018.3/extra/xilinx-axidma.ko $pc_image_path&#34; echo &#34;&#34; echo &#34;copy image:&#34; echo &#34;cp -vf images/linux/BOOT.BIN $pc_image_path&#34; echo &#34;cp -vf images/linux/zynq_fsbl.elf $pc_image_path&#34; echo &#34;或&#34; echo &#34;cp -vf images/linux/BOOT.BIN images/linux/zynq_fsbl.elf $pc_image_path&#34; echo &#34;&#34; echo &#34;copy rootfs.tar.gz:&#34; echo &#34;cp -vf images/linux/rootfs.tar.gz $pc_image_path&#34; echo &#34;&#34; echo &#34;copy xilinx_axidma examples:&#34; echo &#34;cp -vrf xilinx_axidma/outputs/ $pc_image_path&#34; echo &#34;&#34; echo &#34;&#34; echo &#34;sftp使用技巧:&#34; echo &#34;cat ~/.ssh/known_hosts &gt; ~/.ssh/known_hosts; ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.10&#34; echo &#34;sftp root@192.168.1.10 &lt;&lt; EOF&#34; # echo &#34;cd /run/media/mmcblk0p1&#34; echo &#34;put -r outputs/axidma_transfer&#34; echo &#34;EOF&#34; 参考链接 ZYNQ_LINUX的根文件系统设置为QSPI_FLASH，JFFS2。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

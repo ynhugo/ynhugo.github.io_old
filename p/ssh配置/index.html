@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="SSH配置">
 <meta property='og:description' content=" ssh基本配置 /etc/ssh/sshd_config\n1 2 3 4 5 Port 22 PermitRootLogin yes PubkeyAuthentication yes AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2 PasswordAuthentication yes SSH文件权限设置 为了正确配置.ssh目录及其内涵的文件权限，可以按照以下步骤操作：\n将.ssh目录的权限设置为700：运行以下命令：chmod 700 ~/.ssh；\n将私钥文件的权限设置为600：运行以下命令：chmod 600 ~/.ssh/id_rsa；\n将公钥文件的权限设置为644：运行以下命令：chmod 644 ~/.ssh/id_rsa.pub。\n这样做的目的是，只允许当前用户读写.ssh目录和私钥文件，而其他用户只能读取公钥文件，从而保证.ssh目录和密钥文件的安全性。\n当然，你可以使用如下命令批量化的处理.ssh权限问题：\n1 chmod 600 ~/.ssh/* &amp;&amp; chmod 644 ~/.ssh/*.pub &amp;&amp; chmod 700 ~/.ssh 参考链接 SSH文件权限设置 | chmod 600 ~/.ssh/* &amp;&amp; chmod 644 ~/.ssh/*.pub &amp;&amp; chmod 700 ~/.ssh\nSSH 连接失败: no matching host key type found. Their offer: ssh-rs 1 2 $ ssh root@192.168.1.10 Unable to negotiate with 192.168.1.10 port 22: no matching host key type found. Their offer: ssh-rsa 这个问题经常出现在ssh 服务端版本和客户端版本不匹配。 要解决问题，需要在命令加上一个选项： -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa 比如:\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/ssh%E9%85%8D%E7%BD%AE/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ssh' /><meta property='article:published_time' content='2025-03-11T20:46:24&#43;08:00'/><meta property='article:modified_time' content='2025-03-11T20:46:24&#43;08:00'/>
 <meta name="twitter:title" content="SSH配置">
 <meta name="twitter:description" content=" ssh基本配置 /etc/ssh/sshd_config\n1 2 3 4 5 Port 22 PermitRootLogin yes PubkeyAuthentication yes AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2 PasswordAuthentication yes SSH文件权限设置 为了正确配置.ssh目录及其内涵的文件权限，可以按照以下步骤操作：\n将.ssh目录的权限设置为700：运行以下命令：chmod 700 ~/.ssh；\n将私钥文件的权限设置为600：运行以下命令：chmod 600 ~/.ssh/id_rsa；\n将公钥文件的权限设置为644：运行以下命令：chmod 644 ~/.ssh/id_rsa.pub。\n这样做的目的是，只允许当前用户读写.ssh目录和私钥文件，而其他用户只能读取公钥文件，从而保证.ssh目录和密钥文件的安全性。\n当然，你可以使用如下命令批量化的处理.ssh权限问题：\n1 chmod 600 ~/.ssh/* &amp;&amp; chmod 644 ~/.ssh/*.pub &amp;&amp; chmod 700 ~/.ssh 参考链接 SSH文件权限设置 | chmod 600 ~/.ssh/* &amp;&amp; chmod 644 ~/.ssh/*.pub &amp;&amp; chmod 700 ~/.ssh\nSSH 连接失败: no matching host key type found. Their offer: ssh-rs 1 2 $ ssh root@192.168.1.10 Unable to negotiate with 192.168.1.10 port 22: no matching host key type found. Their offer: ssh-rsa 这个问题经常出现在ssh 服务端版本和客户端版本不匹配。 要解决问题，需要在命令加上一个选项： -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa 比如:\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

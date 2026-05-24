@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>服务仓库 on Example Site</title>
+        <title>服务仓库 on ynhugo.github.io</title>
         <link>https://ynhugo.github.io/tags/%E6%9C%8D%E5%8A%A1%E4%BB%93%E5%BA%93/</link>
-        <description>Recent content in 服务仓库 on Example Site</description>
+        <description>Recent content in 服务仓库 on ynhugo.github.io</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Example Person</copyright>

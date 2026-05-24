@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Stack on Example Site</title>
+        <title>Stack on ynhugo.github.io</title>
         <link>https://ynhugo.github.io/tags/stack/</link>
-        <description>Recent content in Stack on Example Site</description>
+        <description>Recent content in Stack on ynhugo.github.io</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Example Person</copyright>
@@ -139,6 +139,14 @@
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;110
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;111
 &lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;112
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;113
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;114
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;115
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;116
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;117
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;118
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;119
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;120
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
 &lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 版本应为版本号+extended&lt;/span&gt;
@@ -164,6 +172,14 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;s|\(^baseurl: \).*|\1https://ynhugo.github.io/|g&amp;#34;&lt;/span&gt; hugo.yaml
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 修改语言，将默认语言改为zh-cn&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;s|\(^languageCode: \).*|\1zh-cn|g&amp;#34;&lt;/span&gt; hugo.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 修改title&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;s|\(^title: \).*&lt;/span&gt;$&lt;span class=&#34;s2&#34;&gt;|\1ynhugo.github.io|g&amp;#34;&lt;/span&gt; hugo.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 修改默认语言&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;s|\(^DefaultContentLanguage: \).*&lt;/span&gt;$&lt;span class=&#34;s2&#34;&gt;|\1zh-cn|g&amp;#34;&lt;/span&gt; hugo.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 修改演示站点&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;s|演示站点|ynhugo.github.io|g&amp;#34;&lt;/span&gt; hugo.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 修改演示说明&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;s|演示说明|ynhugo|g&amp;#34;&lt;/span&gt; hugo.yaml
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 将默认页面显示文章数量改为20&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sed -i &lt;span class=&#34;s2&#34;&gt;&amp;#34;s|\([[:space:]]*pagerSize: \).*|\120|g&amp;#34;&lt;/span&gt; hugo.yaml
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;

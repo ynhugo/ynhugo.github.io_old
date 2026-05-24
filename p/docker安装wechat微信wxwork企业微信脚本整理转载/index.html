@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="docker安装wechat微信、wxwork企业微信脚本整理(转载)">
 <meta property='og:description' content=" 假设已安装docker\n还需要安装fcitx，如果安装ibus的话需要将脚本中的输入法替换一下\nwechat微信 1 2 3 4 5 6 7 8 9 10 11 sudo docker run -d --name wechat --rm --device /dev/snd --ipc=&#34;host&#34; \\ -v /tmp/.X11-unix:/tmp/.X11-unix \\ -v /D/CACHE/docker/WeChatFiles:/WeChatFiles \\ -e DISPLAY=unix$DISPLAY \\ -e XMODIFIERS=@im=fcitx \\ -e QT_IM_MODULE=fcitx \\ -e GTK_IM_MODULE=fcitx \\ -e AUDIO_GID=`getent group audio | cut -d: -f3` \\ -e GID=`id -g` \\ -e UID=`id -u` \\ bestwu/wechat wxwork企业微信 linux环境登录的时候提示版本太低，因此登录不上去\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/docker%E5%AE%89%E8%A3%85wechat%E5%BE%AE%E4%BF%A1wxwork%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E8%84%9A%E6%9C%AC%E6%95%B4%E7%90%86%E8%BD%AC%E8%BD%BD/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='docker' /><meta property='article:published_time' content='2024-03-26T00:24:18&#43;08:00'/><meta property='article:modified_time' content='2024-03-26T00:24:18&#43;08:00'/>
 <meta name="twitter:title" content="docker安装wechat微信、wxwork企业微信脚本整理(转载)">
 <meta name="twitter:description" content=" 假设已安装docker\n还需要安装fcitx，如果安装ibus的话需要将脚本中的输入法替换一下\nwechat微信 1 2 3 4 5 6 7 8 9 10 11 sudo docker run -d --name wechat --rm --device /dev/snd --ipc=&#34;host&#34; \\ -v /tmp/.X11-unix:/tmp/.X11-unix \\ -v /D/CACHE/docker/WeChatFiles:/WeChatFiles \\ -e DISPLAY=unix$DISPLAY \\ -e XMODIFIERS=@im=fcitx \\ -e QT_IM_MODULE=fcitx \\ -e GTK_IM_MODULE=fcitx \\ -e AUDIO_GID=`getent group audio | cut -d: -f3` \\ -e GID=`id -g` \\ -e UID=`id -u` \\ bestwu/wechat wxwork企业微信 linux环境登录的时候提示版本太低，因此登录不上去\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="linux下man手册的安装和使用">
 <meta property='og:description' content=" ———————————————— 版权声明：本文为CSDN博主「CHENG Jian」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。 原文链接：https://blog.csdn.net/gatieme/article/details/51656707\nlinux下man手册的安装和使用 linux man手册 章节 名称 描述 1 Standard commands(标准命令) Executable programs or shell commands, 普通的命令 2 System calls(系统调用) System calls (functions provided by the kernel)系统调用,如open,write之类的(通过这个，至少可以很方便的查到调用这个函数，需要加什么头文件) 3 Libraryfunctions(库函数) Library calls (functions within program libraries), 库函数,如printf,fread 4 Specialdevices(设备说明) Special files (usually found in /dev), 特殊文件,也就是/dev下的各种设备文件 5 File formats(文件格式) File formats and conventions eg /etc/passwd, 指文件的格式,比如passwd, 就会说明这个文件中各个字段的含义 6 Games andtoys(游戏和娱乐) 给游戏留的,由各个游戏自己定义 7 Miscellaneous(杂项) Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7),附件还有一些变量,比如向environ这种全局变量在这里就有说明 8 AdministrativeCommands(管理员命令) System administration commands (usually only for root), 系统管理用的命令,这些命令只能由root使用,如ifconfig 9 Kernel routines [Non standard] 如果要阅读指定man手册 1 2 3 man 1 ls # 或 man 2 read ubuntu安装中文手册后配置中文手册调用别名 1 2 3 4 5 6 7 8 echo &#39;alias cman=&#34;man -M /usr/share/man/zh_CN&#34;&#39; &gt;&gt; ~/.bashrc; source ~/.bashrc # 如果已配置中文手册 cman man # 或 cman 2 ls # 或 cman 2 read 安装man手册 Ubuntu安装 Ubuntu默认是没有完全安装man手册的\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/linux%E4%B8%8Bman%E6%89%8B%E5%86%8C%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='man手册' /><meta property='article:published_time' content='2026-03-17T20:34:32&#43;08:00'/><meta property='article:modified_time' content='2026-03-17T20:34:32&#43;08:00'/>
 <meta name="twitter:title" content="linux下man手册的安装和使用">
 <meta name="twitter:description" content=" ———————————————— 版权声明：本文为CSDN博主「CHENG Jian」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。 原文链接：https://blog.csdn.net/gatieme/article/details/51656707\nlinux下man手册的安装和使用 linux man手册 章节 名称 描述 1 Standard commands(标准命令) Executable programs or shell commands, 普通的命令 2 System calls(系统调用) System calls (functions provided by the kernel)系统调用,如open,write之类的(通过这个，至少可以很方便的查到调用这个函数，需要加什么头文件) 3 Libraryfunctions(库函数) Library calls (functions within program libraries), 库函数,如printf,fread 4 Specialdevices(设备说明) Special files (usually found in /dev), 特殊文件,也就是/dev下的各种设备文件 5 File formats(文件格式) File formats and conventions eg /etc/passwd, 指文件的格式,比如passwd, 就会说明这个文件中各个字段的含义 6 Games andtoys(游戏和娱乐) 给游戏留的,由各个游戏自己定义 7 Miscellaneous(杂项) Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7),附件还有一些变量,比如向environ这种全局变量在这里就有说明 8 AdministrativeCommands(管理员命令) System administration commands (usually only for root), 系统管理用的命令,这些命令只能由root使用,如ifconfig 9 Kernel routines [Non standard] 如果要阅读指定man手册 1 2 3 man 1 ls # 或 man 2 read ubuntu安装中文手册后配置中文手册调用别名 1 2 3 4 5 6 7 8 echo &#39;alias cman=&#34;man -M /usr/share/man/zh_CN&#34;&#39; &gt;&gt; ~/.bashrc; source ~/.bashrc # 如果已配置中文手册 cman man # 或 cman 2 ls # 或 cman 2 read 安装man手册 Ubuntu安装 Ubuntu默认是没有完全安装man手册的\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

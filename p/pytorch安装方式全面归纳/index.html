@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="PyTorch安装方式全面归纳">
 <meta property='og:description' content=" PyTorch安装方式全面归纳 一、核心安装命令对比 1. 标准安装命令（最新稳定版） 1 2 3 4 5 # Conda（自动处理CUDA依赖） conda install pytorch torchvision torchaudio pytorch-cuda=13.0 -c pytorch -c nvidia # Pip（需系统已安装CUDA） pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130 2. CUDA版本对应表 CUDA版本 Conda命令 Pip索引URL 13.0 pytorch-cuda=13.0 https://.../whl/cu130 12.1 pytorch-cuda=12.1 https://.../whl/cu121 11.8 pytorch-cuda=11.8 https://.../whl/cu118 CPU cpuonly 不加=–index-url=参数 二、Conda与Pip的本质区别 维度 Conda Pip 管理范围 跨语言包管理器 Python专用包管理器 依赖处理 自动安装二进制依赖（CUDA/cuDNN等） 仅Python包，需手动安装系统依赖 环境隔离 内置完整环境隔离 依赖venv/virtualenv 适用场景 科学计算、深度学习、多语言项目 纯Python项目、生产部署 国内镜像 清华源、中科大源等 清华源、阿里源等 三、国内镜像源使用策略 1. 已配置清华源的情况 1 2 3 4 5 # 优先尝试（不指定通道，让conda自动选择） conda install pytorch torchvision torchaudio pytorch-cuda=13.0 # 如果清华源没有，强制使用官方源 conda install ... -c pytorch -c nvidia --override-channels 2. 清华源配置命令 1 2 3 4 5 6 # 配置conda清华源 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/ # 配置pip清华源 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple 四、安装流程决策树 开始安装PyTorch ↓ 是否有GPU？ → 否 → 安装CPU版本 ↓是 CUDA版本？ → 检查 nvidia-smi ↓ 选择安装方式： ├─ Conda（推荐新手、Windows用户） │ ├─ 已配清华源 → conda install pytorch... │ └─ 未配/无包 → conda install ... -c pytorch -c nvidia │ └─ Pip（推荐生产、Docker环境） ├─ 系统已装CUDA → pip install torch... --index-url cuXXX └─ 需装CUDA → 先安装CUDA Toolkit，再pip安装 五、验证安装的正确方式 1 2 3 4 5 6 7 8 9 10 import torch print(f&#34;PyTorch版本: {torch.__version__}&#34;) print(f&#34;CUDA可用: {torch.cuda.is_available()}&#34;) if torch.cuda.is_available(): print(f&#34;CUDA版本: {torch.version.cuda}&#34;) print(f&#34;GPU名称: {torch.cuda.get_device_name(0)}&#34;) # 简单测试 x = torch.randn(3, 3).cuda() print(f&#34;GPU计算测试通过: {x.sum()}&#34;) 六、各场景推荐方案 1. 学术研究/实验环境 1 2 3 4 # 使用Conda创建独立环境 conda create -n research python=3.10 conda activate research conda install pytorch torchvision torchaudio pytorch-cuda=13.0 2. 生产服务器部署 1 2 3 # 使用Docker + Pip FROM nvidia/cuda:13.0-base RUN pip install torch torchvision torchaudio --index-url https://.../cu130 3. 团队协作项目 1 2 3 4 5 6 7 8 9 10 11 12 13 # 使用environment.yml（Conda） # environment.yml内容： name: project_env channels: - pytorch - nvidia - defaults dependencies: - python=3.10 - pytorch=2.0.0 - torchvision - torchaudio - pytorch-cuda=13.0 4. 离线/内网环境 1 2 3 4 5 6 7 8 9 # 在有网环境下载包 conda pack -n pytorch_env -o pytorch_env.tar.gz # 或 pip download torch torchvision torchaudio --index-url ... # 离线环境安装 conda create -n pytorch_env --offline --file pkgs.txt # 或 pip install --no-index --find-links=./packages torch 七、常见问题速查 问题 可能原因 解决方案 CUDA不可用 1. 驱动版本低2. CUDA版本不匹配3. 安装了CPU版本 更新驱动、检查CUDA版本、重装GPU版本 安装太慢 网络问题 使用国内镜像源、设置超时参数 包冲突 环境中有冲突包 创建新环境、使用conda clean 内存不足 包太大或内存小 使用pip安装、清理缓存 八、最佳实践总结 *环境隔离优先*：始终在虚拟环境中安装 *版本明确*：生产环境固定版本号 *镜像加速*：国内用户优先配置清华源 *验证安装*：安装后务必运行验证脚本 *文档记录*：记录安装命令和环境配置 九、一句话选择指南 新手/Windows/快速开始 → Conda安装（自动处理依赖） 生产/服务器/Docker → Pip安装（轻量可控） 国内网络 → 配置清华源加速 团队协作 → 使用environment.yml固化环境 特定版本 → 明确指定版本号和CUDA版本 记住：*没有绝对最好的方式，只有最适合当前场景的方式*。根据具体需求选择，并保持团队内的一致性。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/pytorch%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F%E5%85%A8%E9%9D%A2%E5%BD%92%E7%BA%B3/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='conda' /><meta property='article:tag' content='python' /><meta property='article:tag' content='gpu' /><meta property='article:published_time' content='2025-12-24T17:20:58&#43;08:00'/><meta property='article:modified_time' content='2025-12-24T17:20:58&#43;08:00'/>
 <meta name="twitter:title" content="PyTorch安装方式全面归纳">
 <meta name="twitter:description" content=" PyTorch安装方式全面归纳 一、核心安装命令对比 1. 标准安装命令（最新稳定版） 1 2 3 4 5 # Conda（自动处理CUDA依赖） conda install pytorch torchvision torchaudio pytorch-cuda=13.0 -c pytorch -c nvidia # Pip（需系统已安装CUDA） pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu130 2. CUDA版本对应表 CUDA版本 Conda命令 Pip索引URL 13.0 pytorch-cuda=13.0 https://.../whl/cu130 12.1 pytorch-cuda=12.1 https://.../whl/cu121 11.8 pytorch-cuda=11.8 https://.../whl/cu118 CPU cpuonly 不加=–index-url=参数 二、Conda与Pip的本质区别 维度 Conda Pip 管理范围 跨语言包管理器 Python专用包管理器 依赖处理 自动安装二进制依赖（CUDA/cuDNN等） 仅Python包，需手动安装系统依赖 环境隔离 内置完整环境隔离 依赖venv/virtualenv 适用场景 科学计算、深度学习、多语言项目 纯Python项目、生产部署 国内镜像 清华源、中科大源等 清华源、阿里源等 三、国内镜像源使用策略 1. 已配置清华源的情况 1 2 3 4 5 # 优先尝试（不指定通道，让conda自动选择） conda install pytorch torchvision torchaudio pytorch-cuda=13.0 # 如果清华源没有，强制使用官方源 conda install ... -c pytorch -c nvidia --override-channels 2. 清华源配置命令 1 2 3 4 5 6 # 配置conda清华源 conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/ # 配置pip清华源 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple 四、安装流程决策树 开始安装PyTorch ↓ 是否有GPU？ → 否 → 安装CPU版本 ↓是 CUDA版本？ → 检查 nvidia-smi ↓ 选择安装方式： ├─ Conda（推荐新手、Windows用户） │ ├─ 已配清华源 → conda install pytorch... │ └─ 未配/无包 → conda install ... -c pytorch -c nvidia │ └─ Pip（推荐生产、Docker环境） ├─ 系统已装CUDA → pip install torch... --index-url cuXXX └─ 需装CUDA → 先安装CUDA Toolkit，再pip安装 五、验证安装的正确方式 1 2 3 4 5 6 7 8 9 10 import torch print(f&#34;PyTorch版本: {torch.__version__}&#34;) print(f&#34;CUDA可用: {torch.cuda.is_available()}&#34;) if torch.cuda.is_available(): print(f&#34;CUDA版本: {torch.version.cuda}&#34;) print(f&#34;GPU名称: {torch.cuda.get_device_name(0)}&#34;) # 简单测试 x = torch.randn(3, 3).cuda() print(f&#34;GPU计算测试通过: {x.sum()}&#34;) 六、各场景推荐方案 1. 学术研究/实验环境 1 2 3 4 # 使用Conda创建独立环境 conda create -n research python=3.10 conda activate research conda install pytorch torchvision torchaudio pytorch-cuda=13.0 2. 生产服务器部署 1 2 3 # 使用Docker + Pip FROM nvidia/cuda:13.0-base RUN pip install torch torchvision torchaudio --index-url https://.../cu130 3. 团队协作项目 1 2 3 4 5 6 7 8 9 10 11 12 13 # 使用environment.yml（Conda） # environment.yml内容： name: project_env channels: - pytorch - nvidia - defaults dependencies: - python=3.10 - pytorch=2.0.0 - torchvision - torchaudio - pytorch-cuda=13.0 4. 离线/内网环境 1 2 3 4 5 6 7 8 9 # 在有网环境下载包 conda pack -n pytorch_env -o pytorch_env.tar.gz # 或 pip download torch torchvision torchaudio --index-url ... # 离线环境安装 conda create -n pytorch_env --offline --file pkgs.txt # 或 pip install --no-index --find-links=./packages torch 七、常见问题速查 问题 可能原因 解决方案 CUDA不可用 1. 驱动版本低2. CUDA版本不匹配3. 安装了CPU版本 更新驱动、检查CUDA版本、重装GPU版本 安装太慢 网络问题 使用国内镜像源、设置超时参数 包冲突 环境中有冲突包 创建新环境、使用conda clean 内存不足 包太大或内存小 使用pip安装、清理缓存 八、最佳实践总结 *环境隔离优先*：始终在虚拟环境中安装 *版本明确*：生产环境固定版本号 *镜像加速*：国内用户优先配置清华源 *验证安装*：安装后务必运行验证脚本 *文档记录*：记录安装命令和环境配置 九、一句话选择指南 新手/Windows/快速开始 → Conda安装（自动处理依赖） 生产/服务器/Docker → Pip安装（轻量可控） 国内网络 → 配置清华源加速 团队协作 → 使用environment.yml固化环境 特定版本 → 明确指定版本号和CUDA版本 记住：*没有绝对最好的方式，只有最适合当前场景的方式*。根据具体需求选择，并保持团队内的一致性。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

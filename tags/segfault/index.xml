@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Segfault on Example Site</title>
+        <title>Segfault on ynhugo.github.io</title>
         <link>https://ynhugo.github.io/tags/segfault/</link>
-        <description>Recent content in Segfault on Example Site</description>
+        <description>Recent content in Segfault on ynhugo.github.io</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Example Person</copyright><atom:link href="https://ynhugo.github.io/tags/segfault/index.xml" rel="self" type="application/rss+xml" /><item>

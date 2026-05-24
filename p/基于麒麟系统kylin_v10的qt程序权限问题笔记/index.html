@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="基于麒麟系统kylin_v10的Qt程序权限问题笔记">
 <meta property='og:description' content=" 基于麒麟系统kylin_v10的Qt程序权限问题笔记 问题描述 环境：\n设备：麒麟 ARM64 (Phytium D2000/8 E8C) 程序：Qt5 + Qt Charts，调用 SGDMA 和 Ascend 310P 编译：本机编译，RUNPATH 已配置 现象：\n普通用户运行 ./pcie_sgdma → ACL 库正常，但 SGDMA 设备无权限 sudo 运行 → SGDMA 设备可访问，但环境变量被清除，Ascend 库找不到 Debug 模式下 Qt Charts 波形绘制异常（已通过注释 OpenGL 代码解决） 设备信息\n设备 路径 当前权限 SGDMA C2H 通道 /dev/ydma0_c2h_0~7 crw——- root:root 600 SGDMA H2C 通道 /dev/ydma0_h2c_0~7 crw——- root:root 600 SGDMA User 设备 /dev/ydma0_user crw——- root:root 600 解决方案：udev 规则\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E5%9F%BA%E4%BA%8E%E9%BA%92%E9%BA%9F%E7%B3%BB%E7%BB%9Fkylin_v10%E7%9A%84qt%E7%A8%8B%E5%BA%8F%E6%9D%83%E9%99%90%E9%97%AE%E9%A2%98%E7%AC%94%E8%AE%B0/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='kylin' /><meta property='article:tag' content='310P' /><meta property='article:tag' content='PCIE' /><meta property='article:published_time' content='2026-05-19T09:59:09&#43;08:00'/><meta property='article:modified_time' content='2026-05-19T09:59:09&#43;08:00'/>
 <meta name="twitter:title" content="基于麒麟系统kylin_v10的Qt程序权限问题笔记">
 <meta name="twitter:description" content=" 基于麒麟系统kylin_v10的Qt程序权限问题笔记 问题描述 环境：\n设备：麒麟 ARM64 (Phytium D2000/8 E8C) 程序：Qt5 + Qt Charts，调用 SGDMA 和 Ascend 310P 编译：本机编译，RUNPATH 已配置 现象：\n普通用户运行 ./pcie_sgdma → ACL 库正常，但 SGDMA 设备无权限 sudo 运行 → SGDMA 设备可访问，但环境变量被清除，Ascend 库找不到 Debug 模式下 Qt Charts 波形绘制异常（已通过注释 OpenGL 代码解决） 设备信息\n设备 路径 当前权限 SGDMA C2H 通道 /dev/ydma0_c2h_0~7 crw——- root:root 600 SGDMA H2C 通道 /dev/ydma0_h2c_0~7 crw——- root:root 600 SGDMA User 设备 /dev/ydma0_user crw——- root:root 600 解决方案：udev 规则\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

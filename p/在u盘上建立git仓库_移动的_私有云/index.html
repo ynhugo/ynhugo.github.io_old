@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="在U盘上建立git仓库_移动的_私有云">
 <meta property='og:description' content=" 在U盘上建立git仓库，移动的“私有云” 一、前言 Git作为版本管理工具，其功能之强大，已无需赘述。一般情况下，我们接触到的git都指远程操作，与远程git服务器协作，完成版本迭代管理。如果没有服务器，是否也能使用git呢？当然可以，这期文章，让我们一起来把git和我们的代码搬到U盘上，建立一个真正属于自己而又移动的“私有云”。\n二、环境搭建 1、安装好的git环境，参见Git官网。\n2、U盘一个，大小容量没有严格要求。\n三、命令行操作 1、在U盘上创建空仓库test.git(我的U盘盘符在PC端是I盘)。\n1 2 3 4 cd /I mkdir test cd test git init --bare 得到如下显示即表明git仓库创建成功\\\\\n1 Initialized empty Git repository in I:/test/ 2、现有git工程与U盘仓库关联(在git工程根目录下执行)\n1 git remote add usb /i/test 3、版本管理，仓库有了，剩下就是推送和拉取文件了\n1 2 git push usb master git pull usb master 4、在服务器切换到 master 分支，然后就可以看到仓库 push 过来的文件\n1 git checkout master 参考链接 在U盘上建立git仓库，移动的“私有云”\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E5%9C%A8u%E7%9B%98%E4%B8%8A%E5%BB%BA%E7%AB%8Bgit%E4%BB%93%E5%BA%93_%E7%A7%BB%E5%8A%A8%E7%9A%84_%E7%A7%81%E6%9C%89%E4%BA%91/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-11-08T07:32:55&#43;08:00'/><meta property='article:modified_time' content='2023-11-08T07:32:55&#43;08:00'/>
 <meta name="twitter:title" content="在U盘上建立git仓库_移动的_私有云">
 <meta name="twitter:description" content=" 在U盘上建立git仓库，移动的“私有云” 一、前言 Git作为版本管理工具，其功能之强大，已无需赘述。一般情况下，我们接触到的git都指远程操作，与远程git服务器协作，完成版本迭代管理。如果没有服务器，是否也能使用git呢？当然可以，这期文章，让我们一起来把git和我们的代码搬到U盘上，建立一个真正属于自己而又移动的“私有云”。\n二、环境搭建 1、安装好的git环境，参见Git官网。\n2、U盘一个，大小容量没有严格要求。\n三、命令行操作 1、在U盘上创建空仓库test.git(我的U盘盘符在PC端是I盘)。\n1 2 3 4 cd /I mkdir test cd test git init --bare 得到如下显示即表明git仓库创建成功\\\\\n1 Initialized empty Git repository in I:/test/ 2、现有git工程与U盘仓库关联(在git工程根目录下执行)\n1 git remote add usb /i/test 3、版本管理，仓库有了，剩下就是推送和拉取文件了\n1 2 git push usb master git pull usb master 4、在服务器切换到 master 分支，然后就可以看到仓库 push 过来的文件\n1 git checkout master 参考链接 在U盘上建立git仓库，移动的“私有云”\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

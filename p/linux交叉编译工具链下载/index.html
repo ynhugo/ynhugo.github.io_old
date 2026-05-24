@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="linux交叉编译工具链下载">
 <meta property='og:description' content=" 开篇赘述 ARM 架构主要有两种不同的位数变体：ARM32 和 ARM64。\nARM32：也称为 ARMv7 架构，通常用于较旧的嵌入式系统和移动设备。ARM32 架构有 32 位寻址空间和指令集，适用于需要较低功耗和资源占用的场景。 ARM64：也称为 ARMv8 架构，是较新的 ARM 架构版本，提供了更高性能、更大内存寻址范围和更多的寄存器。ARM64 架构支持 64 位寻址空间和指令集，适用于需要更高性能和更大内存支持的系统，比如现代的智能手机、平板电脑和服务器等设备。 因此，当选择交叉编译工具链时，需要确保选用的工具链与目标设备的架构兼容，以确保生成的可执行文件能够在目标设备上正确运行。对于 ARM32 和 ARM64 架构，你会发现相应的工具链，比如 `gcc-arm-linux-gnueabi` 用于 ARM32 架构，而 `gcc-aarch64-linux-gnu` 则用于 ARM64 架构。\n方法一 官网页面：https://www.linaro.org/downloads/\n以下访问官网子页面\nARM-Linux交叉编译工具链下载 下载页面：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/\n下载链接：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/gcc-linaro-14.0.0-2023.06-x86_64_arm-linux-gnueabihf.tar.xz\naarch64-Linux交叉编译工具链下载 下载页面：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/\n下载链接：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/gcc-linaro-14.0.0-2023.06-x86_64_aarch64-linux-gnu.tar.xz\n方法二 如果要使用aarch64-linux-gnu-gcc 交叉编译器编译程序，且没有ARM 交叉编译环境，则使用如下命令安装：\n1 2 sudo apt-get install gcc-9-aarch64-linux-gnu sudo apt-get install gcc-aarch64-linux-gnu 查看aarch64-linux-gnu-gcc版本号\n1 aarch64-linux-gnu-gcc -v 不同的系统架构对应不同版本的gcc for arm编译工具 multiarch name syscall ABI instruction set endian\u00adness word size description spec documents aarch64-linux-gnu linux ARMv8 little 64 aarch64 Linux Platform AAPCS64 (ARM IHI 005A)1\\\\ ELF for the ARM 64-bit Architecture2 aarch64_be-linux-gnu linux ARMv8 big 64 aarch64 Linux Platform AAPCS64 (ARM IHI 005A)1\\\\ ELF for the ARM 64-bit Architecture2 aarch64-linux-gnu_ilp32 linux ARMv8 little 32 aarch64 Linux Platform aarch64_be-linux-gnu_ilp32 linux ARMv8 big 32 aarch64 Linux Platform arm-linux-gnu linux ARMv7 little 32 Old ARM ABI APCS (ARM DUI 0041 chapter 9)4 arm-linux-gnueabi linux ARMv7 little 32 ARM EABI, soft-float AAPCS (ARM IHI 0042D)5\\\\ ARM GNU/Linux ABI Supplement6 arm-linux-gnueabihf linux ARMv7 little 32 ARM EABI, hard-float AAPCS (ARM IHI 0042D)5\u00a0and\\\\ XXXXX (TBD) armeb-linux-gnueabi linux ARMv7 big 32 ARM EABI, soft-float AAPCS (ARM IHI 0042D)5\\\\ ARM GNU/Linux ABI Supplement6 armeb-linux-gnueabihf linux ARMv7 big 32 ARM EABI, hard-float AAPCS (ARM IHI 0042D)5\u00a0and\\\\ XXXXX (TBD) armv8l-linux-gnueabihf linux ARMv8 little 32 ARMv8 EABI, hard-float arm-eabi Bare-Metal ARMv7 little 32 ARM EABI, soft-float armeb-eabi Bare-Metal ARMv7 big 32 ARM EABI, soft-float aarch64-elf Bare-Metal ARMv8 little 64 ARMv8 EABI, hard-float aarch64_be-elf Bare-Metal ARMv8 big 64 ARMv8 EABI, hard-float 参考链接 ARM-Linux 交叉编译工具链安装\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/linux%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E9%93%BE%E4%B8%8B%E8%BD%BD/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='程序员' /><meta property='article:published_time' content='2023-12-19T00:27:56&#43;08:00'/><meta property='article:modified_time' content='2023-12-19T00:27:56&#43;08:00'/>
 <meta name="twitter:title" content="linux交叉编译工具链下载">
 <meta name="twitter:description" content=" 开篇赘述 ARM 架构主要有两种不同的位数变体：ARM32 和 ARM64。\nARM32：也称为 ARMv7 架构，通常用于较旧的嵌入式系统和移动设备。ARM32 架构有 32 位寻址空间和指令集，适用于需要较低功耗和资源占用的场景。 ARM64：也称为 ARMv8 架构，是较新的 ARM 架构版本，提供了更高性能、更大内存寻址范围和更多的寄存器。ARM64 架构支持 64 位寻址空间和指令集，适用于需要更高性能和更大内存支持的系统，比如现代的智能手机、平板电脑和服务器等设备。 因此，当选择交叉编译工具链时，需要确保选用的工具链与目标设备的架构兼容，以确保生成的可执行文件能够在目标设备上正确运行。对于 ARM32 和 ARM64 架构，你会发现相应的工具链，比如 `gcc-arm-linux-gnueabi` 用于 ARM32 架构，而 `gcc-aarch64-linux-gnu` 则用于 ARM64 架构。\n方法一 官网页面：https://www.linaro.org/downloads/\n以下访问官网子页面\nARM-Linux交叉编译工具链下载 下载页面：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/\n下载链接：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/arm-linux-gnueabihf/gcc-linaro-14.0.0-2023.06-x86_64_arm-linux-gnueabihf.tar.xz\naarch64-Linux交叉编译工具链下载 下载页面：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/\n下载链接：https://snapshots.linaro.org/gnu-toolchain/14.0-2023.06-1/aarch64-linux-gnu/gcc-linaro-14.0.0-2023.06-x86_64_aarch64-linux-gnu.tar.xz\n方法二 如果要使用aarch64-linux-gnu-gcc 交叉编译器编译程序，且没有ARM 交叉编译环境，则使用如下命令安装：\n1 2 sudo apt-get install gcc-9-aarch64-linux-gnu sudo apt-get install gcc-aarch64-linux-gnu 查看aarch64-linux-gnu-gcc版本号\n1 aarch64-linux-gnu-gcc -v 不同的系统架构对应不同版本的gcc for arm编译工具 multiarch name syscall ABI instruction set endian\u00adness word size description spec documents aarch64-linux-gnu linux ARMv8 little 64 aarch64 Linux Platform AAPCS64 (ARM IHI 005A)1\\\\ ELF for the ARM 64-bit Architecture2 aarch64_be-linux-gnu linux ARMv8 big 64 aarch64 Linux Platform AAPCS64 (ARM IHI 005A)1\\\\ ELF for the ARM 64-bit Architecture2 aarch64-linux-gnu_ilp32 linux ARMv8 little 32 aarch64 Linux Platform aarch64_be-linux-gnu_ilp32 linux ARMv8 big 32 aarch64 Linux Platform arm-linux-gnu linux ARMv7 little 32 Old ARM ABI APCS (ARM DUI 0041 chapter 9)4 arm-linux-gnueabi linux ARMv7 little 32 ARM EABI, soft-float AAPCS (ARM IHI 0042D)5\\\\ ARM GNU/Linux ABI Supplement6 arm-linux-gnueabihf linux ARMv7 little 32 ARM EABI, hard-float AAPCS (ARM IHI 0042D)5\u00a0and\\\\ XXXXX (TBD) armeb-linux-gnueabi linux ARMv7 big 32 ARM EABI, soft-float AAPCS (ARM IHI 0042D)5\\\\ ARM GNU/Linux ABI Supplement6 armeb-linux-gnueabihf linux ARMv7 big 32 ARM EABI, hard-float AAPCS (ARM IHI 0042D)5\u00a0and\\\\ XXXXX (TBD) armv8l-linux-gnueabihf linux ARMv8 little 32 ARMv8 EABI, hard-float arm-eabi Bare-Metal ARMv7 little 32 ARM EABI, soft-float armeb-eabi Bare-Metal ARMv7 big 32 ARM EABI, soft-float aarch64-elf Bare-Metal ARMv8 little 64 ARMv8 EABI, hard-float aarch64_be-elf Bare-Metal ARMv8 big 64 ARMv8 EABI, hard-float 参考链接 ARM-Linux 交叉编译工具链安装\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

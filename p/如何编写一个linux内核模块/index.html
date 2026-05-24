@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="如何编写一个Linux内核模块">
 <meta property='og:description' content=" 参考链接 https://zhuanlan.zhihu.com/p/420194002\n如何编写一个Linux内核模块 前言 Linux 系统为应用程序提供了功能强大且容易扩展的 API，但在某些情况下，这还远远不够。与硬件交互或进行需要访问系统中特权信息的操作时，就需要一个内核模块。\nLinux 内核模块是一段编译后的二进制代码，直接插入 Linux 内核中，在 Ring 0 （x86–64处理器中执行最低和受保护程度最低的执行环）上运行。这里的代码完全不受检查，但是运行速度很快，可以访问系统中的所有内容。\nIntel X86架构使用了4个级别来标明不同的特权级。 Ring 0 实际就是内核态，拥有最高权限。而一般应用程序处于 Ring 3状态–用户态。在Linux中，还存在 Ring 1 和 Ring 2 两个级别，一般归属驱动程序的级别。在Windows平台没有 Ring 1 和 Ring 2 两个级别，只用 Ring 0 内核态和 Ring 3 用户态。在权限约束上，高特权等级状态可以阅读低特权等级状态的数据，例如进程上下文、代码、数据等等，但反之则不可。 Ring 0 最高可以读取 Ring 0-3 所有的内容， Ring 1 可以读 Ring 1-3 的， Ring 2 以此类推， Ring 3 只能读自己的数据。\n为什么要开发内核模块 编写 Linux 内核模块并不是因为内核太庞大而不敢修改。直接修改内核源码会导致很多问题，例如：通过更改内核，你将面临数据丢失和系统损坏的风险。内核代码没有常规 Linux 应用程序所拥有的安全防护机制，如果内核发生故障，将锁死整个系统。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AAlinux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='程序员' /><meta property='article:published_time' content='2024-03-26T00:24:36&#43;08:00'/><meta property='article:modified_time' content='2024-03-26T00:24:36&#43;08:00'/>
 <meta name="twitter:title" content="如何编写一个Linux内核模块">
 <meta name="twitter:description" content=" 参考链接 https://zhuanlan.zhihu.com/p/420194002\n如何编写一个Linux内核模块 前言 Linux 系统为应用程序提供了功能强大且容易扩展的 API，但在某些情况下，这还远远不够。与硬件交互或进行需要访问系统中特权信息的操作时，就需要一个内核模块。\nLinux 内核模块是一段编译后的二进制代码，直接插入 Linux 内核中，在 Ring 0 （x86–64处理器中执行最低和受保护程度最低的执行环）上运行。这里的代码完全不受检查，但是运行速度很快，可以访问系统中的所有内容。\nIntel X86架构使用了4个级别来标明不同的特权级。 Ring 0 实际就是内核态，拥有最高权限。而一般应用程序处于 Ring 3状态–用户态。在Linux中，还存在 Ring 1 和 Ring 2 两个级别，一般归属驱动程序的级别。在Windows平台没有 Ring 1 和 Ring 2 两个级别，只用 Ring 0 内核态和 Ring 3 用户态。在权限约束上，高特权等级状态可以阅读低特权等级状态的数据，例如进程上下文、代码、数据等等，但反之则不可。 Ring 0 最高可以读取 Ring 0-3 所有的内容， Ring 1 可以读 Ring 1-3 的， Ring 2 以此类推， Ring 3 只能读自己的数据。\n为什么要开发内核模块 编写 Linux 内核模块并不是因为内核太庞大而不敢修改。直接修改内核源码会导致很多问题，例如：通过更改内核，你将面临数据丢失和系统损坏的风险。内核代码没有常规 Linux 应用程序所拥有的安全防护机制，如果内核发生故障，将锁死整个系统。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

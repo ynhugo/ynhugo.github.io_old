@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="wsl教程">
 <meta property='og:description' content=" wsl2子系统的备份和还原 在cygwin下操作：\n1 2 3 4 5 6 7 8 9 10 11 # 先看下自己安装的 WSL 名字是什么，下面是我的名字是 Ubuntu-22.04，你要做替换 wsl -l # 进入 D 盘，然后新建 wslubuntu 文件夹，你可以叫其他名字，用来承载新迁移的目录 cd /cygdrive/d/ mkdir wslubuntu cd wslubuntu # 接着开始迁移 wsl --export Ubuntu-24.04 ./Ubuntu-24.04.tar wsl --unregister Ubuntu-24.04 wsl --import Ubuntu-24.04 ./ Ubuntu-24.04.tar # 再次使用 wsl -l 命令查看，然后启动 Ubuntu-22.04 看下是否迁移正常。 在同一路径下导出再导入后，会发现多了一个.vhdx文件\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/wsl%E6%95%99%E7%A8%8B/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='wsl' /><meta property='article:tag' content='windows' /><meta property='article:tag' content='linux' /><meta property='article:published_time' content='2025-06-21T02:09:19&#43;08:00'/><meta property='article:modified_time' content='2025-06-21T02:09:19&#43;08:00'/>
 <meta name="twitter:title" content="wsl教程">
 <meta name="twitter:description" content=" wsl2子系统的备份和还原 在cygwin下操作：\n1 2 3 4 5 6 7 8 9 10 11 # 先看下自己安装的 WSL 名字是什么，下面是我的名字是 Ubuntu-22.04，你要做替换 wsl -l # 进入 D 盘，然后新建 wslubuntu 文件夹，你可以叫其他名字，用来承载新迁移的目录 cd /cygdrive/d/ mkdir wslubuntu cd wslubuntu # 接着开始迁移 wsl --export Ubuntu-24.04 ./Ubuntu-24.04.tar wsl --unregister Ubuntu-24.04 wsl --import Ubuntu-24.04 ./ Ubuntu-24.04.tar # 再次使用 wsl -l 命令查看，然后启动 Ubuntu-22.04 看下是否迁移正常。 在同一路径下导出再导入后，会发现多了一个.vhdx文件\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="从零开始将Emacs绿色便携化_打包即用">
 <meta property='og:description' content=" windos 在emacs官网下载&#34;emacs-28.2-no-deps.zip&#34;，&#34;no-deps&#34;表示没有依赖，下载之后解压该并重命名为&#34;emacs&#34;，然后在&#34;emacs/share/emacs/site-lisp/&#34;下创建&#34;site-start.el&#34;文件并添加以下代码\n1 2 3 4 5 6 7 (defvar program-dir (replace-regexp-in-string &#34;share/emacs.*/etc/$&#34; &#34;home/&#34; data-directory :from-end)) (setenv &#34;HOME&#34; program-dir) (load &#34;~/.emacs.d/init.el&#34;) 如果打开u盘中的emacs提示找不到libgmp-10.dll，可以将安装到电脑上的emacs安装目录的bin目录下的libgmp-10.dll拷贝到u盘emacs存放目录的bin路径下与emacs可执行文件保持同一路径即可\n也可以下载博客中提供的libgmp-10.dll：libgmp-10.dll\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%B0%86emacs%E7%BB%BF%E8%89%B2%E4%BE%BF%E6%90%BA%E5%8C%96_%E6%89%93%E5%8C%85%E5%8D%B3%E7%94%A8/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='emacs' /><meta property='article:published_time' content='2024-03-26T00:55:07&#43;08:00'/><meta property='article:modified_time' content='2024-03-26T00:55:07&#43;08:00'/>
 <meta name="twitter:title" content="从零开始将Emacs绿色便携化_打包即用">
 <meta name="twitter:description" content=" windos 在emacs官网下载&#34;emacs-28.2-no-deps.zip&#34;，&#34;no-deps&#34;表示没有依赖，下载之后解压该并重命名为&#34;emacs&#34;，然后在&#34;emacs/share/emacs/site-lisp/&#34;下创建&#34;site-start.el&#34;文件并添加以下代码\n1 2 3 4 5 6 7 (defvar program-dir (replace-regexp-in-string &#34;share/emacs.*/etc/$&#34; &#34;home/&#34; data-directory :from-end)) (setenv &#34;HOME&#34; program-dir) (load &#34;~/.emacs.d/init.el&#34;) 如果打开u盘中的emacs提示找不到libgmp-10.dll，可以将安装到电脑上的emacs安装目录的bin目录下的libgmp-10.dll拷贝到u盘emacs存放目录的bin路径下与emacs可执行文件保持同一路径即可\n也可以下载博客中提供的libgmp-10.dll：libgmp-10.dll\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

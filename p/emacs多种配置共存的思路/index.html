@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="emacs多种配置共存的思路">
 <meta property='og:description' content=" emacs多种配置共存的思路 将配置放在early-init.el文件中，可以不需要init.el文件，将其他用户或其他独立的配置的init.el文件改成对应用户或独立的的配置后在early-init.el中加载即可\n如果你希望增加通用性，可以让配置更加灵活，以便将来可以轻松切换或添加其他配置文件。以下是一个示例代码： 1 2 3 4 5 6 7 8 9 10 11 12 13 (defun load-emacs-config (config-name) &#34;Load a specific Emacs configuration based on CONFIG-NAME.&#34; (let ((config-path (expand-file-name (concat config-name &#34;.el&#34;) &#34;~/.emacs.d/&#34;))) (if (file-exists-p config-path) (load config-path) (message &#34;Config file not found: %s&#34; config-path)))) ;; 加载 remacs 配置 (load-emacs-config &#34;remacs&#34;) ;; 以后可以通过更改参数来加载不同的配置 ;; (load-emacs-config &#34;spacemacs&#34;) ;; (load-emacs-config &#34;prelude&#34;) 这样，你可以通过调用 `load-emacs-config` 函数并传入配置文件名来加载不同的配置。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/emacs%E5%A4%9A%E7%A7%8D%E9%85%8D%E7%BD%AE%E5%85%B1%E5%AD%98%E7%9A%84%E6%80%9D%E8%B7%AF/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='emacs' /><meta property='article:published_time' content='2024-09-18T11:26:55&#43;08:00'/><meta property='article:modified_time' content='2024-09-18T11:26:55&#43;08:00'/>
 <meta name="twitter:title" content="emacs多种配置共存的思路">
 <meta name="twitter:description" content=" emacs多种配置共存的思路 将配置放在early-init.el文件中，可以不需要init.el文件，将其他用户或其他独立的配置的init.el文件改成对应用户或独立的的配置后在early-init.el中加载即可\n如果你希望增加通用性，可以让配置更加灵活，以便将来可以轻松切换或添加其他配置文件。以下是一个示例代码： 1 2 3 4 5 6 7 8 9 10 11 12 13 (defun load-emacs-config (config-name) &#34;Load a specific Emacs configuration based on CONFIG-NAME.&#34; (let ((config-path (expand-file-name (concat config-name &#34;.el&#34;) &#34;~/.emacs.d/&#34;))) (if (file-exists-p config-path) (load config-path) (message &#34;Config file not found: %s&#34; config-path)))) ;; 加载 remacs 配置 (load-emacs-config &#34;remacs&#34;) ;; 以后可以通过更改参数来加载不同的配置 ;; (load-emacs-config &#34;spacemacs&#34;) ;; (load-emacs-config &#34;prelude&#34;) 这样，你可以通过调用 `load-emacs-config` 函数并传入配置文件名来加载不同的配置。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

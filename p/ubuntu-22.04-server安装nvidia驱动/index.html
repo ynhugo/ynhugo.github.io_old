@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="ubuntu 22.04 server安装Nvidia驱动">
 <meta property='og:description' content=" ubuntu 22.04 server安装Nvidia驱动 1 2 3 4 5 sudo apt install -y apt-rdepends # sudo apt install -y net-tools # sudo apt install -y openssh-server sudo apt download $(apt-rdepends apt-rdepends | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39; | grep -v &#34;perlapi-&#34;) sudo apt download $(apt-rdepends net-tools | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) 准备工作 1 2 为了避免踩坑，建议按照流程完成准备工作！ 这些准备工作并不会影响你的计算机，不做的话可能会导致装驱动后黑屏！ 关闭安全模式 1 重启计算机，在开机前狂按’ESC’进入bios设置，找到安全设置，并关闭它。 注：不同品牌电脑进入bios方式和安全设置的位置都不相同\n切换独显模式（笔记本电脑单显卡注意，服务器略过） 1 在bios设置中找到显卡设置，系统默认的为集显模式，将其修改为独显模式。 更新软件列表和安装必要软件、依赖 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 sudo apt-get update #更新软件列表 # sudo apt-get install -y g++ gcc make sudo apt download $(apt-rdepends g++ gcc make | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) sudo apt download $(apt-rdepends python3-pip | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) sudo apt download $(apt-rdepends build-essential cmake git | \\ grep -v &#34;^ &#34; | \\ sed &#39;s/debconf-2.0/debconf/g&#39; | \\ sed -e &#39;s/libc-dev/libc6-dev/g&#39; \\ -e &#39;s/libc6-dev-bin/libc6-dev/g&#39; \\ -e &#39;s/linux-libc6-dev/linux-libc-dev/g&#39; | \\ grep -vE &#34;^(default-logind|logind)$&#34;) # 安装hwinfo sudo apt download $(apt-rdepends hwinfo | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) # 安装alsa-utils sudo apt download $(apt-rdepends alsa-utils | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) 禁用nouveau (nouveau是通用的驱动程序) 1 sudo vim /etc/modprobe.d/blacklist.conf 文件末尾添加下面两行内容\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/ubuntu-22.04-server%E5%AE%89%E8%A3%85nvidia%E9%A9%B1%E5%8A%A8/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ubuntu' /><meta property='article:tag' content='22.04' /><meta property='article:tag' content='server' /><meta property='article:tag' content='nvidia' /><meta property='article:published_time' content='2025-12-06T08:38:24&#43;08:00'/><meta property='article:modified_time' content='2025-12-06T08:38:24&#43;08:00'/>
 <meta name="twitter:title" content="ubuntu 22.04 server安装Nvidia驱动">
 <meta name="twitter:description" content=" ubuntu 22.04 server安装Nvidia驱动 1 2 3 4 5 sudo apt install -y apt-rdepends # sudo apt install -y net-tools # sudo apt install -y openssh-server sudo apt download $(apt-rdepends apt-rdepends | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39; | grep -v &#34;perlapi-&#34;) sudo apt download $(apt-rdepends net-tools | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) 准备工作 1 2 为了避免踩坑，建议按照流程完成准备工作！ 这些准备工作并不会影响你的计算机，不做的话可能会导致装驱动后黑屏！ 关闭安全模式 1 重启计算机，在开机前狂按’ESC’进入bios设置，找到安全设置，并关闭它。 注：不同品牌电脑进入bios方式和安全设置的位置都不相同\n切换独显模式（笔记本电脑单显卡注意，服务器略过） 1 在bios设置中找到显卡设置，系统默认的为集显模式，将其修改为独显模式。 更新软件列表和安装必要软件、依赖 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 sudo apt-get update #更新软件列表 # sudo apt-get install -y g++ gcc make sudo apt download $(apt-rdepends g++ gcc make | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) sudo apt download $(apt-rdepends python3-pip | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) sudo apt download $(apt-rdepends build-essential cmake git | \\ grep -v &#34;^ &#34; | \\ sed &#39;s/debconf-2.0/debconf/g&#39; | \\ sed -e &#39;s/libc-dev/libc6-dev/g&#39; \\ -e &#39;s/libc6-dev-bin/libc6-dev/g&#39; \\ -e &#39;s/linux-libc6-dev/linux-libc-dev/g&#39; | \\ grep -vE &#34;^(default-logind|logind)$&#34;) # 安装hwinfo sudo apt download $(apt-rdepends hwinfo | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) # 安装alsa-utils sudo apt download $(apt-rdepends alsa-utils | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) 禁用nouveau (nouveau是通用的驱动程序) 1 sudo vim /etc/modprobe.d/blacklist.conf 文件末尾添加下面两行内容\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

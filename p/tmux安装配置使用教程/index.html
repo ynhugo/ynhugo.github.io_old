@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Tmux安装配置使用教程">
 <meta property='og:description' content=" 基本用法 启动与退出 在终端键入tmux命令，启动 Tmux\nCtrl+d或者输入exit命令，退出 Tmux\n前缀键 Tmux 窗口有大量的快捷键，默认的前缀键是Ctrl+b，即先按下Ctrl+b，然后再按下其他按键\n比如，帮助命令的快捷键是Ctrl+b ?。在Tmux窗口中，先按下Ctrl+b，再按下?，就会显示帮助信息，然后，按下 ESC 键或q键，就可以退出帮助。\ntmux滚动窗口 按Ctrl+b，再按[，就可以用鼠标滑轮滚动了，按q退出。\n参考链接 tmux滚动窗口\ntmux调整多窗格比例 按Ctrl+b，再按方向键就可以调整窗格比例了，例如调整上下两个窗格的比例，按Ctrl+b，再按上下方向键就可以了，如果是调整左右两个窗格的比例，按Ctrl+b，再按左右方向键就可以了，\n会话管理 新建会话 第一个启动的 Tmux窗口，编号是0，第二个窗口的编号是1\n除默认运行tmux是以编号进行区分，还可以创建指定名称的会话。\n1 tmux new -s &lt;session-name&gt; 离线创建会话 1 2 3 tmux new -d 或 tmux new -d -s &lt;session-name&gt; 分离会话 Tmux 窗口中，按下Ctrl+b d或者输入&#34;tmux detach&#34;命令，就会将当前会话与窗口分离。 tmux ls命令可以查看当前所有的 Tmux 会话。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/tmux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-11-22T01:26:22&#43;08:00'/><meta property='article:modified_time' content='2023-11-22T01:26:22&#43;08:00'/>
 <meta name="twitter:title" content="Tmux安装配置使用教程">
 <meta name="twitter:description" content=" 基本用法 启动与退出 在终端键入tmux命令，启动 Tmux\nCtrl+d或者输入exit命令，退出 Tmux\n前缀键 Tmux 窗口有大量的快捷键，默认的前缀键是Ctrl+b，即先按下Ctrl+b，然后再按下其他按键\n比如，帮助命令的快捷键是Ctrl+b ?。在Tmux窗口中，先按下Ctrl+b，再按下?，就会显示帮助信息，然后，按下 ESC 键或q键，就可以退出帮助。\ntmux滚动窗口 按Ctrl+b，再按[，就可以用鼠标滑轮滚动了，按q退出。\n参考链接 tmux滚动窗口\ntmux调整多窗格比例 按Ctrl+b，再按方向键就可以调整窗格比例了，例如调整上下两个窗格的比例，按Ctrl+b，再按上下方向键就可以了，如果是调整左右两个窗格的比例，按Ctrl+b，再按左右方向键就可以了，\n会话管理 新建会话 第一个启动的 Tmux窗口，编号是0，第二个窗口的编号是1\n除默认运行tmux是以编号进行区分，还可以创建指定名称的会话。\n1 tmux new -s &lt;session-name&gt; 离线创建会话 1 2 3 tmux new -d 或 tmux new -d -s &lt;session-name&gt; 分离会话 Tmux 窗口中，按下Ctrl+b d或者输入&#34;tmux detach&#34;命令，就会将当前会话与窗口分离。 tmux ls命令可以查看当前所有的 Tmux 会话。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

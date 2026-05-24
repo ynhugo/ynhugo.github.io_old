@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="了解beancount并折腾beancount+emacs">
 <meta property='og:description' content=" 了解beancount并折腾beancount+emacs termux安装beancount和fava 1 2 3 4 5 # 安装相关依赖 pkg install -y cmake automake autoconf libtool beancount-periodic # 安装对应的包 pip install beancount fava emacs配置 1 2 3 (use-package beancount :ensure t :mode (&#34;\\\\.bea\\\\(n\\\\|ncount\\\\)\\\\&#39;&#34; . beancount-mode)) emacs安装beancount包，支持.bean和.beancount文件\n快速上手 首先需要安装 Python3 环境，然后安装对应的包\n1 2 3 4 pip install beancount fava # 如果安装beancount包没有bean-price，可以单独安装beanprice这个包 pip install beanprice 注：在Git Bash中操作\n如果是在Git Bash中，安装完对应包后要检测是否有对应包，并将其所在路径添加环境变量\n1 2 ls /c/Users/$USERNAME/AppData/Roaming/Python/Python37/Scripts | grep bean export PATH=$PATH:/c/Users/$USERNAME/AppData/Roaming/Python/Python37/Scripts # 把 Scripts 目录加到 PATH，如果要长期生效，把上面那一行加到 ~/.bashrc 或 ~/.bash_profile。 生成一个官方提供的示例\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E4%BA%86%E8%A7%A3beancount%E5%B9%B6%E6%8A%98%E8%85%BEbeancount-emacs/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='beancount' /><meta property='article:tag' content='emacs' /><meta property='article:published_time' content='2025-08-18T02:38:06&#43;08:00'/><meta property='article:modified_time' content='2025-08-18T02:38:06&#43;08:00'/>
 <meta name="twitter:title" content="了解beancount并折腾beancount+emacs">
 <meta name="twitter:description" content=" 了解beancount并折腾beancount+emacs termux安装beancount和fava 1 2 3 4 5 # 安装相关依赖 pkg install -y cmake automake autoconf libtool beancount-periodic # 安装对应的包 pip install beancount fava emacs配置 1 2 3 (use-package beancount :ensure t :mode (&#34;\\\\.bea\\\\(n\\\\|ncount\\\\)\\\\&#39;&#34; . beancount-mode)) emacs安装beancount包，支持.bean和.beancount文件\n快速上手 首先需要安装 Python3 环境，然后安装对应的包\n1 2 3 4 pip install beancount fava # 如果安装beancount包没有bean-price，可以单独安装beanprice这个包 pip install beanprice 注：在Git Bash中操作\n如果是在Git Bash中，安装完对应包后要检测是否有对应包，并将其所在路径添加环境变量\n1 2 ls /c/Users/$USERNAME/AppData/Roaming/Python/Python37/Scripts | grep bean export PATH=$PATH:/c/Users/$USERNAME/AppData/Roaming/Python/Python37/Scripts # 把 Scripts 目录加到 PATH，如果要长期生效，把上面那一行加到 ~/.bashrc 或 ~/.bash_profile。 生成一个官方提供的示例\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

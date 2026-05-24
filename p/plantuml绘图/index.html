@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="PlantUML绘图">
 <meta property='og:description' content=" PlantUML绘图 PlantUML的安装和配置 我们首先来安装和配置 plantuml ：\n需要提前通过 brew install plantuml 安装 plantuml 这个软件包 配置Emacs和Org mode支持 plantuml 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 (use-package plantuml-mode :ensure t :mode (&#34;\\\\.plantuml\\\\&#39;&#34; . plantuml-mode) :init ;; enable plantuml babel support ;; (add-to-list &#39;org-src-lang-modes &#39;(&#34;plantuml&#34; . plantuml)) (org-babel-do-load-languages &#39;org-babel-load-languages (append org-babel-load-languages &#39;((plantuml . t)))) :config (setq org-plantuml-exec-mode &#39;plantuml) (setq org-plantuml-executable-path &#34;plantuml&#34;) (setq plantuml-executable-path &#34;plantuml&#34;) (setq plantuml-default-exec-mode &#39;executable) ;; set default babel header arguments (setq org-babel-default-header-args:plantuml &#39;((:exports . &#34;results&#34;) (:results . &#34;file&#34;) )) ) 我们安装配置完 plantuml 后，可以在org文件里，输入下面的代码块，然后光标移动到代码块内部，按下 C-c C-c 执行代码块， plantuml 就会自动解析文本执行，并生成你想要的图片啦：\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/plantuml%E7%BB%98%E5%9B%BE/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='plantuml' /><meta property='article:tag' content='流程图' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='termux' /><meta property='article:published_time' content='2025-04-16T18:59:46&#43;08:00'/><meta property='article:modified_time' content='2025-04-16T18:59:46&#43;08:00'/>
 <meta name="twitter:title" content="PlantUML绘图">
 <meta name="twitter:description" content=" PlantUML绘图 PlantUML的安装和配置 我们首先来安装和配置 plantuml ：\n需要提前通过 brew install plantuml 安装 plantuml 这个软件包 配置Emacs和Org mode支持 plantuml 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 (use-package plantuml-mode :ensure t :mode (&#34;\\\\.plantuml\\\\&#39;&#34; . plantuml-mode) :init ;; enable plantuml babel support ;; (add-to-list &#39;org-src-lang-modes &#39;(&#34;plantuml&#34; . plantuml)) (org-babel-do-load-languages &#39;org-babel-load-languages (append org-babel-load-languages &#39;((plantuml . t)))) :config (setq org-plantuml-exec-mode &#39;plantuml) (setq org-plantuml-executable-path &#34;plantuml&#34;) (setq plantuml-executable-path &#34;plantuml&#34;) (setq plantuml-default-exec-mode &#39;executable) ;; set default babel header arguments (setq org-babel-default-header-args:plantuml &#39;((:exports . &#34;results&#34;) (:results . &#34;file&#34;) )) ) 我们安装配置完 plantuml 后，可以在org文件里，输入下面的代码块，然后光标移动到代码块内部，按下 C-c C-c 执行代码块， plantuml 就会自动解析文本执行，并生成你想要的图片啦：\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

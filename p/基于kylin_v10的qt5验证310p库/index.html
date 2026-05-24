@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="基于kylin_v10的Qt5验证310P库">
 <meta property='og:description' content=" Qt创建QtApplication-&gt;310P_Lib_Test-&gt;QWidget验证310P库 .pro文件中添加310P库 1 2 3 4 5 6 ASCEND_HOME = /usr/local/Ascend/ascend-toolkit/latest INCLUDEPATH += $$ASCEND_HOME/include LIBS += -L$$ASCEND_HOME/lib64 LIBS += -lascendcl QMAKE_RPATHDIR += $$ASCEND_HOME/aarch64-linux/lib64 LIBS += -L/usr/local/Ascend/driver/lib64/driver -lascend_hal 1 2 3 4 # 在qtcreator中编译 # 或在终端编译 qmake pcie_sgdma.pro make clean &amp;&amp; make 创建 ldconfig 配置（永久） 1 2 3 4 5 6 7 cat /etc/ld.so.conf.d/ascend.conf &lt;&lt;&#39;CONTENT&#39; cat: /etc/ld.so.conf.d/ascend.conf: 没有那个文件或目录 CONTENT echo &#34;/usr/local/Ascend/ascend-toolkit/latest/aarch64-linux/lib64&#34; | sudo tee /etc/ld.so.conf.d/ascend.conf sudo ldconfig 验证代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 #include &#34;acl/acl.h&#34; #include &lt;iostream&gt; int main() { aclError ret = aclInit(nullptr); if (ret != ACL_ERROR_NONE) { std::cerr &lt;&lt; &#34;ACL init failed, error code: &#34; &lt;&lt; ret &lt;&lt; std::endl; return -1; } else { std::cout &lt;&lt; &#34;ACL init success&#34; &lt;&lt; std::endl; aclFinalize(); } return 0; } ">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E5%9F%BA%E4%BA%8Ekylin_v10%E7%9A%84qt5%E9%AA%8C%E8%AF%81310p%E5%BA%93/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='kylin' /><meta property='article:tag' content='310P' /><meta property='article:published_time' content='2026-05-19T09:55:57&#43;08:00'/><meta property='article:modified_time' content='2026-05-19T09:55:57&#43;08:00'/>
 <meta name="twitter:title" content="基于kylin_v10的Qt5验证310P库">
 <meta name="twitter:description" content=" Qt创建QtApplication-&gt;310P_Lib_Test-&gt;QWidget验证310P库 .pro文件中添加310P库 1 2 3 4 5 6 ASCEND_HOME = /usr/local/Ascend/ascend-toolkit/latest INCLUDEPATH += $$ASCEND_HOME/include LIBS += -L$$ASCEND_HOME/lib64 LIBS += -lascendcl QMAKE_RPATHDIR += $$ASCEND_HOME/aarch64-linux/lib64 LIBS += -L/usr/local/Ascend/driver/lib64/driver -lascend_hal 1 2 3 4 # 在qtcreator中编译 # 或在终端编译 qmake pcie_sgdma.pro make clean &amp;&amp; make 创建 ldconfig 配置（永久） 1 2 3 4 5 6 7 cat /etc/ld.so.conf.d/ascend.conf &lt;&lt;&#39;CONTENT&#39; cat: /etc/ld.so.conf.d/ascend.conf: 没有那个文件或目录 CONTENT echo &#34;/usr/local/Ascend/ascend-toolkit/latest/aarch64-linux/lib64&#34; | sudo tee /etc/ld.so.conf.d/ascend.conf sudo ldconfig 验证代码 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 #include &#34;acl/acl.h&#34; #include &lt;iostream&gt; int main() { aclError ret = aclInit(nullptr); if (ret != ACL_ERROR_NONE) { std::cerr &lt;&lt; &#34;ACL init failed, error code: &#34; &lt;&lt; ret &lt;&lt; std::endl; return -1; } else { std::cout &lt;&lt; &#34;ACL init success&#34; &lt;&lt; std::endl; aclFinalize(); } return 0; } ">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

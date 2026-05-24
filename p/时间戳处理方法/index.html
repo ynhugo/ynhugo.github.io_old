@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="时间戳处理方法">
 <meta property='og:description' content=" Windows平台 PowerShell 用&#34;PowerShell&#34;处理时间戳通过管道命令创建目录后，目录名后带回车符，在&#34;Bash Shell&#34;通过&#34;ls&#34;命令可以查看出来\n1 (Get-Date -Format &#34;yyyyMMddHHmmss&#34;) 1 (Get-Date -Format &#34;yyyyMMddHHmmss&#34;) | Out-File timestamp.txt 1 date +%Y%m%d%H%M%S cmd 该脚本下载链接：timestamp.bat\n1 2 3 4 5 6 7 @echo off for /f &#34;tokens=2 delims==&#34; %%a in (&#39;wmic OS Get localdatetime /value&#39;) do set &#34;dt=%%a&#34; set &#34;YY=%dt:~0,4%&#34; &amp; set &#34;MM=%dt:~4,2%&#34; &amp; set &#34;DD=%dt:~6,2%&#34; set &#34;HH=%dt:~8,2%&#34; &amp; set &#34;Min=%dt:~10,2%&#34; &amp; set &#34;Sec=%dt:~12,2%&#34; set &#34;timestamp=%YY%%MM%%DD%%HH%%Min%%Sec%&#34; echo %timestamp% | clip 当我们理解每个参数时，我们可以更好地理解脚本的功能。下面是对每个参数的详细解释：\n`for /f &#34;tokens=2 delims==&#34; %%a in (&#39;wmic OS Get localdatetime /value&#39;) do set &#34;dt=%%a&#34;`\n`for /f` 是一个用于循环读取文件或命令输出的命令。 `&#34;tokens=2 delims==&#34;` 指定了分隔符为等号（&#34;=&#34;）并且提取第二个token（即等号后面的部分）。 `%%a` 是一个循环变量，用于存储每次循环中被提取的值。 `(&#39;wmic OS Get localdatetime /value&#39;)` 是要执行的命令，它使用`wmic`命令获取当前操作系统的本地日期和时间信息。 `do set &#34;dt=%%a&#34;` 是在循环每次迭代时执行的命令，它将提取的日期和时间值保存到变量`dt`中。 `set &#34;YY=%dt:~0,4%&#34; &amp; set &#34;MM=%dt:~4,2%&#34; &amp; set &#34;DD=%dt:~6,2%&#34;`\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E6%97%B6%E9%97%B4%E6%88%B3%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-11-04T20:06:22&#43;08:00'/><meta property='article:modified_time' content='2023-11-04T20:06:22&#43;08:00'/>
 <meta name="twitter:title" content="时间戳处理方法">
 <meta name="twitter:description" content=" Windows平台 PowerShell 用&#34;PowerShell&#34;处理时间戳通过管道命令创建目录后，目录名后带回车符，在&#34;Bash Shell&#34;通过&#34;ls&#34;命令可以查看出来\n1 (Get-Date -Format &#34;yyyyMMddHHmmss&#34;) 1 (Get-Date -Format &#34;yyyyMMddHHmmss&#34;) | Out-File timestamp.txt 1 date +%Y%m%d%H%M%S cmd 该脚本下载链接：timestamp.bat\n1 2 3 4 5 6 7 @echo off for /f &#34;tokens=2 delims==&#34; %%a in (&#39;wmic OS Get localdatetime /value&#39;) do set &#34;dt=%%a&#34; set &#34;YY=%dt:~0,4%&#34; &amp; set &#34;MM=%dt:~4,2%&#34; &amp; set &#34;DD=%dt:~6,2%&#34; set &#34;HH=%dt:~8,2%&#34; &amp; set &#34;Min=%dt:~10,2%&#34; &amp; set &#34;Sec=%dt:~12,2%&#34; set &#34;timestamp=%YY%%MM%%DD%%HH%%Min%%Sec%&#34; echo %timestamp% | clip 当我们理解每个参数时，我们可以更好地理解脚本的功能。下面是对每个参数的详细解释：\n`for /f &#34;tokens=2 delims==&#34; %%a in (&#39;wmic OS Get localdatetime /value&#39;) do set &#34;dt=%%a&#34;`\n`for /f` 是一个用于循环读取文件或命令输出的命令。 `&#34;tokens=2 delims==&#34;` 指定了分隔符为等号（&#34;=&#34;）并且提取第二个token（即等号后面的部分）。 `%%a` 是一个循环变量，用于存储每次循环中被提取的值。 `(&#39;wmic OS Get localdatetime /value&#39;)` 是要执行的命令，它使用`wmic`命令获取当前操作系统的本地日期和时间信息。 `do set &#34;dt=%%a&#34;` 是在循环每次迭代时执行的命令，它将提取的日期和时间值保存到变量`dt`中。 `set &#34;YY=%dt:~0,4%&#34; &amp; set &#34;MM=%dt:~4,2%&#34; &amp; set &#34;DD=%dt:~6,2%&#34;`\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

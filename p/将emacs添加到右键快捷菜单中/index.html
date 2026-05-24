@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="将Emacs添加到右键快捷菜单中">
 <meta property='og:description' content=" 将Emacs添加到右键快捷菜单中 通过右键菜单打开文件 长期用Emacs写代码，但是每次都是从命令行启动，有个麻烦事，针对单个文件，且该文件处在目录较深时，还要在命令中一层层敲进去，程序猿的时间都是很宝贵的，下面就来看看如何将Emacs添加到右键菜单中：\n从“run”中运行“regedit”启动注册表； 在打开的注册表中找到“HKEY_CLASSES_ROOT\\*”，这里需要注意，其中的“*”可不是指在“HKEY_CLASSES_ROOT”下，而该项的下面有个子项叫“*”。在该子项下新建一个名为“shell”的项，如果没有，直接新建，如果有，可以不用新建；\n此时，在“HKEY_CLASSES_ROOT\\*\\shell”上右键，选中“新建”-&gt;“项”，键入“Emacs 编辑(&amp;M)”。然后在“HKEY_CLASSES_ROOT\\*\\shell\\”下新建一个项，命名为&#34;通过 Emacs 打开&#34;，再在“HKEY_CLASSES_ROOT\\*\\shell\\通过emacs打开”下新建一个项，命名为“command”；\n然后，选中“HKEY_CLASSES_ROOT\\*\\shell\\通过emacs打开\\command”项，在右边的栏目中，双击“名称”为“默认”的项，双击，在打开的对话框中的“数值数据”框内添加你自己Emacs的安装目录下的“bin”目录，并在后面空一格添加“%1”，确定即可，如我的是“D:Program Files (x86)\\emacs-28.2\\bin\\runemacs.exe &#34;%1&#34;”。\n此时，你在一个源代码文件上右键点击时，就可以看到有了“Emacs编辑”可选项！\nOpen Emacs here 给右键菜单添加“Open Emacs here”这个选项\n打开注册表，定位到HKEY_CLASSES_ROOT\\Directory\\Background\\shell（如果Background下面没有shell目录，就自己新建一个）。\n在shell下右键-新建项,其名称为“Open Emacs here”,此为右键菜单显示名称。\n在shell下右键-新建-字符串，命名为Icon,双击编辑，其值为“D:Program Files (x86)\\emacs-28.2\\bin\\runemacs.exe”，在右键菜单中会自动显示该软件图标。\n在&#34;Open Emacs here&#34;下右键-新建-项，命名为command,其值为&#34;D:Program Files (x86)\\emacs-28.2\\bin\\runemacs.exe&#34;。\n此时，在任何一个目录空白处右键，即可出现Open Emacs here选项，单击即可启动emacs并在Emacs中自动进入当前目录。考虑到PowerShell右键选项需要按住Shift才会在右键菜单中显示出来，想把Open Emacs here也搞成这样子。只需这样操作：\n在Open Emacs here下右键-&gt; 新建字符串，命名为“Extended”（与Icon字段同级）即可。\n通过注册表文件实现添加 Emacs 到右键菜单 使用此注册表文件之前需要根据 Emacs 的实际安装目录将注册表文件中的路径替换一下\n假如注册表文件中的某路径不存在，那么就先进入这个不存在的路径的上一级存在的路径，逐级递进，这样注册表在执行的时候就会将不存在的路径一级一级的创建出来，如果注册表文件中的有效路径后连着跟了两个或两个以上的不存在的路径名，则添加注册表会失败\n1 2 3 4 5 6 7 8 9 10 11 12 13 Windows Registry Editor Version 5.00 [HKEY_CLASSES_ROOT\\*\\shell] [HKEY_CLASSES_ROOT\\*\\shell\\Edit with Emacs] &#34;icon&#34;=&#34;D:\\\\Program Files (x86)\\\\emacs-28.2\\\\bin\\\\runemacs.exe&#34; [HKEY_CLASSES_ROOT\\*\\shell\\Edit with Emacs\\command] @=&#34;D:\\\\Program Files (x86)\\\\emacs-28.2\\\\bin\\\\runemacs.exe \\&#34;%1\\&#34;&#34; [HKEY_CLASSES_ROOT\\Directory\\Background\\shell] [HKEY_CLASSES_ROOT\\Directory\\Background\\shell\\Open Emacs here] &#34;icon&#34;=&#34;D:\\\\Program Files (x86)\\\\emacs-28.2\\\\bin\\\\runemacs.exe&#34; [HKEY_CLASSES_ROOT\\Directory\\Background\\shell\\Open Emacs here\\command] @=&#34;D:\\\\Program Files (x86)\\\\emacs-28.2\\\\bin\\\\runemacs.exe&#34; 将 Emacs 添加进右键菜单的注册表文件下载 点击下载\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E5%B0%86emacs%E6%B7%BB%E5%8A%A0%E5%88%B0%E5%8F%B3%E9%94%AE%E5%BF%AB%E6%8D%B7%E8%8F%9C%E5%8D%95%E4%B8%AD/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='emacs' /><meta property='article:published_time' content='2024-03-26T00:24:26&#43;08:00'/><meta property='article:modified_time' content='2024-03-26T00:24:26&#43;08:00'/>
 <meta name="twitter:title" content="将Emacs添加到右键快捷菜单中">
 <meta name="twitter:description" content=" 将Emacs添加到右键快捷菜单中 通过右键菜单打开文件 长期用Emacs写代码，但是每次都是从命令行启动，有个麻烦事，针对单个文件，且该文件处在目录较深时，还要在命令中一层层敲进去，程序猿的时间都是很宝贵的，下面就来看看如何将Emacs添加到右键菜单中：\n从“run”中运行“regedit”启动注册表； 在打开的注册表中找到“HKEY_CLASSES_ROOT\\*”，这里需要注意，其中的“*”可不是指在“HKEY_CLASSES_ROOT”下，而该项的下面有个子项叫“*”。在该子项下新建一个名为“shell”的项，如果没有，直接新建，如果有，可以不用新建；\n此时，在“HKEY_CLASSES_ROOT\\*\\shell”上右键，选中“新建”-&gt;“项”，键入“Emacs 编辑(&amp;M)”。然后在“HKEY_CLASSES_ROOT\\*\\shell\\”下新建一个项，命名为&#34;通过 Emacs 打开&#34;，再在“HKEY_CLASSES_ROOT\\*\\shell\\通过emacs打开”下新建一个项，命名为“command”；\n然后，选中“HKEY_CLASSES_ROOT\\*\\shell\\通过emacs打开\\command”项，在右边的栏目中，双击“名称”为“默认”的项，双击，在打开的对话框中的“数值数据”框内添加你自己Emacs的安装目录下的“bin”目录，并在后面空一格添加“%1”，确定即可，如我的是“D:Program Files (x86)\\emacs-28.2\\bin\\runemacs.exe &#34;%1&#34;”。\n此时，你在一个源代码文件上右键点击时，就可以看到有了“Emacs编辑”可选项！\nOpen Emacs here 给右键菜单添加“Open Emacs here”这个选项\n打开注册表，定位到HKEY_CLASSES_ROOT\\Directory\\Background\\shell（如果Background下面没有shell目录，就自己新建一个）。\n在shell下右键-新建项,其名称为“Open Emacs here”,此为右键菜单显示名称。\n在shell下右键-新建-字符串，命名为Icon,双击编辑，其值为“D:Program Files (x86)\\emacs-28.2\\bin\\runemacs.exe”，在右键菜单中会自动显示该软件图标。\n在&#34;Open Emacs here&#34;下右键-新建-项，命名为command,其值为&#34;D:Program Files (x86)\\emacs-28.2\\bin\\runemacs.exe&#34;。\n此时，在任何一个目录空白处右键，即可出现Open Emacs here选项，单击即可启动emacs并在Emacs中自动进入当前目录。考虑到PowerShell右键选项需要按住Shift才会在右键菜单中显示出来，想把Open Emacs here也搞成这样子。只需这样操作：\n在Open Emacs here下右键-&gt; 新建字符串，命名为“Extended”（与Icon字段同级）即可。\n通过注册表文件实现添加 Emacs 到右键菜单 使用此注册表文件之前需要根据 Emacs 的实际安装目录将注册表文件中的路径替换一下\n假如注册表文件中的某路径不存在，那么就先进入这个不存在的路径的上一级存在的路径，逐级递进，这样注册表在执行的时候就会将不存在的路径一级一级的创建出来，如果注册表文件中的有效路径后连着跟了两个或两个以上的不存在的路径名，则添加注册表会失败\n1 2 3 4 5 6 7 8 9 10 11 12 13 Windows Registry Editor Version 5.00 [HKEY_CLASSES_ROOT\\*\\shell] [HKEY_CLASSES_ROOT\\*\\shell\\Edit with Emacs] &#34;icon&#34;=&#34;D:\\\\Program Files (x86)\\\\emacs-28.2\\\\bin\\\\runemacs.exe&#34; [HKEY_CLASSES_ROOT\\*\\shell\\Edit with Emacs\\command] @=&#34;D:\\\\Program Files (x86)\\\\emacs-28.2\\\\bin\\\\runemacs.exe \\&#34;%1\\&#34;&#34; [HKEY_CLASSES_ROOT\\Directory\\Background\\shell] [HKEY_CLASSES_ROOT\\Directory\\Background\\shell\\Open Emacs here] &#34;icon&#34;=&#34;D:\\\\Program Files (x86)\\\\emacs-28.2\\\\bin\\\\runemacs.exe&#34; [HKEY_CLASSES_ROOT\\Directory\\Background\\shell\\Open Emacs here\\command] @=&#34;D:\\\\Program Files (x86)\\\\emacs-28.2\\\\bin\\\\runemacs.exe&#34; 将 Emacs 添加进右键菜单的注册表文件下载 点击下载\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

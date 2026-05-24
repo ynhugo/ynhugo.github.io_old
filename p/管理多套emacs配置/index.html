@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="管理多套Emacs配置">
 <meta property='og:description' content=" 管理多套Emacs配置 3.1 安装chemacs2 3.1.1 第一步：将当前emacs配置目录改名 如果你是按照本系列教程来进行配置管理的话，你的配置文件目录为： ~/.emacs.d ，那我们需要将这个目录改一下名字，假设我们修改之后的目录为： ~/.emacs.d.default:\n1 mv ~/.emacs.d ~/.emacs.d.default 3.1.2 第二步：克隆此项目 1 git clone https://github.com/plexus/chemacs2.git ~/.emacs.d 然后修改项目中的 chemacs2.el 文件，将 chemacs-profiles-paths 变量中的出现的路径 ~/.emacs-profiles.el 替换成 ~/.emacs.d/.emacs-profiles.el，接着将 chemacs-default-profile-paths 变量中的出现的 ~/.emacs-profile 替换成 ~/.emacs.d/.emacs-profile\n3.1.3 第三步：创建 ~/.emacs-profiles.el 创建 ~/.emacs.d/.emacs-profiles.el 文本文件并填入如下内容，这段内容可以简单理解为：\ndefault: 是这个配置的名称 后面这个是 default 这个配置所在的目录\n1 ((&#34;default&#34; . ((user-emacs-directory . &#34;~/.emacs.d/.emacs.default&#34;)))) 3.1.4 第四步：启动 我们通过以下命令启动 default 这个配置的 Emacs：\n1 emacs --with-profile default 3.2 新增新的环境 3.2.1 第一步：新建新环境所在的目录 假设我们需要新建一个环境 scratch ，第一步就是新建一个目录来装这个环境的相关配置文件，假设我们的文件夹是 ~/.emacs.d.scratch:\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E7%AE%A1%E7%90%86%E5%A4%9A%E5%A5%97emacs%E9%85%8D%E7%BD%AE/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='emacs' /><meta property='article:tag' content='git' /><meta property='article:published_time' content='2024-12-06T00:11:59&#43;08:00'/><meta property='article:modified_time' content='2024-12-06T00:11:59&#43;08:00'/>
 <meta name="twitter:title" content="管理多套Emacs配置">
 <meta name="twitter:description" content=" 管理多套Emacs配置 3.1 安装chemacs2 3.1.1 第一步：将当前emacs配置目录改名 如果你是按照本系列教程来进行配置管理的话，你的配置文件目录为： ~/.emacs.d ，那我们需要将这个目录改一下名字，假设我们修改之后的目录为： ~/.emacs.d.default:\n1 mv ~/.emacs.d ~/.emacs.d.default 3.1.2 第二步：克隆此项目 1 git clone https://github.com/plexus/chemacs2.git ~/.emacs.d 然后修改项目中的 chemacs2.el 文件，将 chemacs-profiles-paths 变量中的出现的路径 ~/.emacs-profiles.el 替换成 ~/.emacs.d/.emacs-profiles.el，接着将 chemacs-default-profile-paths 变量中的出现的 ~/.emacs-profile 替换成 ~/.emacs.d/.emacs-profile\n3.1.3 第三步：创建 ~/.emacs-profiles.el 创建 ~/.emacs.d/.emacs-profiles.el 文本文件并填入如下内容，这段内容可以简单理解为：\ndefault: 是这个配置的名称 后面这个是 default 这个配置所在的目录\n1 ((&#34;default&#34; . ((user-emacs-directory . &#34;~/.emacs.d/.emacs.default&#34;)))) 3.1.4 第四步：启动 我们通过以下命令启动 default 这个配置的 Emacs：\n1 emacs --with-profile default 3.2 新增新的环境 3.2.1 第一步：新建新环境所在的目录 假设我们需要新建一个环境 scratch ，第一步就是新建一个目录来装这个环境的相关配置文件，假设我们的文件夹是 ~/.emacs.d.scratch:\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

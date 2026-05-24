@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Windows多用户共享应用程序完全指南">
 <meta property='og:description' content=" Windows多用户共享应用程序完全指南 为什么需要多用户共享应用？ 在家庭共享电脑或办公环境中，经常有多个用户使用同一台 Windows 设备。默认情况下，每个用户安装的应用程序可能仅对本人可见，导致重复安装、占用磁盘空间，以及配置管理混乱。\n本文将通过系统目录解析、操作方法详解、常见误区与最佳实践，帮助你实现真正的多用户应用共享。\n核心概念：两个关键目录 Windows 通过两个目录管理开始菜单中的程序快捷方式，它们决定了应用程序对不同用户的可见性。\n命令 作用范围 实际路径 shell:programs 仅当前用户 C:\\Users\\&lt;用户名&gt;\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs shell:common programs 所有用户 C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs 快速访问方式 按下 Win + R 组合键 输入上述任一命令，点击确定 权限提醒 修改 ~shell:common programs~（所有用户目录）通常需要管理员权限 若无法粘贴或删除文件，请以管理员身份重新打开文件夹 共享应用程序的三种方法 方法一：手动复制快捷方式（最推荐，适合大众用户） 这是最简单、最直观的方法，无需记忆任何命令。\n操作步骤 按下 ~Win + R~，输入 ~shell:programs~，回车\n这会打开当前用户的开始菜单程序目录 再按一次 ~Win + R~，输入 ~shell:common programs~，回车\n这会打开所有用户的开始菜单程序目录 在第一个窗口中找到想要共享的应用或文件夹\n可以是一个应用的快捷方式（如 ~微信.lnk~） 也可以是一个文件夹（如 ~WPS Office~） 直接将其 拖拽 或 复制粘贴 到第二个窗口\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/windows%E5%A4%9A%E7%94%A8%E6%88%B7%E5%85%B1%E4%BA%AB%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='windows' /><meta property='article:tag' content='shell' /><meta property='article:tag' content='快捷方式' /><meta property='article:published_time' content='2026-05-14T00:55:33&#43;08:00'/><meta property='article:modified_time' content='2026-05-14T00:55:33&#43;08:00'/>
 <meta name="twitter:title" content="Windows多用户共享应用程序完全指南">
 <meta name="twitter:description" content=" Windows多用户共享应用程序完全指南 为什么需要多用户共享应用？ 在家庭共享电脑或办公环境中，经常有多个用户使用同一台 Windows 设备。默认情况下，每个用户安装的应用程序可能仅对本人可见，导致重复安装、占用磁盘空间，以及配置管理混乱。\n本文将通过系统目录解析、操作方法详解、常见误区与最佳实践，帮助你实现真正的多用户应用共享。\n核心概念：两个关键目录 Windows 通过两个目录管理开始菜单中的程序快捷方式，它们决定了应用程序对不同用户的可见性。\n命令 作用范围 实际路径 shell:programs 仅当前用户 C:\\Users\\&lt;用户名&gt;\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs shell:common programs 所有用户 C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs 快速访问方式 按下 Win + R 组合键 输入上述任一命令，点击确定 权限提醒 修改 ~shell:common programs~（所有用户目录）通常需要管理员权限 若无法粘贴或删除文件，请以管理员身份重新打开文件夹 共享应用程序的三种方法 方法一：手动复制快捷方式（最推荐，适合大众用户） 这是最简单、最直观的方法，无需记忆任何命令。\n操作步骤 按下 ~Win + R~，输入 ~shell:programs~，回车\n这会打开当前用户的开始菜单程序目录 再按一次 ~Win + R~，输入 ~shell:common programs~，回车\n这会打开所有用户的开始菜单程序目录 在第一个窗口中找到想要共享的应用或文件夹\n可以是一个应用的快捷方式（如 ~微信.lnk~） 也可以是一个文件夹（如 ~WPS Office~） 直接将其 拖拽 或 复制粘贴 到第二个窗口\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

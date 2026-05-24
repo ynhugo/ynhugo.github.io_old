@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="c语言获取操作时间">
 <meta property='og:description' content=" 使用 C 语言在 Linux 环境下获得微秒级时间 数据结构 1 int gettimeofday(struct timeval*tv, struct timezone *tz); /* 其参数 tv 是保存获取时间结果的结构体，参数 tz 用于保存时区结果： */ 结构体timezone的定义 1 2 3 4 struct timezone{ int tz_minuteswest;/*格林威治时间往西方的时差*/ int tz_dsttime;/*DST 时间的修正方式*/ } timezone 参数若不使用则传入NULL即可。\n结构体timeval的定义 1 2 3 4 struct timeval{ long int tv_sec; // 秒数 long int tv_usec; // 微秒数 } 代码实例 temp.cpp 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 #include &lt;stdio.h&gt; // for printf() #include &lt;sys/time.h&gt; // for gettimeofday() #include &lt;unistd.h&gt; // for sleep() int main() { struct timeval start, end; gettimeofday( &amp;start, NULL ); printf(&#34;start : %d.%d\\n&#34;, start.tv_sec, start.tv_usec); sleep(1); gettimeofday( &amp;end, NULL ); printf(&#34;end : %d.%d\\n&#34;, end.tv_sec, end.tv_usec); return 0; } 编译 1 g++ -o temp temp.cpp 运行及结果 1 2 3 $ ./temp start : 1418118324.633128 end : 1418118325.634616 usleep函数 1 2 #include &lt;unistd.h&gt; usleep(time);\t// 百万分之一秒 使用 C 语言在 windows 环境下获得微秒级时间 C 语言如何实现微秒级计算程序运行时间\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/c%E8%AF%AD%E8%A8%80%E8%8E%B7%E5%8F%96%E6%93%8D%E4%BD%9C%E6%97%B6%E9%97%B4/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='程序员' /><meta property='article:tag' content='c' /><meta property='article:published_time' content='2024-03-26T00:24:28&#43;08:00'/><meta property='article:modified_time' content='2024-03-26T00:24:28&#43;08:00'/>
 <meta name="twitter:title" content="c语言获取操作时间">
 <meta name="twitter:description" content=" 使用 C 语言在 Linux 环境下获得微秒级时间 数据结构 1 int gettimeofday(struct timeval*tv, struct timezone *tz); /* 其参数 tv 是保存获取时间结果的结构体，参数 tz 用于保存时区结果： */ 结构体timezone的定义 1 2 3 4 struct timezone{ int tz_minuteswest;/*格林威治时间往西方的时差*/ int tz_dsttime;/*DST 时间的修正方式*/ } timezone 参数若不使用则传入NULL即可。\n结构体timeval的定义 1 2 3 4 struct timeval{ long int tv_sec; // 秒数 long int tv_usec; // 微秒数 } 代码实例 temp.cpp 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 #include &lt;stdio.h&gt; // for printf() #include &lt;sys/time.h&gt; // for gettimeofday() #include &lt;unistd.h&gt; // for sleep() int main() { struct timeval start, end; gettimeofday( &amp;start, NULL ); printf(&#34;start : %d.%d\\n&#34;, start.tv_sec, start.tv_usec); sleep(1); gettimeofday( &amp;end, NULL ); printf(&#34;end : %d.%d\\n&#34;, end.tv_sec, end.tv_usec); return 0; } 编译 1 g++ -o temp temp.cpp 运行及结果 1 2 3 $ ./temp start : 1418118324.633128 end : 1418118325.634616 usleep函数 1 2 #include &lt;unistd.h&gt; usleep(time);\t// 百万分之一秒 使用 C 语言在 windows 环境下获得微秒级时间 C 语言如何实现微秒级计算程序运行时间\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

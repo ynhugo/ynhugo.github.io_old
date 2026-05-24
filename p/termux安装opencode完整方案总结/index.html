@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Termux安装opencode完整方案总结">
 <meta property='og:description' content=" Termux安装opencode完整方案总结 问题背景 opencode 官方二进制是为标准 Linux (glibc) 编译的，无法在 Termux (Android/Bionic libc) 上直接运行。 —\n解决方案：使用 proot-distro 安装 Ubuntu 步骤 1：安装基础工具 1 2 pkg update pkg install proot-distro 步骤 2：安装 Ubuntu 1 proot-distro install ubuntu 步骤 3：登录 Ubuntu 并安装 opencode 1 2 3 proot-distro login ubuntu curl -fsSL https://opencode.ai/install | sh source ~/.bashrc —\n关键问题：访问 Termux 主目录 问题：proot 环境默认隔离，无法直接访问 Termux 文件 解决方案：使用 –bind 挂载 方式 1：直接挂载登录 1 proot-distro login ubuntu --bind /data/data/com.termux/files/home:/termux 方式 2：设置别名（推荐，一劳永逸） 1 2 echo &#39;alias ubl=&#34;proot-distro login ubuntu --bind /data/data/com.termux/files/home:/termux&#34;&#39; &gt;&gt; ~/.bashrc source ~/.bashrc 之后只需运行 1 ubl 登录后，/termux 目录即为 Termux 主目录。 —\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/termux%E5%AE%89%E8%A3%85opencode%E5%AE%8C%E6%95%B4%E6%96%B9%E6%A1%88%E6%80%BB%E7%BB%93/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='termux' /><meta property='article:tag' content='opencode' /><meta property='article:tag' content='proot-distro' /><meta property='article:published_time' content='2026-03-15T19:15:41&#43;08:00'/><meta property='article:modified_time' content='2026-03-15T19:15:41&#43;08:00'/>
 <meta name="twitter:title" content="Termux安装opencode完整方案总结">
 <meta name="twitter:description" content=" Termux安装opencode完整方案总结 问题背景 opencode 官方二进制是为标准 Linux (glibc) 编译的，无法在 Termux (Android/Bionic libc) 上直接运行。 —\n解决方案：使用 proot-distro 安装 Ubuntu 步骤 1：安装基础工具 1 2 pkg update pkg install proot-distro 步骤 2：安装 Ubuntu 1 proot-distro install ubuntu 步骤 3：登录 Ubuntu 并安装 opencode 1 2 3 proot-distro login ubuntu curl -fsSL https://opencode.ai/install | sh source ~/.bashrc —\n关键问题：访问 Termux 主目录 问题：proot 环境默认隔离，无法直接访问 Termux 文件 解决方案：使用 –bind 挂载 方式 1：直接挂载登录 1 proot-distro login ubuntu --bind /data/data/com.termux/files/home:/termux 方式 2：设置别名（推荐，一劳永逸） 1 2 echo &#39;alias ubl=&#34;proot-distro login ubuntu --bind /data/data/com.termux/files/home:/termux&#34;&#39; &gt;&gt; ~/.bashrc source ~/.bashrc 之后只需运行 1 ubl 登录后，/termux 目录即为 Termux 主目录。 —\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

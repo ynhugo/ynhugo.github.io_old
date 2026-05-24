@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="内网服务暴露在公网的几种方式">
 <meta property='og:description' content=" 前排提示 如果你准备将公司内网的信息暴露到公网，请在操作之前自行确认是否有信息泄露及安全风险，本文不承担由此带来的任何后果。\n有的时候我们有一些运行在内网的服务，没有公网IP，需要临时暴露在公网供自己或其他人访问，本文探讨了几种可以达到的方法。\n使用比如 ngrok, cloudflared 等等的软件 这种方法应该来说是最简单便捷的，只需要下载安装对应的软件，启动服务即可。这里有一个前提是服务器能连接外网。这里提到的这两个软件都不需要太多配置，可能需要登陆一个账号就可以使用了。目前这两种只支持 http/https 协议，对其他协议还不支持\n通过 iptables 设置 DNAT 来完成 如果你有一台具有公网IP的服务器，可以是在云服务商购买的，且你想暴露的内网服务器和这台服务器在一个局域网内，那么可以使用 iptables 来实现。\n在具有公网IP的服务器上执行下面的命令\n1 iptables -t nat -A PREROUTING -dport 9999 -DNAT 192.168.1.1:9998 即可将对公网IP服务器的 9999 端口的访问转发到 192.168.1.1 的 9998 端口。注意，这里还需要打开 Linux 的转发功能。\n通过 SSH 端口转发来实现内网暴露在公网 这里需要一个具有公网IP的服务器，具体的操作方法有两种\n本地端口转发 1 ssh -L 8080:192.168.1.1:9999 root@10.0.0.3 这个命令的作用如下：通过ssh登陆到 10.0.0.3，然后将对本机 8080 的访问流量通过 10.0.0.3 转发到内部的 192.168.1.1:9999。这样，同事通过访问你的机器，就能访问到对应的服务了。\n远端端口转发 1 ssh -R 9999:192.168.1.1:3456 root@10.0.0.3 这个命令的作用如下：通过ssh登陆到 10.0.0.3，然后将对远端 9999 的访问流量通过本机转发到内部的 192.168.1.1:3456。这样，同事通过访问 10.0.0.3，就能访问到你内网对应的服务 192.168.1.1:3456 了。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E5%86%85%E7%BD%91%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2%E5%9C%A8%E5%85%AC%E7%BD%91%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='内网' /><meta property='article:tag' content='公网' /><meta property='article:tag' content='转发' /><meta property='article:published_time' content='2024-11-20T22:25:09&#43;08:00'/><meta property='article:modified_time' content='2024-11-20T22:25:09&#43;08:00'/>
 <meta name="twitter:title" content="内网服务暴露在公网的几种方式">
 <meta name="twitter:description" content=" 前排提示 如果你准备将公司内网的信息暴露到公网，请在操作之前自行确认是否有信息泄露及安全风险，本文不承担由此带来的任何后果。\n有的时候我们有一些运行在内网的服务，没有公网IP，需要临时暴露在公网供自己或其他人访问，本文探讨了几种可以达到的方法。\n使用比如 ngrok, cloudflared 等等的软件 这种方法应该来说是最简单便捷的，只需要下载安装对应的软件，启动服务即可。这里有一个前提是服务器能连接外网。这里提到的这两个软件都不需要太多配置，可能需要登陆一个账号就可以使用了。目前这两种只支持 http/https 协议，对其他协议还不支持\n通过 iptables 设置 DNAT 来完成 如果你有一台具有公网IP的服务器，可以是在云服务商购买的，且你想暴露的内网服务器和这台服务器在一个局域网内，那么可以使用 iptables 来实现。\n在具有公网IP的服务器上执行下面的命令\n1 iptables -t nat -A PREROUTING -dport 9999 -DNAT 192.168.1.1:9998 即可将对公网IP服务器的 9999 端口的访问转发到 192.168.1.1 的 9998 端口。注意，这里还需要打开 Linux 的转发功能。\n通过 SSH 端口转发来实现内网暴露在公网 这里需要一个具有公网IP的服务器，具体的操作方法有两种\n本地端口转发 1 ssh -L 8080:192.168.1.1:9999 root@10.0.0.3 这个命令的作用如下：通过ssh登陆到 10.0.0.3，然后将对本机 8080 的访问流量通过 10.0.0.3 转发到内部的 192.168.1.1:9999。这样，同事通过访问你的机器，就能访问到对应的服务了。\n远端端口转发 1 ssh -R 9999:192.168.1.1:3456 root@10.0.0.3 这个命令的作用如下：通过ssh登陆到 10.0.0.3，然后将对远端 9999 的访问流量通过本机转发到内部的 192.168.1.1:3456。这样，同事通过访问 10.0.0.3，就能访问到你内网对应的服务 192.168.1.1:3456 了。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

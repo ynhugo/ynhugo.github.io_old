@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="vmware安装android系统教程">
 <meta property='og:description' content="参考链接：在VMware上体验了一把Android x86 9\n下载安卓9.0映像文件 我是在这个网站下载的https://www.fosshub.com/Android-x86.html，选择的是Android-x86 64-bit ISO file，对应版本是9.0-r2-k49。\n打开vmware进行安装 1.点击文件，接着点击创建虚拟机；\n2.选择自定义，然后点击下一步；\n3.硬件兼容性默认，然后点击下一步；\n4.点击稍后安装操作系统，然后点击下一步；\n5.客户机系统选择Linux，版本选择其他Linux 5.x 内核64位，然后点击下一步；\n6.虚拟机名称自定义，选择安装位置，然后点击下一步；\n7.内核数量根据自己电脑硬件情况自定义，然后点击下一步；\n8.内存选择2GB或者4GB，然后点击下一步；\n9.网络类型选择使用网络地址转换(NAT)，然后点击下一步；\n10.IO控制器类型默认，然后点击下一步；\n11.磁盘类型默认，然后点击下一步；\n12.创建新虚拟磁盘，然后点击下一步；\n13.最大磁盘大小这里我分配了40GB，可以自由分配，并且我选择了将虚拟磁盘拆分成多个文件，然后点击下一步；\n14.在指定磁盘文件这里，我的做法是在安卓系统的安装位置中再建一个用来存放磁盘文件的子目录，作为磁盘文 件的目录，然后点击下一步；\n15.在这一步中，先点击自定义硬件，然后点击新CD/DVD(IDE)，在右侧点击使用ISO映像文件，接着点击浏览到下载的安卓映像文件所在的目录选择安卓映像文件，然后点击打开，点击关闭，最后点击完成;\n16.为保险起见，我为安卓系统做一个快照，在安卓系统的标签鼠标右键点击，在弹出的菜单中点击快照，点击拍摄快照，快照的名称和描述可以自定义，再次点击拍摄快照，一秒到两秒钟的时间快照就制作完成了，未开 机状态下的快照制作过程花费时间是最短的；\n17.点击开启此虚拟机，底部弹窗可以叉掉，点进安卓系统的界面的时候鼠标消失了，可以通过快捷键ctrl+alt 恢复鼠标，不过目前要安装安卓系统，因此先不恢复鼠标，在安卓系统的启动界面通过上下方向键选择第三个Installation - Install Android-x86 to harddisk选项后敲回车，加载后进入选择分区界面，用上下方向键选择第一个Create/Modify partitions后，默认选择OK，然后敲回车，再次弹出窗口，默认选择No，再次敲回车，进入创建分区界面，将光标通过左右方向键移到New后敲回车，选择primary后敲回车，在设置分区空间大小界面什么都不要做，再次敲回车，在分区界面默认选中了sda1，将移动光标选中write，然后敲回车，接着分区界面提示yes or no，输入yes，然后敲回车，加载之后选中Quit，然后敲回车，在Choose filesystem界面中默认选中了sda1，光标默认选中OK，其他什么都不做，直接敲回车，在下一个界面中选ext4，然后敲回车，在Confirm界 面选中Yes，然后敲回车，加载后再次在Confirm界面选中Yes，然后敲回车，接下来进入到了Question界面 ，依然是选中Yes，然后敲回车开始了安卓系统安装的过程，加载后先什么都不要做，鼠标右键点击当前安卓系统 的标签，在可移动设备的列表中把CD/DVD(IDE)的连接断开，在进行下一步操作之前如果想保险一点可以先将安 卓系统关机并做一个快照然后重新启动，系统在加载后进入到了GRUB启动模式选择界面，选择第二个模式Android-x86 9.0-r2（Debug mode），然后敲回车，系统开始加载，耐心等待一会儿后，尝试敲回车，如果没有反应就继续加载过程，然后再次尝试敲回车，出现一行只有:/android #，并且旁边有光标在来回闪烁，意味着进入到了安卓系 统的终端环境中，接下来要做几个操作，在命令行界面输入mount -o remount,rw /mnt后回车，执行该命令后在下一行返回一行字符串，不用管，输入下一条命令vi /mnt/grub/ment.lst后敲回车，修改ment.lst文件，进入这 个文件后点击键盘的字母i进入编辑模式，然后将光标通过方向键移动到需要修改的位置在这个文件中有四个title，分别是Android-x86 9.0-r2、Android-x86 9.0-r2（Debug mode）、Android-x86 9.0-r2（Debug nomodeset）和Android-x86 9.0-r2（Debug video=LVDS-1 :d），需要修改语句是的是第一个titleAndroid-x86 9.0-r2下边的kernel /android-9.0-r2/kernel quiet root=/dev/ram0 SRC=/android-9.0-r2，将该条语句中的root 改为nomodeset_root，然后点击按键esc退出编辑模式，再执行快捷键shift+;，这个快捷键由按键shift和 标点符号;组成，执行快捷键后进入底行模式，输入字母wq后回车便退出该文件，接下来在系统标签右击展开 菜单，点击电源列表的重新启动客户机，在模式选择界面选中第一个模式后回车，或者你也可以什么都不做，系统会自动默认选择第一个模式并运行，耐心等待一会儿进入安卓系统。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/vmware%E5%AE%89%E8%A3%85android%E7%B3%BB%E7%BB%9F%E6%95%99%E7%A8%8B/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='vmware_android' /><meta property='article:published_time' content='2025-07-08T18:57:42&#43;08:00'/><meta property='article:modified_time' content='2025-07-08T18:57:42&#43;08:00'/>
 <meta name="twitter:title" content="vmware安装android系统教程">
 <meta name="twitter:description" content="参考链接：在VMware上体验了一把Android x86 9\n下载安卓9.0映像文件 我是在这个网站下载的https://www.fosshub.com/Android-x86.html，选择的是Android-x86 64-bit ISO file，对应版本是9.0-r2-k49。\n打开vmware进行安装 1.点击文件，接着点击创建虚拟机；\n2.选择自定义，然后点击下一步；\n3.硬件兼容性默认，然后点击下一步；\n4.点击稍后安装操作系统，然后点击下一步；\n5.客户机系统选择Linux，版本选择其他Linux 5.x 内核64位，然后点击下一步；\n6.虚拟机名称自定义，选择安装位置，然后点击下一步；\n7.内核数量根据自己电脑硬件情况自定义，然后点击下一步；\n8.内存选择2GB或者4GB，然后点击下一步；\n9.网络类型选择使用网络地址转换(NAT)，然后点击下一步；\n10.IO控制器类型默认，然后点击下一步；\n11.磁盘类型默认，然后点击下一步；\n12.创建新虚拟磁盘，然后点击下一步；\n13.最大磁盘大小这里我分配了40GB，可以自由分配，并且我选择了将虚拟磁盘拆分成多个文件，然后点击下一步；\n14.在指定磁盘文件这里，我的做法是在安卓系统的安装位置中再建一个用来存放磁盘文件的子目录，作为磁盘文 件的目录，然后点击下一步；\n15.在这一步中，先点击自定义硬件，然后点击新CD/DVD(IDE)，在右侧点击使用ISO映像文件，接着点击浏览到下载的安卓映像文件所在的目录选择安卓映像文件，然后点击打开，点击关闭，最后点击完成;\n16.为保险起见，我为安卓系统做一个快照，在安卓系统的标签鼠标右键点击，在弹出的菜单中点击快照，点击拍摄快照，快照的名称和描述可以自定义，再次点击拍摄快照，一秒到两秒钟的时间快照就制作完成了，未开 机状态下的快照制作过程花费时间是最短的；\n17.点击开启此虚拟机，底部弹窗可以叉掉，点进安卓系统的界面的时候鼠标消失了，可以通过快捷键ctrl+alt 恢复鼠标，不过目前要安装安卓系统，因此先不恢复鼠标，在安卓系统的启动界面通过上下方向键选择第三个Installation - Install Android-x86 to harddisk选项后敲回车，加载后进入选择分区界面，用上下方向键选择第一个Create/Modify partitions后，默认选择OK，然后敲回车，再次弹出窗口，默认选择No，再次敲回车，进入创建分区界面，将光标通过左右方向键移到New后敲回车，选择primary后敲回车，在设置分区空间大小界面什么都不要做，再次敲回车，在分区界面默认选中了sda1，将移动光标选中write，然后敲回车，接着分区界面提示yes or no，输入yes，然后敲回车，加载之后选中Quit，然后敲回车，在Choose filesystem界面中默认选中了sda1，光标默认选中OK，其他什么都不做，直接敲回车，在下一个界面中选ext4，然后敲回车，在Confirm界 面选中Yes，然后敲回车，加载后再次在Confirm界面选中Yes，然后敲回车，接下来进入到了Question界面 ，依然是选中Yes，然后敲回车开始了安卓系统安装的过程，加载后先什么都不要做，鼠标右键点击当前安卓系统 的标签，在可移动设备的列表中把CD/DVD(IDE)的连接断开，在进行下一步操作之前如果想保险一点可以先将安 卓系统关机并做一个快照然后重新启动，系统在加载后进入到了GRUB启动模式选择界面，选择第二个模式Android-x86 9.0-r2（Debug mode），然后敲回车，系统开始加载，耐心等待一会儿后，尝试敲回车，如果没有反应就继续加载过程，然后再次尝试敲回车，出现一行只有:/android #，并且旁边有光标在来回闪烁，意味着进入到了安卓系 统的终端环境中，接下来要做几个操作，在命令行界面输入mount -o remount,rw /mnt后回车，执行该命令后在下一行返回一行字符串，不用管，输入下一条命令vi /mnt/grub/ment.lst后敲回车，修改ment.lst文件，进入这 个文件后点击键盘的字母i进入编辑模式，然后将光标通过方向键移动到需要修改的位置在这个文件中有四个title，分别是Android-x86 9.0-r2、Android-x86 9.0-r2（Debug mode）、Android-x86 9.0-r2（Debug nomodeset）和Android-x86 9.0-r2（Debug video=LVDS-1 :d），需要修改语句是的是第一个titleAndroid-x86 9.0-r2下边的kernel /android-9.0-r2/kernel quiet root=/dev/ram0 SRC=/android-9.0-r2，将该条语句中的root 改为nomodeset_root，然后点击按键esc退出编辑模式，再执行快捷键shift+;，这个快捷键由按键shift和 标点符号;组成，执行快捷键后进入底行模式，输入字母wq后回车便退出该文件，接下来在系统标签右击展开 菜单，点击电源列表的重新启动客户机，在模式选择界面选中第一个模式后回车，或者你也可以什么都不做，系统会自动默认选择第一个模式并运行，耐心等待一会儿进入安卓系统。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="windows环境搭建alist教程">
 <meta property='og:description' content="搭建alist教程 alist配置官方文档。\n下载alist 下载程序后在命令行界面运行就可以了，第一次运行的时候先获取到用户名和密码，然后根据提供的用户名和密码进行网页访问并修改密码。\n从终端运行 当前步骤需要做的操作，假设你已经进入程序所在的目录，那么只需要执行 ctrl+l 快捷键，然后回车即可打开相应终端，通过这样的方式打开的终端，终端显示的路径是你的alist程序所在目录的路径。\n后台运行 创建一个bat脚本，脚本内容如下，参考链接：Windows如何后台运行bat文件。\n1 2 3 4 5 6 @echo off if &#34;%1&#34;==&#34;h&#34; goto begin start mshta vbscript:createobject(&#34;wscript.shell&#34;).run(&#34;&#34;&#34;%~nx0&#34;&#34; h&#34;,0)(window.close)&amp;&amp;exit :begin alist server 然后我为该脚本创建了一个快捷方式，并添加到windows的程序和启动菜单中，这样除了可以手动启动以alist还可以在电脑启动时自动运行alist，并且是在后台运行，有的喜欢将添加快捷方式放到桌面的也没有问题，再提一下windows的程序和启动菜单是&quot;C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs&quot; 和 &ldquo;C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup&rdquo;。\nalist操作方式 使用alist的命令有两个就够用了，分别是用于获取alist密码的运行alist服务的。\n获取用户名和密码 1 alist.exe admin 或者 .\\alist.exe admin 运行alist服务 1 alist.exe server 或者 .\\alist.exe server 运行服务之后通过提示的端口进行网页访问，链接格式是这样的&quot;127.0.0.1:5244&quot;，通过这个链接进行访问你就可以访问alist的界面了。\n添加存储 接下来就需要添加存储了，将百度网盘或者阿里云网盘添加进alist存储，也可以添加本地目录； 第一次访问alist时界面什么都没有，未来添加过网盘后首页应付出现相应的网盘了，添加网盘首先要做的操作是点击首页最底部的管理，然后再点击存储，接着点击添加，接下来就可以选择要添加的网盘的类型了，添加好的网盘可以在主页浏览。\n浏览官方文档 官方文档 刚开始接触alist只需要看&quot;安装&quot;和&quot;添加存储&quot;就够用了，相关内容介绍的也都比较到位，至少我们平时用的百度网盘和阿里云网盘是没有问题的，其他网盘有待折腾，包括网上也会有许多不错的教程可以参考学习。\n添加百度网盘 需要关注的有两点，刷新令牌和web代理； 刷新令牌可以根据官方文档进行操作获取并进行添加，web代理也勾选一下，挂载路径随便设置，格式是一个斜杠加自定义名称，就像这样&quot;/BaiduNetdisk&quot;，剩下的不需要动，接着点击保存就可以了。\n添加阿里云网盘Open 即添加阿里云盘，Open是开源的意思，即跟添加另一个阿里云盘时要做的操作不一样，但是目的都是一样的； 添加阿里云盘只需要关注刷新令牌，然后设置挂载路径，其他地方不需要做，接着保存就可以了；\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/windows%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BAalist%E6%95%99%E7%A8%8B/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='alist' /><meta property='article:published_time' content='2025-07-08T18:57:42&#43;08:00'/><meta property='article:modified_time' content='2025-07-08T18:57:42&#43;08:00'/>
 <meta name="twitter:title" content="windows环境搭建alist教程">
 <meta name="twitter:description" content="搭建alist教程 alist配置官方文档。\n下载alist 下载程序后在命令行界面运行就可以了，第一次运行的时候先获取到用户名和密码，然后根据提供的用户名和密码进行网页访问并修改密码。\n从终端运行 当前步骤需要做的操作，假设你已经进入程序所在的目录，那么只需要执行 ctrl+l 快捷键，然后回车即可打开相应终端，通过这样的方式打开的终端，终端显示的路径是你的alist程序所在目录的路径。\n后台运行 创建一个bat脚本，脚本内容如下，参考链接：Windows如何后台运行bat文件。\n1 2 3 4 5 6 @echo off if &#34;%1&#34;==&#34;h&#34; goto begin start mshta vbscript:createobject(&#34;wscript.shell&#34;).run(&#34;&#34;&#34;%~nx0&#34;&#34; h&#34;,0)(window.close)&amp;&amp;exit :begin alist server 然后我为该脚本创建了一个快捷方式，并添加到windows的程序和启动菜单中，这样除了可以手动启动以alist还可以在电脑启动时自动运行alist，并且是在后台运行，有的喜欢将添加快捷方式放到桌面的也没有问题，再提一下windows的程序和启动菜单是&quot;C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs&quot; 和 &ldquo;C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup&rdquo;。\nalist操作方式 使用alist的命令有两个就够用了，分别是用于获取alist密码的运行alist服务的。\n获取用户名和密码 1 alist.exe admin 或者 .\\alist.exe admin 运行alist服务 1 alist.exe server 或者 .\\alist.exe server 运行服务之后通过提示的端口进行网页访问，链接格式是这样的&quot;127.0.0.1:5244&quot;，通过这个链接进行访问你就可以访问alist的界面了。\n添加存储 接下来就需要添加存储了，将百度网盘或者阿里云网盘添加进alist存储，也可以添加本地目录； 第一次访问alist时界面什么都没有，未来添加过网盘后首页应付出现相应的网盘了，添加网盘首先要做的操作是点击首页最底部的管理，然后再点击存储，接着点击添加，接下来就可以选择要添加的网盘的类型了，添加好的网盘可以在主页浏览。\n浏览官方文档 官方文档 刚开始接触alist只需要看&quot;安装&quot;和&quot;添加存储&quot;就够用了，相关内容介绍的也都比较到位，至少我们平时用的百度网盘和阿里云网盘是没有问题的，其他网盘有待折腾，包括网上也会有许多不错的教程可以参考学习。\n添加百度网盘 需要关注的有两点，刷新令牌和web代理； 刷新令牌可以根据官方文档进行操作获取并进行添加，web代理也勾选一下，挂载路径随便设置，格式是一个斜杠加自定义名称，就像这样&quot;/BaiduNetdisk&quot;，剩下的不需要动，接着点击保存就可以了。\n添加阿里云网盘Open 即添加阿里云盘，Open是开源的意思，即跟添加另一个阿里云盘时要做的操作不一样，但是目的都是一样的； 添加阿里云盘只需要关注刷新令牌，然后设置挂载路径，其他地方不需要做，接着保存就可以了；\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

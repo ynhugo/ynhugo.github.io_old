@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="深入浅出curl -J智能下载文件名的正确姿势">
 <meta property='og:description' content=" 引言 在日常使用 `curl` 下载文件时，你可能会遇到这样的问题：一个下载链接的 URL 末尾并不包含文件名（例如 API 导出、GitHub 的 codeload 链接），直接用 `curl -O` 保存下来的文件名往往是混乱的（比如 download 或一个 ID）。\n幸运的是，HTTP 协议提供了一个标准机制：服务器可以在响应头中通过 `Content-Disposition` 字段告诉客户端“建议的文件名”。`curl` 的 `-J`（`–remote-header-name`）选项正是为此而生。\n本文将详细介绍 `curl -J` 的背景、用法、注意事项以及实际案例。\n为什么需要 `-J` 传统的 `-O` 的局限 `curl -O https://example.com/download.php?id=123` 保存的文件名会是 `download.php`，而不是真正的 `report.pdf`。 即使 URL 以路径结尾，如 `/files/12345`，保存下来也是 `12345`。 服务器给出的建议文件名 一个典型的 `Content-Disposition` 响应头：\n1 Content-Disposition: attachment; filename=&#34;KodExplorer-4.54.zip&#34; 其中 `filename=` 后面的值就是建议的文件名。\n`-J` 的作用 `-J` 告诉 `curl`：**忽略 URL 中的文件名，转而从 `Content-Disposition` 头中提取文件名来保存**。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAcurl-j%E6%99%BA%E8%83%BD%E4%B8%8B%E8%BD%BD%E6%96%87%E4%BB%B6%E5%90%8D%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%A7%BF%E5%8A%BF/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='curl' /><meta property='article:tag' content='linux' /><meta property='article:tag' content='shell' /><meta property='article:published_time' content='2026-05-21T01:06:06&#43;08:00'/><meta property='article:modified_time' content='2026-05-21T01:06:06&#43;08:00'/>
 <meta name="twitter:title" content="深入浅出curl -J智能下载文件名的正确姿势">
 <meta name="twitter:description" content=" 引言 在日常使用 `curl` 下载文件时，你可能会遇到这样的问题：一个下载链接的 URL 末尾并不包含文件名（例如 API 导出、GitHub 的 codeload 链接），直接用 `curl -O` 保存下来的文件名往往是混乱的（比如 download 或一个 ID）。\n幸运的是，HTTP 协议提供了一个标准机制：服务器可以在响应头中通过 `Content-Disposition` 字段告诉客户端“建议的文件名”。`curl` 的 `-J`（`–remote-header-name`）选项正是为此而生。\n本文将详细介绍 `curl -J` 的背景、用法、注意事项以及实际案例。\n为什么需要 `-J` 传统的 `-O` 的局限 `curl -O https://example.com/download.php?id=123` 保存的文件名会是 `download.php`，而不是真正的 `report.pdf`。 即使 URL 以路径结尾，如 `/files/12345`，保存下来也是 `12345`。 服务器给出的建议文件名 一个典型的 `Content-Disposition` 响应头：\n1 Content-Disposition: attachment; filename=&#34;KodExplorer-4.54.zip&#34; 其中 `filename=` 后面的值就是建议的文件名。\n`-J` 的作用 `-J` 告诉 `curl`：**忽略 URL 中的文件名，转而从 `Content-Disposition` 头中提取文件名来保存**。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

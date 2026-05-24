@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Emacs使用org-agenda管理日程">
 <meta property='og:description' content=" Emacs 使用org-agenda 管理日程 如何使用org设置日程上篇已经介绍完，那现在的重点就是如何查看日程，并且真正将org运用到日常工作中来。之前学习org跨越了很长时间，但一直没有落实到日常应用，所以过一阵子就会忘记，得来的教训就是学习任何语言，工具一定要落实在使用中，纸上谈兵要不得。让我们一起开始使用org-agenda查看，管理及运用设置好的日程。\n纸上得来终觉浅,绝知此事要躬行.\n日程 Agenda 定义完ToDo之后，使用M-x org-agenda 打开日程buffer，可看到当前排的所有日程，并可以直接进行优先级等操作。那如何归纳整理自己的日程表呢，通常我使用多个文件来代表不同的类型。\n日程文件 可以针对不同的任务类型，定义多个日程或任务文件，然后将文件加入全局的日程文件列表，统一纳入org的管理。\n以下来举例： 使用C-h v 查看变量org-agenda-flies，当前有一个文件，现在我们再加入另一个\n打开org文件，使用org-agenda-file-to-front或者快捷键C-c [ 将当前文件加入到全局列表。这样一来，我们定义的日程就会加入到全局列表，使用emacs统一进行管理了。也可以通过emacs配置文件加入。\n然后就可以使用M-x org-agenda a 打开agenda界面了。\n快捷键 功能 C-c [ 将当前文件加入全局列表 C-c ] 将当前文件移除全局列表 C-c C-x &lt; 锁定当前文件即在org agenda的buffer中只显示当前文件的日程（org-agenda-set-restriction-lock） C-c C-x &gt; 解锁(org-agenda-remove-restriction-lock) 可以打开speedbar ，在文件上使用&lt; 和&gt; 来锁定和解锁。\n日程操作 前一章已经介绍过，使用org-agenda打开日程buffer，此时可以选择多种视图方式，以便更加方便的查看日程。\nEmacs 内置了多种视图，下面会一一介绍，首先来看都有哪些操作。\n视图中的操作 其他快捷键及功能：\n快捷键 功能 b daily视图 w weekly视图 n/p 上/下移动光标 N/P 上/下按日程移动光标 SPC 在另一缓冲区显示任务在org文件中的定义的位置 TAB 在另一缓冲区显示任务在org文件中的定义的位置，并且光标跳转至此 L 显示任务在文件中位置并且光标居中 RET 在当前buffer打开文件并跳转 F 打开跟踪模式，即移动光标时，另一buffer显示当前任务的定义处 C-c C-x b 显示任务及子树，并可以设置层数 C-c C-o 打开链接 o 关闭另一个buffer A 打开另一种视图并嵌入到当前视图中 v 弹出多个命令进行选择 f/b 下一天 . 跳转至当天 j 选择日期并跳转 D 包含日记 r 刷新agenda buffer / 通过tag过滤 &lt; 通过类型过滤 ^ 通过 top headline 过滤 = 通过模式匹配过滤 丨 去除所有过滤 t 改变状态 C-S-Left/C-S-Right 改变状态 C-k 删除 C-w 重新归档某项日程 $ 归档，通常是另一个文件 T 显示所有tag : 设置tag , 设置优先级 +/- 或者 S-up/down 设置优先级 z 添加note C-c C-a 附件 C-c C-s 安排日程 C-c C-d 设置deadline S-Left/Right 改变日期 &gt; 改变日期 I 插入clock O 停止上一个clock X 取消当前clock J 跳转之clock处 M-Up/Down 拖拽一个日程 m mark当前日程 * mark所有日程为重点 u 取消mark当前日程 U 取消mark所有日程 M-m 设置/取消当前mark M-× 设置/取消所有mark B bulk action C-x C-w 导出。可以为.html .pdf .ps .org q 退出 x 退出，包括所有相关打开的buffer 太多了，大家通过帮助自己尝试吧。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/emacs%E4%BD%BF%E7%94%A8org-agenda%E7%AE%A1%E7%90%86%E6%97%A5%E7%A8%8B/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='emacs' /><meta property='article:tag' content='org-agenda' /><meta property='article:tag' content='gtd' /><meta property='article:published_time' content='2024-11-26T02:12:09&#43;08:00'/><meta property='article:modified_time' content='2024-11-26T02:12:09&#43;08:00'/>
 <meta name="twitter:title" content="Emacs使用org-agenda管理日程">
 <meta name="twitter:description" content=" Emacs 使用org-agenda 管理日程 如何使用org设置日程上篇已经介绍完，那现在的重点就是如何查看日程，并且真正将org运用到日常工作中来。之前学习org跨越了很长时间，但一直没有落实到日常应用，所以过一阵子就会忘记，得来的教训就是学习任何语言，工具一定要落实在使用中，纸上谈兵要不得。让我们一起开始使用org-agenda查看，管理及运用设置好的日程。\n纸上得来终觉浅,绝知此事要躬行.\n日程 Agenda 定义完ToDo之后，使用M-x org-agenda 打开日程buffer，可看到当前排的所有日程，并可以直接进行优先级等操作。那如何归纳整理自己的日程表呢，通常我使用多个文件来代表不同的类型。\n日程文件 可以针对不同的任务类型，定义多个日程或任务文件，然后将文件加入全局的日程文件列表，统一纳入org的管理。\n以下来举例： 使用C-h v 查看变量org-agenda-flies，当前有一个文件，现在我们再加入另一个\n打开org文件，使用org-agenda-file-to-front或者快捷键C-c [ 将当前文件加入到全局列表。这样一来，我们定义的日程就会加入到全局列表，使用emacs统一进行管理了。也可以通过emacs配置文件加入。\n然后就可以使用M-x org-agenda a 打开agenda界面了。\n快捷键 功能 C-c [ 将当前文件加入全局列表 C-c ] 将当前文件移除全局列表 C-c C-x &lt; 锁定当前文件即在org agenda的buffer中只显示当前文件的日程（org-agenda-set-restriction-lock） C-c C-x &gt; 解锁(org-agenda-remove-restriction-lock) 可以打开speedbar ，在文件上使用&lt; 和&gt; 来锁定和解锁。\n日程操作 前一章已经介绍过，使用org-agenda打开日程buffer，此时可以选择多种视图方式，以便更加方便的查看日程。\nEmacs 内置了多种视图，下面会一一介绍，首先来看都有哪些操作。\n视图中的操作 其他快捷键及功能：\n快捷键 功能 b daily视图 w weekly视图 n/p 上/下移动光标 N/P 上/下按日程移动光标 SPC 在另一缓冲区显示任务在org文件中的定义的位置 TAB 在另一缓冲区显示任务在org文件中的定义的位置，并且光标跳转至此 L 显示任务在文件中位置并且光标居中 RET 在当前buffer打开文件并跳转 F 打开跟踪模式，即移动光标时，另一buffer显示当前任务的定义处 C-c C-x b 显示任务及子树，并可以设置层数 C-c C-o 打开链接 o 关闭另一个buffer A 打开另一种视图并嵌入到当前视图中 v 弹出多个命令进行选择 f/b 下一天 . 跳转至当天 j 选择日期并跳转 D 包含日记 r 刷新agenda buffer / 通过tag过滤 &lt; 通过类型过滤 ^ 通过 top headline 过滤 = 通过模式匹配过滤 丨 去除所有过滤 t 改变状态 C-S-Left/C-S-Right 改变状态 C-k 删除 C-w 重新归档某项日程 $ 归档，通常是另一个文件 T 显示所有tag : 设置tag , 设置优先级 +/- 或者 S-up/down 设置优先级 z 添加note C-c C-a 附件 C-c C-s 安排日程 C-c C-d 设置deadline S-Left/Right 改变日期 &gt; 改变日期 I 插入clock O 停止上一个clock X 取消当前clock J 跳转之clock处 M-Up/Down 拖拽一个日程 m mark当前日程 * mark所有日程为重点 u 取消mark当前日程 U 取消mark所有日程 M-m 设置/取消当前mark M-× 设置/取消所有mark B bulk action C-x C-w 导出。可以为.html .pdf .ps .org q 退出 x 退出，包括所有相关打开的buffer 太多了，大家通过帮助自己尝试吧。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 
@@ -947,7 +947,7 @@ Column 视图
         
             <a href="/tags/org-agenda/">Org-Agenda</a>
         
-            <a href="/tags/gtd/">Gtd</a>
+            <a href="/tags/gtd/">GTD</a>
         
     </section>
 

@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="termux + frp + screen 实现内网穿透">
 <meta property='og:description' content=" 内网穿透方法 当本地服务运行时，它会通过端口转发将内容暴露出去，而 frp 的配置文件会将本地端口暴露到外部网络。因此，在修改 frp 配置文件后，相关的本地服务也需要重新启动。例如，如果配置的是 SSH 穿透，在修改 frp 配置后，本地需要重新启动 sshd 服务。类似地，对于 nginx 服务，修改 frp 配置后，也需要执行 nginx -s reload 来重新加载配置。\nssh连接-termux 服务器布置 一、 下载frp arm64！！\n1 2 # 网络好的话 wget https://github.com/fatedier/frp/releases/download/v0.61.0/frp_0.61.0_linux_arm64.tar.gz 二、复制到服务器中解压\n1 2 tar zxvf frp_0.37.0_linux_arm64.tar.gz cd frp_0.37.0_linux_arm64 三、下载 screen 并使用它创建frp服务器端\n可以根据需要修改端口，我这里选择使用默认的，后期根据需要再去修改\n1 2 3 4 pkg install -y screen screen -S frps ./frps -c frps.ini # 退出该screen：Ctrl + a，Ctrl + d frps.ini 1 2 [common] bind_port = 7000 客户端布置 frps与frpc的运行都在同一个设备上的termux中，通过screen创建多个实例来运行frps与fprc\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/termux--frp--screen-%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='termux' /><meta property='article:tag' content='frp' /><meta property='article:tag' content='内网穿透' /><meta property='article:published_time' content='2024-11-17T18:57:10&#43;08:00'/><meta property='article:modified_time' content='2024-11-17T18:57:10&#43;08:00'/>
 <meta name="twitter:title" content="termux + frp + screen 实现内网穿透">
 <meta name="twitter:description" content=" 内网穿透方法 当本地服务运行时，它会通过端口转发将内容暴露出去，而 frp 的配置文件会将本地端口暴露到外部网络。因此，在修改 frp 配置文件后，相关的本地服务也需要重新启动。例如，如果配置的是 SSH 穿透，在修改 frp 配置后，本地需要重新启动 sshd 服务。类似地，对于 nginx 服务，修改 frp 配置后，也需要执行 nginx -s reload 来重新加载配置。\nssh连接-termux 服务器布置 一、 下载frp arm64！！\n1 2 # 网络好的话 wget https://github.com/fatedier/frp/releases/download/v0.61.0/frp_0.61.0_linux_arm64.tar.gz 二、复制到服务器中解压\n1 2 tar zxvf frp_0.37.0_linux_arm64.tar.gz cd frp_0.37.0_linux_arm64 三、下载 screen 并使用它创建frp服务器端\n可以根据需要修改端口，我这里选择使用默认的，后期根据需要再去修改\n1 2 3 4 pkg install -y screen screen -S frps ./frps -c frps.ini # 退出该screen：Ctrl + a，Ctrl + d frps.ini 1 2 [common] bind_port = 7000 客户端布置 frps与frpc的运行都在同一个设备上的termux中，通过screen创建多个实例来运行frps与fprc\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

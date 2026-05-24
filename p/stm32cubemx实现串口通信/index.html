@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="STM32CubeMX实现串口通信">
 <meta property='og:description' content=" STM32CubeMX实现串口通信 STM32CubeMX版本：6.10\n在安装STM32CubeMX之前需要电脑上有Java环境\nJava下载链接：https://javadl.oracle.com/webapps/download/AutoDL?BundleId=249203_b291ca3e0c8548b5a51d5a5f50063037\nSTM32CubeMX下载链接：https://www.st.com/zh/development-tools/stm32cubemx.html\nKeil5(MDK-ARM)下载链接：https://pan.baidu.com/s/1kC7h3ljv1iENa0mSP2a0aQ?pwd=pxsy\nProteus下载链接：https://mp.weixin.qq.com/s?__biz=MzA4MjU4MTg2Ng==&amp;mid=2247515066&amp;idx=5&amp;sn=ba4b87dad87c1f13ccc595934269bfaa&amp;chksm=9f817bbfa8f6f2a9cd6e6690e6a791ca3fd43f9bddf8ea06d2da4b07c28ce5600d79703d72f5&amp;scene=21#wechat_redirect\n串口调试助手：https://pan.baidu.com/s/1E5SprNfWX1yqPddtvsa8sw?pwd=e6vn\nVSPD下载链接：https://www.xue51.com/soft/9349.html#xzdz\n使用STM32CubeMX 安装固件库 若点击 Manage embedded software packages 后，出现失败，则需要随便点击其它任一选项，进行下载一些文件，比如点击 file-&gt;new project ，等下载后，再进行安装固件库。\n1.进入嵌入式软件包管理界面\n2.如果进入失败，则点击一下旁边的INSTALL/REMOVE，安装嵌入式软件包，如果提示登录的话，就将在ST官网注册的信息输入到CubeMX的登录框内进行登录，然后就可以接着安装了\n然后再次进行第一步的操作，这次就可以进入嵌入式软件包管理界面了，接着选择自己开发板的固件库，我这里是f1的。选择版本安装，我这里已经安装过了。\n工程设置 1.点击 file -&gt; new project 建立工程\n按步骤即可。搜索型号，选择合适的型号进行工程建立\n2.进行系统调试及基准时钟配置。\n点击 System Core下拉栏中的 SYS。选择debug调试接口。我选择 serial Wire\nSW模式就选择serial Wire。JTAG模式就选择JTAG，4pin和5pin的区别多了一个复位引脚\nstlink调试就是SW模式，jlink调试就是JTAG模式\n3.进行时钟RCC选项配置\n点击 System Core下拉栏中的 RCC。可以都选外部晶振Crystal/Ceramic Resonator。\nBYPASS Clock Source（旁路时钟源）\nCrystal/Ceramic Resonator（石英/陶瓷 晶振）\n4.进行系统具体时钟配置\n(1)点击“Clock Configuration”选项栏进入时钟树配置界面。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/stm32cubemx%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='stm32' /><meta property='article:published_time' content='2024-03-26T00:24:32&#43;08:00'/><meta property='article:modified_time' content='2024-03-26T00:24:32&#43;08:00'/>
 <meta name="twitter:title" content="STM32CubeMX实现串口通信">
 <meta name="twitter:description" content=" STM32CubeMX实现串口通信 STM32CubeMX版本：6.10\n在安装STM32CubeMX之前需要电脑上有Java环境\nJava下载链接：https://javadl.oracle.com/webapps/download/AutoDL?BundleId=249203_b291ca3e0c8548b5a51d5a5f50063037\nSTM32CubeMX下载链接：https://www.st.com/zh/development-tools/stm32cubemx.html\nKeil5(MDK-ARM)下载链接：https://pan.baidu.com/s/1kC7h3ljv1iENa0mSP2a0aQ?pwd=pxsy\nProteus下载链接：https://mp.weixin.qq.com/s?__biz=MzA4MjU4MTg2Ng==&amp;mid=2247515066&amp;idx=5&amp;sn=ba4b87dad87c1f13ccc595934269bfaa&amp;chksm=9f817bbfa8f6f2a9cd6e6690e6a791ca3fd43f9bddf8ea06d2da4b07c28ce5600d79703d72f5&amp;scene=21#wechat_redirect\n串口调试助手：https://pan.baidu.com/s/1E5SprNfWX1yqPddtvsa8sw?pwd=e6vn\nVSPD下载链接：https://www.xue51.com/soft/9349.html#xzdz\n使用STM32CubeMX 安装固件库 若点击 Manage embedded software packages 后，出现失败，则需要随便点击其它任一选项，进行下载一些文件，比如点击 file-&gt;new project ，等下载后，再进行安装固件库。\n1.进入嵌入式软件包管理界面\n2.如果进入失败，则点击一下旁边的INSTALL/REMOVE，安装嵌入式软件包，如果提示登录的话，就将在ST官网注册的信息输入到CubeMX的登录框内进行登录，然后就可以接着安装了\n然后再次进行第一步的操作，这次就可以进入嵌入式软件包管理界面了，接着选择自己开发板的固件库，我这里是f1的。选择版本安装，我这里已经安装过了。\n工程设置 1.点击 file -&gt; new project 建立工程\n按步骤即可。搜索型号，选择合适的型号进行工程建立\n2.进行系统调试及基准时钟配置。\n点击 System Core下拉栏中的 SYS。选择debug调试接口。我选择 serial Wire\nSW模式就选择serial Wire。JTAG模式就选择JTAG，4pin和5pin的区别多了一个复位引脚\nstlink调试就是SW模式，jlink调试就是JTAG模式\n3.进行时钟RCC选项配置\n点击 System Core下拉栏中的 RCC。可以都选外部晶振Crystal/Ceramic Resonator。\nBYPASS Clock Source（旁路时钟源）\nCrystal/Ceramic Resonator（石英/陶瓷 晶振）\n4.进行系统具体时钟配置\n(1)点击“Clock Configuration”选项栏进入时钟树配置界面。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Termux-安卓机ollama+deepseek-R1部署">
 <meta property='og:description' content=" Termux-安卓机ollama+deepseek-R1部署 安装ollama 1 pkg install -y ollama 运行deepseek-R1模型 启动ollama 1 2 # 如果全程在手机上操作，建议后台运行ollama ollama serve &amp; 运行模型 1 2 # 命令参考自 https://ollama.com/library/deepseek-r1:1.5b ollama run deepseek-r1:1.5b chatboxai 1 2 3 4 5 6 7 8 # 如果要指定IP，添加指定IP环境变量后重新启动ollama，默认是127.0.0.1 export OLLAMA_HOST=192.168.x.x:11434 # 杀掉ollama相关进程 ps aux | grep -v grep | grep &#34;ollama&#34; | awk &#39;{print $2}&#39; | xargs kill -9 # 启动ollama，添加环境变量启用 OpenAI API 模式 OLLAMA_API_COMPAT_ENABLED=true OLLAMA_ORIGINS=* ollama serve &amp; # 运行模型 ollama run deepseek-r1:1.5b 接下来，我们将使用chatboxai进行更加便捷的交互体验。首先，在浏览器中打开chatboxai的页面：https://web.chatboxai.app/，然后进入到配置页面进行如下设置：\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/termux-%E5%AE%89%E5%8D%93%E6%9C%BAollama-deepseek-r1%E9%83%A8%E7%BD%B2/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='termux' /><meta property='article:tag' content='ollama' /><meta property='article:tag' content='deepseek' /><meta property='article:published_time' content='2025-11-07T18:40:02&#43;08:00'/><meta property='article:modified_time' content='2025-11-07T18:40:02&#43;08:00'/>
 <meta name="twitter:title" content="Termux-安卓机ollama+deepseek-R1部署">
 <meta name="twitter:description" content=" Termux-安卓机ollama+deepseek-R1部署 安装ollama 1 pkg install -y ollama 运行deepseek-R1模型 启动ollama 1 2 # 如果全程在手机上操作，建议后台运行ollama ollama serve &amp; 运行模型 1 2 # 命令参考自 https://ollama.com/library/deepseek-r1:1.5b ollama run deepseek-r1:1.5b chatboxai 1 2 3 4 5 6 7 8 # 如果要指定IP，添加指定IP环境变量后重新启动ollama，默认是127.0.0.1 export OLLAMA_HOST=192.168.x.x:11434 # 杀掉ollama相关进程 ps aux | grep -v grep | grep &#34;ollama&#34; | awk &#39;{print $2}&#39; | xargs kill -9 # 启动ollama，添加环境变量启用 OpenAI API 模式 OLLAMA_API_COMPAT_ENABLED=true OLLAMA_ORIGINS=* ollama serve &amp; # 运行模型 ollama run deepseek-r1:1.5b 接下来，我们将使用chatboxai进行更加便捷的交互体验。首先，在浏览器中打开chatboxai的页面：https://web.chatboxai.app/，然后进入到配置页面进行如下设置：\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

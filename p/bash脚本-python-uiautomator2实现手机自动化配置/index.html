@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="bash脚本+python+uiautomator2实现手机自动化配置">
 <meta property='og:description' content=" bash脚本+python+uiautomator2实现手机自动化配置 前言 须知 ：该项目执行的手机切勿黑屏，不然安装软件会报异常导致软件不能正常安装。\n该项目基本实现完全自动化，除了订阅链接的配置，之所以没有也根据自动化的方式实现，是考虑到用户根据自身需要可以手动添加根软件真正匹配的订阅链接，因为不是有的订阅链接不是很通用，这样做可以为了避免出问题。\n另外该项目中某些软件的下载链接可能国内不能顺利访问或速度很慢，如果遇到这样的情况，可以电脑安装clash-verge科学上网软件，电脑通过该软件实现科学上网后，将该软件的TUN（在软件的设置界面中）打开，这样就可以实现终端也能访问外网了，这样在终端执行该项目会更方便一些。\n源代码：python+uiautomator2实现手机自动化配置.zip\n环境配置 windows安装好python3的版本 安装git-bash 安装配置好Cygwin，在Cygwin中要安装常用工具如 curl、wget、jq 如果要配置科学上网软件的订阅链接的话，首先修改 科学上网软件如果更换了，同时需要通过该项目配置科学上网软件的订阅链接，可以查看自己的科学上网软件的包名，将实际的包名替换进该项目中，该项目配置了两个科学上网软件订阅链接，如果只需要配置一个科学上网软件，可以将另外一个注释掉。另外项目中两个软件的界面操作是根据软件界面的实际控件进行操作的，如果更换其他软件了，请根据软件的控制进行修改。 如果需要知道查看包名的方法的话，请按照如下方式操作： 1 2 3 4 # 根据关键词 v2ray 匹配科学上网软件v2ranNG的包名 adb -s aefcb1f3 shell pm list packages | grep &#34;v2ray&#34; | awk -F &#39;:&#39; &#39;{print $2}&#39; # 同时查看软件软件对应的包名 adb -s aefcb1f3 shell pm list packages | grep -e &#34;v2ray&#34; -e &#34;clash&#34; | awk -F &#39;:&#39; &#39;{print $2}&#39; 在执行该项目前，需要基本确保环境配置好了，如果实际执行提示缺少什么库，可以根据终端提示的打印信息，再借助Deepseek完成环境的配置。 1 2 3 pip install uiautomator2 pip install keyboard adb devices # 确认设备已连接 执行方式 在git-bash中运行该项目，cfg.sh与cfg.py和cfg.json要在同一目录下\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/bash%E8%84%9A%E6%9C%AC-python-uiautomator2%E5%AE%9E%E7%8E%B0%E6%89%8B%E6%9C%BA%E8%87%AA%E5%8A%A8%E5%8C%96%E9%85%8D%E7%BD%AE/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='bash' /><meta property='article:tag' content='python' /><meta property='article:tag' content='uiautomator2' /><meta property='article:tag' content='安卓' /><meta property='article:published_time' content='2025-07-03T17:40:20&#43;08:00'/><meta property='article:modified_time' content='2025-07-03T17:40:20&#43;08:00'/>
 <meta name="twitter:title" content="bash脚本+python+uiautomator2实现手机自动化配置">
 <meta name="twitter:description" content=" bash脚本+python+uiautomator2实现手机自动化配置 前言 须知 ：该项目执行的手机切勿黑屏，不然安装软件会报异常导致软件不能正常安装。\n该项目基本实现完全自动化，除了订阅链接的配置，之所以没有也根据自动化的方式实现，是考虑到用户根据自身需要可以手动添加根软件真正匹配的订阅链接，因为不是有的订阅链接不是很通用，这样做可以为了避免出问题。\n另外该项目中某些软件的下载链接可能国内不能顺利访问或速度很慢，如果遇到这样的情况，可以电脑安装clash-verge科学上网软件，电脑通过该软件实现科学上网后，将该软件的TUN（在软件的设置界面中）打开，这样就可以实现终端也能访问外网了，这样在终端执行该项目会更方便一些。\n源代码：python+uiautomator2实现手机自动化配置.zip\n环境配置 windows安装好python3的版本 安装git-bash 安装配置好Cygwin，在Cygwin中要安装常用工具如 curl、wget、jq 如果要配置科学上网软件的订阅链接的话，首先修改 科学上网软件如果更换了，同时需要通过该项目配置科学上网软件的订阅链接，可以查看自己的科学上网软件的包名，将实际的包名替换进该项目中，该项目配置了两个科学上网软件订阅链接，如果只需要配置一个科学上网软件，可以将另外一个注释掉。另外项目中两个软件的界面操作是根据软件界面的实际控件进行操作的，如果更换其他软件了，请根据软件的控制进行修改。 如果需要知道查看包名的方法的话，请按照如下方式操作： 1 2 3 4 # 根据关键词 v2ray 匹配科学上网软件v2ranNG的包名 adb -s aefcb1f3 shell pm list packages | grep &#34;v2ray&#34; | awk -F &#39;:&#39; &#39;{print $2}&#39; # 同时查看软件软件对应的包名 adb -s aefcb1f3 shell pm list packages | grep -e &#34;v2ray&#34; -e &#34;clash&#34; | awk -F &#39;:&#39; &#39;{print $2}&#39; 在执行该项目前，需要基本确保环境配置好了，如果实际执行提示缺少什么库，可以根据终端提示的打印信息，再借助Deepseek完成环境的配置。 1 2 3 pip install uiautomator2 pip install keyboard adb devices # 确认设备已连接 执行方式 在git-bash中运行该项目，cfg.sh与cfg.py和cfg.json要在同一目录下\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

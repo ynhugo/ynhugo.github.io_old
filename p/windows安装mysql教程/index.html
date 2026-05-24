@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Windows安装mysql教程">
 <meta property='og:description' content=" mysql安装教程 我准备安装的是mysql-8.0.34，如果想安装其他版本可以在下载页面的归档里面进行更换，然后进入mysql的bin目录，然后复制当前路径，将路径添加到环境变量\n下载mysql 下载链接：https://dev.mysql.com/downloads/windows/installer/\n开始安装 在开始菜单搜索 cmd，然后以管理员身份运行 cmd 在cmd窗口执行以下命令进行安装\n1 mysqld --install 如果是重装mysql失败，明明已删除mysql可是在安装的时候提示已存在，可以如下操作\n1 2 3 4 5 6 7 8 9 10 11 12 13 输入安装命令mysqld --install 出现问题The service already exists 这是由于之前已经安装过mysql并且没有删除干净 重新以管理员身份运行，输入&#34;sc query mysql&#34;，查看一下名为mysql的服务： 发现之前确实有安装过。 命令&#34;sc delete mysql&#34;，删除该mysql 之后继续安装，就能成功 初始化mysql，在这里，初始化会产生一个随机密码,如下图框框所示，记住这个密码，后面会用到\n1 mysqld --initialize --console 启动mysql服务\n1 net start mysql 如果提示：MySQL 服务正在启动 . MySQL 服务无法启动 服务没有报告任何错误 解决方案\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/windows%E5%AE%89%E8%A3%85mysql%E6%95%99%E7%A8%8B/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-09-23T15:51:47&#43;08:00'/><meta property='article:modified_time' content='2023-09-23T15:51:47&#43;08:00'/>
 <meta name="twitter:title" content="Windows安装mysql教程">
 <meta name="twitter:description" content=" mysql安装教程 我准备安装的是mysql-8.0.34，如果想安装其他版本可以在下载页面的归档里面进行更换，然后进入mysql的bin目录，然后复制当前路径，将路径添加到环境变量\n下载mysql 下载链接：https://dev.mysql.com/downloads/windows/installer/\n开始安装 在开始菜单搜索 cmd，然后以管理员身份运行 cmd 在cmd窗口执行以下命令进行安装\n1 mysqld --install 如果是重装mysql失败，明明已删除mysql可是在安装的时候提示已存在，可以如下操作\n1 2 3 4 5 6 7 8 9 10 11 12 13 输入安装命令mysqld --install 出现问题The service already exists 这是由于之前已经安装过mysql并且没有删除干净 重新以管理员身份运行，输入&#34;sc query mysql&#34;，查看一下名为mysql的服务： 发现之前确实有安装过。 命令&#34;sc delete mysql&#34;，删除该mysql 之后继续安装，就能成功 初始化mysql，在这里，初始化会产生一个随机密码,如下图框框所示，记住这个密码，后面会用到\n1 mysqld --initialize --console 启动mysql服务\n1 net start mysql 如果提示：MySQL 服务正在启动 . MySQL 服务无法启动 服务没有报告任何错误 解决方案\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

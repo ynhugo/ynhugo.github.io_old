@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="org-mode使用latex">
 <meta property='og:description' content=" 注意：该博客在hugo博客框架下，该文章内org-mode下的公式在hugo博客中不能正常显示html效果的公式，如果想要感受公式效果，可以下载该文章页面，然后在html文件中插入以下代码，再从新加载html文件就可以看到公式效果了\n1 2 3 &lt;script type=&#34;text/javascript&#34; src=&#34;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#34;&gt; &lt;/script&gt; 添加该代码的作用是启动MathJax，MathJax 是一个 JavaScript 库，可以让你使用 LaTeX 风格的语法，在网页的 HTML （或者 Markdown）的源码中显示数学表达式。因为它是一个纯 Javascript 的库，在 Hugo 中是可以直接使用的。\norg mode 使用latex org mode写技术文章，经常需要编写数学公式和希腊字母。下面介绍如何使用.\n拉丁、希腊字母 可以使用转义符\n1 Angles are written as Greek letters \\alpha, \\beta and \\gamma. 获得的结果是：\n1 Angles are written as Greek letters α, β and γ. 输入M-x命令，可以查看完整的entities\n1 org-entities-help 在letters里面可以看到拉丁和希腊字符。\n使用转义字符的公式\n1 a\\sup2 + b\\sup2 = c\\sup2 导出html查看效果\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/org-mode%E4%BD%BF%E7%94%A8latex/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='emacs' /><meta property='article:tag' content='org-mode' /><meta property='article:published_time' content='2024-09-24T10:00:05&#43;08:00'/><meta property='article:modified_time' content='2024-09-24T10:00:05&#43;08:00'/>
 <meta name="twitter:title" content="org-mode使用latex">
 <meta name="twitter:description" content=" 注意：该博客在hugo博客框架下，该文章内org-mode下的公式在hugo博客中不能正常显示html效果的公式，如果想要感受公式效果，可以下载该文章页面，然后在html文件中插入以下代码，再从新加载html文件就可以看到公式效果了\n1 2 3 &lt;script type=&#34;text/javascript&#34; src=&#34;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#34;&gt; &lt;/script&gt; 添加该代码的作用是启动MathJax，MathJax 是一个 JavaScript 库，可以让你使用 LaTeX 风格的语法，在网页的 HTML （或者 Markdown）的源码中显示数学表达式。因为它是一个纯 Javascript 的库，在 Hugo 中是可以直接使用的。\norg mode 使用latex org mode写技术文章，经常需要编写数学公式和希腊字母。下面介绍如何使用.\n拉丁、希腊字母 可以使用转义符\n1 Angles are written as Greek letters \\alpha, \\beta and \\gamma. 获得的结果是：\n1 Angles are written as Greek letters α, β and γ. 输入M-x命令，可以查看完整的entities\n1 org-entities-help 在letters里面可以看到拉丁和希腊字符。\n使用转义字符的公式\n1 a\\sup2 + b\\sup2 = c\\sup2 导出html查看效果\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

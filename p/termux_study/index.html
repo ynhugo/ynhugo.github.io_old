@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="termux_study">
 <meta property='og:description' content=" 安装termux termux的下载安装及使用教程 termux官网\ntermux教程\n初始化操作 termux-setup-storage #给访问权限\napt update &amp;&amp; apt upgrade -y &amp;&amp; pkg update &amp;&amp; pkg upgrade -y #检查更新并升\npkg install vim #文本编辑工具\n其它工具的安装 pkg install git #根据个人需要选择性安装\npkg install nodejs-lts -g #用来安装各种插件，根据个人需要选择性安装\nnpm install hexo-cli -g #必须先安装nodejs再执行，用来搭建博客，根据个人需要选择性安装\npkg install proot-distro #可用来安装linux系统，根据个人需要选择性安装\ntermux-openssh 安装好termux之后，想尝试一下termux的ssh，以我为例，做一个总结。\n注意：以下操作需要保证电脑跟手机保持在同一个局域网，且是电脑连接手机。\npkg install openssh #安装openssh\npasswd #电脑在连接termux时会提示输入密码，所以需要在termux中提前设置，执行passwd后会提示设置密码并确认密码。\nwhoami #查看termux的用户名。\nifconfig #查看termux的ip，我的是wlan1部分，看inet的后的ip地址。\nssh -p user@ip #user为termux执行whoami后看到的用户名，ip为执行ifconfig后看到的wlan1部分inet对应的ip。\n接下来会询问&#34;yes or no&#34;,输入yes，输入密码，然后连接成功。\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/termux_study/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='termux' /><meta property='article:published_time' content='2024-03-31T16:11:45&#43;08:00'/><meta property='article:modified_time' content='2024-03-31T16:11:45&#43;08:00'/>
 <meta name="twitter:title" content="termux_study">
 <meta name="twitter:description" content=" 安装termux termux的下载安装及使用教程 termux官网\ntermux教程\n初始化操作 termux-setup-storage #给访问权限\napt update &amp;&amp; apt upgrade -y &amp;&amp; pkg update &amp;&amp; pkg upgrade -y #检查更新并升\npkg install vim #文本编辑工具\n其它工具的安装 pkg install git #根据个人需要选择性安装\npkg install nodejs-lts -g #用来安装各种插件，根据个人需要选择性安装\nnpm install hexo-cli -g #必须先安装nodejs再执行，用来搭建博客，根据个人需要选择性安装\npkg install proot-distro #可用来安装linux系统，根据个人需要选择性安装\ntermux-openssh 安装好termux之后，想尝试一下termux的ssh，以我为例，做一个总结。\n注意：以下操作需要保证电脑跟手机保持在同一个局域网，且是电脑连接手机。\npkg install openssh #安装openssh\npasswd #电脑在连接termux时会提示输入密码，所以需要在termux中提前设置，执行passwd后会提示设置密码并确认密码。\nwhoami #查看termux的用户名。\nifconfig #查看termux的ip，我的是wlan1部分，看inet的后的ip地址。\nssh -p user@ip #user为termux执行whoami后看到的用户名，ip为执行ifconfig后看到的wlan1部分inet对应的ip。\n接下来会询问&#34;yes or no&#34;,输入yes，输入密码，然后连接成功。\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

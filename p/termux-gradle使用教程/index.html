@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="termux-gradle使用教程">
 <meta property='og:description' content=" 安装 Termux 和必要工具 只是创建、编译、运行项目，没有打包生成apk的内容，不过将在网上找到的链接添加到参考链接中了，感兴趣可以看一看。\n安装 Termux 如果还没有安装 Termux，可以从 F-Droid 或 Google Play 商店安装。\n更新和安装必需的软件 打开 Termux，执行以下命令以更新包管理器和安装 Java 和 Gradle：\n1 2 3 pkg update &amp;&amp; pkg upgrade pkg install openjdk-17 pkg install gradle 创建一个简单的 Gradle 项目 实现过程 除了java版本需要指定一下，其他全部默认即可。\n查看java版本 1 2 3 4 ~/ts/MyApplication $ java -version openjdk version &#34;17-internal&#34; 2021-09-14 OpenJDK Runtime Environment (build 17-internal+0-adhoc..src) OpenJDK 64-Bit Server VM (build 17-internal+0-adhoc..src, mixed mode) 创建项目目录 1 2 mkdir MyGradleApp cd MyGradleApp 初始化 Gradle 项目 使用 Gradle 初始化项目\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/termux-gradle%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-11-01T03:14:40&#43;08:00'/><meta property='article:modified_time' content='2024-11-01T03:14:40&#43;08:00'/>
 <meta name="twitter:title" content="termux-gradle使用教程">
 <meta name="twitter:description" content=" 安装 Termux 和必要工具 只是创建、编译、运行项目，没有打包生成apk的内容，不过将在网上找到的链接添加到参考链接中了，感兴趣可以看一看。\n安装 Termux 如果还没有安装 Termux，可以从 F-Droid 或 Google Play 商店安装。\n更新和安装必需的软件 打开 Termux，执行以下命令以更新包管理器和安装 Java 和 Gradle：\n1 2 3 pkg update &amp;&amp; pkg upgrade pkg install openjdk-17 pkg install gradle 创建一个简单的 Gradle 项目 实现过程 除了java版本需要指定一下，其他全部默认即可。\n查看java版本 1 2 3 4 ~/ts/MyApplication $ java -version openjdk version &#34;17-internal&#34; 2021-09-14 OpenJDK Runtime Environment (build 17-internal+0-adhoc..src) OpenJDK 64-Bit Server VM (build 17-internal+0-adhoc..src, mixed mode) 创建项目目录 1 2 mkdir MyGradleApp cd MyGradleApp 初始化 Gradle 项目 使用 Gradle 初始化项目\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

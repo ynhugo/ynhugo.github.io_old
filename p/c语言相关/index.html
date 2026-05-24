@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="C语言相关">
 <meta property='og:description' content=" 详解 const uint8_t * const* 类型： const uint8_t * const* 是 C 语言中的一种复杂指针类型，用于指向指向常量的指针。让我们详细拆解这个类型：\n类型拆解 const uint8_t：\nuint8_t 是无符号的 8 位整数类型，通常用于表示一个字节。 const 关键字在 uint8_t 前面，表示这个 uint8_t 类型的数据是常量，即在指针指向的数据位置上的值不能被修改。 const uint8_t *：\n这是一个指向 const uint8_t 类型的指针。 它表示你可以通过这个指针访问 const uint8_t 类型的数据，但不能修改这些数据。 const uint8_t * const：\n这是一个指向 const uint8_t 的指针，但这个指针本身也是常量。 也就是说，你不能通过这个指针去修改指针的值（即你不能改变指针所指向的位置），但你依然可以读取它所指向的数据。 const uint8_t * const*：\n这是一个指向 const uint8_t * const 的指针，也就是一个指向常量指针的指针。 这意味着你有一个指针，它指向另一个指针，而这个被指向的指针是 const 的（即你不能修改它指向的位置），并且这个被指向的位置的数据也是 const 的（即你不能修改这些数据）。 用途和示例 这个类型经常用于表示一个指针数组，其中每个指针指向一个常量数据，并且这些指针本身也是不可修改的。它在处理图像数据时非常有用，因为图像数据通常是由多个平面组成的，每个平面的数据可能需要被读取但不应被修改。\n示例 假设我们有如下的数据：\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/c%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='C' /><meta property='article:published_time' content='2024-09-06T18:49:18&#43;08:00'/><meta property='article:modified_time' content='2024-09-06T18:49:18&#43;08:00'/>
 <meta name="twitter:title" content="C语言相关">
 <meta name="twitter:description" content=" 详解 const uint8_t * const* 类型： const uint8_t * const* 是 C 语言中的一种复杂指针类型，用于指向指向常量的指针。让我们详细拆解这个类型：\n类型拆解 const uint8_t：\nuint8_t 是无符号的 8 位整数类型，通常用于表示一个字节。 const 关键字在 uint8_t 前面，表示这个 uint8_t 类型的数据是常量，即在指针指向的数据位置上的值不能被修改。 const uint8_t *：\n这是一个指向 const uint8_t 类型的指针。 它表示你可以通过这个指针访问 const uint8_t 类型的数据，但不能修改这些数据。 const uint8_t * const：\n这是一个指向 const uint8_t 的指针，但这个指针本身也是常量。 也就是说，你不能通过这个指针去修改指针的值（即你不能改变指针所指向的位置），但你依然可以读取它所指向的数据。 const uint8_t * const*：\n这是一个指向 const uint8_t * const 的指针，也就是一个指向常量指针的指针。 这意味着你有一个指针，它指向另一个指针，而这个被指向的指针是 const 的（即你不能修改它指向的位置），并且这个被指向的位置的数据也是 const 的（即你不能修改这些数据）。 用途和示例 这个类型经常用于表示一个指针数组，其中每个指针指向一个常量数据，并且这些指针本身也是不可修改的。它在处理图像数据时非常有用，因为图像数据通常是由多个平面组成的，每个平面的数据可能需要被读取但不应被修改。\n示例 假设我们有如下的数据：\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

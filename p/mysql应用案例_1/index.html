@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Mysql应用案例_1">
 <meta property='og:description' content=" 手动插入时间 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 CREATE DATABASE test; USE test;\tCREATE TABLE goods( id INT(11) PRIMARY KEY, add_time DATETIME ); CREATE TABLE orders( o_id INT(11) PRIMARY KEY, add_time DATETIME, goods_id INT(11), CONSTRAINT goo_ord FOREIGN KEY(goods_id) REFERENCES goods(id) ); INSERT INTO goods (id, add_time) VALUES (123, &#39;2023-10-06 12:34:56&#39;); INSERT INTO orders (o_id, add_time, goods_id) VALUES (1, &#39;2023-10-06 12:34:56&#39;, 123); UPDATE orders SET add_time = &#39;2023-10-07 09:00:00&#39; WHERE o_id = 1; SELECT * FROM orders; 自动插入时间 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 CREATE DATABASE test; USE test; CREATE TABLE goods( id INT(11) PRIMARY KEY, add_time DATETIME ); CREATE TABLE orders( o_id INT(11) PRIMARY KEY, add_time DATETIME, goods_id INT(11), CONSTRAINT goo_ord FOREIGN KEY(goods_id) REFERENCES goods(id) ); INSERT INTO goods (id, add_time) VALUES (123, NOW()); INSERT INTO orders (o_id, add_time, goods_id) VALUES (1, NOW(), 123); UPDATE orders SET add_time = NOW() WHERE o_id = 1; SELECT * FROM orders; ">
 <meta property='og:url' content='https://ynhugo.github.io/p/mysql%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B_1/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2023-10-07T22:18:24&#43;08:00'/><meta property='article:modified_time' content='2023-10-07T22:18:24&#43;08:00'/>
 <meta name="twitter:title" content="Mysql应用案例_1">
 <meta name="twitter:description" content=" 手动插入时间 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 CREATE DATABASE test; USE test;\tCREATE TABLE goods( id INT(11) PRIMARY KEY, add_time DATETIME ); CREATE TABLE orders( o_id INT(11) PRIMARY KEY, add_time DATETIME, goods_id INT(11), CONSTRAINT goo_ord FOREIGN KEY(goods_id) REFERENCES goods(id) ); INSERT INTO goods (id, add_time) VALUES (123, &#39;2023-10-06 12:34:56&#39;); INSERT INTO orders (o_id, add_time, goods_id) VALUES (1, &#39;2023-10-06 12:34:56&#39;, 123); UPDATE orders SET add_time = &#39;2023-10-07 09:00:00&#39; WHERE o_id = 1; SELECT * FROM orders; 自动插入时间 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 CREATE DATABASE test; USE test; CREATE TABLE goods( id INT(11) PRIMARY KEY, add_time DATETIME ); CREATE TABLE orders( o_id INT(11) PRIMARY KEY, add_time DATETIME, goods_id INT(11), CONSTRAINT goo_ord FOREIGN KEY(goods_id) REFERENCES goods(id) ); INSERT INTO goods (id, add_time) VALUES (123, NOW()); INSERT INTO orders (o_id, add_time, goods_id) VALUES (1, NOW(), 123); UPDATE orders SET add_time = NOW() WHERE o_id = 1; SELECT * FROM orders; ">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

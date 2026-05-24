@@ -5,13 +5,13 @@
     <loc>https://ynhugo.github.io/ar/categories/</loc>
     <xhtml:link
                 rel="alternate"
-                hreflang="zh-cn"
-                href="https://ynhugo.github.io/categories/"
+                hreflang="en"
+                href="https://ynhugo.github.io/en/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="https://ynhugo.github.io/zh-cn/categories/"
+                href="https://ynhugo.github.io/categories/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -22,13 +22,13 @@
     <loc>https://ynhugo.github.io/ar/tags/</loc>
     <xhtml:link
                 rel="alternate"
-                hreflang="zh-cn"
-                href="https://ynhugo.github.io/tags/"
+                hreflang="en"
+                href="https://ynhugo.github.io/en/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="https://ynhugo.github.io/zh-cn/tags/"
+                href="https://ynhugo.github.io/tags/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -39,13 +39,13 @@
     <loc>https://ynhugo.github.io/ar/</loc>
     <xhtml:link
                 rel="alternate"
-                hreflang="zh-cn"
-                href="https://ynhugo.github.io/"
+                hreflang="en"
+                href="https://ynhugo.github.io/en/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="https://ynhugo.github.io/zh-cn/"
+                href="https://ynhugo.github.io/"
                 />
     <xhtml:link
                 rel="alternate"

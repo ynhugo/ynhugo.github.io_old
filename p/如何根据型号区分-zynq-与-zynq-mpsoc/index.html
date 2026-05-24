@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="如何根据型号区分 Zynq 与 Zynq MPSoC">
 <meta property='og:description' content=" 一句话速查表 最直接的方法：看型号开头。\nXC7Z → Zynq-7000（即通常说的 Zynq） XCZU → Zynq UltraScale+ MPSoC（即 ZynqMP） 详细区分方法 1. 看前缀：一眼识别 前缀特征 对应系列 XC7Z... Zynq-7000 XCZU... Zynq UltraScale+ MPSoC &gt; 特殊前缀说明： &gt; - XA7Z... 或 XQ7Z... 仍为 Zynq-7000（车规/军工级） &gt; - XAZU... 或 XQZU... 仍为 Zynq MPSoC\n2. 核心差异速查表 对比项 Zynq-7000 Zynq MPSoC 处理器 双核 ARM Cortex-A9 四核 Cortex-A53 + 双核 Cortex-R5 工艺 28nm 16nm 内存支持 DDR3 DDR4 典型主频 ~1GHz A53: ~1.5GHz 常见型号 XC7Z010, XC7Z020, XC7Z045 XCZU2CG, XCZU3EG, XCZU7EG, XCZU19EG 高速外设 PCIe Gen2, USB 2.0 PCIe Gen3/4, USB 3.0, SATA, DP 典型应用 工业控制、嵌入式视觉、ADAS AI推理、4K/8K视频、云加速、SDR 型号示例 1 2 Zynq-7000: XC7Z010-1CLG400C, XA7Z020-1CLG484Q Zynq MPSoC: XCZU3EG-1SFVC784E, XAZU4EV-1SFVC784Q 后缀速查（Zynq MPSoC） 后缀 含义 CG 仅 Cortex-A53（无 R5 和 GPU） EG A53 + R5 + GPU（最常用） EV EG + 视频编解码器（H.264/H.265） 总结 记住一条核心规则：**7Z → 老款 Zynq，ZU → 新款 ZynqMP** 选型建议：需要高算力、DDR4、多核异构、AI/视频 → 选 ZynqMP；成本敏感或已有成熟方案 → Zynq-7000 参考与扩展 Zynq-7000 官方页面 Zynq UltraScale+ MPSoC 官方页面 ">
 <meta property='og:url' content='https://ynhugo.github.io/p/%E5%A6%82%E4%BD%95%E6%A0%B9%E6%8D%AE%E5%9E%8B%E5%8F%B7%E5%8C%BA%E5%88%86-zynq-%E4%B8%8E-zynq-mpsoc/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='fpga' /><meta property='article:tag' content='zynq' /><meta property='article:tag' content='zynqmp' /><meta property='article:tag' content='zynq7000' /><meta property='article:published_time' content='2026-04-04T15:48:45&#43;08:00'/><meta property='article:modified_time' content='2026-04-04T15:48:45&#43;08:00'/>
 <meta name="twitter:title" content="如何根据型号区分 Zynq 与 Zynq MPSoC">
 <meta name="twitter:description" content=" 一句话速查表 最直接的方法：看型号开头。\nXC7Z → Zynq-7000（即通常说的 Zynq） XCZU → Zynq UltraScale+ MPSoC（即 ZynqMP） 详细区分方法 1. 看前缀：一眼识别 前缀特征 对应系列 XC7Z... Zynq-7000 XCZU... Zynq UltraScale+ MPSoC &gt; 特殊前缀说明： &gt; - XA7Z... 或 XQ7Z... 仍为 Zynq-7000（车规/军工级） &gt; - XAZU... 或 XQZU... 仍为 Zynq MPSoC\n2. 核心差异速查表 对比项 Zynq-7000 Zynq MPSoC 处理器 双核 ARM Cortex-A9 四核 Cortex-A53 + 双核 Cortex-R5 工艺 28nm 16nm 内存支持 DDR3 DDR4 典型主频 ~1GHz A53: ~1.5GHz 常见型号 XC7Z010, XC7Z020, XC7Z045 XCZU2CG, XCZU3EG, XCZU7EG, XCZU19EG 高速外设 PCIe Gen2, USB 2.0 PCIe Gen3/4, USB 3.0, SATA, DP 典型应用 工业控制、嵌入式视觉、ADAS AI推理、4K/8K视频、云加速、SDR 型号示例 1 2 Zynq-7000: XC7Z010-1CLG400C, XA7Z020-1CLG484Q Zynq MPSoC: XCZU3EG-1SFVC784E, XAZU4EV-1SFVC784Q 后缀速查（Zynq MPSoC） 后缀 含义 CG 仅 Cortex-A53（无 R5 和 GPU） EG A53 + R5 + GPU（最常用） EV EG + 视频编解码器（H.264/H.265） 总结 记住一条核心规则：**7Z → 老款 Zynq，ZU → 新款 ZynqMP** 选型建议：需要高算力、DDR4、多核异构、AI/视频 → 选 ZynqMP；成本敏感或已有成熟方案 → Zynq-7000 参考与扩展 Zynq-7000 官方页面 Zynq UltraScale+ MPSoC 官方页面 ">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

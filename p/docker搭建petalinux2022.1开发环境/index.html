@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="Docker搭建petalinux2022.1开发环境">
 <meta property='og:description' content=" Docker搭建petalinux2022.1开发环境 petalinux-docker 系统环境 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 cat /etc/os-release PRETTY_NAME=&#34;Ubuntu 24.04 LTS&#34; NAME=&#34;Ubuntu&#34; VERSION_ID=&#34;24.04&#34; VERSION=&#34;24.04 LTS (Noble Numbat)&#34; VERSION_CODENAME=noble ID=ubuntu ID_LIKE=debian HOME_URL=&#34;https://www.ubuntu.com/&#34; SUPPORT_URL=&#34;https://help.ubuntu.com/&#34; BUG_REPORT_URL=&#34;https://bugs.launchpad.net/ubuntu/&#34; PRIVACY_POLICY_URL=&#34;https://www.ubuntu.com/legal/terms-and-policies/privacy-policy&#34; UBUNTU_CODENAME=noble LOGO=ubuntu-logo uname -a Linux VM-4-13-ubuntu 6.8.0-71-generic #71-Ubuntu SMP PREEMPT_DYNAMIC Tue Jul 22 16:52:38 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux 准备docker构建petalinux环境 可以将构建环境上传到github仓库或者gitee仓库，需要的时候直接克隆下来使用就可以了\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/docker%E6%90%AD%E5%BB%BApetalinux2022.1%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='docker' /><meta property='article:tag' content='petalinux' /><meta property='article:tag' content='linux' /><meta property='article:published_time' content='2026-03-20T11:21:23&#43;08:00'/><meta property='article:modified_time' content='2026-03-20T11:21:23&#43;08:00'/>
 <meta name="twitter:title" content="Docker搭建petalinux2022.1开发环境">
 <meta name="twitter:description" content=" Docker搭建petalinux2022.1开发环境 petalinux-docker 系统环境 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 cat /etc/os-release PRETTY_NAME=&#34;Ubuntu 24.04 LTS&#34; NAME=&#34;Ubuntu&#34; VERSION_ID=&#34;24.04&#34; VERSION=&#34;24.04 LTS (Noble Numbat)&#34; VERSION_CODENAME=noble ID=ubuntu ID_LIKE=debian HOME_URL=&#34;https://www.ubuntu.com/&#34; SUPPORT_URL=&#34;https://help.ubuntu.com/&#34; BUG_REPORT_URL=&#34;https://bugs.launchpad.net/ubuntu/&#34; PRIVACY_POLICY_URL=&#34;https://www.ubuntu.com/legal/terms-and-policies/privacy-policy&#34; UBUNTU_CODENAME=noble LOGO=ubuntu-logo uname -a Linux VM-4-13-ubuntu 6.8.0-71-generic #71-Ubuntu SMP PREEMPT_DYNAMIC Tue Jul 22 16:52:38 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux 准备docker构建petalinux环境 可以将构建环境上传到github仓库或者gitee仓库，需要的时候直接克隆下来使用就可以了\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 

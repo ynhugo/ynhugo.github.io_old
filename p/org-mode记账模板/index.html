@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css"><meta property='og:title' content="org-mode记账模板">
 <meta property='og:description' content=" 操作步骤 在org文件开头添加以下内容：\n然后输入自定义的 insert-timestamp-entry 插入记账模板\n然后在第一行按\\C-c\\C-x\\C-c统计记账，按\\C-c\\C-c取消统计\norg-mode记账模板-配置代码-ChatGPT 1 2 3 4 5 6 (defun insert-timestamp-entry () &#34;Insert a new entry with Money empty and Date set to current date with time (including seconds).&#34; (interactive) (let ((current-date (format-time-string &#34;%Y/%m/%d %H:%M:%S&#34;))) ;; 获取当前日期和时间（包括秒） (insert (format &#34;** \\n :PROPERTIES:\\n :Money: \\n :Date: %s\\n :END:\\n&#34; current-date)))) 代码解析 让我们逐行解析这段 Emacs 配置文件中的 Emacs Lisp 代码：\n">
 <meta property='og:url' content='https://ynhugo.github.io/p/org-mode%E8%AE%B0%E8%B4%A6%E6%A8%A1%E6%9D%BF/'>
-<meta property='og:site_name' content='Example Site'>
+<meta property='og:site_name' content='ynhugo.github.io'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2024-11-11T03:52:07&#43;08:00'/><meta property='article:modified_time' content='2024-11-11T03:52:07&#43;08:00'/>
 <meta name="twitter:title" content="org-mode记账模板">
 <meta name="twitter:description" content=" 操作步骤 在org文件开头添加以下内容：\n然后输入自定义的 insert-timestamp-entry 插入记账模板\n然后在第一行按\\C-c\\C-x\\C-c统计记账，按\\C-c\\C-c取消统计\norg-mode记账模板-配置代码-ChatGPT 1 2 3 4 5 6 (defun insert-timestamp-entry () &#34;Insert a new entry with Money empty and Date set to current date with time (including seconds).&#34; (interactive) (let ((current-date (format-time-string &#34;%Y/%m/%d %H:%M:%S&#34;))) ;; 获取当前日期和时间（包括秒） (insert (format &#34;** \\n :PROPERTIES:\\n :Money: \\n :Date: %s\\n :END:\\n&#34; current-date)))) 代码解析 让我们逐行解析这段 Emacs 配置文件中的 Emacs Lisp 代码：\n">
@@ -69,8 +69,8 @@
         
         
         <div class="site-meta">
-            <h1 class="site-name"><a href="/">Example Site</a></h1>
-            <h2 class="site-description">Example description</h2>
+            <h1 class="site-name"><a href="/">ynhugo.github.io</a></h1>
+            <h2 class="site-description">ynhugo</h2>
         </div>
     </header><ol class="menu-social">
             
@@ -119,7 +119,7 @@
         
         
         <li >
-            <a href='/about/' >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
                 
                 
                 
@@ -132,7 +132,7 @@
 
 
                 
-                <span>About</span>
+                <span>关于</span>
             </a>
         </li>
         
@@ -211,9 +211,9 @@
 
                             <select name="language" title="language" onchange="window.location.href = this.selectedOptions[0].value">
                                 
-                                    <option value="https://ynhugo.github.io/" selected>English</option>
+                                    <option value="https://ynhugo.github.io/en/" >English</option>
                                 
-                                    <option value="https://ynhugo.github.io/zh-cn/" >中文</option>
+                                    <option value="https://ynhugo.github.io/" selected>中文</option>
                                 
                                     <option value="https://ynhugo.github.io/ar/" >عربي</option>
                                 
