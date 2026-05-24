@@ -1814,10 +1814,10 @@
     <loc>https://ynhugo.github.io/p/github_study/</loc>
     <lastmod>2023-07-29T11:15:46+08:00</lastmod>
   </url><url>
-    <loc>https://ynhugo.github.io/archives/</loc>
+    <loc>https://ynhugo.github.io/page/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://ynhugo.github.io/page/</loc>
+    <loc>https://ynhugo.github.io/archives/</loc>
     <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://ynhugo.github.io/p/</loc>
@@ -1847,8 +1847,6 @@
   </url><url>
     <loc>https://ynhugo.github.io/p/linux%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E6%9F%A5%E7%9C%8B%E7%89%88%E6%9C%AC/</loc>
   </url><url>
-    <loc>https://ynhugo.github.io/search/</loc>
-  </url><url>
     <loc>https://ynhugo.github.io/tags/segfault/</loc>
   </url><url>
     <loc>https://ynhugo.github.io/p/segfault%E5%85%8D%E8%B4%B9%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E4%BB%A3%E7%90%86%E5%BA%94%E7%94%A8-%E5%8A%A8%E6%80%81%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</loc>
@@ -1858,5 +1856,7 @@
     <loc>https://ynhugo.github.io/%E5%85%B3%E4%BA%8E/</loc>
   </url><url>
     <loc>https://ynhugo.github.io/p/%E5%9B%BD%E5%AD%A6%E5%AE%9D%E5%BA%93/</loc>
+  </url><url>
+    <loc>https://ynhugo.github.io/search/</loc>
   </url>
 </urlset>
