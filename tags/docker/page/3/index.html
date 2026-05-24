@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Docker | PaperMod</title>
+<meta name="keywords" content="">
+<meta name="description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/tags/docker/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/docker/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/docker/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/tags/docker/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="Docker">
+  <meta property="og:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="Docker">
+  <meta name="twitter:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/tags/">Tags</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+  <h1>
+    Docker
+    <a href="/tags/docker/index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">docker构建icraft3.6.2交叉编译环境
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> docker构建icraft3.6.2交叉编译环境 目录结构 $ tree . ├── arm64.list ├── cmake-3.24.2.tar.gz ├── CustomOp_3.6.2_arm64.deb ├── Dockerfile └── Icraft_3.6.2_arm64.deb 0 directories, 5 files 需要准备的安装包 1 Icraft_3.6.2_arm64.deb 2 CustomOp_3.6.2_arm64.deb 一次性执行脚本 wget -c -e &#34;https_proxy=127.0.0.1:10808&#34; https://github.com/Kitware/CMake/releases/download/v3.24.2/cmake-3.24.2.tar.gz cat - &gt; arm64.list &lt;&lt;&#39;EOF&#39; deb [arch=arm64] https://mirrors.ustc.edu.cn/ubuntu-ports/ focal main restricted universe multiverse # deb-src [arch=arm64] https://mirrors.ustc.edu.cn/ubuntu-ports/ focal main main restricted universe multiverse deb [arch=arm64] https://mirrors.ustc.edu.cn/ubuntu-ports/ focal-updates main restricted universe multiverse # deb-src [arch=arm64] https://mirrors.ustc.edu.cn/ubuntu-ports/ focal-updates main restricted universe multiverse deb [arch=arm64] https://mirrors.ustc.edu.cn/ubuntu-ports/ focal-backports main restricted universe multiverse # deb-src [arch=arm64] https://mirrors.ustc.edu.cn/ubuntu-ports/ focal-backports main restricted universe multiverse deb [arch=arm64] https://mirrors.ustc.edu.cn/ubuntu-ports/ focal-security main restricted universe multiverse # deb-src [arch=arm64] https://mirrors.ustc.edu.cn/ubuntu-ports/ focal-security main restricted universe multiverse # 预发布软件源，不建议启用 # deb [arch=arm64] https://mirrors.ustc.edu.cn/ubuntu-ports/ focal-proposed main restricted universe multiverse # deb-src [arch=arm64] https://mirrors.ustc.edu.cn/ubuntu-ports/ focal-proposed main restricted universe multiverse EOF cat - &gt; Dockerfile &lt;&lt;&#39;EOF&#39; FROM ubuntu:20.04 ARG CMake_Version ARG CMake_file ARG Icraft_FILE ARG CustomOp_FILE ARG Icraft_whl_FILE # 先用 http（关键！） RUN rm -f /etc/apt/sources.list &amp;&amp; \ echo &#34;deb http://mirrors.ustc.edu.cn/ubuntu focal main restricted universe multiverse&#34; &gt;&gt; /etc/apt/sources.list &amp;&amp; \ echo &#34;deb http://mirrors.ustc.edu.cn/ubuntu focal-updates main restricted universe multiverse&#34; &gt;&gt; /etc/apt/sources.list &amp;&amp; \ echo &#34;deb http://mirrors.ustc.edu.cn/ubuntu focal-security main restricted universe multiverse&#34; &gt;&gt; /etc/apt/sources.list # 先装证书 RUN apt-get update &amp;&amp; apt-get install -y ca-certificates # 再切回 https（可选） RUN sed -i &#39;s|http://|https://|g&#39; /etc/apt/sources.list RUN sed -i &#39;s/^deb /deb [arch=amd64,i386] /&#39; /etc/apt/sources.list; sed -i &#39;s/^deb-src /deb-src [arch=amd64,i386] /&#39; /etc/apt/sources.list COPY arm64.list /etc/apt/sources.list.d/ RUN dpkg --add-architecture arm64 &amp;&amp; apt update &amp;&amp; apt install -y \ sudo \ build-essential \ libssl-dev \ ninja-build \ gcc-aarch64-linux-gnu \ g&#43;&#43;-aarch64-linux-gnu \ libdw-dev:arm64 \ libstdc&#43;&#43;6:arm64 RUN mkdir -p /home/icraft ENV HOME /home/icraft COPY ${Icraft_FILE} ${CustomOp_FILE} ${CMake_file} /home/icraft RUN cd /home/icraft; tar -zxvf ${CMake_file} &amp;&amp; cd cmake-${CMake_Version} &amp;&amp; ./bootstrap &amp;&amp; make -j$(($(nproc)*2)) &amp;&amp; make install -j$(($(nproc)*2)) RUN cd /home/icraft; dpkg -i ${Icraft_FILE} ${CustomOp_FILE} WORKDIR /home/icraft EOF # 构建镜像，指定icraft的安装包及其依赖的算子安装包 docker build --build-arg CMake_Version=3.24.2 --build-arg CMake_file=cmake-3.24.2.tar.gz --build-arg Icraft_FILE=Icraft_3.6.2_arm64.deb --build-arg CustomOp_FILE=CustomOp_3.6.2_arm64.deb -t icraft:3.6.2 . # 清理构建缓存 docker system prune -f 进入容器 docker run -it -v ./:/home/icraft icraft:3.6.2 /bin/bash # 验证icraft版本 icraft --version 参考链接 Icraft 3.6.2 总体使用说明
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-03-23 02:00:12.33 +0800 +0800'>March 23, 2026</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to docker构建icraft3.6.2交叉编译环境" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/docker%E6%9E%84%E5%BB%BAicraft3.6.2%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">云服务器配置docker代理
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 云服务器配置docker代理 docker添加临时代理 export HTTP_PROXY=&#34;http://127.0.0.1:7890&#34; export HTTPS_PROXY=&#34;http://127.0.0.1:7890&#34; docker pull ubuntu docker添加永久代理 # docker添加永久代理 mkdir -p /etc/systemd/system/docker.service.d cat - &gt; /etc/systemd/system/docker.service.d/http-proxy.conf &lt;&lt; &#39;EOF&#39; [Service] Environment=&#34;HTTP_PROXY=http://127.0.0.1:10808&#34; Environment=&#34;HTTPS_PROXY=http://127.0.0.1:10808&#34; Environment=&#34;NO_PROXY=localhost,127.0.0.1,docker-registry.somecorporation.com&#34; EOF systemctl daemon-reload systemctl restart docker 删除docker永久代理 # 如果要删除添加的代理 rm -rf /etc/systemd/system/docker.service.d systemctl daemon-reload systemctl restart docker 参考链接 Docker 配置代理（临时/永久设置）
+Docker构建ARM64与ARM32交叉编译环境以及push与pull镜像
+</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-03-22 15:28:09.27 +0800 +0800'>March 22, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to 云服务器配置docker代理" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AEdocker%E4%BB%A3%E7%90%86/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">基于云服务器的Docker构建Petalinux容器从ZCU102_BSP创建与编译Petalinux工程
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 基于云服务器的Docker构建Petalinux容器从ZCU102_BSP创建与编译petalinux工程 mkdir -P /root/Projects cd /root/Projects docker run -ti --rm -e DISPLAY=$DISPLAY --net=&#34;host&#34; -v /tmp/.X11-unix:/tmp/.X11-unix -v $HOME/.Xauthority:/home/vivado/.Xauthority -v ./:/home/vivado/project petalinux:2022.1 /bin/bash # ubuntu18.04下，如果需要安装工具，可以换源后再安装，这样速度会快一些 sudo sed -i &#34;s@http://.*archive.ubuntu.com@https://mirrors.aliyun.com/@g&#34; /etc/apt/sources.list sudo sed -i &#34;s@http://.*security.ubuntu.com@https://mirrors.aliyun.com/@g&#34; /etc/apt/sources.list sudo apt-get update # 先准备好bsp文件，xilinx-zcu102-v2022.1-04191534.bsp，bsp文件可从xilinx官网petalinux版本页面下载，下载对应的版本的bsp，选择petalinux版本后可直接在页面搜索zcu102 bsp_name=&#34;xilinx-zcu102-v2022.1-04191534.bsp&#34; prj_index=1 prj_name=&#34;prj_&#34; sudo chown -R vivado:vivado ../$(basename $PWD) # 如果不指定工程名称，会以bsp文件命名工程 # 从BSP中创建工程 # petalinux-create -t project -s $bsp_name petalinux-create -t project -s $bsp_name -n $prj_name$prj_index # 不从BSP中创建工程 # petalinux-create 命令用于创建新的PetaLinux 工程： # petalinux-create -t project --template zynqmp -n $prj_name$prj_index cd $prj_name$prj_index # 默认设置是启用 WebTalk 选项，向赛灵思反馈工具使用统计数据。可以运行 petalinux-util --webtalk 命令，关闭 Web Talk 功能 petalinux-util --webtalk off petalinux-config --get-hw-description hardware/xilinx-zcu102-2022.1/outputs/project_1.xsa petalinux-build petalinux-package --boot --fsbl --fpga --u-boot --force 参考链接 PetaLinux 工具文档
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-03-22 04:25:10.51 +0800 +0800'>March 22, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to 基于云服务器的Docker构建Petalinux容器从ZCU102_BSP创建与编译Petalinux工程" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/%E5%9F%BA%E4%BA%8E%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84docker%E6%9E%84%E5%BB%BApetalinux%E5%AE%B9%E5%99%A8%E4%BB%8Ezcu102_bsp%E5%88%9B%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91petalinux%E5%B7%A5%E7%A8%8B/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/tags/docker/page/2/">
+      «&nbsp;Prev&nbsp;2/7
+    </a>
+    <a class="next" href="http://localhost:1313/tags/docker/page/4/">Next&nbsp;4/7&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

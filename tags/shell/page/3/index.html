@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Shell | PaperMod</title>
+<meta name="keywords" content="">
+<meta name="description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/tags/shell/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/shell/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/shell/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/tags/shell/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="Shell">
+  <meta property="og:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="Shell">
+  <meta name="twitter:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/tags/">Tags</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+  <h1>
+    Shell
+    <a href="/tags/shell/index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">shell脚本中单行或多行屏蔽方法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> shell脚本中单行或多行屏蔽方法 单行注释符号：#
+# echo &#34;abc&#34; 多行注释： 方法一： ((0)) &amp;&amp; {屏蔽块} 如
+((0)) &amp;&amp; { echo &#34;bbb&#34; echo &#34;ccc&#34; } 方法二：COMMENT也可使用其他词替代，如 a,b,c等 &lt;&lt;COMMENT 屏蔽块 COMMENT 如
+&lt;&lt;COMMENT echo &#34;bbb&#34; echo &#34;ccc&#34; COMMENT 也可采用:&lt;&lt; &#39;COMMENT&#39;
+&lt;&lt;&#39;COMMENT&#39; echo &#34;bbb&#34; echo &#34;ccc&#34; COMMENT 方法三：空格 &#43; 单引号 &#39; echo &#34;bbb&#34; echo &#34;ccc&#34; &#39; 方法四：!也可以换成任意字符，如a,b,c等等 &lt;&lt;! 屏蔽块 ! 如
+&lt;&lt;! echo &#34;bbb&#34; echo &#34;ccc&#34; ! 方法五： if false; then 屏蔽块 fi 如
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2025-07-10 02:41:58.77 +0800 +0800'>July 10, 2025</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to shell脚本中单行或多行屏蔽方法" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/shell%E8%84%9A%E6%9C%AC%E4%B8%AD%E5%8D%95%E8%A1%8C%E6%88%96%E5%A4%9A%E8%A1%8C%E5%B1%8F%E8%94%BD%E6%96%B9%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">批量处理博客中时间戳编译报错
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 批量处理博客中时间戳编译报错 files=( # 博客文件 ) files_num=${#files[@]} # echo &#34;${files_num}&#34; # echo &#34;${files[0]}&#34; for ((i = 0; i &lt; files_num; i&#43;&#43;)) do timestamp=$(stat &#34;${files[${i}]}&#34; | grep &#34;Modify&#34; | awk &#39;{$1=&#34;&#34;; print $0}&#39;) newtimestamp=$(date -d &#34;${timestamp}&#34; &#34;&#43;%Y-%m-%dT%H:%M:%S.%2N%z&#34;) # echo &#34;date: $newtimestamp&#34; sed -i &#34;1,5s/date:.*/date: $newtimestamp/g&#34; &#34;${files[${i}]}&#34; done </p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2025-06-28 18:45:44.7 +0800 +0800'>June 28, 2025</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to 批量处理博客中时间戳编译报错" href="http://localhost:1313/post/hugo/%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86%E5%8D%9A%E5%AE%A2%E4%B8%AD%E6%97%B6%E9%97%B4%E6%88%B3%E7%BC%96%E8%AF%91%E6%8A%A5%E9%94%99/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">jq用法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> jq用法 一、参数说明 r: 去掉结果中的 &#34; 双引号 c: 在一行显示 二、函数说明 length: 统计键(值)总数 type: 获取元素类型 to_entries: 条目 map:数组中的元素进行映射转换 to_entries: from_entries: keys: 查找json中所有的键, 默认获取第一层键，指定键则获取子键 has：用来是判断是否存在某个key sort_by: 数组排序 reduce: 累加 三、示例 3.1、显示所有值 格式化阅读json文件 cat cfg.json | jq 直接打开文件 jq . cfg.json 一行显示值 jq -c . cfg.json 查找所有键 $ jq &#39;keys&#39; cfg.json [ &#34;conda&#34;, &#34;function&#34;, &#34;python&#34;, &#34;source&#34; ] $ jq &#39;.source | keys&#39; cfg.json [ &#34;url&#34; ] $ jq &#39;.source.url | keys&#39; cfg.json [ &#34;acl-runtime&#34;, &#34;ais_bench&#34;, &#34;audio&#34;, &#34;cann&#34;, &#34;graphic&#34;, &#34;miniconda&#34;, &#34;mxvision&#34;, &#34;wifi&#34; ] 去掉方括号 $ jq &#39;.source.url | keys[]&#39; cfg.json &#34;acl-runtime&#34; &#34;ais_bench&#34; &#34;audio&#34; &#34;cann&#34; &#34;graphic&#34; &#34;miniconda&#34; &#34;mxvision&#34; &#34;wifi&#34; 显示所有子值 $ jq &#39;.source[]&#39; cfg.json { &#34;miniconda&#34;: &#34;https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.1.0-1-Linux-aarch64.sh&#34;, &#34;cann&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%207.0.RC1/Ascend-cann-toolkit_7.0.RC1_linux-aarch64.run&#34;, &#34;mxvision&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%205.0.RC3/Ascend-mindxsdk-mxvision_5.0.RC3_linux-aarch64.run&#34;, &#34;acl-runtime&#34;: &#34;https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/aclruntime-0.0.2-cp39-cp39-linux_aarch64.whl&#34;, &#34;ais_bench&#34;: &#34;https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/ais_bench-0.0.2-py3-none-any.whl&#34;, &#34;audio&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/audio.zip&#34;, &#34;graphic&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/graphic.zip&#34;, &#34;wifi&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/wifi.zip&#34; } $ jq &#39;.source.url[]&#39; cfg.json &#34;https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.1.0-1-Linux-aarch64.sh&#34; &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%207.0.RC1/Ascend-cann-toolkit_7.0.RC1_linux-aarch64.run&#34; &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%205.0.RC3/Ascend-mindxsdk-mxvision_5.0.RC3_linux-aarch64.run&#34; &#34;https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/aclruntime-0.0.2-cp39-cp39-linux_aarch64.whl&#34; &#34;https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/ais_bench-0.0.2-py3-none-any.whl&#34; &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/audio.zip&#34; &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/graphic.zip&#34; &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/wifi.zip&#34; 去掉所有值 的双引号 $ jq -r &#39;.source.url[]&#39; cfg.json https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.1.0-1-Linux-aarch64.sh https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%207.0.RC1/Ascend-cann-toolkit_7.0.RC1_linux-aarch64.run https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%205.0.RC3/Ascend-mindxsdk-mxvision_5.0.RC3_linux-aarch64.run https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/aclruntime-0.0.2-cp39-cp39-linux_aarch64.whl https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/ais_bench-0.0.2-py3-none-any.whl https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/audio.zip https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/graphic.zip https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/wifi.zip 统计键值总数 $ jq &#34;length&#34; cfg.json 4 $ jq &#34;.source.url | length&#34; cfg.json # 统计指定子键总数 8 获取元素类型 $ jq &#34;.source.url | type&#34; cfg.json &#34;object&#34; 取 [] 方括号中的值 $ jq &#39;.source.url[&#34;wifi&#34;]&#39; cfg.json &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/wifi.zip&#34; 获取 json 中所有 key 和 value $ jq &#39;to_entries | map(&#34;\(.key)=\(.value | tostring)&#34;)&#39; cfg.json [ &#34;source={\&#34;url\&#34;:{\&#34;miniconda\&#34;:\&#34;https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.1.0-1-Linux-aarch64.sh\&#34;,\&#34;cann\&#34;:\&#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%207.0.RC1/Ascend-cann-toolkit_7.0.RC1_linux-aarch64.run\&#34;,\&#34;mxvision\&#34;:\&#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%205.0.RC3/Ascend-mindxsdk-mxvision_5.0.RC3_linux-aarch64.run\&#34;,\&#34;acl-runtime\&#34;:\&#34;https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/aclruntime-0.0.2-cp39-cp39-linux_aarch64.whl\&#34;,\&#34;ais_bench\&#34;:\&#34;https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/ais_bench-0.0.2-py3-none-any.whl\&#34;,\&#34;audio\&#34;:\&#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/audio.zip\&#34;,\&#34;graphic\&#34;:\&#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/graphic.zip\&#34;,\&#34;wifi\&#34;:\&#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/wifi.zip\&#34;}}&#34;, &#34;function={\&#34;pre_process\&#34;:\&#34;y\&#34;,\&#34;apt_install\&#34;:\&#34;y\&#34;,\&#34;install_miniconda\&#34;:\&#34;y\&#34;,\&#34;python_pip_install\&#34;:\&#34;y\&#34;,\&#34;install_cann\&#34;:\&#34;y\&#34;,\&#34;install_mxvision\&#34;:\&#34;y\&#34;,\&#34;install_acllite\&#34;:\&#34;y\&#34;,\&#34;add_audio\&#34;:\&#34;y\&#34;,\&#34;add_local_desktop\&#34;:\&#34;y\&#34;,\&#34;add_remote_desktop\&#34;:\&#34;y\&#34;,\&#34;add_wifi\&#34;:\&#34;y\&#34;,\&#34;post_process\&#34;:\&#34;y\&#34;}&#34;, &#34;conda={\&#34;source\&#34;:\&#34;channels:\\n - defaults\\n show_channel_urls: true\\n default_channels:\\n - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main\\n - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r\\n - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2\\n custom_channels:\\n conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\\n msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\\n bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\\n menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\\n pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\\n pytorch-lts: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\\n simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\&#34;}&#34;, &#34;python={\&#34;source\&#34;:\&#34;[global]\\n index-url = https://pypi.tuna.tsinghua.edu.cn/simple\\n [install]\\n trusted-host = https://pypi.tuna.tsinghua.edu.cn\&#34;}&#34; ] 示例 key 和 value 的值组合 文件内容 $ jq to_entries cfg.json [ { &#34;key&#34;: &#34;source&#34;, &#34;value&#34;: { &#34;url&#34;: { &#34;miniconda&#34;: &#34;https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.1.0-1-Linux-aarch64.sh&#34;, &#34;cann&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%207.0.RC1/Ascend-cann-toolkit_7.0.RC1_linux-aarch64.run&#34;, &#34;mxvision&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%205.0.RC3/Ascend-mindxsdk-mxvision_5.0.RC3_linux-aarch64.run&#34;, &#34;acl-runtime&#34;: &#34;https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/aclruntime-0.0.2-cp39-cp39-linux_aarch64.whl&#34;, &#34;ais_bench&#34;: &#34;https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/ais_bench-0.0.2-py3-none-any.whl&#34;, &#34;audio&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/audio.zip&#34;, &#34;graphic&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/graphic.zip&#34;, &#34;wifi&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/wifi.zip&#34; } } }, { &#34;key&#34;: &#34;function&#34;, &#34;value&#34;: { &#34;pre_process&#34;: &#34;y&#34;, &#34;apt_install&#34;: &#34;y&#34;, &#34;install_miniconda&#34;: &#34;y&#34;, &#34;python_pip_install&#34;: &#34;y&#34;, &#34;install_cann&#34;: &#34;y&#34;, &#34;install_mxvision&#34;: &#34;y&#34;, &#34;install_acllite&#34;: &#34;y&#34;, &#34;add_audio&#34;: &#34;y&#34;, &#34;add_local_desktop&#34;: &#34;y&#34;, &#34;add_remote_desktop&#34;: &#34;y&#34;, &#34;add_wifi&#34;: &#34;y&#34;, &#34;post_process&#34;: &#34;y&#34; } }, { &#34;key&#34;: &#34;conda&#34;, &#34;value&#34;: { &#34;source&#34;: &#34;channels:\n - defaults\n show_channel_urls: true\n default_channels:\n - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main\n - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r\n - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2\n custom_channels:\n conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n pytorch-lts: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud&#34; } }, { &#34;key&#34;: &#34;python&#34;, &#34;value&#34;: { &#34;source&#34;: &#34;[global]\n index-url = https://pypi.tuna.tsinghua.edu.cn/simple\n [install]\n trusted-host = https://pypi.tuna.tsinghua.edu.cn&#34; } } ] 用函数执行结果 jq &#34;to_entries | from_entries&#34; cfg.json { &#34;source&#34;: { &#34;url&#34;: { &#34;miniconda&#34;: &#34;https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/Miniconda3-py39_23.1.0-1-Linux-aarch64.sh&#34;, &#34;cann&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%207.0.RC1/Ascend-cann-toolkit_7.0.RC1_linux-aarch64.run&#34;, &#34;mxvision&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/MindX/MindX%205.0.RC3/Ascend-mindxsdk-mxvision_5.0.RC3_linux-aarch64.run&#34;, &#34;acl-runtime&#34;: &#34;https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/aclruntime-0.0.2-cp39-cp39-linux_aarch64.whl&#34;, &#34;ais_bench&#34;: &#34;https://aisbench.obs.myhuaweicloud.com/packet/ais_bench_infer/0.0.2/ais_bench-0.0.2-py3-none-any.whl&#34;, &#34;audio&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/audio.zip&#34;, &#34;graphic&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/graphic.zip&#34;, &#34;wifi&#34;: &#34;https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Atlas%20200I%20DK%20A2/DevKit/images/resources/wifi.zip&#34; } }, &#34;function&#34;: { &#34;pre_process&#34;: &#34;y&#34;, &#34;apt_install&#34;: &#34;y&#34;, &#34;install_miniconda&#34;: &#34;y&#34;, &#34;python_pip_install&#34;: &#34;y&#34;, &#34;install_cann&#34;: &#34;y&#34;, &#34;install_mxvision&#34;: &#34;y&#34;, &#34;install_acllite&#34;: &#34;y&#34;, &#34;add_audio&#34;: &#34;y&#34;, &#34;add_local_desktop&#34;: &#34;y&#34;, &#34;add_remote_desktop&#34;: &#34;y&#34;, &#34;add_wifi&#34;: &#34;y&#34;, &#34;post_process&#34;: &#34;y&#34; }, &#34;conda&#34;: { &#34;source&#34;: &#34;channels:\n - defaults\n show_channel_urls: true\n default_channels:\n - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main\n - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r\n - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2\n custom_channels:\n conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n pytorch-lts: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud\n simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud&#34; }, &#34;python&#34;: { &#34;source&#34;: &#34;[global]\n index-url = https://pypi.tuna.tsinghua.edu.cn/simple\n [install]\n trusted-host = https://pypi.tuna.tsinghua.edu.cn&#34; } } 参考链接 shell jq命令，解析 json 文件
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2025-06-20 10:23:56.06 +0800 +0800'>June 20, 2025</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to jq用法" href="http://localhost:1313/post/linux/jq%E7%94%A8%E6%B3%95/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/tags/shell/page/2/">
+      «&nbsp;Prev&nbsp;2/4
+    </a>
+    <a class="next" href="http://localhost:1313/tags/shell/page/4/">Next&nbsp;4/4&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>SSH配置 | PaperMod</title>
+<meta name="keywords" content="ssh">
+<meta name="description" content="
+
+ssh基本配置
+
+
+
+/etc/ssh/sshd_config
+
+  Port 22
+  PermitRootLogin yes
+  PubkeyAuthentication yes
+  AuthorizedKeysFile      .ssh/authorized_keys .ssh/authorized_keys2
+  PasswordAuthentication yes
+
+
+
+
+
+SSH文件权限设置
+
+
+
+为了正确配置.ssh目录及其内涵的文件权限，可以按照以下步骤操作：
+
+将.ssh目录的权限设置为700：运行以下命令：chmod 700 ~/.ssh；
+
+将私钥文件的权限设置为600：运行以下命令：chmod 600 ~/.ssh/id_rsa；
+
+将公钥文件的权限设置为644：运行以下命令：chmod 644 ~/.ssh/id_rsa.pub。
+
+这样做的目的是，只允许当前用户读写.ssh目录和私钥文件，而其他用户只能读取公钥文件，从而保证.ssh目录和密钥文件的安全性。
+
+当然，你可以使用如下命令批量化的处理.ssh权限问题：
+
+  chmod 600 ~/.ssh/* &amp;&amp; chmod 644 ~/.ssh/*.pub &amp;&amp; chmod 700 ~/.ssh
+
+
+
+参考链接
+
+
+
+SSH文件权限设置 | chmod 600 ~/.ssh/* &amp;&amp; chmod 644 ~/.ssh/*.pub &amp;&amp; chmod 700 ~/.ssh
+
+
+
+
+
+
+SSH 连接失败: no matching host key type found. Their offer: ssh-rs
+
+
+
+  $ ssh root@192.168.1.10
+  Unable to negotiate with 192.168.1.10 port 22: no matching host key type found. Their offer: ssh-rsa
+
+这个问题经常出现在ssh 服务端版本和客户端版本不匹配。
+要解决问题，需要在命令加上一个选项： -o HostKeyAlgorithms=&#43;ssh-rsa -o PubkeyAcceptedAlgorithms=&#43;ssh-rsa
+比如:">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ssh%E9%85%8D%E7%BD%AE/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ssh%E9%85%8D%E7%BD%AE/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ssh%E9%85%8D%E7%BD%AE/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="SSH配置">
+  <meta property="og:description" content="ssh基本配置 /etc/ssh/sshd_config
+Port 22 PermitRootLogin yes PubkeyAuthentication yes AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2 PasswordAuthentication yes SSH文件权限设置 为了正确配置.ssh目录及其内涵的文件权限，可以按照以下步骤操作：
+将.ssh目录的权限设置为700：运行以下命令：chmod 700 ~/.ssh；
+将私钥文件的权限设置为600：运行以下命令：chmod 600 ~/.ssh/id_rsa；
+将公钥文件的权限设置为644：运行以下命令：chmod 644 ~/.ssh/id_rsa.pub。
+这样做的目的是，只允许当前用户读写.ssh目录和私钥文件，而其他用户只能读取公钥文件，从而保证.ssh目录和密钥文件的安全性。
+当然，你可以使用如下命令批量化的处理.ssh权限问题：
+chmod 600 ~/.ssh/* &amp;&amp; chmod 644 ~/.ssh/*.pub &amp;&amp; chmod 700 ~/.ssh 参考链接 SSH文件权限设置 | chmod 600 ~/.ssh/* &amp;&amp; chmod 644 ~/.ssh/*.pub &amp;&amp; chmod 700 ~/.ssh
+SSH 连接失败: no matching host key type found. Their offer: ssh-rs $ ssh root@192.168.1.10 Unable to negotiate with 192.168.1.10 port 22: no matching host key type found. Their offer: ssh-rsa 这个问题经常出现在ssh 服务端版本和客户端版本不匹配。 要解决问题，需要在命令加上一个选项： -o HostKeyAlgorithms=&#43;ssh-rsa -o PubkeyAcceptedAlgorithms=&#43;ssh-rsa 比如:">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2025-03-11T20:46:24+08:00">
+    <meta property="article:modified_time" content="2025-03-11T20:46:24+08:00">
+    <meta property="article:tag" content="Ssh">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="SSH配置">
+  <meta name="twitter:description" content="ssh基本配置 /etc/ssh/sshd_config
+Port 22 PermitRootLogin yes PubkeyAuthentication yes AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2 PasswordAuthentication yes SSH文件权限设置 为了正确配置.ssh目录及其内涵的文件权限，可以按照以下步骤操作：
+将.ssh目录的权限设置为700：运行以下命令：chmod 700 ~/.ssh；
+将私钥文件的权限设置为600：运行以下命令：chmod 600 ~/.ssh/id_rsa；
+将公钥文件的权限设置为644：运行以下命令：chmod 644 ~/.ssh/id_rsa.pub。
+这样做的目的是，只允许当前用户读写.ssh目录和私钥文件，而其他用户只能读取公钥文件，从而保证.ssh目录和密钥文件的安全性。
+当然，你可以使用如下命令批量化的处理.ssh权限问题：
+chmod 600 ~/.ssh/* &amp;&amp; chmod 644 ~/.ssh/*.pub &amp;&amp; chmod 700 ~/.ssh 参考链接 SSH文件权限设置 | chmod 600 ~/.ssh/* &amp;&amp; chmod 644 ~/.ssh/*.pub &amp;&amp; chmod 700 ~/.ssh
+SSH 连接失败: no matching host key type found. Their offer: ssh-rs $ ssh root@192.168.1.10 Unable to negotiate with 192.168.1.10 port 22: no matching host key type found. Their offer: ssh-rsa 这个问题经常出现在ssh 服务端版本和客户端版本不匹配。 要解决问题，需要在命令加上一个选项： -o HostKeyAlgorithms=&#43;ssh-rsa -o PubkeyAcceptedAlgorithms=&#43;ssh-rsa 比如:">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "SSH配置",
+      "item": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ssh%E9%85%8D%E7%BD%AE/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SSH配置",
+  "name": "SSH配置",
+  "description": " ssh基本配置 /etc/ssh/sshd_config\nPort 22 PermitRootLogin yes PubkeyAuthentication yes AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2 PasswordAuthentication yes SSH文件权限设置 为了正确配置.ssh目录及其内涵的文件权限，可以按照以下步骤操作：\n将.ssh目录的权限设置为700：运行以下命令：chmod 700 ~/.ssh；\n将私钥文件的权限设置为600：运行以下命令：chmod 600 ~/.ssh/id_rsa；\n将公钥文件的权限设置为644：运行以下命令：chmod 644 ~/.ssh/id_rsa.pub。\n这样做的目的是，只允许当前用户读写.ssh目录和私钥文件，而其他用户只能读取公钥文件，从而保证.ssh目录和密钥文件的安全性。\n当然，你可以使用如下命令批量化的处理.ssh权限问题：\nchmod 600 ~/.ssh/* \u0026amp;\u0026amp; chmod 644 ~/.ssh/*.pub \u0026amp;\u0026amp; chmod 700 ~/.ssh 参考链接 SSH文件权限设置 | chmod 600 ~/.ssh/* \u0026amp;\u0026amp; chmod 644 ~/.ssh/*.pub \u0026amp;\u0026amp; chmod 700 ~/.ssh\nSSH 连接失败: no matching host key type found. Their offer: ssh-rs $ ssh root@192.168.1.10 Unable to negotiate with 192.168.1.10 port 22: no matching host key type found. Their offer: ssh-rsa 这个问题经常出现在ssh 服务端版本和客户端版本不匹配。 要解决问题，需要在命令加上一个选项： -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa 比如:\n",
+  "keywords": [
+    "ssh"
+  ],
+  "articleBody": " ssh基本配置 /etc/ssh/sshd_config\nPort 22 PermitRootLogin yes PubkeyAuthentication yes AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2 PasswordAuthentication yes SSH文件权限设置 为了正确配置.ssh目录及其内涵的文件权限，可以按照以下步骤操作：\n将.ssh目录的权限设置为700：运行以下命令：chmod 700 ~/.ssh；\n将私钥文件的权限设置为600：运行以下命令：chmod 600 ~/.ssh/id_rsa；\n将公钥文件的权限设置为644：运行以下命令：chmod 644 ~/.ssh/id_rsa.pub。\n这样做的目的是，只允许当前用户读写.ssh目录和私钥文件，而其他用户只能读取公钥文件，从而保证.ssh目录和密钥文件的安全性。\n当然，你可以使用如下命令批量化的处理.ssh权限问题：\nchmod 600 ~/.ssh/* \u0026\u0026 chmod 644 ~/.ssh/*.pub \u0026\u0026 chmod 700 ~/.ssh 参考链接 SSH文件权限设置 | chmod 600 ~/.ssh/* \u0026\u0026 chmod 644 ~/.ssh/*.pub \u0026\u0026 chmod 700 ~/.ssh\nSSH 连接失败: no matching host key type found. Their offer: ssh-rs $ ssh root@192.168.1.10 Unable to negotiate with 192.168.1.10 port 22: no matching host key type found. Their offer: ssh-rsa 这个问题经常出现在ssh 服务端版本和客户端版本不匹配。 要解决问题，需要在命令加上一个选项： -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa 比如:\nssh -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa root@192.168.1.10 如果是sftp连接的话，只需要将ssh换成sftp即可，比如：\nsftp -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa root@192.168.1.10 也可以加参数加到 ssh config file, /etc/ssh/ssh_config\nHostKeyAlgorithms = +ssh-rsa PubkeyAcceptedAlgorithms = +ssh-rsa 或者追加到~//.ssh/config文件中也是可以的，如：\nHostKeyAlgorithms = +ssh-rsa PubkeyAcceptedAlgorithms = +ssh-rsa 另一个选择是在创建密钥对时使用不同的算法。\n要查看 Linux 系统上 SSH 命令支持的算法，可以使用 ssh -Q 命令。具体来说，可以使用以下命令来查看支持的加密算法、散列算法和公钥算法：\nssh -Q cipher # 查看支持的加密算法 ssh -Q mac # 查看支持的散列算法 ssh -Q key # 查看支持的公钥算法 sshd: no hostkeys available – exiting. 生成 SSH 主机密钥\n# 生成 RSA 密钥 ssh-keygen -t rsa -f $PREFIX/etc/ssh/ssh_host_rsa_key -N \"\" # 生成 ECDSA 密钥 ssh-keygen -t ecdsa -f $PREFIX/etc/ssh/ssh_host_ecdsa_key -N \"\" # 生成 ED25519 密钥 ssh-keygen -t ed25519 -f $PREFIX/etc/ssh/ssh_host_ed25519_key -N \"\" ubuntu自动配置sshd_config 操作步骤 ./sshd_config.sh /etc/ssh/sshd_config 脚本内容-sshd_config.sh # 通过输入sshd_config文件绝对路径来运行该脚本，脚本在运行前会先进行针对sshd_config进行备份，然后再配置 apt install -y openssh-server if [ -f ${1} ]; then cp $1 $1_backup\telse echo \"$1 not exists!\" fi #删除带有指定关键字的行 delete_line_with_special_word () { if [[ $# -lt 2 ]]; then return fi FILE=$1 WORD=$2 sed -i \"/${WORD}/d\" ${FILE} } #文件内容追加 append_line_into_file () { if [[ $# -lt 2 ]]; then return fi FILE=$1 LINE=$2 echo do echo $LINE \u003e\u003e $FILE } CONFIG=\"/etc/ssh/sshd_config\" # CONFIG=\"./sshd_config\" cp $CONFIG $CONFIG.old string_1=\"Port 22\" string_2=\"PermitRootLogin\" string_3=\"PubkeyAuthentication\" string_4=\"AuthorizedKeysFile\" string_5=\"PasswordAuthentication yes\" string_6=\"Port 22\" string_7=\"PermitRootLogin yes\" string_8=\"PubkeyAuthentication yes\" string_9=\"AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2\" string_10=\"PasswordAuthentication yes\" ## 配置过程 delete_line_with_special_word $CONFIG \"$string_1\" append_line_into_file $CONFIG \"$string_1\" delete_line_with_special_word $CONFIG \"$string_2\" append_line_into_file $CONFIG \"$string_7\" delete_line_with_special_word $CONFIG \"$string_3\" append_line_into_file $CONFIG \"$string_8\" delete_line_with_special_word $CONFIG \"$string_4\" append_line_into_file $CONFIG \"$string_9\" delete_line_with_special_word $CONFIG \"$string_5\" append_line_into_file $CONFIG \"$string_10\" 客户端.ssh目录下config文件基本配置 .ssh/config\nHost * ServerAliveInterval 60 ServerAliveCountMax 120 Host HostName User Port IdentityFile 这个配置是一个 SSH 配置文件（通常是 ~/.ssh/config）。在这个配置中，ServerAliveInterval 和 ServerAliveCountMax 是全局参数，会应用到所有的主机连接上，而其他的部分是针对特定主机的配置。\nServerAliveInterval 设置为 60 秒表示，无论连接的是哪个主机，客户端都会每隔 60 秒发送一个空闲检查以确认服务器是否活动。 ServerAliveCountMax 设置为 120 表示，无论连接的是哪个主机，客户端都会允许服务器连续未响应 120 次空闲检查，然后才会断开连接。 其他部分（Host、HostName、User、Port、IdentityFile）是用于指定特定主机连接的配置，其中：\nHost 是用于指定主机别名的标识符。 HostName 是指定主机的域名或 IP 地址。 User 是指定连接主机时要使用的用户名。 Port 是指定连接主机时要使用的端口号。 IdentityFile 是指定用于身份验证的私钥文件路径。 如果你想为特定主机设置这些参数，你可以在 Host 后面指定主机别名，然后在其后设置相应的参数。例如：\nHost example.com ServerAliveInterval 60 ServerAliveCountMax 120 User username Port 22 IdentityFile ~/.ssh/id_rsa 这样的话，上述的 ServerAliveInterval 和 ServerAliveCountMax 参数将只会应用到 example.com 主机的连接上，而其他主机的连接则不受影响。\n如何不让ssh连接断开 客户端设置可以确保客户端定期向服务器发送空闲检查，以确保服务器仍然活跃。如果服务器在一段时间内没有响应，客户端可以主动断开连接，避免连接僵死。 服务端设置可以确保服务器定期向客户端发送空闲检查，以确保客户端仍然活跃。如果客户端在一段时间内没有响应，服务器可以主动断开连接，释放资源并提高安全性。 总结：如果客户端和服务端都设置保活选项，就可以确保连接的双向活跃性和稳定性。这样的设置可以在两个方向上都进行检查，以确保连接始终保持活跃，并及时处理失活的连接。\n可以只设置客户端或只设置服务端，这取决于你想要达到的目的，也可以通过同时设置客户端和服务端，可以确保连接的稳定性和可靠性，从而更好地管理连接并提高系统的安全性和稳定性。\n只在客户端设置 SSH 保活选项 您可以在 SSH 客户端的配置文件中设置保活选项，以防止连接因为长时间无活动而断开。这通常在客户端的 ~/.ssh/config 文件中设置：\nHost * ServerAliveInterval 60 ServerAliveCountMax 120 ServerAliveInterval：指定客户端向服务器发送空闲包的时间间隔（秒）。例如，60 表示每 60 秒发送一次。 ServerAliveCountMax：在没有收到任何服务器响应的情况下，客户端发送保活包的最大次数。120 意味着在没有响应的情况下最多发送 120 次。\n优点：客户端可以定期向服务器发送空闲检查，以确保服务器仍然活跃。如果服务器在一段时间内没有响应，客户端可以主动断开连接，这有助于防止连接僵死。 缺点：如果客户端没有设置超时检测（例如服务器端没有响应客户端的空闲检查），可能导致服务器一直保持连接，造成资源浪费。 只在服务器端设置 SSH 保活选项 同样，您也可以在 SSH 服务器端设置保活选项，来防止客户端连接由于超时而断开。在服务器的 SSH 配置文件 /etc/ssh/sshd_config 中设置：\nClientAliveInterval 60 ClientAliveCountMax 120 ClientAliveInterval：服务器向客户端发送请求的时间间隔（秒），用于检查客户端是否仍然连接。 ClientAliveCountMax：在没有收到客户端响应的情况下，服务器尝试发送请求的最大次数。\nsudo systemctl restart sshd 优点：服务端可以定期向客户端发送空闲检查，以确保客户端仍然活跃。如果客户端在一段时间内没有响应，服务端可以主动断开连接，这有助于释放资源并提高安全性。 缺点：如果服务端没有设置超时检测（例如客户端无法及时响应服务端的空闲检查），可能导致服务端一直保持连接，造成资源浪费。 总结：单独设置客户端或服务端的一个方面可以达到一定的活跃性和稳定性，但是为了最佳效果，建议同时设置客户端和服务端。这可以确保连接在双向上都得到监视和保持活跃，从而更好地管理连接和资源。\nssh连接，如果超过3秒没有连上则断开 要在 SSH 连接时设置超时时间，可以在命令行中直接指定 -o 选项来设置 ConnectTimeout。以下是一个示例：\nssh -o ConnectTimeout=3 user@hostname 在这个命令中，-o ConnectTimeout=3 表示设置连接超时时间为 3 秒。你可以将 user@hostname 替换为实际的用户名和主机名。\n这样，在执行以上命令时，如果连接未能在指定的时间内建立，则会自动断开连接。\n使用 tmux 或 screen 会话 termux教程：https://ynhugo.github.io/p/tmux%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/\nscreen教程：https://ynhugo.github.io/p/screen%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/\n使用 tmux 或 screen 可以在连接断开后保持您的工作会话。即使 SSH 连接断开，您也可以重新连接到同一个 tmux 或 screen 会话，继续之前的工作。\n安装 tmux 或 screen（取决于您的系统）\nsudo apt install tmux screen -y # 对于 Ubuntu/Debian sudo yum install tmux screen -y # 对于 CentOS/RHEL 开始一个新会话：\ntmux 如果连接断开，您可以重新连接：\ntmux attach 查看 ssh 版本 ssh -V 处理 ssh 版本信息 ssh -V 命令输出的版本信息是直接打印在标准错误输出（stderr）中，而不是标准输出（stdout）。因此需要使用重定向来处理。\n以下是一个示例来提取 OpenSSH 的版本号：\nssh -V 2\u003e\u00261 | awk '{print $1}' 这个命令将会执行 ssh -V 命令，并将标准错误输出（stderr）转发到标准输出（stdout），然后使用 awk 命令提取第一 个字段，即版本号。\n对于 OpenSSH 版本信息的输出，它通常类似于 \"OpenSSH_x.x\" 的格式，通过使用 $1 来提取第一个字段，可以获取到版本号。\n判断 ssh 版本 ssh_version=$(ssh -V 2\u003e\u00261 | awk '{print $1}' | tr '_' ' ' | awk '{print $2}' | awk -F 'p' '{print $1}') echo \"ssh_version: ${ssh_version}\" # 将版本号以小数点分隔，并提取整数部分 major_version=$(echo \"${ssh_version}\" | cut -d '.' -f 1) minor_version=$(echo \"${ssh_version}\" | cut -d '.' -f 2) if [[ ${major_version} -lt 7 || (${major_version} -eq 7 \u0026\u0026 ${minor_version} -lt 8) ]]; then echo \"debug_1\" else echo \"debug_2\" fi 注意事项 长时间保持 SSH 连接可能会有安全风险，特别是在公共或不受信任的网络中。 确保您有足够的权限来修改 SSH 配置文件。 在修改服务器配置时，谨慎操作，错误的配置可能会导致无法通过 SSH 连接到服务器。 通过上述方法，您可以有效地防止 SSH 连接因为长时间无活动而断开，提高远程工作的连续性和便捷性。\n参考链接 如何不让ssh连接断开\nssh公钥登录远程服务器配置 每次通过ssh登陆远程服务器都要输入用户名和密码，很麻烦，比如：\nssh 用户名@192.168.xxx.xxx 我们可以通过公钥的方式，无密码登陆远程服务器。\n第一步，ssh-keygen命令生成公钥私钥 全过程有三步，第一步是输入公钥私钥的保存路径，第二步和第三步是设置私钥密码和确认密码。\nssh-keygen 如果是第一次生成公钥，则直接一路回车确认就行。公钥和私钥会自动生成到/Users/[用户名]/.ssh路径下。默认公钥文件名为id_rsa.pub，私钥文件名为id_rsa。如果不想覆盖之前已有的公钥，那在第一步指定一个保存路径即可。\n第二步，使用ssh-copy-id命令将公钥复制到远程服务器 在用户路径下，执行命令：\nssh-copy-id -i .ssh/id_rsa.pub 用户名@192.168.xxx.xxx 注意：\n如果上一步你自己指定了单独的公钥路径，请在-i后面输入指定的公钥路径 这里是将你的公钥同步到远程服务器上你要登录的用户名，所以只会对该用户登录时有效。 本质上，这一步的操作，是将你的公钥追加到服务器/home/[用户名]/.ssh/authorized_keys文件后面。如果你手动复制进去，也可以，但是麻烦哦。\n第三步，检查服务端.ssh/的权限 以上配置之后，就可以无需密码直接登陆了，命令：\nssh 用户名@192.168.xxx.xxx 如果无效，则需要检查服务器.ssh/文件的权限。如果用户组权限有写权限，则用公钥ssh登录是不生效的。需要去除掉用户组的写权限，使用命令：\nchmod g-w ./.ssh/ 为什么有这个限制呢？其实思考一下就能理解。因为你想通过公钥快捷登录A用户。而实现方式是将自己的公钥追加到A用户目录下的authorized_keys。这种情况下，如果同用户组的B用户，也有对.ssh/路径下的写权限，那么其他人就可以通过登录B用户，修改A用户下的authorized_keys，将自己的公钥追加进去，这样就可以直接用A用户登录了。所以这会出现漏洞。\n第四步，配置快捷命令 目前为止，登录还需要输入用户名和ip，依旧比较麻烦。我们可以在本地的.ssh/config文件中，配置快捷登录命令。\n将以下格式的信息追加到config文件后面：\nHost [你能记住的名字] Hostname [ip] Port [端口] User [登录用户名] 比如：\n默认端口为22，termux的端口为8022，下边这个例子是针对termux的，如果非termux的话将8022改成22即可\nHost vipad Hostname 192.168.xx.xx Port 8022 User u0_a77 之后使用命令：\nssh vipad 就可以直接登录了。\n参考链接 快速实战派：ssh公钥登录远程服务器配置\n从 known_hosts 文件中删除所有属于 hostname 的密钥 # 示例： ssh-keygen -R 192.168.x.x SSH 密钥管理完整工作流 1. 生成密钥对 基础命令 # 默认生成 RSA 3072 位 ssh-keygen # 生成 RSA 4096 位（兼容性最好） ssh-keygen -t rsa -b 4096 # 生成 Ed25519（推荐，性能最佳） ssh-keygen -t ed25519 -C \"$(whoami)@$(hostname) $(date +%Y-%m-%d)\" 密钥生成交互说明 默认保存路径：~/.ssh/id_rsa（或 id_ed25519） 建议设置 passphrase（密码短语） 私钥权限：600，公钥权限：644 2. 删除远程旧密钥 精确删除（推荐） 删除本地机器在远程的旧密钥记录：\nssh rog8 'sed -i \"/'\"$(whoami)\"'@'\"$(hostname)\"'/d\" ~/.ssh/authorized_keys' 其他删除方式对比 # 精确匹配 - 删除本机生成的密钥 ssh rog8 'sed -i \"/'\"$(whoami)\"'@'\"$(hostname)\"'/d\" ~/.ssh/authorized_keys' # 仅用户名 - 删除指定用户的所有密钥 ssh rog8 'sed -i \"/'\"$(whoami)\"'@/d\" ~/.ssh/authorized_keys' # 手动编辑 - 精细控制 ssh rog8 \"vim ~/.ssh/authorized_keys\" 3. 推送新公钥 基本命令 # 推送默认公钥 ssh-copy-id -i ~/.ssh/id_rsa.pub rog8 # 推送指定公钥 ssh-copy-id -i ~/.ssh/id_ed25519.pub rog8 # 指定端口 ssh-copy-id -i ~/.ssh/id_rsa.pub -p 2222 rog8 SSH Config 配置（使用别名） ~/.ssh/config 文件：\nHost rog8 HostName 192.168.x.x User your_username Port 22 IdentityFile ~/.ssh/id_rsa 4. 完整工作流（一键执行） 手动分步执行 # 1. 生成新密钥（如需） ssh-keygen -t ed25519 -C \"$(whoami)@$(hostname) $(date +%Y-%m-%d)\" # 2. 删除远程旧密钥 ssh rog8 'sed -i \"/'\"$(whoami)\"'@'\"$(hostname)\"'/d\" ~/.ssh/authorized_keys' # 3. 推送新公钥 ssh-copy-id -i ~/.ssh/id_ed25519.pub rog8 # 4. 测试连接 ssh rog8 'echo \"SSH connection successful\"' 自动化脚本 #!/bin/bash # ssh-key-renew.sh - 安全的密钥轮换脚本 HOST=\"rog8\" KEY_TYPE=\"ed25519\" KEY_FILE=\"$HOME/.ssh/id_$KEY_TYPE\" echo \"🔄 开始 SSH 密钥轮换...\" # 生成新密钥 if [ ! -f \"$KEY_FILE\" ]; then echo \"📝 生成新密钥对...\" ssh-keygen -t $KEY_TYPE -C \"$(whoami)@$(hostname) $(date +%Y-%m-%d)\" -f \"$KEY_FILE\" fi # 备份远程 authorized_keys echo \"💾 备份远程 authorized_keys...\" ssh $HOST \"cp ~/.ssh/authorized_keys ~/.ssh/authorized_keys.bak\" # 删除旧密钥 echo \"🗑️ 删除旧密钥...\" ssh $HOST 'sed -i \"/'\"$(whoami)@$(hostname)\"'/d\" ~/.ssh/authorized_keys' # 推送新密钥 echo \"📤 推送新公钥...\" ssh-copy-id -i \"${KEY_FILE}.pub\" $HOST # 验证 if ssh -o BatchMode=yes $HOST \"echo OK\" 2\u003e/dev/null; then echo \"✅ 密钥轮换成功\" ssh $HOST \"rm -f ~/.ssh/authorized_keys.bak\" else echo \"❌ 验证失败，恢复备份\" ssh $HOST \"mv ~/.ssh/authorized_keys.bak ~/.ssh/authorized_keys\" exit 1 fi 5. SSH Agent 配置（避免重复输入密码） 基础配置 # 启动 ssh-agent eval \"$(ssh-agent -s)\" # 添加私钥到 agent ssh-add ~/.ssh/id_rsa # 查看已添加的密钥 ssh-add -l # 删除所有密钥 ssh-add -D MacOS 永久保存到钥匙串 ssh-add --apple-use-keychain ~/.ssh/id_rsa 添加到 ~/.bashrc 或 ~/.zshrc # 自动启动 ssh-agent if [ -z \"$SSH_AUTH_SOCK\" ]; then eval \"$(ssh-agent -s)\" \u003e /dev/null ssh-add ~/.ssh/id_rsa 2\u003e/dev/null fi 6. 常用别名和函数 添加到 ~/.bashrc # 删除本机在远程的密钥 alias ssh-rm='ssh $1 \"sed -i \\\"/'\"$(whoami)@$(hostname)\"'/d\\\" ~/.ssh/authorized_keys\"' # 查看远程 authorized_keys alias ssh-keys='ssh $1 \"cat ~/.ssh/authorized_keys\"' # 查看远程 authorized_keys 中本机的密钥 alias ssh-mykey='ssh $1 \"grep \\\"'\"$(whoami)@$(hostname)\"'\\\" ~/.ssh/authorized_keys\"' # 完整的密钥更新函数 ssh-renew() { local host=$1 local pattern=\"$(whoami)@$(hostname)\" echo \"📋 当前密钥: $pattern\" echo \"🔍 检查 $host 上的旧密钥...\" ssh \"$host\" \"grep '$pattern' ~/.ssh/authorized_keys\" 2\u003e/dev/null echo \"🗑️ 删除旧密钥...\" ssh \"$host\" \"sed -i '/$pattern/d' ~/.ssh/authorized_keys\" echo \"📤 推送新密钥...\" ssh-copy-id -i ~/.ssh/id_rsa.pub \"$host\" echo \"✅ 完成！测试连接：\" ssh \"$host\" \"echo 'SSH works!'\" } 7. 故障排查 常见问题及解决方案 问题 解决方案 Permission denied 检查远程 ~/.ssh 权限：`chmod 700 ~/.ssh \u0026\u0026 chmod 600 ~/.ssh/authorized_keys` 仍需输入密码 确认 ssh-copy-id 成功，检查远程 sshd 配置 密钥不匹配 确认本机和远程的注释格式一致 连接慢 检查 DNS 反解：`UseDNS no` 在 /etc/ssh/sshd_config 调试命令 # 详细输出模式 ssh -vvv rog8 # 测试密钥是否被接受 ssh -o PreferredAuthentications=publickey rog8 # 查看远程日志 ssh rog8 \"sudo tail -f /var/log/auth.log\" 8. 安全建议 密钥安全 私钥权限必须为 600：`chmod 600 ~/.ssh/id_rsa` 定期轮换密钥（建议每 6-12 个月） 为不同服务使用不同密钥 设置 passphrase，配合 ssh-agent 使用 服务器安全 禁用密码认证：`PasswordAuthentication no` 禁用 root 登录：`PermitRootLogin no` 限制可登录用户：`AllowUsers your_username` 使用密钥认证：`PubkeyAuthentication yes` 服务器配置示例（/etc/ssh/sshd_config） PubkeyAuthentication yes PasswordAuthentication no PermitRootLogin no AllowUsers alice bob MaxAuthTries 3 Protocol 2 9. 快速参考卡片 命令速查表（Bash 代码块） # 生成密钥（Ed25519 推荐） ssh-keygen -t ed25519 # 查看公钥 cat ~/.ssh/id_rsa.pub # 推送密钥到远程主机 ssh-copy-id -i ~/.ssh/id_rsa.pub user@host # 删除远程 authorized_keys 中包含特定模式的行 ssh user@host 'sed -i \"/pattern/d\" ~/.ssh/authorized_keys' # 测试免密连接（安静模式） ssh -o BatchMode=yes user@host \"echo OK\" # 添加私钥到 ssh-agent ssh-add ~/.ssh/id_rsa # 查看 agent 中已加载的密钥 ssh-add -l 你的标准工作流（一句话总结） # 生成 → 删除旧 → 推送新 → 测试 ssh-keygen -t rsa -b 4096 \u0026\u0026 \\ ssh rog8 'sed -i \"/'\"$(whoami)\"'@'\"$(hostname)\"'/d\" ~/.ssh/authorized_keys' \u0026\u0026 \\ ssh-copy-id -i ~/.ssh/id_rsa.pub rog8 \u0026\u0026 \\ ssh rog8 'echo \"✓ SSH configured successfully\"' 参考链接 ssh复制公钥到远程文件\n",
+  "wordCount" : "1235",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2025-03-11T20:46:24+08:00",
+  "dateModified": "2025-03-11T20:46:24+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Theme PaperMod"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ssh%E9%85%8D%E7%BD%AE/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PaperMod",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/post/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+    <h1 class="post-title entry-hint-parent">
+      SSH配置
+    </h1>
+    <div class="post-meta">
+
+<span title='2025-03-11 20:46:24 +0800 +0800'>March 11, 2025</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span>&nbsp;|&nbsp;<span>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content/post/%e7%a8%8b%e5%ba%8f%e5%91%98/ssh%e9%85%8d%e7%bd%ae.org" rel="noopener noreferrer edit" target="_blank">Suggest Changes</a>
+    </span>
+
+</div>
+  </header> 
+
+  <div class="post-content md-content">
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+ssh基本配置
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>
+/etc/ssh/sshd_config</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  Port <span class="m">22</span>
+</span></span><span class="line"><span class="cl">  PermitRootLogin yes
+</span></span><span class="line"><span class="cl">  PubkeyAuthentication yes
+</span></span><span class="line"><span class="cl">  AuthorizedKeysFile      .ssh/authorized_keys .ssh/authorized_keys2
+</span></span><span class="line"><span class="cl">  PasswordAuthentication yes</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-2" class="outline-2">
+<h2 id="headline-2">
+SSH文件权限设置
+</h2>
+<div id="outline-text-headline-2" class="outline-text-2">
+<p>
+为了正确配置.ssh目录及其内涵的文件权限，可以按照以下步骤操作：</p>
+<p>
+将.ssh目录的权限设置为700：运行以下命令：chmod 700 ~/.ssh；</p>
+<p>
+将私钥文件的权限设置为600：运行以下命令：chmod 600 ~/.ssh/id_rsa；</p>
+<p>
+将公钥文件的权限设置为644：运行以下命令：chmod 644 ~/.ssh/id_rsa.pub。</p>
+<p>
+这样做的目的是，只允许当前用户读写.ssh目录和私钥文件，而其他用户只能读取公钥文件，从而保证.ssh目录和密钥文件的安全性。</p>
+<p>
+当然，你可以使用如下命令批量化的处理.ssh权限问题：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  chmod <span class="m">600</span> ~/.ssh/* <span class="o">&amp;&amp;</span> chmod <span class="m">644</span> ~/.ssh/*.pub <span class="o">&amp;&amp;</span> chmod <span class="m">700</span> ~/.ssh</span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+参考链接
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/bigbaojian/article/details/130255339">SSH文件权限设置 | chmod 600 ~/.ssh/* &amp;&amp; chmod 644 ~/.ssh/*.pub &amp;&amp; chmod 700 ~/.ssh</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-2">
+<h2 id="headline-4">
+SSH 连接失败: no matching host key type found. Their offer: ssh-rs
+</h2>
+<div id="outline-text-headline-4" class="outline-text-2">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  $ ssh root@192.168.1.10
+</span></span><span class="line"><span class="cl">  Unable to negotiate with 192.168.1.10 port 22: no matching host key <span class="nb">type</span> found. Their offer: ssh-rsa</span></span></code></pre></div>
+</div>
+<p>这个问题经常出现在ssh 服务端版本和客户端版本不匹配。
+要解决问题，需要在命令加上一个选项： -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa
+比如:</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ssh -o <span class="nv">HostKeyAlgorithms</span><span class="o">=</span>+ssh-rsa -o <span class="nv">PubkeyAcceptedAlgorithms</span><span class="o">=</span>+ssh-rsa  root@192.168.1.10</span></span></code></pre></div>
+</div>
+<p>如果是sftp连接的话，只需要将ssh换成sftp即可，比如：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sftp -o <span class="nv">HostKeyAlgorithms</span><span class="o">=</span>+ssh-rsa -o <span class="nv">PubkeyAcceptedAlgorithms</span><span class="o">=</span>+ssh-rsa  root@192.168.1.10</span></span></code></pre></div>
+</div>
+<p>
+也可以加参数加到 ssh config file, /etc/ssh/ssh_config</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nv">HostKeyAlgorithms</span> <span class="o">=</span> +ssh-rsa
+</span></span><span class="line"><span class="cl">  <span class="nv">PubkeyAcceptedAlgorithms</span> <span class="o">=</span> +ssh-rsa</span></span></code></pre></div>
+</div>
+<p>或者追加到~//.ssh/config文件中也是可以的，如：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nv">HostKeyAlgorithms</span> <span class="o">=</span> +ssh-rsa
+</span></span><span class="line"><span class="cl">  <span class="nv">PubkeyAcceptedAlgorithms</span> <span class="o">=</span> +ssh-rsa</span></span></code></pre></div>
+</div>
+<p>另一个选择是在创建密钥对时使用不同的算法。</p>
+<p>
+要查看 Linux 系统上 SSH 命令支持的算法，可以使用 ssh -Q 命令。具体来说，可以使用以下命令来查看支持的加密算法、散列算法和公钥算法：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ssh -Q cipher <span class="c1"># 查看支持的加密算法 </span>
+</span></span><span class="line"><span class="cl">  ssh -Q mac <span class="c1"># 查看支持的散列算法 </span>
+</span></span><span class="line"><span class="cl">  ssh -Q key <span class="c1"># 查看支持的公钥算法</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-2">
+<h2 id="headline-5">
+sshd: no hostkeys available – exiting.
+</h2>
+<div id="outline-text-headline-5" class="outline-text-2">
+<p>
+生成 SSH 主机密钥</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 生成 RSA 密钥</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -t rsa -f <span class="nv">$PREFIX</span>/etc/ssh/ssh_host_rsa_key -N <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成 ECDSA 密钥</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -t ecdsa -f <span class="nv">$PREFIX</span>/etc/ssh/ssh_host_ecdsa_key -N <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成 ED25519 密钥</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -t ed25519 -f <span class="nv">$PREFIX</span>/etc/ssh/ssh_host_ed25519_key -N <span class="s2">&#34;&#34;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-2">
+<h2 id="headline-6">
+ubuntu自动配置sshd_config
+</h2>
+<div id="outline-text-headline-6" class="outline-text-2">
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+操作步骤
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ./sshd_config.sh /etc/ssh/sshd_config</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
+脚本内容-sshd_config.sh
+</h3>
+<div id="outline-text-headline-8" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 通过输入sshd_config文件绝对路径来运行该脚本，脚本在运行前会先进行针对sshd_config进行备份，然后再配置</span>
+</span></span><span class="line"><span class="cl">apt install -y openssh-server
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -f <span class="si">${</span><span class="nv">1</span><span class="si">}</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	cp <span class="nv">$1</span> <span class="nv">$1</span>_backup	
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2"> not exists!&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#删除带有指定关键字的行</span>
+</span></span><span class="line"><span class="cl">delete_line_with_special_word <span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$#</span> -lt <span class="m">2</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">FILE</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">WORD</span><span class="o">=</span><span class="nv">$2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	sed -i <span class="s2">&#34;/</span><span class="si">${</span><span class="nv">WORD</span><span class="si">}</span><span class="s2">/d&#34;</span> <span class="si">${</span><span class="nv">FILE</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#文件内容追加</span>
+</span></span><span class="line"><span class="cl">append_line_into_file <span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$#</span> -lt <span class="m">2</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">FILE</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">LINE</span><span class="o">=</span><span class="nv">$2</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="nv">$LINE</span> &gt;&gt; <span class="nv">$FILE</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CONFIG</span><span class="o">=</span><span class="s2">&#34;/etc/ssh/sshd_config&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># CONFIG=&#34;./sshd_config&#34;</span>
+</span></span><span class="line"><span class="cl">cp <span class="nv">$CONFIG</span> <span class="nv">$CONFIG</span>.old
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">string_1</span><span class="o">=</span><span class="s2">&#34;Port 22&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">string_2</span><span class="o">=</span><span class="s2">&#34;PermitRootLogin&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">string_3</span><span class="o">=</span><span class="s2">&#34;PubkeyAuthentication&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">string_4</span><span class="o">=</span><span class="s2">&#34;AuthorizedKeysFile&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">string_5</span><span class="o">=</span><span class="s2">&#34;PasswordAuthentication yes&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">string_6</span><span class="o">=</span><span class="s2">&#34;Port 22&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">string_7</span><span class="o">=</span><span class="s2">&#34;PermitRootLogin yes&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">string_8</span><span class="o">=</span><span class="s2">&#34;PubkeyAuthentication yes&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">string_9</span><span class="o">=</span><span class="s2">&#34;AuthorizedKeysFile      .ssh/authorized_keys .ssh/authorized_keys2&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">string_10</span><span class="o">=</span><span class="s2">&#34;PasswordAuthentication yes&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 配置过程</span>
+</span></span><span class="line"><span class="cl">delete_line_with_special_word   <span class="nv">$CONFIG</span>  <span class="s2">&#34;</span><span class="nv">$string_1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">append_line_into_file           <span class="nv">$CONFIG</span>  <span class="s2">&#34;</span><span class="nv">$string_1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">delete_line_with_special_word   <span class="nv">$CONFIG</span>  <span class="s2">&#34;</span><span class="nv">$string_2</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">append_line_into_file           <span class="nv">$CONFIG</span>  <span class="s2">&#34;</span><span class="nv">$string_7</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">delete_line_with_special_word   <span class="nv">$CONFIG</span>  <span class="s2">&#34;</span><span class="nv">$string_3</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">append_line_into_file           <span class="nv">$CONFIG</span>  <span class="s2">&#34;</span><span class="nv">$string_8</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">delete_line_with_special_word   <span class="nv">$CONFIG</span>  <span class="s2">&#34;</span><span class="nv">$string_4</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">append_line_into_file           <span class="nv">$CONFIG</span>  <span class="s2">&#34;</span><span class="nv">$string_9</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">delete_line_with_special_word   <span class="nv">$CONFIG</span>  <span class="s2">&#34;</span><span class="nv">$string_5</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">append_line_into_file           <span class="nv">$CONFIG</span>  <span class="s2">&#34;</span><span class="nv">$string_10</span><span class="s2">&#34;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-2">
+<h2 id="headline-9">
+客户端.ssh目录下config文件基本配置
+</h2>
+<div id="outline-text-headline-9" class="outline-text-2">
+<p>
+.ssh/config</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  Host *
+</span></span><span class="line"><span class="cl">  ServerAliveInterval <span class="m">60</span>
+</span></span><span class="line"><span class="cl">  ServerAliveCountMax <span class="m">120</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  Host            
+</span></span><span class="line"><span class="cl">  HostName        
+</span></span><span class="line"><span class="cl">  User            
+</span></span><span class="line"><span class="cl">  Port            
+</span></span><span class="line"><span class="cl">  IdentityFile</span></span></code></pre></div>
+</div>
+<p>
+这个配置是一个 SSH 配置文件（通常是 ~/.ssh/config）。在这个配置中，ServerAliveInterval 和 ServerAliveCountMax 是全局参数，会应用到所有的主机连接上，而其他的部分是针对特定主机的配置。</p>
+<ul>
+<li>ServerAliveInterval 设置为 60 秒表示，无论连接的是哪个主机，客户端都会每隔 60 秒发送一个空闲检查以确认服务器是否活动。</li>
+<li>ServerAliveCountMax 设置为 120 表示，无论连接的是哪个主机，客户端都会允许服务器连续未响应 120 次空闲检查，然后才会断开连接。</li>
+</ul>
+<p>其他部分（Host、HostName、User、Port、IdentityFile）是用于指定特定主机连接的配置，其中：</p>
+<ul>
+<li>Host 是用于指定主机别名的标识符。</li>
+<li>HostName 是指定主机的域名或 IP 地址。</li>
+<li>User 是指定连接主机时要使用的用户名。</li>
+<li>Port 是指定连接主机时要使用的端口号。</li>
+<li>IdentityFile 是指定用于身份验证的私钥文件路径。</li>
+</ul>
+<p>如果你想为特定主机设置这些参数，你可以在 Host 后面指定主机别名，然后在其后设置相应的参数。例如：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  Host example.com
+</span></span><span class="line"><span class="cl">  ServerAliveInterval <span class="m">60</span>
+</span></span><span class="line"><span class="cl">  ServerAliveCountMax <span class="m">120</span>
+</span></span><span class="line"><span class="cl">  User username
+</span></span><span class="line"><span class="cl">  Port <span class="m">22</span>
+</span></span><span class="line"><span class="cl">  IdentityFile ~/.ssh/id_rsa</span></span></code></pre></div>
+</div>
+<p>
+这样的话，上述的 ServerAliveInterval 和 ServerAliveCountMax 参数将只会应用到 example.com 主机的连接上，而其他主机的连接则不受影响。</p>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-2">
+<h2 id="headline-10">
+如何不让ssh连接断开
+</h2>
+<div id="outline-text-headline-10" class="outline-text-2">
+<ul>
+<li>客户端设置可以确保客户端定期向服务器发送空闲检查，以确保服务器仍然活跃。如果服务器在一段时间内没有响应，客户端可以主动断开连接，避免连接僵死。</li>
+<li>服务端设置可以确保服务器定期向客户端发送空闲检查，以确保客户端仍然活跃。如果客户端在一段时间内没有响应，服务器可以主动断开连接，释放资源并提高安全性。</li>
+</ul>
+<p>总结：如果客户端和服务端都设置保活选项，就可以确保连接的双向活跃性和稳定性。这样的设置可以在两个方向上都进行检查，以确保连接始终保持活跃，并及时处理失活的连接。</p>
+<p>
+可以只设置客户端或只设置服务端，这取决于你想要达到的目的，也可以通过同时设置客户端和服务端，可以确保连接的稳定性和可靠性，从而更好地管理连接并提高系统的安全性和稳定性。</p>
+<div id="outline-container-headline-11" class="outline-3">
+<h3 id="headline-11">
+只在客户端设置 SSH 保活选项
+</h3>
+<div id="outline-text-headline-11" class="outline-text-3">
+<p>
+您可以在 SSH 客户端的配置文件中设置保活选项，以防止连接因为长时间无活动而断开。这通常在客户端的 ~/.ssh/config 文件中设置：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  Host *
+</span></span><span class="line"><span class="cl">  ServerAliveInterval <span class="m">60</span>
+</span></span><span class="line"><span class="cl">  ServerAliveCountMax <span class="m">120</span></span></span></code></pre></div>
+</div>
+<p>
+ServerAliveInterval：指定客户端向服务器发送空闲包的时间间隔（秒）。例如，60 表示每 60 秒发送一次。
+ServerAliveCountMax：在没有收到任何服务器响应的情况下，客户端发送保活包的最大次数。120 意味着在没有响应的情况下最多发送 120 次。</p>
+<ul>
+<li>优点：客户端可以定期向服务器发送空闲检查，以确保服务器仍然活跃。如果服务器在一段时间内没有响应，客户端可以主动断开连接，这有助于防止连接僵死。</li>
+<li>缺点：如果客户端没有设置超时检测（例如服务器端没有响应客户端的空闲检查），可能导致服务器一直保持连接，造成资源浪费。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-3">
+<h3 id="headline-12">
+只在服务器端设置 SSH 保活选项
+</h3>
+<div id="outline-text-headline-12" class="outline-text-3">
+<p>
+同样，您也可以在 SSH 服务器端设置保活选项，来防止客户端连接由于超时而断开。在服务器的 SSH 配置文件 /etc/ssh/sshd_config 中设置：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ClientAliveInterval <span class="m">60</span>
+</span></span><span class="line"><span class="cl">  ClientAliveCountMax <span class="m">120</span></span></span></code></pre></div>
+</div>
+<p>
+ClientAliveInterval：服务器向客户端发送请求的时间间隔（秒），用于检查客户端是否仍然连接。
+ClientAliveCountMax：在没有收到客户端响应的情况下，服务器尝试发送请求的最大次数。</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo systemctl restart sshd</span></span></code></pre></div>
+</div>
+<ul>
+<li>优点：服务端可以定期向客户端发送空闲检查，以确保客户端仍然活跃。如果客户端在一段时间内没有响应，服务端可以主动断开连接，这有助于释放资源并提高安全性。</li>
+<li>缺点：如果服务端没有设置超时检测（例如客户端无法及时响应服务端的空闲检查），可能导致服务端一直保持连接，造成资源浪费。</li>
+</ul>
+<p>总结：单独设置客户端或服务端的一个方面可以达到一定的活跃性和稳定性，但是为了最佳效果，建议同时设置客户端和服务端。这可以确保连接在双向上都得到监视和保持活跃，从而更好地管理连接和资源。</p>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-3">
+<h3 id="headline-13">
+ssh连接，如果超过3秒没有连上则断开
+</h3>
+<div id="outline-text-headline-13" class="outline-text-3">
+<p>
+要在 SSH 连接时设置超时时间，可以在命令行中直接指定 -o 选项来设置 ConnectTimeout。以下是一个示例：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ssh -o <span class="nv">ConnectTimeout</span><span class="o">=</span><span class="m">3</span> user@hostname</span></span></code></pre></div>
+</div>
+<p>
+在这个命令中，-o ConnectTimeout=3 表示设置连接超时时间为 3 秒。你可以将 user@hostname 替换为实际的用户名和主机名。</p>
+<p>
+这样，在执行以上命令时，如果连接未能在指定的时间内建立，则会自动断开连接。</p>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-3">
+<h3 id="headline-14">
+使用 tmux 或 screen 会话
+</h3>
+<div id="outline-text-headline-14" class="outline-text-3">
+<p>
+termux教程：<a href="https://ynhugo.github.io/p/tmux">https://ynhugo.github.io/p/tmux</a>%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/</p>
+<p>
+screen教程：<a href="https://ynhugo.github.io/p/screen">https://ynhugo.github.io/p/screen</a>%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/</p>
+<p>
+使用 tmux 或 screen 可以在连接断开后保持您的工作会话。即使 SSH 连接断开，您也可以重新连接到同一个 tmux 或 screen 会话，继续之前的工作。</p>
+<p>
+安装 tmux 或 screen（取决于您的系统）</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo apt install tmux screen -y  <span class="c1"># 对于 Ubuntu/Debian</span>
+</span></span><span class="line"><span class="cl">  sudo yum install tmux screen -y  <span class="c1"># 对于 CentOS/RHEL</span></span></span></code></pre></div>
+</div>
+<p>
+开始一个新会话：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux</span></span></code></pre></div>
+</div>
+<p>
+如果连接断开，您可以重新连接：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  tmux attach</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-3">
+<h3 id="headline-15">
+查看 ssh 版本
+</h3>
+<div id="outline-text-headline-15" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ssh -V</span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-16" class="outline-4">
+<h4 id="headline-16">
+处理 ssh 版本信息
+</h4>
+<div id="outline-text-headline-16" class="outline-text-4">
+<p>
+ssh -V 命令输出的版本信息是直接打印在标准错误输出（stderr）中，而不是标准输出（stdout）。因此需要使用重定向来处理。</p>
+<p>
+以下是一个示例来提取 OpenSSH 的版本号：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ssh -V 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span></span></span></code></pre></div>
+</div>
+<p>
+这个命令将会执行 ssh -V 命令，并将标准错误输出（stderr）转发到标准输出（stdout），然后使用 awk 命令提取第一 个字段，即版本号。</p>
+<p>
+对于 OpenSSH 版本信息的输出，它通常类似于 &#34;OpenSSH_x.x&#34; 的格式，通过使用 $1 来提取第一个字段，可以获取到版本号。</p>
+</div>
+</div>
+<div id="outline-container-headline-17" class="outline-4">
+<h4 id="headline-17">
+判断 ssh 版本
+</h4>
+<div id="outline-text-headline-17" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nv">ssh_version</span><span class="o">=</span><span class="k">$(</span>ssh -V 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span> <span class="p">|</span> tr <span class="s1">&#39;_&#39;</span> <span class="s1">&#39; &#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> awk -F <span class="s1">&#39;p&#39;</span> <span class="s1">&#39;{print $1}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;ssh_version: </span><span class="si">${</span><span class="nv">ssh_version</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1"># 将版本号以小数点分隔，并提取整数部分</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">major_version</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">ssh_version</span><span class="si">}</span><span class="s2">&#34;</span> <span class="p">|</span> cut -d <span class="s1">&#39;.&#39;</span> -f 1<span class="k">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">minor_version</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">ssh_version</span><span class="si">}</span><span class="s2">&#34;</span> <span class="p">|</span> cut -d <span class="s1">&#39;.&#39;</span> -f 2<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[[</span> <span class="si">${</span><span class="nv">major_version</span><span class="si">}</span> -lt <span class="m">7</span> <span class="o">||</span> <span class="o">(</span><span class="si">${</span><span class="nv">major_version</span><span class="si">}</span> -eq <span class="m">7</span> <span class="o">&amp;&amp;</span> <span class="si">${</span><span class="nv">minor_version</span><span class="si">}</span> -lt 8<span class="o">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;debug_1&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;debug_2&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-18" class="outline-3">
+<h3 id="headline-18">
+注意事项
+</h3>
+<div id="outline-text-headline-18" class="outline-text-3">
+<ul>
+<li>长时间保持 SSH 连接可能会有安全风险，特别是在公共或不受信任的网络中。</li>
+<li>确保您有足够的权限来修改 SSH 配置文件。</li>
+<li>在修改服务器配置时，谨慎操作，错误的配置可能会导致无法通过 SSH 连接到服务器。</li>
+</ul>
+<p>通过上述方法，您可以有效地防止 SSH 连接因为长时间无活动而断开，提高远程工作的连续性和便捷性。</p>
+</div>
+</div>
+<div id="outline-container-headline-19" class="outline-3">
+<h3 id="headline-19">
+参考链接
+</h3>
+<div id="outline-text-headline-19" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/m0_57236802/article/details/134729088">如何不让ssh连接断开</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-20" class="outline-2">
+<h2 id="headline-20">
+ssh公钥登录远程服务器配置
+</h2>
+<div id="outline-text-headline-20" class="outline-text-2">
+<p>
+每次通过ssh登陆远程服务器都要输入用户名和密码，很麻烦，比如：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ssh 用户名@192.168.xxx.xxx</span></span></code></pre></div>
+</div>
+<p>
+我们可以通过公钥的方式，无密码登陆远程服务器。</p>
+<div id="outline-container-headline-21" class="outline-3">
+<h3 id="headline-21">
+第一步，ssh-keygen命令生成公钥私钥
+</h3>
+<div id="outline-text-headline-21" class="outline-text-3">
+<p>
+全过程有三步，第一步是输入公钥私钥的保存路径，第二步和第三步是设置私钥密码和确认密码。</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ssh-keygen</span></span></code></pre></div>
+</div>
+<p>
+如果是第一次生成公钥，则直接一路回车确认就行。公钥和私钥会自动生成到/Users/[用户名]/.ssh路径下。默认公钥文件名为id_rsa.pub，私钥文件名为id_rsa。如果不想覆盖之前已有的公钥，那在第一步指定一个保存路径即可。</p>
+</div>
+</div>
+<div id="outline-container-headline-22" class="outline-3">
+<h3 id="headline-22">
+第二步，使用ssh-copy-id命令将公钥复制到远程服务器
+</h3>
+<div id="outline-text-headline-22" class="outline-text-3">
+<p>
+在用户路径下，执行命令：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ssh-copy-id -i .ssh/id_rsa.pub 用户名@192.168.xxx.xxx</span></span></code></pre></div>
+</div>
+<p>
+注意：</p>
+<ol>
+<li>如果上一步你自己指定了单独的公钥路径，请在-i后面输入指定的公钥路径</li>
+<li>这里是将你的公钥同步到远程服务器上你要登录的用户名，所以只会对该用户登录时有效。</li>
+</ol>
+<p>本质上，这一步的操作，是将你的公钥追加到服务器/home/[用户名]/.ssh/authorized_keys文件后面。如果你手动复制进去，也可以，但是麻烦哦。</p>
+</div>
+</div>
+<div id="outline-container-headline-23" class="outline-3">
+<h3 id="headline-23">
+第三步，检查服务端.ssh/的权限
+</h3>
+<div id="outline-text-headline-23" class="outline-text-3">
+<p>
+以上配置之后，就可以无需密码直接登陆了，命令：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ssh 用户名@192.168.xxx.xxx</span></span></code></pre></div>
+</div>
+<p>
+如果无效，则需要检查服务器.ssh/文件的权限。如果用户组权限有写权限，则用公钥ssh登录是不生效的。需要去除掉用户组的写权限，使用命令：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  chmod g-w ./.ssh/</span></span></code></pre></div>
+</div>
+<p>
+为什么有这个限制呢？其实思考一下就能理解。因为你想通过公钥快捷登录A用户。而实现方式是将自己的公钥追加到A用户目录下的authorized_keys。这种情况下，如果同用户组的B用户，也有对.ssh/路径下的写权限，那么其他人就可以通过登录B用户，修改A用户下的authorized_keys，将自己的公钥追加进去，这样就可以直接用A用户登录了。所以这会出现漏洞。</p>
+</div>
+</div>
+<div id="outline-container-headline-24" class="outline-3">
+<h3 id="headline-24">
+第四步，配置快捷命令
+</h3>
+<div id="outline-text-headline-24" class="outline-text-3">
+<p>
+目前为止，登录还需要输入用户名和ip，依旧比较麻烦。我们可以在本地的.ssh/config文件中，配置快捷登录命令。</p>
+<p>
+将以下格式的信息追加到config文件后面：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Host <span class="o">[</span>你能记住的名字<span class="o">]</span>
+</span></span><span class="line"><span class="cl">Hostname <span class="o">[</span>ip<span class="o">]</span>
+</span></span><span class="line"><span class="cl">Port <span class="o">[</span>端口<span class="o">]</span>
+</span></span><span class="line"><span class="cl">User <span class="o">[</span>登录用户名<span class="o">]</span></span></span></code></pre></div>
+</div>
+<p>
+比如：</p>
+<p>
+默认端口为22，termux的端口为8022，下边这个例子是针对termux的，如果非termux的话将8022改成22即可</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Host vipad
+</span></span><span class="line"><span class="cl">Hostname 192.168.xx.xx
+</span></span><span class="line"><span class="cl">Port <span class="m">8022</span>
+</span></span><span class="line"><span class="cl">User u0_a77</span></span></code></pre></div>
+</div>
+<p>
+之后使用命令：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  ssh vipad</span></span></code></pre></div>
+</div>
+<p>
+就可以直接登录了。</p>
+</div>
+</div>
+<div id="outline-container-headline-25" class="outline-3">
+<h3 id="headline-25">
+参考链接
+</h3>
+<div id="outline-text-headline-25" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/u011291072/article/details/119298179">快速实战派：ssh公钥登录远程服务器配置</a></p>
+</div>
+</div>
+<div id="outline-container-headline-26" class="outline-3">
+<h3 id="headline-26">
+从 known_hosts 文件中删除所有属于 hostname 的密钥
+</h3>
+<div id="outline-text-headline-26" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 示例：</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -R 192.168.x.x</span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-27" class="outline-2">
+<h2 id="headline-27">
+SSH 密钥管理完整工作流
+</h2>
+<div id="outline-text-headline-27" class="outline-text-2">
+<div id="outline-container-headline-28" class="outline-3">
+<h3 id="headline-28">
+1. 生成密钥对
+</h3>
+<div id="outline-text-headline-28" class="outline-text-3">
+<div id="outline-container-headline-29" class="outline-4">
+<h4 id="headline-29">
+基础命令
+</h4>
+<div id="outline-text-headline-29" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 默认生成 RSA 3072 位</span>
+</span></span><span class="line"><span class="cl">ssh-keygen
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成 RSA 4096 位（兼容性最好）</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -t rsa -b <span class="m">4096</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成 Ed25519（推荐，性能最佳）</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -t ed25519 -C <span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">@</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2"> </span><span class="k">$(</span>date +%Y-%m-%d<span class="k">)</span><span class="s2">&#34;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-30" class="outline-4">
+<h4 id="headline-30">
+密钥生成交互说明
+</h4>
+<div id="outline-text-headline-30" class="outline-text-4">
+<ul>
+<li>默认保存路径：~/.ssh/id_rsa（或 id_ed25519）</li>
+<li>建议设置 passphrase（密码短语）</li>
+<li>私钥权限：600，公钥权限：644</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-31" class="outline-3">
+<h3 id="headline-31">
+2. 删除远程旧密钥
+</h3>
+<div id="outline-text-headline-31" class="outline-text-3">
+<div id="outline-container-headline-32" class="outline-4">
+<h4 id="headline-32">
+精确删除（推荐）
+</h4>
+<div id="outline-text-headline-32" class="outline-text-4">
+<p>删除本地机器在远程的旧密钥记录：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh rog8 <span class="s1">&#39;sed -i &#34;/&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;@&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;/d&#34; ~/.ssh/authorized_keys&#39;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-33" class="outline-4">
+<h4 id="headline-33">
+其他删除方式对比
+</h4>
+<div id="outline-text-headline-33" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 精确匹配 - 删除本机生成的密钥</span>
+</span></span><span class="line"><span class="cl">ssh rog8 <span class="s1">&#39;sed -i &#34;/&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;@&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;/d&#34; ~/.ssh/authorized_keys&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 仅用户名 - 删除指定用户的所有密钥</span>
+</span></span><span class="line"><span class="cl">ssh rog8 <span class="s1">&#39;sed -i &#34;/&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;@/d&#34; ~/.ssh/authorized_keys&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 手动编辑 - 精细控制</span>
+</span></span><span class="line"><span class="cl">ssh rog8 <span class="s2">&#34;vim ~/.ssh/authorized_keys&#34;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-34" class="outline-3">
+<h3 id="headline-34">
+3. 推送新公钥
+</h3>
+<div id="outline-text-headline-34" class="outline-text-3">
+<div id="outline-container-headline-35" class="outline-4">
+<h4 id="headline-35">
+基本命令
+</h4>
+<div id="outline-text-headline-35" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 推送默认公钥</span>
+</span></span><span class="line"><span class="cl">ssh-copy-id -i ~/.ssh/id_rsa.pub rog8
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 推送指定公钥</span>
+</span></span><span class="line"><span class="cl">ssh-copy-id -i ~/.ssh/id_ed25519.pub rog8
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 指定端口</span>
+</span></span><span class="line"><span class="cl">ssh-copy-id -i ~/.ssh/id_rsa.pub -p <span class="m">2222</span> rog8</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-36" class="outline-4">
+<h4 id="headline-36">
+SSH Config 配置（使用别名）
+</h4>
+<div id="outline-text-headline-36" class="outline-text-4">
+<p>~/.ssh/config 文件：</p>
+<div class="src src-conf">
+<pre tabindex="0"><code class="language-conf" data-lang="conf">Host rog8
+    HostName 192.168.x.x
+    User your_username
+    Port 22
+    IdentityFile ~/.ssh/id_rsa</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-37" class="outline-3">
+<h3 id="headline-37">
+4. 完整工作流（一键执行）
+</h3>
+<div id="outline-text-headline-37" class="outline-text-3">
+<div id="outline-container-headline-38" class="outline-4">
+<h4 id="headline-38">
+手动分步执行
+</h4>
+<div id="outline-text-headline-38" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 生成新密钥（如需）</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -t ed25519 -C <span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">@</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2"> </span><span class="k">$(</span>date +%Y-%m-%d<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 删除远程旧密钥</span>
+</span></span><span class="line"><span class="cl">ssh rog8 <span class="s1">&#39;sed -i &#34;/&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;@&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;/d&#34; ~/.ssh/authorized_keys&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. 推送新公钥</span>
+</span></span><span class="line"><span class="cl">ssh-copy-id -i ~/.ssh/id_ed25519.pub rog8
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 4. 测试连接</span>
+</span></span><span class="line"><span class="cl">ssh rog8 <span class="s1">&#39;echo &#34;SSH connection successful&#34;&#39;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-39" class="outline-4">
+<h4 id="headline-39">
+自动化脚本
+</h4>
+<div id="outline-text-headline-39" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="c1"># ssh-key-renew.sh - 安全的密钥轮换脚本</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">HOST</span><span class="o">=</span><span class="s2">&#34;rog8&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">KEY_TYPE</span><span class="o">=</span><span class="s2">&#34;ed25519&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">KEY_FILE</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.ssh/id_</span><span class="nv">$KEY_TYPE</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;🔄 开始 SSH 密钥轮换...&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 生成新密钥</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="nv">$KEY_FILE</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;📝 生成新密钥对...&#34;</span>
+</span></span><span class="line"><span class="cl">    ssh-keygen -t <span class="nv">$KEY_TYPE</span> -C <span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">@</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2"> </span><span class="k">$(</span>date +%Y-%m-%d<span class="k">)</span><span class="s2">&#34;</span> -f <span class="s2">&#34;</span><span class="nv">$KEY_FILE</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 备份远程 authorized_keys</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;💾 备份远程 authorized_keys...&#34;</span>
+</span></span><span class="line"><span class="cl">ssh <span class="nv">$HOST</span> <span class="s2">&#34;cp ~/.ssh/authorized_keys ~/.ssh/authorized_keys.bak&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除旧密钥</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;🗑️ 删除旧密钥...&#34;</span>
+</span></span><span class="line"><span class="cl">ssh <span class="nv">$HOST</span> <span class="s1">&#39;sed -i &#34;/&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">@</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;/d&#34; ~/.ssh/authorized_keys&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 推送新密钥</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;📤 推送新公钥...&#34;</span>
+</span></span><span class="line"><span class="cl">ssh-copy-id -i <span class="s2">&#34;</span><span class="si">${</span><span class="nv">KEY_FILE</span><span class="si">}</span><span class="s2">.pub&#34;</span> <span class="nv">$HOST</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> ssh -o <span class="nv">BatchMode</span><span class="o">=</span>yes <span class="nv">$HOST</span> <span class="s2">&#34;echo OK&#34;</span> 2&gt;/dev/null<span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;✅ 密钥轮换成功&#34;</span>
+</span></span><span class="line"><span class="cl">    ssh <span class="nv">$HOST</span> <span class="s2">&#34;rm -f ~/.ssh/authorized_keys.bak&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;❌ 验证失败，恢复备份&#34;</span>
+</span></span><span class="line"><span class="cl">    ssh <span class="nv">$HOST</span> <span class="s2">&#34;mv ~/.ssh/authorized_keys.bak ~/.ssh/authorized_keys&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-40" class="outline-3">
+<h3 id="headline-40">
+5. SSH Agent 配置（避免重复输入密码）
+</h3>
+<div id="outline-text-headline-40" class="outline-text-3">
+<div id="outline-container-headline-41" class="outline-4">
+<h4 id="headline-41">
+基础配置
+</h4>
+<div id="outline-text-headline-41" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 启动 ssh-agent</span>
+</span></span><span class="line"><span class="cl"><span class="nb">eval</span> <span class="s2">&#34;</span><span class="k">$(</span>ssh-agent -s<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加私钥到 agent</span>
+</span></span><span class="line"><span class="cl">ssh-add ~/.ssh/id_rsa
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看已添加的密钥</span>
+</span></span><span class="line"><span class="cl">ssh-add -l
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除所有密钥</span>
+</span></span><span class="line"><span class="cl">ssh-add -D</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-42" class="outline-4">
+<h4 id="headline-42">
+MacOS 永久保存到钥匙串
+</h4>
+<div id="outline-text-headline-42" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh-add --apple-use-keychain ~/.ssh/id_rsa</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-43" class="outline-4">
+<h4 id="headline-43">
+添加到 ~/.bashrc 或 ~/.zshrc
+</h4>
+<div id="outline-text-headline-43" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 自动启动 ssh-agent</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&#34;</span><span class="nv">$SSH_AUTH_SOCK</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">eval</span> <span class="s2">&#34;</span><span class="k">$(</span>ssh-agent -s<span class="k">)</span><span class="s2">&#34;</span> &gt; /dev/null
+</span></span><span class="line"><span class="cl">    ssh-add ~/.ssh/id_rsa 2&gt;/dev/null
+</span></span><span class="line"><span class="cl"><span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-44" class="outline-3">
+<h3 id="headline-44">
+6. 常用别名和函数
+</h3>
+<div id="outline-text-headline-44" class="outline-text-3">
+<div id="outline-container-headline-45" class="outline-4">
+<h4 id="headline-45">
+添加到 ~/.bashrc
+</h4>
+<div id="outline-text-headline-45" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 删除本机在远程的密钥</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> ssh-rm<span class="o">=</span><span class="s1">&#39;ssh $1 &#34;sed -i \&#34;/&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">@</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;/d\&#34; ~/.ssh/authorized_keys&#34;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看远程 authorized_keys</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> ssh-keys<span class="o">=</span><span class="s1">&#39;ssh $1 &#34;cat ~/.ssh/authorized_keys&#34;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看远程 authorized_keys 中本机的密钥</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> ssh-mykey<span class="o">=</span><span class="s1">&#39;ssh $1 &#34;grep \&#34;&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">@</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;\&#34; ~/.ssh/authorized_keys&#34;&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 完整的密钥更新函数</span>
+</span></span><span class="line"><span class="cl">ssh-renew<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">host</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">pattern</span><span class="o">=</span><span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">@</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;📋 当前密钥: </span><span class="nv">$pattern</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;🔍 检查 </span><span class="nv">$host</span><span class="s2"> 上的旧密钥...&#34;</span>
+</span></span><span class="line"><span class="cl">    ssh <span class="s2">&#34;</span><span class="nv">$host</span><span class="s2">&#34;</span> <span class="s2">&#34;grep &#39;</span><span class="nv">$pattern</span><span class="s2">&#39; ~/.ssh/authorized_keys&#34;</span> 2&gt;/dev/null
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;🗑️ 删除旧密钥...&#34;</span>
+</span></span><span class="line"><span class="cl">    ssh <span class="s2">&#34;</span><span class="nv">$host</span><span class="s2">&#34;</span> <span class="s2">&#34;sed -i &#39;/</span><span class="nv">$pattern</span><span class="s2">/d&#39; ~/.ssh/authorized_keys&#34;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;📤 推送新密钥...&#34;</span>
+</span></span><span class="line"><span class="cl">    ssh-copy-id -i ~/.ssh/id_rsa.pub <span class="s2">&#34;</span><span class="nv">$host</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;✅ 完成！测试连接：&#34;</span>
+</span></span><span class="line"><span class="cl">    ssh <span class="s2">&#34;</span><span class="nv">$host</span><span class="s2">&#34;</span> <span class="s2">&#34;echo &#39;SSH works!&#39;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-46" class="outline-3">
+<h3 id="headline-46">
+7. 故障排查
+</h3>
+<div id="outline-text-headline-46" class="outline-text-3">
+<div id="outline-container-headline-47" class="outline-4">
+<h4 id="headline-47">
+常见问题及解决方案
+</h4>
+<div id="outline-text-headline-47" class="outline-text-4">
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>解决方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Permission denied</td>
+<td>检查远程 ~/.ssh 权限：`chmod 700 ~/.ssh &amp;&amp; chmod 600 ~/.ssh/authorized_keys`</td>
+</tr>
+<tr>
+<td>仍需输入密码</td>
+<td>确认 ssh-copy-id 成功，检查远程 sshd 配置</td>
+</tr>
+<tr>
+<td>密钥不匹配</td>
+<td>确认本机和远程的注释格式一致</td>
+</tr>
+<tr>
+<td>连接慢</td>
+<td>检查 DNS 反解：`UseDNS no` 在 /etc/ssh/sshd_config</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-headline-48" class="outline-4">
+<h4 id="headline-48">
+调试命令
+</h4>
+<div id="outline-text-headline-48" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 详细输出模式</span>
+</span></span><span class="line"><span class="cl">ssh -vvv rog8
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试密钥是否被接受</span>
+</span></span><span class="line"><span class="cl">ssh -o <span class="nv">PreferredAuthentications</span><span class="o">=</span>publickey rog8
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看远程日志</span>
+</span></span><span class="line"><span class="cl">ssh rog8 <span class="s2">&#34;sudo tail -f /var/log/auth.log&#34;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-49" class="outline-3">
+<h3 id="headline-49">
+8. 安全建议
+</h3>
+<div id="outline-text-headline-49" class="outline-text-3">
+<div id="outline-container-headline-50" class="outline-4">
+<h4 id="headline-50">
+密钥安全
+</h4>
+<div id="outline-text-headline-50" class="outline-text-4">
+<ul>
+<li>私钥权限必须为 600：`chmod 600 ~/.ssh/id_rsa`</li>
+<li>定期轮换密钥（建议每 6-12 个月）</li>
+<li>为不同服务使用不同密钥</li>
+<li>设置 passphrase，配合 ssh-agent 使用</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-51" class="outline-4">
+<h4 id="headline-51">
+服务器安全
+</h4>
+<div id="outline-text-headline-51" class="outline-text-4">
+<ul>
+<li>禁用密码认证：`PasswordAuthentication no`</li>
+<li>禁用 root 登录：`PermitRootLogin no`</li>
+<li>限制可登录用户：`AllowUsers your_username`</li>
+<li>使用密钥认证：`PubkeyAuthentication yes`</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-52" class="outline-4">
+<h4 id="headline-52">
+服务器配置示例（/etc/ssh/sshd_config）
+</h4>
+<div id="outline-text-headline-52" class="outline-text-4">
+<div class="src src-conf">
+<pre tabindex="0"><code class="language-conf" data-lang="conf">PubkeyAuthentication yes
+PasswordAuthentication no
+PermitRootLogin no
+AllowUsers alice bob
+MaxAuthTries 3
+Protocol 2</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-53" class="outline-3">
+<h3 id="headline-53">
+9. 快速参考卡片
+</h3>
+<div id="outline-text-headline-53" class="outline-text-3">
+<div id="outline-container-headline-54" class="outline-4">
+<h4 id="headline-54">
+命令速查表（Bash 代码块）
+</h4>
+<div id="outline-text-headline-54" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 生成密钥（Ed25519 推荐）</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -t ed25519
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看公钥</span>
+</span></span><span class="line"><span class="cl">cat ~/.ssh/id_rsa.pub
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 推送密钥到远程主机</span>
+</span></span><span class="line"><span class="cl">ssh-copy-id -i ~/.ssh/id_rsa.pub user@host
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除远程 authorized_keys 中包含特定模式的行</span>
+</span></span><span class="line"><span class="cl">ssh user@host <span class="s1">&#39;sed -i &#34;/pattern/d&#34; ~/.ssh/authorized_keys&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 测试免密连接（安静模式）</span>
+</span></span><span class="line"><span class="cl">ssh -o <span class="nv">BatchMode</span><span class="o">=</span>yes user@host <span class="s2">&#34;echo OK&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加私钥到 ssh-agent</span>
+</span></span><span class="line"><span class="cl">ssh-add ~/.ssh/id_rsa
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看 agent 中已加载的密钥</span>
+</span></span><span class="line"><span class="cl">ssh-add -l</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-55" class="outline-4">
+<h4 id="headline-55">
+你的标准工作流（一句话总结）
+</h4>
+<div id="outline-text-headline-55" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 生成 → 删除旧 → 推送新 → 测试</span>
+</span></span><span class="line"><span class="cl">ssh-keygen -t rsa -b <span class="m">4096</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">ssh rog8 <span class="s1">&#39;sed -i &#34;/&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>whoami<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;@&#39;</span><span class="s2">&#34;</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">&#34;</span><span class="s1">&#39;/d&#34; ~/.ssh/authorized_keys&#39;</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">ssh-copy-id -i ~/.ssh/id_rsa.pub rog8 <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">ssh rog8 <span class="s1">&#39;echo &#34;✓ SSH configured successfully&#34;&#39;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-56" class="outline-3">
+<h3 id="headline-56">
+参考链接
+</h3>
+<div id="outline-text-headline-56" class="outline-text-3">
+<p>
+<a href="https://chat.deepseek.com/share/p2wjole9pemntkno0z">ssh复制公钥到远程文件</a></p>
+</div>
+</div>
+</div>
+</div>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/ssh/">Ssh</a></li>
+    </ul>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share SSH配置 on x"
+            href="https://x.com/intent/tweet/?text=SSH%e9%85%8d%e7%bd%ae&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fssh%25E9%2585%258D%25E7%25BD%25AE%2f&amp;hashtags=ssh">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share SSH配置 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fssh%25E9%2585%258D%25E7%25BD%25AE%2f&amp;title=SSH%e9%85%8d%e7%bd%ae&amp;summary=SSH%e9%85%8d%e7%bd%ae&amp;source=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fssh%25E9%2585%258D%25E7%25BD%25AE%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share SSH配置 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fssh%25E9%2585%258D%25E7%25BD%25AE%2f&title=SSH%e9%85%8d%e7%bd%ae">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share SSH配置 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fssh%25E9%2585%258D%25E7%25BD%25AE%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share SSH配置 on whatsapp"
+            href="https://api.whatsapp.com/send?text=SSH%e9%85%8d%e7%bd%ae%20-%20http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fssh%25E9%2585%258D%25E7%25BD%25AE%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share SSH配置 on telegram"
+            href="https://telegram.me/share/url?text=SSH%e9%85%8d%e7%bd%ae&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fssh%25E9%2585%258D%25E7%25BD%25AE%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share SSH配置 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=SSH%e9%85%8d%e7%bd%ae&u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fssh%25E9%2585%258D%25E7%25BD%25AE%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

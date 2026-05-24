@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Emacs | PaperMod</title>
+<meta name="keywords" content="">
+<meta name="description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/tags/emacs/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/emacs/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/emacs/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/tags/emacs/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="Emacs">
+  <meta property="og:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="Emacs">
+  <meta name="twitter:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/tags/">Tags</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+  <h1>
+    Emacs
+    <a href="/tags/emacs/index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">emacs_正则表达式
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> emacs使用正则表达式 参考链接
+Emacs 正则表达式搜索替换的小技巧
+使用方法 先执行&#34;M-x isearch-forward-regexp &lt;RET&gt;&#34;，然后用emacs的正则表达式规则匹配内容，匹配好内容后直接无缝衔接执行&#34;M-%&#34;对前边正则表达式匹配的内容进行替换。
+要匹配多个换行符并直到以指定内容结尾，你可以使用以下正则表达式 要匹配多个换行符并直到以指定内容结尾，你可以使用以下正则表达式
+[[:ascii:]\n\r]*指定内容$ 在这里：
+[[:ascii:]\n\r]* 匹配任意ASCII字符、换行符（\n）、回车符（\r）零次或多次。 指定内容$ 表示以 &#34;指定内容&#34; 结尾的文本行。 在 Emacs 中，你可以使用 query-replace-regexp 或 replace-regexp 命令来执行基于正则表达式的替换操作。你可以按下 M-% 进入交互式查找替换模式，然后输入上述正则表达式进行匹配和替换操作。
+occur命令-根据正则表达式匹配内容到新的buffer 执行命令：&lt;M-x occur&gt;
+</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-03-26 00:55:06 +0800 +0800'>March 26, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to emacs_正则表达式" href="http://localhost:1313/post/emacs/emacs_%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">emacs的org-mode下插入代码块教程
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 如果想要运行的话，在文件开头设置好运行语言，然后再加载一下该文件 (org-babel-do-load-languages &#39;org-babel-load-languages &#39;((C . t) )) 加载命令是： load-file 以我正在的编辑的 ts.org 文件为例 添加运行语言后，并设置 tangle，加载文件，执行 M-x，输入 load-file 后回车，输入当前文件名 ts.org 并回车加载成功。
+</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-03-26 00:55:06 +0800 +0800'>March 26, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to emacs的org-mode下插入代码块教程" href="http://localhost:1313/post/emacs/emacs%E7%9A%84org-mode%E4%B8%8B%E6%8F%92%E5%85%A5%E4%BB%A3%E7%A0%81%E5%9D%97%E6%95%99%E7%A8%8B/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">将Emacs添加到右键快捷菜单中
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 将Emacs添加到右键快捷菜单中 通过右键菜单打开文件 长期用Emacs写代码，但是每次都是从命令行启动，有个麻烦事，针对单个文件，且该文件处在目录较深时，还要在命令中一层层敲进去，程序猿的时间都是很宝贵的，下面就来看看如何将Emacs添加到右键菜单中：
+从“run”中运行“regedit”启动注册表； 在打开的注册表中找到“HKEY_CLASSES_ROOT\*”，这里需要注意，其中的“*”可不是指在“HKEY_CLASSES_ROOT”下，而该项的下面有个子项叫“*”。在该子项下新建一个名为“shell”的项，如果没有，直接新建，如果有，可以不用新建；
+此时，在“HKEY_CLASSES_ROOT\*\shell”上右键，选中“新建”-&gt;“项”，键入“Emacs 编辑(&amp;M)”。然后在“HKEY_CLASSES_ROOT\*\shell\”下新建一个项，命名为&#34;通过 Emacs 打开&#34;，再在“HKEY_CLASSES_ROOT\*\shell\通过emacs打开”下新建一个项，命名为“command”；
+然后，选中“HKEY_CLASSES_ROOT\*\shell\通过emacs打开\command”项，在右边的栏目中，双击“名称”为“默认”的项，双击，在打开的对话框中的“数值数据”框内添加你自己Emacs的安装目录下的“bin”目录，并在后面空一格添加“%1”，确定即可，如我的是“D:Program Files (x86)\emacs-28.2\bin\runemacs.exe &#34;%1&#34;”。
+此时，你在一个源代码文件上右键点击时，就可以看到有了“Emacs编辑”可选项！
+Open Emacs here 给右键菜单添加“Open Emacs here”这个选项
+打开注册表，定位到HKEY_CLASSES_ROOT\Directory\Background\shell（如果Background下面没有shell目录，就自己新建一个）。
+在shell下右键-新建项,其名称为“Open Emacs here”,此为右键菜单显示名称。
+在shell下右键-新建-字符串，命名为Icon,双击编辑，其值为“D:Program Files (x86)\emacs-28.2\bin\runemacs.exe”，在右键菜单中会自动显示该软件图标。
+在&#34;Open Emacs here&#34;下右键-新建-项，命名为command,其值为&#34;D:Program Files (x86)\emacs-28.2\bin\runemacs.exe&#34;。
+此时，在任何一个目录空白处右键，即可出现Open Emacs here选项，单击即可启动emacs并在Emacs中自动进入当前目录。考虑到PowerShell右键选项需要按住Shift才会在右键菜单中显示出来，想把Open Emacs here也搞成这样子。只需这样操作：
+在Open Emacs here下右键-&gt; 新建字符串，命名为“Extended”（与Icon字段同级）即可。
+通过注册表文件实现添加 Emacs 到右键菜单 使用此注册表文件之前需要根据 Emacs 的实际安装目录将注册表文件中的路径替换一下
+假如注册表文件中的某路径不存在，那么就先进入这个不存在的路径的上一级存在的路径，逐级递进，这样注册表在执行的时候就会将不存在的路径一级一级的创建出来，如果注册表文件中的有效路径后连着跟了两个或两个以上的不存在的路径名，则添加注册表会失败
+Windows Registry Editor Version 5.00 [HKEY_CLASSES_ROOT\*\shell] [HKEY_CLASSES_ROOT\*\shell\Edit with Emacs] &#34;icon&#34;=&#34;D:\\Program Files (x86)\\emacs-28.2\\bin\\runemacs.exe&#34; [HKEY_CLASSES_ROOT\*\shell\Edit with Emacs\command] @=&#34;D:\\Program Files (x86)\\emacs-28.2\\bin\\runemacs.exe \&#34;%1\&#34;&#34; [HKEY_CLASSES_ROOT\Directory\Background\shell] [HKEY_CLASSES_ROOT\Directory\Background\shell\Open Emacs here] &#34;icon&#34;=&#34;D:\\Program Files (x86)\\emacs-28.2\\bin\\runemacs.exe&#34; [HKEY_CLASSES_ROOT\Directory\Background\shell\Open Emacs here\command] @=&#34;D:\\Program Files (x86)\\emacs-28.2\\bin\\runemacs.exe&#34; 将 Emacs 添加进右键菜单的注册表文件下载 点击下载
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-03-26 00:24:26 +0800 +0800'>March 26, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to 将Emacs添加到右键快捷菜单中" href="http://localhost:1313/post/windows/%E5%B0%86emacs%E6%B7%BB%E5%8A%A0%E5%88%B0%E5%8F%B3%E6%8D%B7%E8%8F%9C%E5%8D%95%E4%B8%AD/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/tags/emacs/page/8/">
+      «&nbsp;Prev&nbsp;8/9
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

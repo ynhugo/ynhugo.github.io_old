@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Shell | PaperMod</title>
+<meta name="keywords" content="">
+<meta name="description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/tags/shell/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/shell/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/shell/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/tags/shell/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="Shell">
+  <meta property="og:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="Shell">
+  <meta name="twitter:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/tags/">Tags</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+  <h1>
+    Shell
+    <a href="/tags/shell/index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">shell环境操作技巧
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 在shell环境提取书签文件中某一链接的技巧 cat bookmarks_2023_7_12.html | grep &#34;emacs&#34; | grep &#34;https&#34; | awk &#39;{print $2}&#39; | tr &#39;&#34;&#39; &#39; &#39; | awk &#39;{print $2}&#39; 使某命令在后台运行的方法，但是我没有感受到效果 if [[ &#34;$@&#34; == *&#34;syncthing&#34;* ]]; then nohup &#34;$@&#34; &amp; fi 查找某项目所有文件包含的头文件并排序去重 grep --color=auto -rain &#34;#include&#34; ./ | tr &#39;:&#39; &#39; &#39; | awk &#39;{print $4}&#39; | sort | uniq ;; 如果要查看有多少个结果，可以在上面命令的最后以管道的形式加上 wc -l linux如何只复制目录结构而不复制数据 find ./ -type d | xargs tar -cvf anna.tar --no-recursion 将目录结构压缩到指定目录，然后手动解压即可得到目录结构
+&#34;–no-recursion&#34;表示不递归
+find &#43; grep 查找关键词 这个命令是在当前目录及其子目录中查找所有扩展名为 .h 或 .cpp 的文件，并在找到的文件中搜索包含 &#34;sigToTh&#34; 的内容
+find ./ -name &#34;*.cpp&#34; -o -name &#34;*.h&#34; | xargs grep --color=auto -rwin &#34;keyword&#34; 查看Zynq各工程版本的命令 find ./ -maxdepth 2 -name &#34;*.xpr&#34; | xargs head -5 linux命令将&#34;./&#34;替换为空格 find ./ -maxdepth 1 -type f | sed -e &#39;s/\.\//\ /g&#39; linux命令将&#34;./&#34;删除 在sed命令中，替换操作的分隔符可以使用除了反斜杠 (\)、换行符以及所选字符之一以外的任何字符。在上面的命令中，我们使用了竖线 (|) 作为分隔符，因为这个字符不太可能出现在文件路径中，以避免干扰正则表达式的匹配。
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2025-06-15 12:28:46 +0800 +0800'>June 15, 2025</span>&nbsp;·&nbsp;<span>19 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to shell环境操作技巧" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/shell%E7%8E%AF%E5%A2%83%E6%93%8D%E4%BD%9C%E6%8A%80%E5%B7%A7/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">用script命令记录终端的操作和输出信息到文件
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 用script命令记录终端的操作和输出信息到文件 script记录会话的一切内容：你输入的内容和你看到的内容。它甚至记录颜色；因此如果你的命令提示符或程序输出中包含颜色，script将记录它。
+记录日志 要使用script，简单执行以下命令：
+script 默认情况下，它向当前目录的typescript文件中写入内容。然后，你输入的一切内容都被记录到那个文件中。要往另一个文件中记录日志，只需使用script/path/to/file命令。
+完成记录后，输入exit退出。这个命令将关闭script会话并保存文件。现在你可以使用cat或其它任何程序来检查日志文件。
+使用script的缺点在于，它记录所有特殊的字符；因此你输入的文件中将充满控制字符和ANSI转义序列。你可以在script中使用一个非常简单的shell来解决这个问题：
+SHELL=/bin/sh PS1=&#34;$ &#34; script 使用script时，不要使用交互式程序或处理窗口的程序，如vior top。它们会破坏会话的输出结果。另外，日志文件会记录你使用的任何命令行程序和你完成一项任务所采取的步骤。如果你需要在脚本中编辑一个文件，考虑退出script会话，然后用script ?Ca（它在旧会话后添加新会话）对文件进行编辑后再重新启动会话。
+录制会话 开始录制会话：
+script -t 2&gt;demo.timing -a demo.session 或 script -t 2&gt;timing -t 选项指明输出录制的时间数据 -a 选项则输出录制的文件（附加） 注：使用script时，不要使用交互式程序或处理窗口的程序，如vior top。它们会破坏会话的输出结果。
+甚至可以录制vim的编辑过程
+另外，日志文件会记录你使用的任何命令行程序和你完成一项任务所采取的步骤。如果你需要在脚本中编辑一个文件，考虑退出script会话，然后用script ?Ca（它在旧会话后添加新会话）对文件进行编辑后再重新启动会话。
+结束录制会话：
+exit 播放录制会话：
+scriptreplay demo.timing demo.session 或 scriptreplay timing typescript 最后说明：以上两个命令都属于Linux产品util-linux软件包的一部分
+有些linux发行版有script命令但没有scriptreplay命令，scriptreplay命令其实就是一个perl脚本（这意味着录制下的内容在windows也能播放（只要是一个支持ANSI控制码的终端就能再现，cmd下有些乱码），good）大家可以自己找一下util-linux软件包的源代码包，解压后搜索一下scriptreplay 就能找到这个脚本。
+参考链接 用script命令记录终端的操作和输出信息到文件
+</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2025-03-14 11:18:04.07 +0800 +0800'>March 14, 2025</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to 用script命令记录终端的操作和输出信息到文件" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/%E7%94%A8script%E5%91%BD%E4%BB%A4%E8%AE%B0%E5%BD%95%E7%BB%88%E7%AB%AF%E7%9A%84%E6%93%8D%E4%BD%9C%E5%92%8C%E8%BE%93%E5%87%BA%E4%BF%A1%E6%81%AF%E5%88%B0%E6%96%87%E4%BB%B6/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">shc使用
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> shc使用 下面是shc比较常用的参数说明，更多参数说明请参考man手册或官方文档。
+参数 参数说明 -h 显示帮助信息并退出 -f 指定需要加密的shell脚本 -v 参数-v表示verbose模式，输出更详细的编译日志 -r 可以在相同操作系统的不同系统中执行，也就是放宽安全限制，生成可再分发的二进制文件 -o 输出文件名，也可以不指定 -f 指定shell脚本名称 -e 指定过期日期 -m 指定过期后的提示信息 -U 使二进制无法被追踪，默认不开启 -H 强化：额外的安全保护,默认不开启,它需要shell不支持参数 shc的离线安装 wget http://www.datsi.fi.upm.es/~frosal/sources/shc-3.8.9b.tgz tar zxf shc-3.8.9b.tgz cd shc-3.8.9b gcc shc-3.8.9b.c -o shc mv shc /bin/ 参考链接 shc加密shell脚本总结
+</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2025-02-27 17:25:50.92 +0800 +0800'>February 27, 2025</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to shc使用" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/shc%E4%BD%BF%E7%94%A8/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/tags/shell/page/3/">
+      «&nbsp;Prev&nbsp;3/4
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>ubuntu 22.04 server安装Nvidia驱动 | PaperMod</title>
+<meta name="keywords" content="ubuntu, 22.04, server, nvidia">
+<meta name="description" content="
+
+ubuntu 22.04 server安装Nvidia驱动
+
+
+
+sudo apt install -y apt-rdepends
+# sudo apt install -y net-tools
+# sudo apt install -y openssh-server
+sudo apt download $(apt-rdepends apt-rdepends | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39; | grep -v &#34;perlapi-&#34;)
+sudo apt download $(apt-rdepends net-tools | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;)
+
+
+
+准备工作
+
+
+
+为了避免踩坑，建议按照流程完成准备工作！
+这些准备工作并不会影响你的计算机，不做的话可能会导致装驱动后黑屏！
+
+
+
+关闭安全模式
+
+
+
+重启计算机，在开机前狂按’ESC’进入bios设置，找到安全设置，并关闭它。
+
+注：不同品牌电脑进入bios方式和安全设置的位置都不相同
+
+
+
+
+切换独显模式（笔记本电脑单显卡注意，服务器略过）
+
+
+
+在bios设置中找到显卡设置，系统默认的为集显模式，将其修改为独显模式。
+
+
+
+
+
+更新软件列表和安装必要软件、依赖
+
+
+
+sudo apt-get update   #更新软件列表
+
+# sudo apt-get install -y g&#43;&#43; gcc make
+sudo apt download $(apt-rdepends g&#43;&#43; gcc make | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;)
+
+sudo apt download $(apt-rdepends python3-pip | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;)
+sudo apt download $(apt-rdepends build-essential cmake git | \
+                      grep -v &#34;^ &#34; | \
+                      sed &#39;s/debconf-2.0/debconf/g&#39; | \
+                      sed -e &#39;s/libc-dev/libc6-dev/g&#39; \
+                          -e &#39;s/libc6-dev-bin/libc6-dev/g&#39; \
+                          -e &#39;s/linux-libc6-dev/linux-libc-dev/g&#39; | \
+                      grep -vE &#34;^(default-logind|logind)$&#34;)
+
+# 安装hwinfo
+sudo apt download $(apt-rdepends hwinfo | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;)
+
+# 安装alsa-utils
+sudo apt download $(apt-rdepends alsa-utils | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;)
+
+
+
+
+
+禁用nouveau (nouveau是通用的驱动程序)
+
+
+
+sudo vim /etc/modprobe.d/blacklist.conf
+
+文件末尾添加下面两行内容">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ubuntu_22.04_server%E5%AE%89%E8%A3%85nvidia%E9%A9%B1%E5%8A%A8/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ubuntu_22.04_server%E5%AE%89%E8%A3%85nvidia%E9%A9%B1%E5%8A%A8/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ubuntu_22.04_server%E5%AE%89%E8%A3%85nvidia%E9%A9%B1%E5%8A%A8/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="ubuntu 22.04 server安装Nvidia驱动">
+  <meta property="og:description" content="ubuntu 22.04 server安装Nvidia驱动 sudo apt install -y apt-rdepends # sudo apt install -y net-tools # sudo apt install -y openssh-server sudo apt download $(apt-rdepends apt-rdepends | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39; | grep -v &#34;perlapi-&#34;) sudo apt download $(apt-rdepends net-tools | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) 准备工作 为了避免踩坑，建议按照流程完成准备工作！ 这些准备工作并不会影响你的计算机，不做的话可能会导致装驱动后黑屏！ 关闭安全模式 重启计算机，在开机前狂按’ESC’进入bios设置，找到安全设置，并关闭它。 注：不同品牌电脑进入bios方式和安全设置的位置都不相同
+切换独显模式（笔记本电脑单显卡注意，服务器略过） 在bios设置中找到显卡设置，系统默认的为集显模式，将其修改为独显模式。 更新软件列表和安装必要软件、依赖 sudo apt-get update #更新软件列表 # sudo apt-get install -y g&#43;&#43; gcc make sudo apt download $(apt-rdepends g&#43;&#43; gcc make | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) sudo apt download $(apt-rdepends python3-pip | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) sudo apt download $(apt-rdepends build-essential cmake git | \ grep -v &#34;^ &#34; | \ sed &#39;s/debconf-2.0/debconf/g&#39; | \ sed -e &#39;s/libc-dev/libc6-dev/g&#39; \ -e &#39;s/libc6-dev-bin/libc6-dev/g&#39; \ -e &#39;s/linux-libc6-dev/linux-libc-dev/g&#39; | \ grep -vE &#34;^(default-logind|logind)$&#34;) # 安装hwinfo sudo apt download $(apt-rdepends hwinfo | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) # 安装alsa-utils sudo apt download $(apt-rdepends alsa-utils | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) 禁用nouveau (nouveau是通用的驱动程序) sudo vim /etc/modprobe.d/blacklist.conf 文件末尾添加下面两行内容">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2025-12-06T08:38:24+08:00">
+    <meta property="article:modified_time" content="2025-12-06T08:38:24+08:00">
+    <meta property="article:tag" content="Ubuntu">
+    <meta property="article:tag" content="22.04">
+    <meta property="article:tag" content="Server">
+    <meta property="article:tag" content="Nvidia">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="ubuntu 22.04 server安装Nvidia驱动">
+  <meta name="twitter:description" content="ubuntu 22.04 server安装Nvidia驱动 sudo apt install -y apt-rdepends # sudo apt install -y net-tools # sudo apt install -y openssh-server sudo apt download $(apt-rdepends apt-rdepends | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39; | grep -v &#34;perlapi-&#34;) sudo apt download $(apt-rdepends net-tools | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) 准备工作 为了避免踩坑，建议按照流程完成准备工作！ 这些准备工作并不会影响你的计算机，不做的话可能会导致装驱动后黑屏！ 关闭安全模式 重启计算机，在开机前狂按’ESC’进入bios设置，找到安全设置，并关闭它。 注：不同品牌电脑进入bios方式和安全设置的位置都不相同
+切换独显模式（笔记本电脑单显卡注意，服务器略过） 在bios设置中找到显卡设置，系统默认的为集显模式，将其修改为独显模式。 更新软件列表和安装必要软件、依赖 sudo apt-get update #更新软件列表 # sudo apt-get install -y g&#43;&#43; gcc make sudo apt download $(apt-rdepends g&#43;&#43; gcc make | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) sudo apt download $(apt-rdepends python3-pip | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) sudo apt download $(apt-rdepends build-essential cmake git | \ grep -v &#34;^ &#34; | \ sed &#39;s/debconf-2.0/debconf/g&#39; | \ sed -e &#39;s/libc-dev/libc6-dev/g&#39; \ -e &#39;s/libc6-dev-bin/libc6-dev/g&#39; \ -e &#39;s/linux-libc6-dev/linux-libc-dev/g&#39; | \ grep -vE &#34;^(default-logind|logind)$&#34;) # 安装hwinfo sudo apt download $(apt-rdepends hwinfo | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) # 安装alsa-utils sudo apt download $(apt-rdepends alsa-utils | grep -v &#34;^ &#34; | sed &#39;s/debconf-2.0/debconf/g&#39;) 禁用nouveau (nouveau是通用的驱动程序) sudo vim /etc/modprobe.d/blacklist.conf 文件末尾添加下面两行内容">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "ubuntu 22.04 server安装Nvidia驱动",
+      "item": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ubuntu_22.04_server%E5%AE%89%E8%A3%85nvidia%E9%A9%B1%E5%8A%A8/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "ubuntu 22.04 server安装Nvidia驱动",
+  "name": "ubuntu 22.04 server安装Nvidia驱动",
+  "description": " ubuntu 22.04 server安装Nvidia驱动 sudo apt install -y apt-rdepends # sudo apt install -y net-tools # sudo apt install -y openssh-server sudo apt download $(apt-rdepends apt-rdepends | grep -v \u0026#34;^ \u0026#34; | sed \u0026#39;s/debconf-2.0/debconf/g\u0026#39; | grep -v \u0026#34;perlapi-\u0026#34;) sudo apt download $(apt-rdepends net-tools | grep -v \u0026#34;^ \u0026#34; | sed \u0026#39;s/debconf-2.0/debconf/g\u0026#39;) 准备工作 为了避免踩坑，建议按照流程完成准备工作！ 这些准备工作并不会影响你的计算机，不做的话可能会导致装驱动后黑屏！ 关闭安全模式 重启计算机，在开机前狂按’ESC’进入bios设置，找到安全设置，并关闭它。 注：不同品牌电脑进入bios方式和安全设置的位置都不相同\n切换独显模式（笔记本电脑单显卡注意，服务器略过） 在bios设置中找到显卡设置，系统默认的为集显模式，将其修改为独显模式。 更新软件列表和安装必要软件、依赖 sudo apt-get update #更新软件列表 # sudo apt-get install -y g++ gcc make sudo apt download $(apt-rdepends g++ gcc make | grep -v \u0026#34;^ \u0026#34; | sed \u0026#39;s/debconf-2.0/debconf/g\u0026#39;) sudo apt download $(apt-rdepends python3-pip | grep -v \u0026#34;^ \u0026#34; | sed \u0026#39;s/debconf-2.0/debconf/g\u0026#39;) sudo apt download $(apt-rdepends build-essential cmake git | \\ grep -v \u0026#34;^ \u0026#34; | \\ sed \u0026#39;s/debconf-2.0/debconf/g\u0026#39; | \\ sed -e \u0026#39;s/libc-dev/libc6-dev/g\u0026#39; \\ -e \u0026#39;s/libc6-dev-bin/libc6-dev/g\u0026#39; \\ -e \u0026#39;s/linux-libc6-dev/linux-libc-dev/g\u0026#39; | \\ grep -vE \u0026#34;^(default-logind|logind)$\u0026#34;) # 安装hwinfo sudo apt download $(apt-rdepends hwinfo | grep -v \u0026#34;^ \u0026#34; | sed \u0026#39;s/debconf-2.0/debconf/g\u0026#39;) # 安装alsa-utils sudo apt download $(apt-rdepends alsa-utils | grep -v \u0026#34;^ \u0026#34; | sed \u0026#39;s/debconf-2.0/debconf/g\u0026#39;) 禁用nouveau (nouveau是通用的驱动程序) sudo vim /etc/modprobe.d/blacklist.conf 文件末尾添加下面两行内容\n",
+  "keywords": [
+    "ubuntu", "22.04", "server", "nvidia"
+  ],
+  "articleBody": " ubuntu 22.04 server安装Nvidia驱动 sudo apt install -y apt-rdepends # sudo apt install -y net-tools # sudo apt install -y openssh-server sudo apt download $(apt-rdepends apt-rdepends | grep -v \"^ \" | sed 's/debconf-2.0/debconf/g' | grep -v \"perlapi-\") sudo apt download $(apt-rdepends net-tools | grep -v \"^ \" | sed 's/debconf-2.0/debconf/g') 准备工作 为了避免踩坑，建议按照流程完成准备工作！ 这些准备工作并不会影响你的计算机，不做的话可能会导致装驱动后黑屏！ 关闭安全模式 重启计算机，在开机前狂按’ESC’进入bios设置，找到安全设置，并关闭它。 注：不同品牌电脑进入bios方式和安全设置的位置都不相同\n切换独显模式（笔记本电脑单显卡注意，服务器略过） 在bios设置中找到显卡设置，系统默认的为集显模式，将其修改为独显模式。 更新软件列表和安装必要软件、依赖 sudo apt-get update #更新软件列表 # sudo apt-get install -y g++ gcc make sudo apt download $(apt-rdepends g++ gcc make | grep -v \"^ \" | sed 's/debconf-2.0/debconf/g') sudo apt download $(apt-rdepends python3-pip | grep -v \"^ \" | sed 's/debconf-2.0/debconf/g') sudo apt download $(apt-rdepends build-essential cmake git | \\ grep -v \"^ \" | \\ sed 's/debconf-2.0/debconf/g' | \\ sed -e 's/libc-dev/libc6-dev/g' \\ -e 's/libc6-dev-bin/libc6-dev/g' \\ -e 's/linux-libc6-dev/linux-libc-dev/g' | \\ grep -vE \"^(default-logind|logind)$\") # 安装hwinfo sudo apt download $(apt-rdepends hwinfo | grep -v \"^ \" | sed 's/debconf-2.0/debconf/g') # 安装alsa-utils sudo apt download $(apt-rdepends alsa-utils | grep -v \"^ \" | sed 's/debconf-2.0/debconf/g') 禁用nouveau (nouveau是通用的驱动程序) sudo vim /etc/modprobe.d/blacklist.conf 文件末尾添加下面两行内容\nblacklist nouveau options nouveau modeset=0 文件修改后在终端执行：\nsudo update-initramfs -u sudo reboot #重启电脑 电脑重启后执行：\nlsmod | grep nouveau #输出内容为空，则表示成功禁用 安装lightdm（笔记本电脑默认gdm3,不要选择lightdm，不然会启动不起来，需要恢复模式下rusume执行sudo dpkg-reconfigure lightdm） lightdm和gdm3一样都是图形界面管理插件，但是lightdm兼容性更好\n# sudo apt-get install lightdm sudo apt download $(apt-rdepends lightdm | grep -v \"^ \" | sed 's/debconf-2.0/debconf/g' | grep -v \"^awk$\") 用上下按键选中lightdm\n安装驱动 网上安装方式杂七杂八很多，推荐把Ubuntu升级到22版本后使用系统推荐安装方式。 安装 nvidia-cuda-toolkit 工具 # sudo apt-get install nvidia-cuda-toolkit sudo apt download $(apt-rdepends nvidia-cuda-toolkit | grep -v \"^ \" | grep -v -E \"^(debconf-2.0|libcuda|libnvidia|opencl-dev|clang-[0-9]|g\\+\\+-[0-9]|gcc-[0-9])\" | sed 's/debconf-2.0/debconf/g') 检查系统推荐显卡驱动，记录下recommend选项 $ sudo ubuntu-drivers devices == /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.0 == modalias : pci:v000010DEd000028E0sv0000103Csd00008BABbc03sc00i00 vendor : NVIDIA Corporation driver : nvidia-driver-535-open - distro non-free driver : nvidia-driver-535-server-open - distro non-free driver : nvidia-driver-535 - distro non-free recommended #记下推荐版本 driver : nvidia-driver-525-server - distro non-free driver : nvidia-driver-535-server - distro non-free driver : nvidia-driver-525 - distro non-free driver : nvidia-driver-525-open - distro non-free driver : xserver-xorg-video-nouveau - distro free builtin 安装NVIDIA显卡驱动 方法一：安装NVIDIA显卡驱动（推荐，服务器操作） apt命令安装 执行如下命令，查看适合的驱动\nubuntu-drivers devices 安装驱动\n# apt-get install nvidia-driver-535 # sudo apt download $(apt-rdepends nvidia-driver-535 | grep -v \"^ \" | grep -v -e \"xorg-video-abi\" -e \"libc-dev\" -e \"kldutils\" -e \"perlapi-5.34\" | sed 's/debconf-2.0/debconf/g') sudo apt-get install -d -o dir::cache::archives=\"$HOME/ubuntu-drivers\" nvidia-driver-580 sudo dpkg -i $HOME/ubuntu-drivers/*.deb 测试驱动是否正常工作\nnvidia-smi 方法二（带桌面的操作系统可尝试一下） 添加驱动源 sudo add-apt-repository ppa:graphics-drivers/ppa sudo apt-get update 在Ubuntu系统中找到 软件和更新 选择 驱动 按照图示找到附加驱动，选择推荐版本 注意：不要选择第一项，可能会导致黑屏 安装完成后sudo reboot重启计算机\n方法三（下载nvidia官方驱动文件可以尝试一下） # 根据前边的教程获取推荐版本，然后下载对应的版本进行如下方式安装 ./NVIDIA-Linux-x86_64-580.105.08.run --no-opengl-files 重启后测试安装 $ nvidia-smi Wed Jul 19 11:08:47 2023 +---------------------------------------------------------------------------------------+ | NVIDIA-SMI 535.54.03 Driver Version: 535.54.03 CUDA Version: 12.2 | |-----------------------------------------+----------------------+----------------------+ | GPU Name Persistence-M | Bus-Id Disp.A | Volatile Uncorr. ECC | | Fan Temp Perf Pwr:Usage/Cap | Memory-Usage | GPU-Util Compute M. | | | | MIG M. | |=========================================+======================+======================| | 0 NVIDIA GeForce RTX 4060 ... Off | 00000000:01:00.0 On | N/A | | N/A 40C P8 2W / 80W | 571MiB / 8188MiB | 0% Default | | | | N/A | +-----------------------------------------+----------------------+----------------------+ +---------------------------------------------------------------------------------------+ | Processes: | | GPU GI CI PID Type Process name GPU Memory | | ID ID Usage | |=======================================================================================| | 0 N/A N/A 1489 G /usr/lib/xorg/Xorg 202MiB | | 0 N/A N/A 2539 G /usr/bin/gnome-shell 57MiB | | 0 N/A N/A 3848 G ...irefox/2908/usr/lib/firefox/firefox 205MiB | | 0 N/A N/A 20451 G ...dererForSitePerProcess --no-sandbox 94MiB | +---------------------------------------------------------------------------------------+ 显示如上则表示安装完成。\n出错急救 如果驱动安装后不幸导致黑屏，尝试以下操作删除驱动，恢复安装前状态。 #在黑屏界面 ctrl+alt+f1 进入tty命令行，正确输入用户名和密码，再进行接下来的操作 #在tty中先修改字符集 export LANGUAGE=\"UTF-8\" #执行删除操作 sudo apt-get --purge remove nvidia* sudo apt autoremove #重启 reboot #如果上述操作不超过，尝试以下命令删除 sudo apt-get remove --purge nvidia* 删除驱动后，进入系统界面，从第一步开始重新安装即可。\n安装Anaconda3 wget https://repo.anaconda.com/archive/Anaconda3-2025.12-1-Linux-x86_64.sh chmod +x Anaconda3-2025.12-1-Linux-x86_64.sh sh Anaconda3-2025.12-1-Linux-x86_64.sh 安装CUDA wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600 wget https://developer.download.nvidia.com/compute/cuda/13.0.2/local_installers/cuda-repo-ubuntu2204-13-0-local_13.0.2-580.95.05-1_amd64.deb sudo dpkg -i cuda-repo-ubuntu2204-13-0-local_13.0.2-580.95.05-1_amd64.deb sudo cp /var/cuda-repo-ubuntu2204-13-0-local/cuda-*-keyring.gpg /usr/share/keyrings/ sudo apt-get update sudo apt-get -y install cuda-toolkit-13-0 安装nvidia-cudnn # 1. 先安装 nvidia-pyindex（添加 NVIDIA 源） pip install nvidia-pyindex # 2. 再下载 nvidia-cudnn 到指定目录（./） pip download nvidia-cudnn -d ./ # 3. pip自动处理顺序（推荐） pip install ./setuptools-80.9.0-py3-none-any.whl ./wheel-0.45.1-py3-none-any.whl ./nvidia_cudnn-8.2.0.51-py3-none-manylinux1_x86_64.whl 搭建PyTorch框架 # wget https://download.pytorch.org/whl/cu130/torch-2.9.0%2Bcu130-cp314-cp314-manylinux_2_28_x86_64.whl pip download torch==2.9.0 torchvision==0.24.0 torchaudio==2.9.0 --index-url https://download.pytorch.org/whl/cu130 -d ./ # pip install *.whl pip install --no-index --find-links=./ *.whl 配置网络 配置wifi 输入如下指令来安装network-manager\n# sudo apt install network-manager sudo apt download $(apt-rdepends network-manager | grep -v \"^ \" | sed 's/debconf-2.0/debconf/g' | grep -vE \"^(default-logind|logind)$\") 启动NetworkManager服务\nsudo systemctl start NetworkManager sudo systemctl enable NetworkManager 查找可用的WiFi\nnmcli dev wifi list 选择一个WiFi并连接，将改为你的wifi名，改为密码\nnmcli dev wifi connect password 确认网络是否连接\nnmcli connection show 设置为自动连接，这样每次开机后即自动连接该wifi\nnmcli connection modify connection.autoconnect yes 检查自动连接是否启用，如果connection.autoconnect为yes则已启用\nnmcli connection show 配置静态IP cd /etc/netplan mv 50-cloud-init.yaml 50-cloud-init.yaml.bak cat \u003e 01-network-manager-all.yaml \u003c\u003c'EOF' # This file is generated from information provided by the datasource. Changes # to it will not persist across an instance reboot. To disable cloud-init's # network configuration capabilities, write a file # /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following: # network: {config: disabled} network: ethernets: ens33: # ens5f0: dhcp4: no addresses: # - 192.168.1.4/24 - 192.168.128.50/24 # nameservers: # addresses: [114.114.114.114,8.8.8.8] version: 2 EOF chmod 600 01-network-manager-all.yaml netplan apply sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf 搭建VNC # 然后安装需要用到的图形化服务软件 # apt install -y xfce4 xfce4-goodies apt download $(apt-rdepends xfce4 xfce4-goodies | grep -v \"^ \" | sed \"s/debconf-2.0/debconf/g\" | xargs apt-cache show 2\u003e/dev/null | grep \"Package:\" | awk '{print $2}' | sort -u) # 然后安装tigervnc。tigervnc感觉比tightvnc要配置简单一些 # apt install -y tigervnc-standalone-server tigervnc-common apt download $(apt-rdepends tigervnc-standalone-server tigervnc-common | grep -v \"^ \" | sed \"s/debconf-2.0/debconf/g\") # 安装tigervnc-tools apt download $(apt-rdepends tigervnc-tools | grep -v \"^ \" | sed \"s/debconf-2.0/debconf/g\") # 安装dbus-x11 dbus apt download $(apt-rdepends dbus-x11 dbus | grep -v \"^ \" | sed \"s/debconf-2.0/debconf/g\") # 安装下载的deb包 dpkg -i ./*.deb # -------------------------------- # 创建用户 # 创建用户：sudo adduser 用户名 # 删除用户：sudo deluser 用户名 # 创建test用户，根据提示默认回车，最后输入Y确认： sudo adduser test # 添加sudo权限 # 以添加 test 这个用户到 sudo 用户组为例子，输入下面命令： sudo usermod -aG sudo test sudo tee /etc/sudoers.d/test \u003c\u003c\u003c 'test ALL=(ALL) ALL' sudo chmod 440 /etc/sudoers.d/test # 如果要删除用户： su root # 切换到root用户或其他用户 # 停止所有 test 用户的进程（如果有） sudo pkill -u test sudo sleep 2 # 删除用户及其所有文件 sudo userdel test # 只删除用户 # sudo userdel -r test # 完全删除用户及其主目录 # 删除 sudo 配置 sudo rm -f /etc/sudoers.d/test # 验证删除： # 检查用户是否已删除 getent passwd test # 检查用户组 getent group test # 检查主目录是否还存在 ls -la /home/ # -------------------------------- # 运行并设置密码（当前用户已设置密码则跳过），根据提示输入n vncserver # 然后创建启动脚本， 编辑用户文件夹下的.vnc文件夹下的xstartup文件(如果没有就创建一个)内容如下： cat \u003e $HOME/.vnc/xstartup \u003c\u003c'EOF' #!/usr/bin/bash xfce4-session EOF # 注意xfce4-session后面不要跟\u0026号，不然会在运行vncserver时提示过早退出，然后记得给它加执行的权限。 chmod +x $HOME/.vnc/xstartup # 首次设置VNC时，它将在端口5901上启动默认服务器实例。 # 如下是一个启动vnc服务器的例子： # vncserver :1 -localhost no -geometry 1920x1080 vncserver :1 -geometry 1920x1080 -depth 24 -localhost no # echo \"vncserver :1 -geometry 1920x1080 -depth 24 -localhost no\" \u003e\u003e $HOME/.bashrc \u003c\u003c'CONTENT' -depth 24 表示 24 位色深（24 bits per pixel, 24bpp） | depth 值 | 含义 | 颜色数量 | 典型用途 | | ------- | ------------- | ------- | --------- | | 8 | 256 色 | 2^8 | 低带宽 / 老设备 | | 16 | High Color | 65536 色 | 嵌入式 / 低性能 | | 24 | True Color | 1670 万色 | **推荐默认** | | 32 | 24 位色 + Alpha | 同 24 位 | 某些桌面环境 | CONTENT # 查看已启动的实例 vncserver -list # 关闭启动的实例 vncserver -kill :1 然后就可以通过vnc的客户端登陆了，为了能够远端登陆不仅仅是本机登陆，设置-localhost no 是必要的。由于VNC是不加密的，会在登陆时提示如下，当然也可以自行百度实现在此基础上的外加SSH通道的加密。\n输入刚才设置的密码就可以登陆了\n之后就是熟悉的ubuntu界面了，可以自由安装自己喜欢的程序了\n在客户端地址栏输入192.168.x.x:5901，再输入前边创建的密码即可 搭建XRDP # 然后安装需要用到的图形化服务软件 apt download $(apt-rdepends xfce4 xfce4-goodies | grep -v \"^ \" | sed \"s/debconf-2.0/debconf/g\" | xargs apt-cache show 2\u003e/dev/null | grep \"Package:\" | awk '{print $2}' | sort -u) # 安装xrdp apt download $(apt-rdepends xrdp | grep -v \"^ \" | sed \"s/debconf-2.0/debconf/g\") echo \"startxfce4\" \u003e ~/.xsession sudo systemctl start xrdp # 查看xrdp启动状态 sudo systemctl status xrdp # 放开3389端口 sudo ufw allow 3389/tcp # sudo ufw allow 3350/tcp # 重启xrdp sudo systemctl restart xrdp 把文件制作成iso，上传并将挂载到服务器 # windows使用软碟通制作iso文件 # 从windows将iso文件上传到服务器 rsync -rP nvidia-driver.iso root@192.168.234.38:~/ # 服务器操作 mount -t auto nvidia-driver.iso /mnt/ cd /mnt/ dpkg -i /*.deb # sudo apt --fix-broken install ./NVIDIA-Linux-x86_64-580.105.08.run Linux 系统下硬盘自动挂载完全指南 dd if=/dev/zero of=test.img bs=1M count=1024 image=$(realpath test.img); mkfs.ext4 ${image} mkdir -p /mnt/myimg image=$(realpath test.img); mount -o loop ${image} /mnt/myimg # image=$(realpath test.img); echo \"UUID=$(blkid ${image} | awk -F \"\\\"\" '{print $2}') ${image} $(blkid ${image} | awk -F '=' '{print $4}') defaults,noatime 0 0\" | cat \u003e\u003e /etc/fstab image=$(realpath test.img); echo \"${image} /mnt/myimg loop,defaults,noatime 0 0\" | cat \u003e\u003e /etc/fstab 挂载nvme硬盘示例 sudo fdisk /dev/nvme1n1 sudo mkfs.ext4 /dev/nvme1n1p1 mkdir /nvme1n1p1 echo \"UUID=c3e4baa4-40c7-48a5-a804-081af08b5e31 /nvme1n1p1 ext4 defaults 0 0\" \u003e\u003e /etc/fstab sudo fdisk /dev/nvme2n1 sudo mkfs.ext4 /dev/nvme2n1p1 sudo mkdir /nvme2n1p1 echo \"UUID=3eca7f75-ecdc-4400-89c8-a7f481a25d43 /nvme2n1p1 ext4 defaults 0 0\" \u003e\u003e /etc/fstab 大于2T的分区，需要在进入fdisk交互环境下时先执行g选项并回车，将硬盘转gpt，然后才能完整分区，否则只能分区2T空间\n多用户创建与删除 用户列表 user1 user2 user3 user4 创建用户 #!/usr/bin/bash users=( user1 user2 user3 user4 ) for i in \"${users[@]}\"; do # sudo adduser ${i} sudo adduser --quiet --disabled-password --shell $(which bash) --home /home/${i} --gecos \"User\" ${i} sleep 1 # 添加sudo权限 # 以添加 test 这个用户到 sudo 用户组为例子，输入下面命令： sudo usermod -aG sudo ${i} sudo tee /etc/sudoers.d/${i} \u003c\u003c\u003c \"${i} ALL=(ALL) ALL\" sudo chmod 440 /etc/sudoers.d/${i} done 删除用户 #!/usr/bin/bash users=( user1 user2 user3 user4 ) for i in \"${users[@]}\"; do echo \"${i}\"; sudo pkill -u ${i} sudo sleep 2 # 删除用户及其所有文件 # sudo userdel ${i} # 只删除用户 sudo userdel -r ${i} # 完全删除用户及其主目录 # 删除 sudo 配置 sudo rm -f /etc/sudoers.d/${i} done 参考链接 在Ubuntu本地下载软件包并递归下载其所有依赖包\n批量安装 DEB 软件包的技巧与实践指南\nubuntu 22.04 server安装Nvidia驱动\n如何把文件夹或文件封装/制作成iso\nUbuntu22.04安装显卡驱动(高速、避错版)\nubuntu使用iso镜像作为本地apt源――筑梦之路\n通过Termux和VNC实现以手机为服务器的桌面办公\n在Ubuntu Server 22.04上配置静态IP地址\nubuntu-22.04 配置静态IP成功，系统重启后失效\nUbuntu22.04下VNC和远程桌面的区别\nUbuntu安装VNC，配置多用户vnc连接Ubuntu，开机自启vnc命令\nvnc viewer灰屏问题（已解决）\nLinux blkid 命令\nLinux 系统下硬盘自动挂载完全指南\nubuntu 22.04 server 格式化 磁盘 为 ext4 并 自动挂载 LTS\nUbuntu 配置/etc/fstab参数实现开机自动挂载硬盘\nLinux下mount挂载新硬盘和开机自动挂载\nSSH-keygen用法\n在Ubuntu 22.04上安装远程桌面服务\n在Ubuntu22.04上使用xrdp启用远程桌面协议实现图形化\nUbuntu安装GPU驱动、CUDA、cuDNN,以及是否安装成功的检测\nlinux离线环境下安装anaconda\n离线安装 Python 依赖：利用 pip download 构建本地包仓库 PyTorch离线版本安装（超详细版！）\n",
+  "wordCount" : "1473",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2025-12-06T08:38:24.91+08:00",
+  "dateModified": "2025-12-06T08:38:24.91+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Theme PaperMod"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ubuntu_22.04_server%E5%AE%89%E8%A3%85nvidia%E9%A9%B1%E5%8A%A8/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PaperMod",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/post/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+    <h1 class="post-title entry-hint-parent">
+      ubuntu 22.04 server安装Nvidia驱动
+    </h1>
+    <div class="post-meta">
+
+<span title='2025-12-06 08:38:24.91 +0800 +0800'>December 6, 2025</span>&nbsp;·&nbsp;<span>7 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span>&nbsp;|&nbsp;<span>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content/post/%e7%a8%8b%e5%ba%8f%e5%91%98/ubuntu_22.04_server%e5%ae%89%e8%a3%85Nvidia%e9%a9%b1%e5%8a%a8.org" rel="noopener noreferrer edit" target="_blank">Suggest Changes</a>
+    </span>
+
+</div>
+  </header> 
+
+  <div class="post-content md-content">
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+ubuntu 22.04 server安装Nvidia驱动
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install -y apt-rdepends
+</span></span><span class="line"><span class="cl"><span class="c1"># sudo apt install -y net-tools</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># sudo apt install -y openssh-server</span>
+</span></span><span class="line"><span class="cl">sudo apt download <span class="k">$(</span>apt-rdepends apt-rdepends <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s1">&#39;s/debconf-2.0/debconf/g&#39;</span> <span class="p">|</span> grep -v <span class="s2">&#34;perlapi-&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">sudo apt download <span class="k">$(</span>apt-rdepends net-tools <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s1">&#39;s/debconf-2.0/debconf/g&#39;</span><span class="k">)</span></span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+准备工作
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">为了避免踩坑，建议按照流程完成准备工作！
+</span></span><span class="line"><span class="cl">这些准备工作并不会影响你的计算机，不做的话可能会导致装驱动后黑屏！</span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+关闭安全模式
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">重启计算机，在开机前狂按’ESC’进入bios设置，找到安全设置，并关闭它。</span></span></code></pre></div>
+</div>
+<p>注：不同品牌电脑进入bios方式和安全设置的位置都不相同</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-4">
+<h4 id="headline-4">
+切换独显模式（笔记本电脑单显卡注意，服务器略过）
+</h4>
+<div id="outline-text-headline-4" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">在bios设置中找到显卡设置，系统默认的为集显模式，将其修改为独显模式。</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+更新软件列表和安装必要软件、依赖
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt-get update   <span class="c1">#更新软件列表</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># sudo apt-get install -y g++ gcc make</span>
+</span></span><span class="line"><span class="cl">sudo apt download <span class="k">$(</span>apt-rdepends g++ gcc make <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s1">&#39;s/debconf-2.0/debconf/g&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sudo apt download <span class="k">$(</span>apt-rdepends python3-pip <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s1">&#39;s/debconf-2.0/debconf/g&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">sudo apt download <span class="k">$(</span>apt-rdepends build-essential cmake git <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">                      grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">                      sed <span class="s1">&#39;s/debconf-2.0/debconf/g&#39;</span> <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">                      sed -e <span class="s1">&#39;s/libc-dev/libc6-dev/g&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">                          -e <span class="s1">&#39;s/libc6-dev-bin/libc6-dev/g&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">                          -e <span class="s1">&#39;s/linux-libc6-dev/linux-libc-dev/g&#39;</span> <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">                      grep -vE <span class="s2">&#34;^(default-logind|logind)</span>$<span class="s2">&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装hwinfo</span>
+</span></span><span class="line"><span class="cl">sudo apt download <span class="k">$(</span>apt-rdepends hwinfo <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s1">&#39;s/debconf-2.0/debconf/g&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装alsa-utils</span>
+</span></span><span class="line"><span class="cl">sudo apt download <span class="k">$(</span>apt-rdepends alsa-utils <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s1">&#39;s/debconf-2.0/debconf/g&#39;</span><span class="k">)</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-4">
+<h4 id="headline-6">
+禁用nouveau (nouveau是通用的驱动程序)
+</h4>
+<div id="outline-text-headline-6" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo vim /etc/modprobe.d/blacklist.conf</span></span></code></pre></div>
+</div>
+<p>文件末尾添加下面两行内容</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">blacklist nouveau
+</span></span><span class="line"><span class="cl">options nouveau <span class="nv">modeset</span><span class="o">=</span><span class="m">0</span></span></span></code></pre></div>
+</div>
+<p>
+文件修改后在终端执行：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo update-initramfs -u
+</span></span><span class="line"><span class="cl">sudo reboot <span class="c1">#重启电脑</span></span></span></code></pre></div>
+</div>
+<p>电脑重启后执行：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lsmod <span class="p">|</span> grep nouveau  <span class="c1">#输出内容为空，则表示成功禁用</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-4">
+<h4 id="headline-7">
+安装lightdm（笔记本电脑默认gdm3,不要选择lightdm，不然会启动不起来，需要恢复模式下rusume执行sudo dpkg-reconfigure lightdm）
+</h4>
+<div id="outline-text-headline-7" class="outline-text-4">
+<p>
+lightdm和gdm3一样都是图形界面管理插件，但是lightdm兼容性更好</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># sudo apt-get install lightdm</span>
+</span></span><span class="line"><span class="cl">sudo apt download <span class="k">$(</span>apt-rdepends lightdm <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s1">&#39;s/debconf-2.0/debconf/g&#39;</span> <span class="p">|</span> grep -v <span class="s2">&#34;^awk</span>$<span class="s2">&#34;</span><span class="k">)</span></span></span></code></pre></div>
+</div>
+<p>用上下按键选中lightdm</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
+安装驱动
+</h3>
+<div id="outline-text-headline-8" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">网上安装方式杂七杂八很多，推荐把Ubuntu升级到22版本后使用系统推荐安装方式。</span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-9" class="outline-4">
+<h4 id="headline-9">
+安装 nvidia-cuda-toolkit 工具
+</h4>
+<div id="outline-text-headline-9" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># sudo apt-get install nvidia-cuda-toolkit</span>
+</span></span><span class="line"><span class="cl">sudo apt download <span class="k">$(</span>apt-rdepends nvidia-cuda-toolkit <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> grep -v -E <span class="s2">&#34;^(debconf-2.0|libcuda|libnvidia|opencl-dev|clang-[0-9]|g\+\+-[0-9]|gcc-[0-9])&#34;</span> <span class="p">|</span> sed <span class="s1">&#39;s/debconf-2.0/debconf/g&#39;</span><span class="k">)</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-4">
+<h4 id="headline-10">
+检查系统推荐显卡驱动，记录下recommend选项
+</h4>
+<div id="outline-text-headline-10" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo ubuntu-drivers <span class="nv">devices</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">==</span> /sys/devices/pci0000:00/0000:00:01.0/0000:01:00.0 <span class="o">==</span>
+</span></span><span class="line"><span class="cl">modalias : pci:v000010DEd000028E0sv0000103Csd00008BABbc03sc00i00
+</span></span><span class="line"><span class="cl">vendor   : NVIDIA Corporation
+</span></span><span class="line"><span class="cl">driver   : nvidia-driver-535-open - distro non-free
+</span></span><span class="line"><span class="cl">driver   : nvidia-driver-535-server-open - distro non-free
+</span></span><span class="line"><span class="cl">driver   : nvidia-driver-535 - distro non-free recommended <span class="c1">#记下推荐版本</span>
+</span></span><span class="line"><span class="cl">driver   : nvidia-driver-525-server - distro non-free
+</span></span><span class="line"><span class="cl">driver   : nvidia-driver-535-server - distro non-free
+</span></span><span class="line"><span class="cl">driver   : nvidia-driver-525 - distro non-free
+</span></span><span class="line"><span class="cl">driver   : nvidia-driver-525-open - distro non-free
+</span></span><span class="line"><span class="cl">driver   : xserver-xorg-video-nouveau - distro free builtin</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-4">
+<h4 id="headline-11">
+安装NVIDIA显卡驱动
+</h4>
+<div id="outline-text-headline-11" class="outline-text-4">
+<div id="outline-container-headline-12" class="outline-5">
+<h5 id="headline-12">
+方法一：安装NVIDIA显卡驱动（推荐，服务器操作）
+</h5>
+<div id="outline-text-headline-12" class="outline-text-5">
+<p>
+apt命令安装
+执行如下命令，查看适合的驱动</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ubuntu-drivers devices</span></span></code></pre></div>
+</div>
+<p>
+安装驱动</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># apt-get install nvidia-driver-535</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># sudo apt download $(apt-rdepends nvidia-driver-535 | grep -v &#34;^ &#34; | grep -v -e &#34;xorg-video-abi&#34; -e &#34;libc-dev&#34; -e &#34;kldutils&#34; -e &#34;perlapi-5.34&#34; | sed &#39;s/debconf-2.0/debconf/g&#39;)</span>
+</span></span><span class="line"><span class="cl">sudo apt-get install -d -o dir::cache::archives<span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/ubuntu-drivers&#34;</span> nvidia-driver-580
+</span></span><span class="line"><span class="cl">sudo dpkg -i <span class="nv">$HOME</span>/ubuntu-drivers/*.deb</span></span></code></pre></div>
+</div>
+<p>
+测试驱动是否正常工作</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nvidia-smi</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-5">
+<h5 id="headline-13">
+方法二（带桌面的操作系统可尝试一下）
+</h5>
+<div id="outline-text-headline-13" class="outline-text-5">
+<div id="outline-container-headline-14" class="outline-6">
+<h6 id="headline-14">
+添加驱动源
+</h6>
+<div id="outline-text-headline-14" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo add-apt-repository ppa:graphics-drivers/ppa
+</span></span><span class="line"><span class="cl">sudo apt-get update</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-6">
+<h6 id="headline-15">
+在Ubuntu系统中找到 软件和更新 选择 驱动
+</h6>
+<div id="outline-text-headline-15" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">按照图示找到附加驱动，选择推荐版本
+</span></span><span class="line"><span class="cl">注意：不要选择第一项，可能会导致黑屏</span></span></code></pre></div>
+</div>
+<p>安装完成后sudo reboot重启计算机</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-5">
+<h5 id="headline-16">
+方法三（下载nvidia官方驱动文件可以尝试一下）
+</h5>
+<div id="outline-text-headline-16" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 根据前边的教程获取推荐版本，然后下载对应的版本进行如下方式安装</span>
+</span></span><span class="line"><span class="cl">./NVIDIA-Linux-x86_64-580.105.08.run --no-opengl-files</span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-17" class="outline-3">
+<h3 id="headline-17">
+重启后测试安装
+</h3>
+<div id="outline-text-headline-17" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ nvidia-smi
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Wed Jul <span class="m">19</span> 11:08:47 <span class="m">2023</span>       
+</span></span><span class="line"><span class="cl">+---------------------------------------------------------------------------------------+
+</span></span><span class="line"><span class="cl">      <span class="p">|</span> NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.2     <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>-----------------------------------------+----------------------+----------------------+
+</span></span><span class="line"><span class="cl">      <span class="p">|</span> GPU  Name                 Persistence-M <span class="p">|</span> Bus-Id        Disp.A <span class="p">|</span> Volatile Uncorr. ECC <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span> Fan  Temp   Perf          Pwr:Usage/Cap <span class="p">|</span>         Memory-Usage <span class="p">|</span> GPU-Util  Compute M. <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>                                         <span class="p">|</span>                      <span class="p">|</span>               MIG M. <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span><span class="o">=========================================</span>+<span class="o">======================</span>+<span class="o">======================</span><span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>   <span class="m">0</span>  NVIDIA GeForce RTX <span class="m">4060</span> ...    Off <span class="p">|</span> 00000000:01:00.0  On <span class="p">|</span>                  N/A <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span> N/A   40C    P8               2W /  80W <span class="p">|</span>    571MiB /  8188MiB <span class="p">|</span>      0%      Default <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>                                         <span class="p">|</span>                      <span class="p">|</span>                  N/A <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      +-----------------------------------------+----------------------+----------------------+
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">      +---------------------------------------------------------------------------------------+
+</span></span><span class="line"><span class="cl">      <span class="p">|</span> Processes:                                                                            <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>  GPU   GI   CI        PID   Type   Process name                            GPU Memory <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>        ID   ID                                                             Usage      <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span><span class="o">=======================================================================================</span><span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>    <span class="m">0</span>   N/A  N/A      <span class="m">1489</span>      G   /usr/lib/xorg/Xorg                          202MiB <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>    <span class="m">0</span>   N/A  N/A      <span class="m">2539</span>      G   /usr/bin/gnome-shell                         57MiB <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>    <span class="m">0</span>   N/A  N/A      <span class="m">3848</span>      G   ...irefox/2908/usr/lib/firefox/firefox      205MiB <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      <span class="p">|</span>    <span class="m">0</span>   N/A  N/A     <span class="m">20451</span>      G   ...dererForSitePerProcess --no-sandbox       94MiB <span class="p">|</span>
+</span></span><span class="line"><span class="cl">      +---------------------------------------------------------------------------------------+</span></span></code></pre></div>
+</div>
+<p>显示如上则表示安装完成。</p>
+</div>
+</div>
+<div id="outline-container-headline-18" class="outline-3">
+<h3 id="headline-18">
+出错急救
+</h3>
+<div id="outline-text-headline-18" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">如果驱动安装后不幸导致黑屏，尝试以下操作删除驱动，恢复安装前状态。</span></span></code></pre></div>
+</div>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#在黑屏界面 ctrl+alt+f1 进入tty命令行，正确输入用户名和密码，再进行接下来的操作</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#在tty中先修改字符集</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">LANGUAGE</span><span class="o">=</span><span class="s2">&#34;UTF-8&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#执行删除操作</span>
+</span></span><span class="line"><span class="cl">sudo apt-get --purge remove nvidia*
+</span></span><span class="line"><span class="cl">sudo apt autoremove
+</span></span><span class="line"><span class="cl"><span class="c1">#重启</span>
+</span></span><span class="line"><span class="cl">reboot
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#如果上述操作不超过，尝试以下命令删除</span>
+</span></span><span class="line"><span class="cl">sudo apt-get remove --purge nvidia*</span></span></code></pre></div>
+</div>
+<p>删除驱动后，进入系统界面，从第一步开始重新安装即可。</p>
+</div>
+</div>
+<div id="outline-container-headline-19" class="outline-3">
+<h3 id="headline-19">
+安装Anaconda3
+</h3>
+<div id="outline-text-headline-19" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://repo.anaconda.com/archive/Anaconda3-2025.12-1-Linux-x86_64.sh
+</span></span><span class="line"><span class="cl">chmod +x Anaconda3-2025.12-1-Linux-x86_64.sh
+</span></span><span class="line"><span class="cl">sh Anaconda3-2025.12-1-Linux-x86_64.sh</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-20" class="outline-3">
+<h3 id="headline-20">
+安装CUDA
+</h3>
+<div id="outline-text-headline-20" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+</span></span><span class="line"><span class="cl">sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+</span></span><span class="line"><span class="cl">wget https://developer.download.nvidia.com/compute/cuda/13.0.2/local_installers/cuda-repo-ubuntu2204-13-0-local_13.0.2-580.95.05-1_amd64.deb
+</span></span><span class="line"><span class="cl">sudo dpkg -i cuda-repo-ubuntu2204-13-0-local_13.0.2-580.95.05-1_amd64.deb
+</span></span><span class="line"><span class="cl">sudo cp /var/cuda-repo-ubuntu2204-13-0-local/cuda-*-keyring.gpg /usr/share/keyrings/
+</span></span><span class="line"><span class="cl">sudo apt-get update
+</span></span><span class="line"><span class="cl">sudo apt-get -y install cuda-toolkit-13-0</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-21" class="outline-3">
+<h3 id="headline-21">
+安装nvidia-cudnn
+</h3>
+<div id="outline-text-headline-21" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 先安装 nvidia-pyindex（添加 NVIDIA 源）</span>
+</span></span><span class="line"><span class="cl">pip install nvidia-pyindex
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 再下载 nvidia-cudnn 到指定目录（./）</span>
+</span></span><span class="line"><span class="cl">pip download nvidia-cudnn -d ./
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. pip自动处理顺序（推荐）</span>
+</span></span><span class="line"><span class="cl">pip install ./setuptools-80.9.0-py3-none-any.whl ./wheel-0.45.1-py3-none-any.whl ./nvidia_cudnn-8.2.0.51-py3-none-manylinux1_x86_64.whl</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-22" class="outline-3">
+<h3 id="headline-22">
+搭建PyTorch框架
+</h3>
+<div id="outline-text-headline-22" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># wget https://download.pytorch.org/whl/cu130/torch-2.9.0%2Bcu130-cp314-cp314-manylinux_2_28_x86_64.whl</span>
+</span></span><span class="line"><span class="cl">pip download <span class="nv">torch</span><span class="o">==</span>2.9.0 <span class="nv">torchvision</span><span class="o">==</span>0.24.0 <span class="nv">torchaudio</span><span class="o">==</span>2.9.0 --index-url https://download.pytorch.org/whl/cu130 -d ./
+</span></span><span class="line"><span class="cl"><span class="c1"># pip install *.whl</span>
+</span></span><span class="line"><span class="cl">pip install --no-index --find-links<span class="o">=</span>./ *.whl</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-23" class="outline-3">
+<h3 id="headline-23">
+配置网络
+</h3>
+<div id="outline-text-headline-23" class="outline-text-3">
+<div id="outline-container-headline-24" class="outline-4">
+<h4 id="headline-24">
+配置wifi
+</h4>
+<div id="outline-text-headline-24" class="outline-text-4">
+<p>
+输入如下指令来安装network-manager</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># sudo apt install network-manager</span>
+</span></span><span class="line"><span class="cl">sudo apt download <span class="k">$(</span>apt-rdepends network-manager <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s1">&#39;s/debconf-2.0/debconf/g&#39;</span> <span class="p">|</span> grep -vE <span class="s2">&#34;^(default-logind|logind)</span>$<span class="s2">&#34;</span><span class="k">)</span></span></span></code></pre></div>
+</div>
+<p>
+启动NetworkManager服务</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl start NetworkManager
+</span></span><span class="line"><span class="cl">sudo systemctl <span class="nb">enable</span> NetworkManager</span></span></code></pre></div>
+</div>
+<p>
+查找可用的WiFi</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmcli dev wifi list</span></span></code></pre></div>
+</div>
+<p>
+选择一个WiFi并连接，将&lt;SSID&gt;改为你的wifi名，&lt;password&gt;改为密码</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmcli dev wifi connect &lt;SSID&gt; password &lt;password&gt;</span></span></code></pre></div>
+</div>
+<p>
+确认网络是否连接</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmcli connection show</span></span></code></pre></div>
+</div>
+<p>
+设置为自动连接，这样每次开机后即自动连接该wifi</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmcli connection modify &lt;SSID&gt; connection.autoconnect yes</span></span></code></pre></div>
+</div>
+<p>
+检查自动连接是否启用，如果connection.autoconnect为yes则已启用</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nmcli connection show &lt;SSID&gt;</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-25" class="outline-4">
+<h4 id="headline-25">
+配置静态IP
+</h4>
+<div id="outline-text-headline-25" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /etc/netplan
+</span></span><span class="line"><span class="cl">mv 50-cloud-init.yaml 50-cloud-init.yaml.bak
+</span></span><span class="line"><span class="cl">cat &gt; 01-network-manager-all.yaml  <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s"># This file is generated from information provided by the datasource.  Changes
+</span></span></span><span class="line"><span class="cl"><span class="s"># to it will not persist across an instance reboot.  To disable cloud-init&#39;s
+</span></span></span><span class="line"><span class="cl"><span class="s"># network configuration capabilities, write a file
+</span></span></span><span class="line"><span class="cl"><span class="s"># /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:
+</span></span></span><span class="line"><span class="cl"><span class="s"># network: {config: disabled}
+</span></span></span><span class="line"><span class="cl"><span class="s">network:
+</span></span></span><span class="line"><span class="cl"><span class="s">    ethernets:
+</span></span></span><span class="line"><span class="cl"><span class="s">        ens33:
+</span></span></span><span class="line"><span class="cl"><span class="s">        # ens5f0:
+</span></span></span><span class="line"><span class="cl"><span class="s">            dhcp4: no
+</span></span></span><span class="line"><span class="cl"><span class="s">            addresses:              
+</span></span></span><span class="line"><span class="cl"><span class="s">              # - 192.168.1.4/24
+</span></span></span><span class="line"><span class="cl"><span class="s">              - 192.168.128.50/24
+</span></span></span><span class="line"><span class="cl"><span class="s">            # nameservers:
+</span></span></span><span class="line"><span class="cl"><span class="s">            #   addresses: [114.114.114.114,8.8.8.8]
+</span></span></span><span class="line"><span class="cl"><span class="s">    version: 2
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">chmod <span class="m">600</span> 01-network-manager-all.yaml
+</span></span><span class="line"><span class="cl">netplan apply
+</span></span><span class="line"><span class="cl">sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf</span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-26" class="outline-3">
+<h3 id="headline-26">
+搭建VNC
+</h3>
+<div id="outline-text-headline-26" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 然后安装需要用到的图形化服务软件</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># apt install -y xfce4 xfce4-goodies</span>
+</span></span><span class="line"><span class="cl">apt download <span class="k">$(</span>apt-rdepends xfce4 xfce4-goodies <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s2">&#34;s/debconf-2.0/debconf/g&#34;</span> <span class="p">|</span> xargs apt-cache show 2&gt;/dev/null <span class="p">|</span> grep <span class="s2">&#34;Package:&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> sort -u<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 然后安装tigervnc。tigervnc感觉比tightvnc要配置简单一些</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># apt install -y tigervnc-standalone-server tigervnc-common</span>
+</span></span><span class="line"><span class="cl">apt download <span class="k">$(</span>apt-rdepends tigervnc-standalone-server tigervnc-common <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s2">&#34;s/debconf-2.0/debconf/g&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装tigervnc-tools</span>
+</span></span><span class="line"><span class="cl">apt download <span class="k">$(</span>apt-rdepends tigervnc-tools <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s2">&#34;s/debconf-2.0/debconf/g&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装dbus-x11 dbus</span>
+</span></span><span class="line"><span class="cl">apt download <span class="k">$(</span>apt-rdepends dbus-x11 dbus <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s2">&#34;s/debconf-2.0/debconf/g&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装下载的deb包</span>
+</span></span><span class="line"><span class="cl">dpkg -i ./*.deb
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># --------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建用户</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建用户：sudo adduser 用户名</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除用户：sudo deluser 用户名</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建test用户，根据提示默认回车，最后输入Y确认：</span>
+</span></span><span class="line"><span class="cl">sudo adduser <span class="nb">test</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 添加sudo权限</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 以添加 test 这个用户到 sudo 用户组为例子，输入下面命令：</span>
+</span></span><span class="line"><span class="cl">sudo usermod -aG sudo <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">sudo tee /etc/sudoers.d/test <span class="o">&lt;&lt;&lt;</span> <span class="s1">&#39;test ALL=(ALL) ALL&#39;</span>
+</span></span><span class="line"><span class="cl">sudo chmod <span class="m">440</span> /etc/sudoers.d/test
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果要删除用户：</span>
+</span></span><span class="line"><span class="cl">su root                         <span class="c1"># 切换到root用户或其他用户</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 停止所有 test 用户的进程（如果有）</span>
+</span></span><span class="line"><span class="cl">sudo pkill -u <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">sudo sleep <span class="m">2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除用户及其所有文件</span>
+</span></span><span class="line"><span class="cl">sudo userdel <span class="nb">test</span>               <span class="c1"># 只删除用户</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># sudo userdel -r test            # 完全删除用户及其主目录</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除 sudo 配置</span>
+</span></span><span class="line"><span class="cl">sudo rm -f /etc/sudoers.d/test
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 验证删除：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查用户是否已删除</span>
+</span></span><span class="line"><span class="cl">getent passwd <span class="nb">test</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查用户组</span>
+</span></span><span class="line"><span class="cl">getent group <span class="nb">test</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 检查主目录是否还存在</span>
+</span></span><span class="line"><span class="cl">ls -la /home/
+</span></span><span class="line"><span class="cl"><span class="c1"># --------------------------------</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 运行并设置密码（当前用户已设置密码则跳过），根据提示输入n</span>
+</span></span><span class="line"><span class="cl">vncserver
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 然后创建启动脚本， 编辑用户文件夹下的.vnc文件夹下的xstartup文件(如果没有就创建一个)内容如下：</span>
+</span></span><span class="line"><span class="cl">cat &gt; <span class="nv">$HOME</span>/.vnc/xstartup <span class="s">&lt;&lt;&#39;EOF&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">#!/usr/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="s">xfce4-session
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 注意xfce4-session后面不要跟&amp;号，不然会在运行vncserver时提示过早退出，然后记得给它加执行的权限。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">chmod +x <span class="nv">$HOME</span>/.vnc/xstartup
+</span></span><span class="line"><span class="cl"><span class="c1"># 首次设置VNC时，它将在端口5901上启动默认服务器实例。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 如下是一个启动vnc服务器的例子：</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># vncserver :1 -localhost no -geometry 1920x1080</span>
+</span></span><span class="line"><span class="cl">vncserver :1  -geometry 1920x1080  -depth <span class="m">24</span> -localhost no
+</span></span><span class="line"><span class="cl"><span class="c1"># echo &#34;vncserver :1  -geometry 1920x1080  -depth 24 -localhost no&#34; &gt;&gt; $HOME/.bashrc</span>
+</span></span><span class="line"><span class="cl"><span class="s">&lt;&lt;&#39;CONTENT&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">-depth 24 表示 24 位色深（24 bits per pixel, 24bpp）
+</span></span></span><span class="line"><span class="cl"><span class="s">| depth 值 | 含义            | 颜色数量    | 典型用途      |
+</span></span></span><span class="line"><span class="cl"><span class="s">| ------- | ------------- | ------- | --------- |
+</span></span></span><span class="line"><span class="cl"><span class="s">| 8       | 256 色         | 2^8     | 低带宽 / 老设备 |
+</span></span></span><span class="line"><span class="cl"><span class="s">| 16      | High Color    | 65536 色 | 嵌入式 / 低性能 |
+</span></span></span><span class="line"><span class="cl"><span class="s">| 24      | True Color    | 1670 万色 | **推荐默认**  |
+</span></span></span><span class="line"><span class="cl"><span class="s">| 32      | 24 位色 + Alpha | 同 24 位  | 某些桌面环境    |
+</span></span></span><span class="line"><span class="cl"><span class="s">CONTENT</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看已启动的实例</span>
+</span></span><span class="line"><span class="cl">vncserver -list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 关闭启动的实例</span>
+</span></span><span class="line"><span class="cl">vncserver -kill :1</span></span></code></pre></div>
+</div>
+<p>然后就可以通过vnc的客户端登陆了，为了能够远端登陆不仅仅是本机登陆，设置-localhost no 是必要的。由于VNC是不加密的，会在登陆时提示如下，当然也可以自行百度实现在此基础上的外加SSH通道的加密。</p>
+<p>
+输入刚才设置的密码就可以登陆了</p>
+<p>
+之后就是熟悉的ubuntu界面了，可以自由安装自己喜欢的程序了</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">在客户端地址栏输入192.168.x.x:5901，再输入前边创建的密码即可</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-27" class="outline-3">
+<h3 id="headline-27">
+搭建XRDP
+</h3>
+<div id="outline-text-headline-27" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 然后安装需要用到的图形化服务软件</span>
+</span></span><span class="line"><span class="cl">apt download <span class="k">$(</span>apt-rdepends xfce4 xfce4-goodies <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s2">&#34;s/debconf-2.0/debconf/g&#34;</span> <span class="p">|</span> xargs apt-cache show 2&gt;/dev/null <span class="p">|</span> grep <span class="s2">&#34;Package:&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> sort -u<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 安装xrdp</span>
+</span></span><span class="line"><span class="cl">apt download <span class="k">$(</span>apt-rdepends xrdp <span class="p">|</span> grep -v <span class="s2">&#34;^ &#34;</span> <span class="p">|</span> sed <span class="s2">&#34;s/debconf-2.0/debconf/g&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;startxfce4&#34;</span> &gt; ~/.xsession
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sudo systemctl start xrdp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看xrdp启动状态</span>
+</span></span><span class="line"><span class="cl">sudo systemctl status xrdp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 放开3389端口</span>
+</span></span><span class="line"><span class="cl">sudo ufw allow 3389/tcp
+</span></span><span class="line"><span class="cl"><span class="c1"># sudo ufw allow 3350/tcp</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 重启xrdp</span>
+</span></span><span class="line"><span class="cl">sudo systemctl restart xrdp</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-28" class="outline-3">
+<h3 id="headline-28">
+把文件制作成iso，上传并将挂载到服务器
+</h3>
+<div id="outline-text-headline-28" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># windows使用软碟通制作iso文件</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 从windows将iso文件上传到服务器</span>
+</span></span><span class="line"><span class="cl">rsync -rP nvidia-driver.iso root@192.168.234.38:~/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 服务器操作</span>
+</span></span><span class="line"><span class="cl">mount -t auto nvidia-driver.iso /mnt/
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /mnt/
+</span></span><span class="line"><span class="cl">dpkg -i /*.deb
+</span></span><span class="line"><span class="cl"><span class="c1"># sudo apt --fix-broken install</span>
+</span></span><span class="line"><span class="cl">./NVIDIA-Linux-x86_64-580.105.08.run</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-29" class="outline-3">
+<h3 id="headline-29">
+Linux 系统下硬盘自动挂载完全指南
+</h3>
+<div id="outline-text-headline-29" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>test.img <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="m">1024</span>
+</span></span><span class="line"><span class="cl"><span class="nv">image</span><span class="o">=</span><span class="k">$(</span>realpath test.img<span class="k">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">mkfs.ext4 <span class="si">${</span><span class="nv">image</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">mkdir -p /mnt/myimg
+</span></span><span class="line"><span class="cl"><span class="nv">image</span><span class="o">=</span><span class="k">$(</span>realpath test.img<span class="k">)</span><span class="p">;</span> mount -o loop <span class="si">${</span><span class="nv">image</span><span class="si">}</span> /mnt/myimg
+</span></span><span class="line"><span class="cl"><span class="c1"># image=$(realpath test.img); echo &#34;UUID=$(blkid ${image} | awk -F &#34;\&#34;&#34; &#39;{print $2}&#39;) ${image} $(blkid ${image} | awk -F &#39;=&#39; &#39;{print $4}&#39;) defaults,noatime 0 0&#34; | cat &gt;&gt; /etc/fstab</span>
+</span></span><span class="line"><span class="cl"><span class="nv">image</span><span class="o">=</span><span class="k">$(</span>realpath test.img<span class="k">)</span><span class="p">;</span> <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">image</span><span class="si">}</span><span class="s2"> /mnt/myimg loop,defaults,noatime 0 0&#34;</span> <span class="p">|</span> cat &gt;&gt; /etc/fstab</span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-30" class="outline-4">
+<h4 id="headline-30">
+挂载nvme硬盘示例
+</h4>
+<div id="outline-text-headline-30" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo fdisk /dev/nvme1n1
+</span></span><span class="line"><span class="cl">sudo mkfs.ext4 /dev/nvme1n1p1
+</span></span><span class="line"><span class="cl">mkdir /nvme1n1p1
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;UUID=c3e4baa4-40c7-48a5-a804-081af08b5e31 /nvme1n1p1 ext4 defaults 0 0&#34;</span> &gt;&gt; /etc/fstab
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sudo fdisk /dev/nvme2n1 
+</span></span><span class="line"><span class="cl">sudo mkfs.ext4 /dev/nvme2n1p1
+</span></span><span class="line"><span class="cl">sudo mkdir /nvme2n1p1
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;UUID=3eca7f75-ecdc-4400-89c8-a7f481a25d43 /nvme2n1p1 ext4 defaults 0 0&#34;</span> &gt;&gt; /etc/fstab</span></span></code></pre></div>
+</div>
+<p>大于2T的分区，需要在进入fdisk交互环境下时先执行g选项并回车，将硬盘转gpt，然后才能完整分区，否则只能分区2T空间</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-31" class="outline-3">
+<h3 id="headline-31">
+多用户创建与删除
+</h3>
+<div id="outline-text-headline-31" class="outline-text-3">
+<div id="outline-container-headline-32" class="outline-4">
+<h4 id="headline-32">
+用户列表
+</h4>
+<div id="outline-text-headline-32" class="outline-text-4">
+<table>
+<tbody>
+<tr>
+<td>user1</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>user2</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>user3</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>user4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-headline-33" class="outline-4">
+<h4 id="headline-33">
+创建用户
+</h4>
+<div id="outline-text-headline-33" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="nv">users</span><span class="o">=(</span>
+</span></span><span class="line"><span class="cl">  user1
+</span></span><span class="line"><span class="cl">  user2
+</span></span><span class="line"><span class="cl">  user3
+</span></span><span class="line"><span class="cl">  user4
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> i in <span class="s2">&#34;</span><span class="si">${</span><span class="nv">users</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># sudo adduser ${i}</span>
+</span></span><span class="line"><span class="cl">  sudo adduser --quiet --disabled-password --shell <span class="k">$(</span>which bash<span class="k">)</span> --home /home/<span class="si">${</span><span class="nv">i</span><span class="si">}</span> --gecos <span class="s2">&#34;User&#34;</span> <span class="si">${</span><span class="nv">i</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">  sleep <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># 添加sudo权限</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># 以添加 test 这个用户到 sudo 用户组为例子，输入下面命令：</span>
+</span></span><span class="line"><span class="cl">  sudo usermod -aG sudo <span class="si">${</span><span class="nv">i</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">  sudo tee /etc/sudoers.d/<span class="si">${</span><span class="nv">i</span><span class="si">}</span> <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2"> ALL=(ALL) ALL&#34;</span>
+</span></span><span class="line"><span class="cl">  sudo chmod <span class="m">440</span> /etc/sudoers.d/<span class="si">${</span><span class="nv">i</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-34" class="outline-4">
+<h4 id="headline-34">
+删除用户
+</h4>
+<div id="outline-text-headline-34" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="nv">users</span><span class="o">=(</span>
+</span></span><span class="line"><span class="cl">  user1
+</span></span><span class="line"><span class="cl">  user2
+</span></span><span class="line"><span class="cl">  user3
+</span></span><span class="line"><span class="cl">  user4
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> i in <span class="s2">&#34;</span><span class="si">${</span><span class="nv">users</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  sudo pkill -u <span class="si">${</span><span class="nv">i</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">  sudo sleep <span class="m">2</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># 删除用户及其所有文件</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># sudo userdel ${i}               # 只删除用户</span>
+</span></span><span class="line"><span class="cl">  sudo userdel -r <span class="si">${</span><span class="nv">i</span><span class="si">}</span>            <span class="c1"># 完全删除用户及其主目录</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># 删除 sudo 配置</span>
+</span></span><span class="line"><span class="cl">  sudo rm -f /etc/sudoers.d/<span class="si">${</span><span class="nv">i</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-35" class="outline-3">
+<h3 id="headline-35">
+参考链接
+</h3>
+<div id="outline-text-headline-35" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/zgp210317/article/details/120586189">在Ubuntu本地下载软件包并递归下载其所有依赖包</a></p>
+<p>
+<a href="https://my.oschina.net/emacs_8909430/blog/17561966">批量安装 DEB 软件包的技巧与实践指南</a></p>
+<p>
+<a href="https://blog.csdn.net/jason_9214/article/details/144967111">ubuntu 22.04 server安装Nvidia驱动</a></p>
+<p>
+<a href="https://zhuanlan.zhihu.com/p/1894051813780615541">如何把文件夹或文件封装/制作成iso</a></p>
+<p>
+<a href="https://blog.csdn.net/Eric_xkk/article/details/131800365">Ubuntu22.04安装显卡驱动(高速、避错版)</a></p>
+<p>
+<a href="https://blog.csdn.net/qq_34777982/article/details/145182505">ubuntu使用iso镜像作为本地apt源――筑梦之路</a></p>
+<p>
+<a href="https://ynhugo.github.io/p/termux_study/#headline-6">通过Termux和VNC实现以手机为服务器的桌面办公</a></p>
+<p>
+<a href="https://zhuanlan.zhihu.com/p/1898542254144071601">在Ubuntu Server 22.04上配置静态IP地址</a></p>
+<p>
+<a href="https://blog.csdn.net/lxh413458727/article/details/144369407">ubuntu-22.04 配置静态IP成功，系统重启后失效</a></p>
+<p>
+<a href="https://www.cnblogs.com/milton/p/16730512.html">Ubuntu22.04下VNC和远程桌面的区别</a></p>
+<p>
+<a href="https://blog.csdn.net/ZhrXg/article/details/126831072">Ubuntu安装VNC，配置多用户vnc连接Ubuntu，开机自启vnc命令</a></p>
+<p>
+<a href="https://blog.csdn.net/w8888666666/article/details/149694700">vnc viewer灰屏问题（已解决）</a></p>
+<p>
+<a href="https://www.runoob.com/linux/linux-comm-blkid.html">Linux blkid 命令</a></p>
+<p>
+<a href="https://my.oschina.net/emacs_8895024/blog/17529533">Linux 系统下硬盘自动挂载完全指南</a></p>
+<p>
+<a href="https://blog.csdn.net/wowocpp/article/details/143566881">ubuntu 22.04 server 格式化 磁盘 为 ext4 并 自动挂载 LTS</a></p>
+<p>
+<a href="https://blog.csdn.net/u010632165/article/details/89597522">Ubuntu 配置/etc/fstab参数实现开机自动挂载硬盘</a></p>
+<p>
+<a href="https://www.cnblogs.com/sirdong/p/11969148.html">Linux下mount挂载新硬盘和开机自动挂载</a></p>
+<p>
+<a href="https://www.cnblogs.com/yanglang/p/9563496.html">SSH-keygen用法</a></p>
+<p>
+<a href="https://www.bilibili.com/opus/1101233390016790561">在Ubuntu 22.04上安装远程桌面服务</a></p>
+<p>
+<a href="https://cloud.tencent.com/developer/article/2428030">在Ubuntu22.04上使用xrdp启用远程桌面协议实现图形化</a></p>
+<p>
+<a href="https://zhuanlan.zhihu.com/p/630067986">Ubuntu安装GPU驱动、CUDA、cuDNN,以及是否安装成功的检测</a></p>
+<p>
+<a href="https://blog.csdn.net/qq_44004676/article/details/126511759">linux离线环境下安装anaconda</a></p>
+<p>
+<a href="https://juejin.cn/post/7517227110244417588"> 离线安装 Python 依赖：利用 pip download 构建本地包仓库 </a></p>
+<p>
+ <a href="https://blog.csdn.net/weixin_44956153/article/details/142303905">PyTorch离线版本安装（超详细版！）</a></p>
+</div>
+</div>
+</div>
+</div>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/ubuntu/">Ubuntu</a></li>
+      <li><a href="http://localhost:1313/tags/22.04/">22.04</a></li>
+      <li><a href="http://localhost:1313/tags/server/">Server</a></li>
+      <li><a href="http://localhost:1313/tags/nvidia/">Nvidia</a></li>
+    </ul>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ubuntu 22.04 server安装Nvidia驱动 on x"
+            href="https://x.com/intent/tweet/?text=ubuntu%2022.04%20server%e5%ae%89%e8%a3%85Nvidia%e9%a9%b1%e5%8a%a8&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fubuntu_22.04_server%25E5%25AE%2589%25E8%25A3%2585nvidia%25E9%25A9%25B1%25E5%258A%25A8%2f&amp;hashtags=ubuntu%2c22.04%2cserver%2cnvidia">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ubuntu 22.04 server安装Nvidia驱动 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fubuntu_22.04_server%25E5%25AE%2589%25E8%25A3%2585nvidia%25E9%25A9%25B1%25E5%258A%25A8%2f&amp;title=ubuntu%2022.04%20server%e5%ae%89%e8%a3%85Nvidia%e9%a9%b1%e5%8a%a8&amp;summary=ubuntu%2022.04%20server%e5%ae%89%e8%a3%85Nvidia%e9%a9%b1%e5%8a%a8&amp;source=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fubuntu_22.04_server%25E5%25AE%2589%25E8%25A3%2585nvidia%25E9%25A9%25B1%25E5%258A%25A8%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ubuntu 22.04 server安装Nvidia驱动 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fubuntu_22.04_server%25E5%25AE%2589%25E8%25A3%2585nvidia%25E9%25A9%25B1%25E5%258A%25A8%2f&title=ubuntu%2022.04%20server%e5%ae%89%e8%a3%85Nvidia%e9%a9%b1%e5%8a%a8">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ubuntu 22.04 server安装Nvidia驱动 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fubuntu_22.04_server%25E5%25AE%2589%25E8%25A3%2585nvidia%25E9%25A9%25B1%25E5%258A%25A8%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ubuntu 22.04 server安装Nvidia驱动 on whatsapp"
+            href="https://api.whatsapp.com/send?text=ubuntu%2022.04%20server%e5%ae%89%e8%a3%85Nvidia%e9%a9%b1%e5%8a%a8%20-%20http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fubuntu_22.04_server%25E5%25AE%2589%25E8%25A3%2585nvidia%25E9%25A9%25B1%25E5%258A%25A8%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ubuntu 22.04 server安装Nvidia驱动 on telegram"
+            href="https://telegram.me/share/url?text=ubuntu%2022.04%20server%e5%ae%89%e8%a3%85Nvidia%e9%a9%b1%e5%8a%a8&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fubuntu_22.04_server%25E5%25AE%2589%25E8%25A3%2585nvidia%25E9%25A9%25B1%25E5%258A%25A8%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share ubuntu 22.04 server安装Nvidia驱动 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=ubuntu%2022.04%20server%e5%ae%89%e8%a3%85Nvidia%e9%a9%b1%e5%8a%a8&u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fubuntu_22.04_server%25E5%25AE%2589%25E8%25A3%2585nvidia%25E9%25A9%25B1%25E5%258A%25A8%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

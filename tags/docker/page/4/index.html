@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Docker | PaperMod</title>
+<meta name="keywords" content="">
+<meta name="description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/tags/docker/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/docker/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/docker/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/tags/docker/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="Docker">
+  <meta property="og:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="Docker">
+  <meta name="twitter:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/tags/">Tags</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+  <h1>
+    Docker
+    <a href="/tags/docker/index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Docker构建SSH镜像
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Docker构建SSH镜像 # 写入如下Dockerfile： cat - &gt; Dockerfile &lt;&lt;&#39;EOF&#39; FROM ubuntu:18.04 # MAINTAINER This is a test container RUN apt update &amp;&amp; apt install -y openssh-server net-tools passwd # RUN echo &#39;123456&#39; | passwd --stdin root RUN echo &#39;root:123456&#39; | chpasswd # 启用密码认证 RUN sed -i &#39;s/#PasswordAuthentication yes/PasswordAuthentication yes/&#39; /etc/ssh/sshd_config RUN sed -i &#39;s/PasswordAuthentication no/PasswordAuthentication yes/&#39; /etc/ssh/sshd_config # 禁用严格模式 RUN sed -i &#39;s/#PermitRootLogin prohibit-password/PermitRootLogin yes/&#39; /etc/ssh/sshd_config EXPOSE 22 RUN mkdir -p /run/sshd CMD [&#34;/usr/sbin/sshd&#34;,&#34;-D&#34;] EOF # 执行命令生成镜像 docker build -t sshd:new . # 清理构建缓存 docker system prune -f # 如果要停止指定容器 docker stop 容器ID # 如果停止所有正在运行的容器 docker ps | sed &#39;/ID/d&#39; | awk &#39;{print $1}&#39; | xargs docker stop # 启动容器并修改root密码 docker run -d -P sshd:new # 查看运行容器信息，可以看到映射端口 docker ps # 从本地使用SSH进行登陆 ssh root@localhost -p 32769 # 32769是映射的端口号，每次运行映射的端口都是随机的 参考链接 Docker镜像创建的三种方式（基于已有镜像、本地模板、Dockerfile）
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-03-21 17:25:16.76 +0800 +0800'>March 21, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to Docker构建SSH镜像" href="http://localhost:1313/post/docker%E6%9E%84%E5%BB%BAssh%E9%95%9C%E5%83%8F/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Docker构建ARM64与ARM32交叉编译环境以及push与pull镜像
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Docker构建ARM64与ARM32交叉编译环境以及push与pull镜像 cat - &gt; Dockerfile &lt;&lt;&#39;EOF&#39; FROM ubuntu:24.04 ENV DEBIAN_FRONTEND=noninteractive # 使用清华APT源加速 RUN sed -i &#39;s/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g&#39; /etc/apt/sources.list &amp;&amp; \ sed -i &#39;s/security.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/g&#39; /etc/apt/sources.list &amp;&amp; \ apt-get update &amp;&amp; apt-get install -y \ build-essential cmake git pkg-config \ gcc-aarch64-linux-gnu g&#43;&#43;-aarch64-linux-gnu \ gcc-arm-linux-gnueabihf g&#43;&#43;-arm-linux-gnueabihf \ libbluetooth-dev nlohmann-json3-dev \ &amp;&amp; rm -rf /var/lib/apt/lists/* WORKDIR /workspace ENV CC_aarch64-linux-gnu=aarch64-linux-gnu-gcc ENV CXX_aarch64-linux-gnu=aarch64-linux-gnu-g&#43;&#43; ENV CC_arm-linux-gnueabihf=arm-linux-gnueabihf-gcc ENV CXX_arm-linux-gnueabihf=arm-linux-gnueabihf-g&#43;&#43; CMD [&#34;/bin/bash&#34;] EOF # 构建 docker build -t cross-compiler . # 清理构建缓存 docker system prune -f # 运行 mkdir -p /opt/test docker run -it --mount type=bind,src=/opt/test,dst=/workspace cross-compiler &lt;&lt;&#39;CONTENT&#39; 绑定挂载（Bind Mounts） 简介: 绑定挂载将主机文件系统 中的一个目录挂载到容器中，允许容器直接访问和修改主机上的文件。 适用环境: 开发环境: 开发过程中需要频繁修改主机文件，并立即在容器中生效。 主机与容器数据共享: 需要在主机和容器之间共享文件。 使用场景: 开发和测试： 挂载代码目录，以便在主机上编辑代码时容器能立即使用最新代码。 日志文件： 将容器的日志文件直接写入主机目录，方便监控和分析。 CONTENT # docker添加永久代理 mkdir -p /etc/systemd/system/docker.service.d cat - &gt; /etc/systemd/system/docker.service.d/http-proxy.conf &lt;&lt; &#39;EOF&#39; [Service] Environment=&#34;HTTP_PROXY=http://127.0.0.1:10808&#34; Environment=&#34;HTTPS_PROXY=http://127.0.0.1:10808&#34; Environment=&#34;NO_PROXY=localhost,127.0.0.1,docker-registry.somecorporation.com&#34; EOF systemctl daemon-reload systemctl restart docker # 如果要删除添加的代理 rm -rf /etc/systemd/system/docker.service.d systemctl daemon-reload systemctl restart docker # 查看代理等相关信息 docker info # token是自己创建的，创建token：访问并登录https://app.docker.com，然后访问settings/personal-access-tokens并生成token，token生成后第一时间复制下来，因为token只有在创建的时候显示 # 登录docker docker login -u username -p &#34;token&#34; # 例，token需要自己创建 docker login -u hexgio -p &#34;token&#34; # push镜像 # 构建的镜像是 cross-compiler:latest，需要先打标签再推送。 # 正确步骤： # 1. 给镜像打标签 docker tag cross-compiler:latest hexgio/cross-compiler:latest # 2. 推送到 Docker Hub（需要先登录 docker login） docker push hexgio/cross-compiler:latest # 如果你想用特定版本标签： docker tag cross-compiler:latest hexgio/cross-compiler:v1.0 docker push hexgio/cross-compiler:v1.0 # pull镜像 docker pull hexgio/cross-compiler:latest 参考链接 Docker构建ARM64与ARM32交叉编译环境
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-03-21 03:56:09.65 +0800 +0800'>March 21, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to Docker构建ARM64与ARM32交叉编译环境以及push与pull镜像" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/docker%E6%9E%84%E5%BB%BAarm64%E4%B8%8Earm32%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E4%BB%A5%E5%8F%8Apush%E4%B8%8Epull%E9%95%9C%E5%83%8F/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">docker镜像的导出和导入
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> docker镜像的导出和导入 # 云服务器导出完整镜像 docker save -o &lt;导出文件名.tar&gt; &lt;镜像名:标签&gt; # 例 docker save -o cross-compiler.tar cross-compiler:latest # 使用scp将镜像从云服务器拷贝到本地，如： scp opencode:/root/cross-compiler.tar.gz ./ # opencode对应ssh连接目标 # 本地导入 docker load -i &lt;导出文件名.tar&gt; # 例 docker load -i cross-compiler.tar.gz 参考链接 docker 镜像的导出和导入（导出完整镜像和导出容器快照）
+</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-03-21 00:45:54.32 +0800 +0800'>March 21, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to docker镜像的导出和导入" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/docker%E9%95%9C%E5%83%8F%E7%9A%84%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/tags/docker/page/3/">
+      «&nbsp;Prev&nbsp;3/7
+    </a>
+    <a class="next" href="http://localhost:1313/tags/docker/page/5/">Next&nbsp;5/7&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

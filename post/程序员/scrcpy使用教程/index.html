@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>scrcpy使用教程 | PaperMod</title>
+<meta name="keywords" content="scrcpy, tool, 程序员">
+<meta name="description" content="
+
+scrcpy
+
+
+
+
+scrcpy入门
+
+
+
+
+官方主页
+
+
+
+https://github.com/Genymobile/scrcpy
+
+
+
+
+下载链接
+
+
+
+根据电脑系统环境进行选择下载
+
+https://github.com/Genymobile/scrcpy/releases/latest
+
+
+
+
+连接方式
+
+
+
+首先，启用手机的开发者模式，接着在开发者模式找到并打开手机的usb调试模式，然后使用usb数据线连接电脑与手机，在电脑上准备好scrcpy并添加scrcpy到环境变量，先使用adb查看是否有设备，然后在电脑终端中通过adb命令设置tcpip端口和连接的ip，电脑与手机保持在同一局域网，手机ip可以通过wifi(如果是手机开热点，可以通过热点查看ip)或者手机安装termux进行查看，再接着使用adb命令列出设备列表，使用scrcpy的-s选项选择要启动的设备即可，具体操作命令如下：
+
+  adb devices						# 连接usb数据线后查看是否有设备
+  adb tcpip 5555					# 在有设备的情况下设置端口，事实上这里似乎也可以不设置，那么可以尝试跳过这一步
+  adb connect 192.168.*.*:5555		# 设置连接方式
+  scrcpy -s 192.168.*.*:5555		# 使用scrcpy进行连接
+
+
+
+
+
+无线投屏
+
+
+
+在第一次进行过有线连接后，第二次就可以拔掉数据线进行连接了
+
+
+
+
+安卓端录屏工具scrcpy
+
+
+
+  scrcpy --record file.mp4   #file.mp4 是自己设置的文件名和对应的格式
+
+
+
+
+
+scrcpy不传输声音，并且当scrcpy连接到设备时使设备黑屏，只显示scrcpy画面
+
+
+
+该操作适用于蓝牙耳机连接手机，然后scrcpy投屏设备的场景
+
+  scrcpy --no-audio -S
+
+
+
+
+
+scrcpy指定窗口位置和大小
+
+
+
+  scrcpy -s 192.168.*.*:5555 --window-x 1920 --window-y 0 --window-height 1080
+
+如果要指定宽度可以增加选项：–window-width 100">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/scrcpy%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/scrcpy%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/scrcpy%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="scrcpy使用教程">
+  <meta property="og:description" content="scrcpy scrcpy入门 官方主页 https://github.com/Genymobile/scrcpy
+下载链接 根据电脑系统环境进行选择下载
+https://github.com/Genymobile/scrcpy/releases/latest
+连接方式 首先，启用手机的开发者模式，接着在开发者模式找到并打开手机的usb调试模式，然后使用usb数据线连接电脑与手机，在电脑上准备好scrcpy并添加scrcpy到环境变量，先使用adb查看是否有设备，然后在电脑终端中通过adb命令设置tcpip端口和连接的ip，电脑与手机保持在同一局域网，手机ip可以通过wifi(如果是手机开热点，可以通过热点查看ip)或者手机安装termux进行查看，再接着使用adb命令列出设备列表，使用scrcpy的-s选项选择要启动的设备即可，具体操作命令如下：
+adb devices	# 连接usb数据线后查看是否有设备 adb tcpip 5555	# 在有设备的情况下设置端口，事实上这里似乎也可以不设置，那么可以尝试跳过这一步 adb connect 192.168.*.*:5555	# 设置连接方式 scrcpy -s 192.168.*.*:5555	# 使用scrcpy进行连接 无线投屏 在第一次进行过有线连接后，第二次就可以拔掉数据线进行连接了
+安卓端录屏工具scrcpy scrcpy --record file.mp4 #file.mp4 是自己设置的文件名和对应的格式 scrcpy不传输声音，并且当scrcpy连接到设备时使设备黑屏，只显示scrcpy画面 该操作适用于蓝牙耳机连接手机，然后scrcpy投屏设备的场景
+scrcpy --no-audio -S scrcpy指定窗口位置和大小 scrcpy -s 192.168.*.*:5555 --window-x 1920 --window-y 0 --window-height 1080 如果要指定宽度可以增加选项：–window-width 100">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-04-21T16:45:23+08:00">
+    <meta property="article:modified_time" content="2024-04-21T16:45:23+08:00">
+    <meta property="article:tag" content="Scrcpy">
+    <meta property="article:tag" content="Tool">
+    <meta property="article:tag" content="程序员">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="scrcpy使用教程">
+  <meta name="twitter:description" content="scrcpy scrcpy入门 官方主页 https://github.com/Genymobile/scrcpy
+下载链接 根据电脑系统环境进行选择下载
+https://github.com/Genymobile/scrcpy/releases/latest
+连接方式 首先，启用手机的开发者模式，接着在开发者模式找到并打开手机的usb调试模式，然后使用usb数据线连接电脑与手机，在电脑上准备好scrcpy并添加scrcpy到环境变量，先使用adb查看是否有设备，然后在电脑终端中通过adb命令设置tcpip端口和连接的ip，电脑与手机保持在同一局域网，手机ip可以通过wifi(如果是手机开热点，可以通过热点查看ip)或者手机安装termux进行查看，再接着使用adb命令列出设备列表，使用scrcpy的-s选项选择要启动的设备即可，具体操作命令如下：
+adb devices	# 连接usb数据线后查看是否有设备 adb tcpip 5555	# 在有设备的情况下设置端口，事实上这里似乎也可以不设置，那么可以尝试跳过这一步 adb connect 192.168.*.*:5555	# 设置连接方式 scrcpy -s 192.168.*.*:5555	# 使用scrcpy进行连接 无线投屏 在第一次进行过有线连接后，第二次就可以拔掉数据线进行连接了
+安卓端录屏工具scrcpy scrcpy --record file.mp4 #file.mp4 是自己设置的文件名和对应的格式 scrcpy不传输声音，并且当scrcpy连接到设备时使设备黑屏，只显示scrcpy画面 该操作适用于蓝牙耳机连接手机，然后scrcpy投屏设备的场景
+scrcpy --no-audio -S scrcpy指定窗口位置和大小 scrcpy -s 192.168.*.*:5555 --window-x 1920 --window-y 0 --window-height 1080 如果要指定宽度可以增加选项：–window-width 100">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "scrcpy使用教程",
+      "item": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/scrcpy%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "scrcpy使用教程",
+  "name": "scrcpy使用教程",
+  "description": " scrcpy scrcpy入门 官方主页 https://github.com/Genymobile/scrcpy\n下载链接 根据电脑系统环境进行选择下载\nhttps://github.com/Genymobile/scrcpy/releases/latest\n连接方式 首先，启用手机的开发者模式，接着在开发者模式找到并打开手机的usb调试模式，然后使用usb数据线连接电脑与手机，在电脑上准备好scrcpy并添加scrcpy到环境变量，先使用adb查看是否有设备，然后在电脑终端中通过adb命令设置tcpip端口和连接的ip，电脑与手机保持在同一局域网，手机ip可以通过wifi(如果是手机开热点，可以通过热点查看ip)或者手机安装termux进行查看，再接着使用adb命令列出设备列表，使用scrcpy的-s选项选择要启动的设备即可，具体操作命令如下：\nadb devices\t# 连接usb数据线后查看是否有设备 adb tcpip 5555\t# 在有设备的情况下设置端口，事实上这里似乎也可以不设置，那么可以尝试跳过这一步 adb connect 192.168.*.*:5555\t# 设置连接方式 scrcpy -s 192.168.*.*:5555\t# 使用scrcpy进行连接 无线投屏 在第一次进行过有线连接后，第二次就可以拔掉数据线进行连接了\n安卓端录屏工具scrcpy scrcpy --record file.mp4 #file.mp4 是自己设置的文件名和对应的格式 scrcpy不传输声音，并且当scrcpy连接到设备时使设备黑屏，只显示scrcpy画面 该操作适用于蓝牙耳机连接手机，然后scrcpy投屏设备的场景\nscrcpy --no-audio -S scrcpy指定窗口位置和大小 scrcpy -s 192.168.*.*:5555 --window-x 1920 --window-y 0 --window-height 1080 如果要指定宽度可以增加选项：–window-width 100\n",
+  "keywords": [
+    "scrcpy", "tool", "程序员"
+  ],
+  "articleBody": " scrcpy scrcpy入门 官方主页 https://github.com/Genymobile/scrcpy\n下载链接 根据电脑系统环境进行选择下载\nhttps://github.com/Genymobile/scrcpy/releases/latest\n连接方式 首先，启用手机的开发者模式，接着在开发者模式找到并打开手机的usb调试模式，然后使用usb数据线连接电脑与手机，在电脑上准备好scrcpy并添加scrcpy到环境变量，先使用adb查看是否有设备，然后在电脑终端中通过adb命令设置tcpip端口和连接的ip，电脑与手机保持在同一局域网，手机ip可以通过wifi(如果是手机开热点，可以通过热点查看ip)或者手机安装termux进行查看，再接着使用adb命令列出设备列表，使用scrcpy的-s选项选择要启动的设备即可，具体操作命令如下：\nadb devices\t# 连接usb数据线后查看是否有设备 adb tcpip 5555\t# 在有设备的情况下设置端口，事实上这里似乎也可以不设置，那么可以尝试跳过这一步 adb connect 192.168.*.*:5555\t# 设置连接方式 scrcpy -s 192.168.*.*:5555\t# 使用scrcpy进行连接 无线投屏 在第一次进行过有线连接后，第二次就可以拔掉数据线进行连接了\n安卓端录屏工具scrcpy scrcpy --record file.mp4 #file.mp4 是自己设置的文件名和对应的格式 scrcpy不传输声音，并且当scrcpy连接到设备时使设备黑屏，只显示scrcpy画面 该操作适用于蓝牙耳机连接手机，然后scrcpy投屏设备的场景\nscrcpy --no-audio -S scrcpy指定窗口位置和大小 scrcpy -s 192.168.*.*:5555 --window-x 1920 --window-y 0 --window-height 1080 如果要指定宽度可以增加选项：–window-width 100\n通过脚本连接 ssh_host是ssh配置文件中的host，也可以改为user@hostname的形式，需要结合termux使用\necho \"adb shell input keyevent 82; adb shell input keyevent 82; sleep 0.4; adb shell input text password \u0026\u0026 clear\" echo \"adb shell input keyevent 224; adb shell input keyevent 82;\" adb kill-server adb start-server ssh_host=\"rog8\"; mapfile -t ip_array \u003c \u003c(ssh $ssh_host ifconfig | grep -oE \"inet ?192.168.[0-9]{0,3}.[0-9]{0,3}\" | awk '{print $2}'); adb connect \"${ip_array[0]}\" scrcpy -s $(adb devices | grep -Ew \".*device\" | awk '{$2=\"\"; print}' | head -n 1) -S 通过脚本解锁手机并连接-1 adb shell input keyevent 82; adb shell input keyevent 82; sleep 0.4; adb shell input text password \u0026\u0026 clear \u0026\u0026 scrcpy --no-audio -S \u0026 通过脚本解锁手机并连接-2 脚本名称：auto_android_scrcpy.sh\nnum_args=$#\t# 获取参数数量 if [ \"${num_args}\" -eq 0 ]; then echo -e \"Usage: \\n$0 IPV4:Port\" elif [ \"${num_args}\" -eq 1 ]; then adb connect $1; scrcpy -s $1 --no-audio -S \u0026 elif [ \"$2\" = \"unlock\" ]; then if [ \"$3\" = \"\" ]; then echo -e \"Usage: \\n$0 unlock password\" else adb -s $1 shell input keyevent 82; adb -s $1 shell input keyevent 82; sleep 0.4; adb -s $1 shell input text $3 \u0026\u0026 clear fi elif [ \"$2\" = \"rescrcpy\" ]; then if [ \"$3\" = \"\" ]; then echo -e \"Usage: \\n$0 unlock password\" else adb -s $1 shell input keyevent 82; adb -s $1 shell input keyevent 82; sleep 0.4; adb -s $1 shell input text $3 \u0026\u0026 scrcpy -s $1 --no-audio -S \u0026\u0026 clear \u0026 fi fi 通过脚本解锁手机并连接-3 该脚本使用的前提条件是两个显示器，因为指定坐标是x=1920,y=1038。\nnum_args=$# # 获取参数数量 if [ \"${num_args}\" -eq 0 ]; then echo -e \"Usage: \\n$0 IPV4:Port\" elif [ \"${num_args}\" -eq 1 ]; then adb connect $1; # scrcpy -s $1 --no-audio -S \u0026 scrcpy -s $1 --no-audio --window-x 1920 --window-y 0 --window-height 1038 -S \u0026 elif [ \"$2\" = \"unlock\" ]; then if [ \"$3\" = \"\" ]; then echo -e \"Usage: \\n$0 unlock password\" else adb -s $1 shell input keyevent 82; adb -s $1 shell input keyevent 82; sleep 0.4; adb -s $1 shell input text $3 \u0026\u0026 clear fi elif [ \"$2\" = \"rescrcpy\" ]; then if [ \"$3\" = \"\" ]; then echo -e \"Usage: \\n$0 unlock password\" else adb -s $1 shell input keyevent 82; adb -s $1 shell input keyevent 82; sleep 0.4; adb -s $1 shell input text $3 \u0026\u0026 scrcpy -s $1 --no-audio -S \u0026\u0026 clear \u0026 fi fi 通过脚本解锁手机并连接-4 基于\"通过脚本解锁手机并连接-3\"，优化解锁，添加了解锁前连接adb的命令，使解决可以单独使用，添加了锁命令，使手机没有通过scrcpy远程控制时也可以通过脚本对手机进行锁屏操作。\nnum_args=$#\t# 获取参数数量 if [ \"${num_args}\" -eq 0 ]; then echo -e \"Usage: \\n$0 IPV4:Port\" elif [ \"${num_args}\" -eq 1 ]; then adb connect $1; # scrcpy -s $1 --no-audio -S \u0026 scrcpy -s $1 --no-audio --window-x 1920 --window-y 0 --window-height 1038 -S \u0026 elif [ \"$2\" = \"unlock\" ]; then if [ \"$3\" = \"\" ]; then echo -e \"Usage: \\n$0 unlock password\" else adb connect $1; adb -s $1 shell input keyevent 82; adb -s $1 shell input keyevent 82; sleep 0.4; adb -s $1 shell input text $3 \u0026\u0026 clear fi elif [ \"$2\" = \"lock\" ]; then adb connect $1; adb -s $1 shell input keyevent 26 elif [ \"$2\" = \"rescrcpy\" ]; then if [ \"$3\" = \"\" ]; then echo -e \"Usage: \\n$0 unlock password\" else adb -s $1 shell input keyevent 82; adb -s $1 shell input keyevent 82; sleep 0.4; adb -s $1 shell input text $3 \u0026\u0026 scrcpy -s $1 --no-audio -S \u0026\u0026 clear \u0026 fi fi 通过脚本解锁手机并连接-5 num_args=$#\t# 获取参数数量 if [ \"${num_args}\" -eq 0 ]; then echo -e \"Usage: \\n$0 IPV4:Port\" elif [ \"${num_args}\" -eq 1 ]; then adb connect $1; # scrcpy -s $1 --no-audio -S \u0026 scrcpy -s $1 --no-audio --keyboard=uhid --window-x 1920 --window-y 0 --window-height 1038 -S \u0026 elif [ \"$2\" = \"unlock\" ]; then if [ \"$3\" = \"\" ]; then echo -e \"Usage: \\n$0 unlock password\" else adb connect $1; adb -s $1 shell input keyevent 82; adb -s $1 shell input keyevent 82; sleep 0.4; adb -s $1 shell input text $3 \u0026\u0026 clear fi elif [ \"$2\" = \"lock\" ]; then adb connect $1; adb -s $1 shell input keyevent 26 fi 通过脚本解锁手机并连接-6 num_args=$#\t# 获取参数数量 if [ \"${num_args}\" -eq 0 ]; then echo -e \"Usage: \\n$0 usb/net IPV4:Port\" elif [ \"$1\" = \"net\" ]; then adb connect $2; # scrcpy -s $2 --no-audio -S \u0026 scrcpy -s $2 --no-audio --keyboard=uhid --window-x 1920 --window-y 0 --window-height 1038 -S \u0026 elif [ \"$1\" = \"usb\" ]; then scrcpy -s $2 --no-audio --keyboard=uhid --window-x 1920 --window-y 0 --window-height 1038 -S \u0026 fi if [ \"$3\" = \"unlock\" ]; then if [ \"$1\" = \"net\" ]; then adb connect $2; fi if [ \"$4\" = \"\" ]; then echo -e \"Usage: \\n$0 usb/net device unlock password\" else adb -s $2 shell input keyevent 82; adb -s $2 shell input keyevent 82; sleep 0.4; adb -s $2 shell input text $4 \u0026\u0026 clear fi elif [ \"$3\" = \"lock\" ]; then adb -s $2 shell input keyevent 26 fi 通过脚本解锁手机并连接-7 num_args=$#\t# 获取参数数量 if [ \"${num_args}\" -eq 0 ]; then echo -e \"Usage: \\n$0 usb/net IPV4:Port\" elif [ \"$1\" = \"net\" ]; then adb connect $2; # scrcpy -s $2 --no-audio -S \u0026 scrcpy -s $2 --no-audio --keyboard=uhid --window-x 1920 --window-y 0 --window-height 1038 -S \u0026 elif [ \"$1\" = \"usb\" ]; then scrcpy -s $2 --no-audio --keyboard=uhid --window-x 1920 --window-y 0 --window-height 1038 -S \u0026 fi if [ \"$3\" = \"unlock\" ]; then if [ \"$1\" = \"net\" ]; then adb connect $2; fi if [ \"$4\" = \"\" ]; then echo -e \"Usage: \\n$0 usb/net device unlock passward\" else adb -s $2 shell input keyevent 82; adb -s $2 shell input keyevent 82; sleep 0.4; adb -s $2 shell input text $4 \u0026\u0026 clear fi elif [ \"$3\" = \"lock\" ]; then adb -s $2 shell input keyevent 26 fi if [ \"$1\" = \"lock\" ] || [ \"$1\" = \"unlock\" ]; then device=$(adb devices | grep -w \"device\" | awk 'NR==1{print $1}'); if [ \"$1\" = \"unlock\" ]; then\tif [ \"$2\" = \"\" ]; then echo -e \"Usage: \\n$0 unlock passward\" else adb -s ${device} shell input keyevent 82; adb -s ${device} shell input keyevent 82; sleep 0.4; adb -s ${device} shell input text $2 \u0026\u0026 clear fi elif [ \"$1\" = \"lock\" ]; then adb -s ${device} shell input keyevent 26 fi fi 通过脚本解锁手机并连接-8 num_args=$#\t# 获取参数数量 if [ \"${num_args}\" -eq 0 ]; then echo -e \"Usage: \\n$0 usb/net IPV4:Port\" elif [ \"$1\" = \"net\" ]; then adb connect $2; # scrcpy -s $2 --no-audio -S \u0026 scrcpy -s $2 --no-audio --keyboard=uhid --window-x 1920 --window-y 0 --window-height 1038 -S \u0026 elif [ \"$1\" = \"usb\" ]; then scrcpy -s $2 --no-audio --keyboard=uhid --window-x 1920 --window-y 0 --window-height 1038 -S \u0026 fi if [ \"$3\" = \"unlock\" ]; then if [ \"$1\" = \"net\" ]; then adb connect $2; fi if [ \"$4\" = \"\" ]; then echo -e \"Usage: \\n$0 usb/net deviceid unlock passward\" else adb -s $2 shell input keyevent 82; adb -s $2 shell input keyevent 82; sleep 0.4; adb -s $2 shell input text $4 \u0026\u0026 clear fi elif [ \"$3\" = \"lock\" ]; then adb -s $2 shell input keyevent 26 fi if [ \"$1\" = \"lock\" ] || [ \"$1\" = \"unlock\" ]; then device=$(adb devices | grep -w \"device\" | awk 'NR==1{print $1}'); if [ \"$1\" = \"unlock\" ]; then\tif [ \"$2\" = \"\" ]; then echo -e \"Usage: \\n$0 unlock passward\" else adb -s ${device} shell input keyevent 82; adb -s ${device} shell input keyevent 82; sleep 0.4; adb -s ${device} shell input text $2 \u0026\u0026 clear fi elif [ \"$1\" = \"lock\" ]; then adb -s ${device} shell input keyevent 26 fi fi if [ \"$1\" = \"example\" ]; then echo \"bash $0 usb \\$(adb devices | grep -w \\\"device\\\" | awk 'NR==1{print \\$1}') unlock \\$passwd\" fi 通过脚本解锁手机并连接-9 num_args=$#\t# 获取参数数量 if [ \"${num_args}\" -eq 0 ]; then echo -e \"Usage: \\n$0 usb/net IPV4:Port\" elif [ \"$1\" = \"net\" ]; then adb connect $2; # scrcpy -s $2 --no-audio -S \u0026 scrcpy -s $2 --no-audio --keyboard=uhid --window-x 1920 -S \u0026 elif [ \"$1\" = \"usb\" ]; then scrcpy -s $2 --no-audio --keyboard=uhid --window-x 1920 -S \u0026 fi if [ \"$3\" = \"unlock\" ]; then if [ \"$1\" = \"net\" ]; then adb connect $2; fi if [ \"$4\" = \"\" ]; then echo -e \"Usage: \\n$0 usb/net deviceid unlock passward\" else adb -s $2 shell input keyevent 82; adb -s $2 shell input keyevent 82; sleep 0.4; adb -s $2 shell input text $4 \u0026\u0026 clear fi elif [ \"$3\" = \"lock\" ]; then adb -s $2 shell input keyevent 26 fi if [ \"$1\" = \"lock\" ] || [ \"$1\" = \"unlock\" ]; then device=$(adb devices | grep -w \"device\" | awk 'NR==1{print $1}'); if [ \"$1\" = \"unlock\" ]; then\tif [ \"$2\" = \"\" ]; then echo -e \"Usage: \\n$0 unlock passward\" else adb -s ${device} shell input keyevent 82; adb -s ${device} shell input keyevent 82; sleep 0.4; adb -s ${device} shell input text $2 \u0026\u0026 clear fi elif [ \"$1\" = \"lock\" ]; then adb -s ${device} shell input keyevent 26 fi fi if [ \"$1\" = \"example\" ]; then echo \"bash $0 usb \\$(adb devices | grep -w \\\"device\\\" | awk 'NR==1{print \\$1}') unlock \\$passwd\" fi 通过脚本解锁手机并连接-10 num_args=$#\t# 获取参数数量 if [ \"${num_args}\" -eq 0 ]; then echo -e \"Usage: \\n$0 usb/net IPV4:Port\" elif [ \"$1\" = \"net\" ]; then adb connect $2; # scrcpy -s $2 --no-audio -S scrcpy -s $2 --no-audio --keyboard=uhid --window-x 1920 --window-y 0 --window-height 1038 -S elif [ \"$1\" = \"usb\" ]; then scrcpy -s $2 --no-audio --keyboard=uhid --window-x 1920 --window-y 0 --window-height 1038 -S fi if [ \"$3\" = \"unlock\" ]; then if [ \"$1\" = \"net\" ]; then adb connect $2; fi if [ \"$4\" = \"\" ]; then echo -e \"Usage: \\n$0 usb/net deviceid unlock passward\" else adb -s $2 shell input keyevent 82; adb -s $2 shell input keyevent 82; sleep 0.4; adb -s $2 shell input text $4 \u0026\u0026 clear fi elif [ \"$3\" = \"lock\" ]; then adb -s $2 shell input keyevent 26 fi if [ \"$1\" = \"lock\" ] || [ \"$1\" = \"unlock\" ]; then device=$(adb devices | grep -w \"device\" | awk 'NR==1{print $1}'); if [ \"$1\" = \"unlock\" ]; then\tif [ \"$2\" = \"\" ]; then echo -e \"Usage: \\n$0 unlock passward\" else adb -s ${device} shell input keyevent 82; adb -s ${device} shell input keyevent 82; sleep 0.4; adb -s ${device} shell input text $2 \u0026\u0026 clear fi elif [ \"$1\" = \"lock\" ]; then adb -s ${device} shell input keyevent 26 fi fi if [ \"$1\" = \"example\" ]; then echo \"bash $0 usb \\$(adb devices | grep -w \\\"device\\\" | awk 'NR==1{print \\$1}') unlock \\$passwd\" fi 如果要无限循环自动连接 while true; do ~/auto_android_scrcpy.sh usb device \u003e /dev/null 2\u003e\u00261; sleep 1; done 参考链接 scrcpy无法输入中文问题解决\n通过脚本解锁手机并连接-11 #!/bin/bash # 显示使用帮助 show_usage() { echo \"用法: $0 [usb|net|lock|unlock|example] [参数...]\" echo \"\" echo \"示例:\" echo \" 1) bash $0 usb \\$(adb devices | grep -w \\\"device\\\" | awk 'NR==1{print \\$1}') unlock \\$passwd\" echo \" 2) while true; do ~/auto_android_scrcpy.sh usb DEVICE_ID \u003e /dev/null 2\u003e\u00261; sleep 1; done\" echo \" 3) $0 lock # 锁定当前设备\" echo \" 4) $0 unlock\t# 解锁当前设备\" } # 启动 scrcpy 会话 start_scrcpy() { local conn_type=$1 local device_id=$2 if [[ -z \"$device_id\" ]]; then echo \"错误: 设备ID不能为空\" exit 1 fi if [[ \"$conn_type\" == \"net\" ]]; then adb connect \"$device_id\" || { echo \"错误: 无法连接到 $device_id\" exit 1 } fi scrcpy -s \"$device_id\" --no-audio --window-x 1920 --window-y 0 --window-height 1038 -S } # 解锁设备 unlock_device() { local device_id=$1 local password=$2 if [[ -z \"$password\" ]]; then echo \"错误: 未提供解锁密码\" show_usage return 1 fi adb -s \"$device_id\" shell input keyevent 82 adb -s \"$device_id\" shell input keyevent 82 sleep 0.4 adb -s \"$device_id\" shell input text \"$password\" } # 锁定设备 lock_device() { local device_id=$1 adb -s \"$device_id\" shell input keyevent 26 } # 获取第一个已连接的设备ID get_first_device() { adb devices | grep -w \"device\" | awk 'NR==1{print $1}' } # 主逻辑 main() { local num_args=$# # 无参数时显示交互菜单 if [[ $num_args -eq 0 ]]; then echo \"请选择操作模式:\" echo \"1) USB设备 + 解锁 + 自动重连模式\" echo \"2) 自动重连模式\" echo \"3) 锁定设备\" echo \"4) 解锁设备\" read -p \"请输入选项 [1/2/3/4]: \" choice case $choice in 1) local device_id=$(get_first_device) if [[ -z \"$device_id\" ]]; then echo \"错误: 未检测到已连接的USB设备\" exit 1 fi read -sp \"请输入解锁密码: \" passwd echo while true; do \"$0\" usb \"$device_id\" unlock \"$passwd\" sleep 1 done ;; 2) local device_id=$(get_first_device) if [[ -z \"$device_id\" ]]; then echo \"错误: 未检测到已连接的USB设备\" exit 1 fi echo while true; do \"$0\" usb \"$device_id\" \u003e /dev/null 2\u003e\u00261 sleep 1 done ;; 3) local device_id=$(get_first_device) if [[ -z \"$device_id\" ]]; then echo \"错误: 未检测到已连接的USB设备\" exit 1 fi adb -s $device_id shell input keyevent 26 ;; 4) local device_id=$(get_first_device) if [[ -z \"$device_id\" ]]; then echo \"错误: 未检测到已连接的USB设备\" exit 1 fi read -sp \"请输入解锁密码: \" passwd echo # \"$0\" usb \"$device_id\" unlock \"$passwd\" adb -s \"$device_id\" shell input keyevent 82; adb -s \"$device_id\" shell input keyevent 82; sleep 0.4; adb -s \"$device_id\" shell input text \"$passwd\" ;; ,*) echo \"无效选项\" exit 1 ;; esac exit 0 fi local command=$1 # 处理 example 命令 if [[ \"$command\" == \"example\" ]]; then show_usage exit 0 fi # 处理 lock/unlock 快捷命令（无设备ID时使用默认设备） if [[ \"$command\" == \"lock\" ]] || [[ \"$command\" == \"unlock\" ]]; then local device_id=$(get_first_device) if [[ -z \"$device_id\" ]]; then echo \"错误: 未检测到已连接的设备\" exit 1 fi if [[ \"$command\" == \"unlock\" ]]; then unlock_device \"$device_id\" \"$2\" else lock_device \"$device_id\" fi exit 0 fi # 主流程: usb / net 模式 if [[ \"$command\" != \"usb\" ]] \u0026\u0026 [[ \"$command\" != \"net\" ]]; then echo \"错误: 未知命令 '$command'\" show_usage exit 1 fi local conn_type=$command local device_id=$2 local action=$3 local password=$4 # 启动 scrcpy start_scrcpy \"$conn_type\" \"$device_id\" \u0026 local scrcpy_pid=$! # 处理 unlock/lock 操作 if [[ \"$action\" == \"unlock\" ]]; then if [[ \"$conn_type\" == \"net\" ]]; then adb connect \"$device_id\" || { echo \"警告: 解锁前连接失败\" } fi unlock_device \"$device_id\" \"$password\" elif [[ \"$action\" == \"lock\" ]]; then lock_device \"$device_id\" fi # 等待 scrcpy 结束 wait \"$scrcpy_pid\" 2\u003e/dev/null } # 执行主函数 main \"$@\" 参考链接 Bash脚本读取变量执行命令\n安卓脚本优化建议\n注意事项 scrcpy建议使用最新版本，如果手机的安卓版本较高，而scrcpy的版本又较老的话，会出现一些快捷键用不了的情况，而最新版本的scrcpy则会好很多，一般快捷键都支持\n参考链接 scrcpy - 手机无线投屏到电脑\nscrcpy使用教程\nScrcpy – 通过Linux桌面显示和控制Android 设备\nScrCpy工具的快捷键\nscrcpy投屏教程、scrcpy无线投屏、scrcpy命令大全\n异地组网——5 分钟，使用内网穿透快速实现远程手机桌面！ 准备 PC 安装 Scrcpy 控制器 Scrpy 控制器是一款免 Root 的开源安卓设备投屏工具，支持 USB 和 WIFI 两种连接方式\n它适用于 Linux、Mac OS、Windows\n根据系统类型，通过下面链接选择合适的方式进行安装\nPS：以 Windows 为例，我们只需要下载 Zip 压缩包，然后将文件夹目录添加到 PATH 环境变量中\nhttps://github.com/Genymobile/scrcpy#summary\n配置教程参考，将scrcpy按照参考教程中adb的配置方式进行配置：\nhttps://sspai.com/post/40471\nPC 和 Android 设备分别安装网穿透工具 这里以蒲公英为例，到官网选择「 蒲公英-个人版 」进行下载\n下载地址：\nhttps://pgy.oray.com/download/personal/#visitor\n首先，保证 PC 与 Android 设备在同一局域网，这里的局域网是指通过数据线将PC与手机连接在一起\n然后，在 PC 端完成注册登录\n最后，在 Android 设备上以同一个账号进行登录\n实操一下 Android 设备开启网络调试并连接 首先，在 Android 设备中开启「 开发者选项 」，并打开「 USB 调试 」\n不同手机开启「 开发者选项 」的方式不一样，大家可以自行搜索，另外 MIUI 需要另外开启「 USB 调试（安全设置） 」\n然后，Android 设备通过数据线连接 PC，使用 adb 命令开启手机的网络调试\nPS：这里指定网络连接的端口号为 5555\n查询连接的设备列表 C:\\Users\\xingag\u003eadb devices List of devices attached 0e279f0d7d33 device 开启手机的网络调试，端口为5555 C:\\Users\\xingag\u003eadb tcpip 5555 restarting in TCP mode port: 5555 接着，断开数据线连接，在蒲公英 PC 客户端上查看 Android 设备的 IP 地址，通过「 该 IP 地址 + 端口号 」连接手机设备\n比如：PC版本蒲公英显示手机的ip地址为：172.11.1.233 adb connect 172.11.1.233:5555 使用adb命令连接设备 C:\\Users\\xingag\u003eadb connect 172.11.1.233:5555 connected to 172.11.1.233:5555 最后，可以通过一些简单的 adb 命令测试一下是否能控制手机\n比如：修改屏幕的大小 adb shell wm size 1000x1000 恢复原来屏幕尺寸 adb shell wm size reset 休眠或者解锁屏幕 adb shell input keyevent 26 局域网屏幕控制 在 CMD 命令行，使用「 scrcpy.exe 」命令就可以将手机投屏在 PC 上了，如此就能在 PC 端完成对手机的完全控制了\nscrcpy 功能非常地强大，可以通过一些参数命令设置屏幕控制的特性\n比如，通过 -S 设置投屏的同时关闭设备屏幕，也可以通过 -b、-m 改变比特率、限制分辨率，提高屏幕控制的响应速度\n直接将手机界面投屏到PC上，通过PC可以控制手机界面 scrcpy.exe 投屏的同时，关闭设备屏幕 scrcpy.exe -S 通过改变比特率和限制分辨率，提高响应速度 -b 2M:改变比特率为2M，减少延迟，默认码率为8M，码率越高，画质越好，但是同时延迟越大 -m 1024：限制分辨率提供响应性能，分辨率越高，延迟越大 –max-fps：限制帧率，提升响应速度 scrcpy -b 2M -m 1024 --max-fps 15 远程屏幕控制 上面的操作都是在同一局域网下完成的 PC 端对 Android 设备的屏幕控制\n事实上，只要保证 Android 设备上的蒲公英 App 一直在线，PC 即使在外网环境下，开启 PC 版本的蒲公英，也能远程控制之前配置好的 Android 设备\n如此，就完成了远程控制 Android 设备屏幕的需求了 参考链接 5 分钟，使用内网穿透快速实现远程手机桌面！\n解锁手机 adb shell input text password\t# 输入密码 测试 手机密码：123456\nadb shell input keyevent 82; adb shell input keyevent 82; sleep 0.4; adb shell input text 123456; sleep 2; adb shell input keyevent 26 #输入密码解锁后延时2秒，然后再锁屏 解锁手机：adb shell input keyevent 82\n延时0.4秒：sleep 0.4\n输入密码：adb shell input text 123456\n锁屏：adb shell input keyevent 26\n实操命令 adb shell input keyevent 82; adb shell input keyevent 82; sleep 0.4; adb shell input text 123456 # 实操命令为去掉前边测试命令中的解锁后延时2秒再锁屏的过程 参考链接 利用 ADB 解锁手机指引\nadb shell input keyevent (具体操作) – 模拟按键事件 KeyCode\n常用 adb 指令\nadb 命令模拟按键事件 KeyCode\n华为手机有线连接 adb\n华为手机无线连接 adb\nADB Android Device Unauthorized\n自动化测试: adb 解锁手机的思路\n如何用bash脚本创建screen并向其发送命令？ screen -dmS test screen -dmS test screen -S test -X stuff \"ls -a\\n\" 或 screen -S test -p 0 -X stuff \"ls -a\\n\" 解析命令-ChatGPT 这些命令是使用 screen 进行会话管理和自动化输入的示例。我们来逐个解析：\n1. screen -dmS test 各部分解析： screen：启动 screen 会话，screen 是一个终端多路复用器，允许在一个终端窗口内运行多个虚拟终端。 -d：这个选项告诉 screen 在后台启动会话。也就是说，screen 会话启动后不会占用当前的终端窗口，而是将其放在后台运行。 -m：强制启动一个新的会话，即使没有其他正在运行的 screen 会话。 -S test：指定会话的名称为 test。-S 选项后面的 test 是会话的标识符，通过这个名字，你可以后续对该会话进行操作（例如发送命令、分离等）。 作用： 这个命令的作用是：启动一个名为 test 的 screen 会话，并将其放在后台运行。此时会话没有关联到任何窗口（终端）。它是一个“分离模式”启动的 screen 会话。\n—\n2. screen -S test -X stuff \"ls -a\\n\" 各部分解析： screen：再次调用 screen，用于对已存在的 screen 会话进行操作。 -S test：指定要操作的会话名称为 test。 -X：执行对 screen 会话的命令。-X 选项让我们向 screen 会话发送命令。 stuff \"ls -a\\n\"：stuff 命令将 ls -a（列出当前目录的所有文件，包括隐藏文件）发送到指定会话的当前窗口中，并模拟按下回车键（\\n）。这等同于在该会话的终端中执行了 ls -a 命令。 作用： 该命令将 ls -a 这个命令发送到名为 test 的 screen 会话中的当前窗口，模拟在该窗口执行 ls -a。由于是后台操作，所以并不会直接在终端显示输出，命令的结果会被发送到该 screen 会话的输出流。\n—\n3. screen -S test -p 0 -X stuff \"ls -a\\n\" 各部分解析： screen：同样，调用 screen 来操作会话。 -S test：指定会话名称为 test。 -p 0：指定窗口编号为 0，即第一个窗口。screen 会话可以包含多个窗口，这个命令告诉 screen 要向编号为 0 的窗口发送命令。 -X stuff \"ls -a\\n\"：将 ls -a 发送到指定窗口，并模拟按下回车键。 作用： 该命令将 ls -a 命令发送到名为 test 的 screen 会话中的第一个窗口（编号为 0），并模拟按下回车键。这意味着，如果会话已经包含多个窗口，这个命令只会作用于第一个窗口，而不会影响其他窗口。\n—\n总结 screen -dmS test：在后台启动一个新的 screen 会话，命名为 test。 screen -S test -X stuff \"ls -a\\n\"：向名为 test 的 screen 会话的当前窗口发送 ls -a 命令并执行。 screen -S test -p 0 -X stuff \"ls -a\\n\"：向名为 test 的 screen 会话的第一个窗口（编号为 0）发送 ls -a 命令并执行。 这些命令组合起来，可以实现对后台 screen 会话的自动化控制和命令发送，适用于需要在后台运行的程序和脚本的自动化管理。\n参考链接 用bash脚本创建screen并向其发送命令\n",
+  "wordCount" : "2896",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2024-04-21T16:45:23.3+08:00",
+  "dateModified": "2024-04-21T16:45:23.3+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Theme PaperMod"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/scrcpy%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PaperMod",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/post/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+    <h1 class="post-title entry-hint-parent">
+      scrcpy使用教程
+    </h1>
+    <div class="post-meta">
+
+<span title='2024-04-21 16:45:23.3 +0800 +0800'>April 21, 2024</span>&nbsp;·&nbsp;<span>14 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span>&nbsp;|&nbsp;<span>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content/post/%e7%a8%8b%e5%ba%8f%e5%91%98/scrcpy%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b.org" rel="noopener noreferrer edit" target="_blank">Suggest Changes</a>
+    </span>
+
+</div>
+  </header> 
+
+  <div class="post-content md-content">
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+scrcpy
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+scrcpy入门
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+官方主页
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<p>
+https://github.com/Genymobile/scrcpy</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-4">
+<h4 id="headline-4">
+下载链接
+</h4>
+<div id="outline-text-headline-4" class="outline-text-4">
+<p>
+根据电脑系统环境进行选择下载</p>
+<p>
+https://github.com/Genymobile/scrcpy/releases/latest</p>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+连接方式
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<p>
+首先，启用手机的开发者模式，接着在开发者模式找到并打开手机的usb调试模式，然后使用usb数据线连接电脑与手机，在电脑上准备好scrcpy并添加scrcpy到环境变量，先使用adb查看是否有设备，然后在电脑终端中通过adb命令设置tcpip端口和连接的ip，电脑与手机保持在同一局域网，手机ip可以通过wifi(如果是手机开热点，可以通过热点查看ip)或者手机安装termux进行查看，再接着使用adb命令列出设备列表，使用scrcpy的-s选项选择要启动的设备即可，具体操作命令如下：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  adb devices						<span class="c1"># 连接usb数据线后查看是否有设备</span>
+</span></span><span class="line"><span class="cl">  adb tcpip 5555					<span class="c1"># 在有设备的情况下设置端口，事实上这里似乎也可以不设置，那么可以尝试跳过这一步</span>
+</span></span><span class="line"><span class="cl">  adb connect 192.168.*.*:5555		<span class="c1"># 设置连接方式</span>
+</span></span><span class="line"><span class="cl">  scrcpy -s 192.168.*.*:5555		<span class="c1"># 使用scrcpy进行连接</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-4">
+<h4 id="headline-6">
+无线投屏
+</h4>
+<div id="outline-text-headline-6" class="outline-text-4">
+<p>
+在第一次进行过有线连接后，第二次就可以拔掉数据线进行连接了</p>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-4">
+<h4 id="headline-7">
+安卓端录屏工具scrcpy
+</h4>
+<div id="outline-text-headline-7" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  scrcpy --record file.mp4   <span class="c1">#file.mp4 是自己设置的文件名和对应的格式</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-4">
+<h4 id="headline-8">
+scrcpy不传输声音，并且当scrcpy连接到设备时使设备黑屏，只显示scrcpy画面
+</h4>
+<div id="outline-text-headline-8" class="outline-text-4">
+<p>
+该操作适用于蓝牙耳机连接手机，然后scrcpy投屏设备的场景</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  scrcpy --no-audio -S</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-4">
+<h4 id="headline-9">
+scrcpy指定窗口位置和大小
+</h4>
+<div id="outline-text-headline-9" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  scrcpy -s 192.168.*.*:5555 --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1080</span></span></span></code></pre></div>
+</div>
+<p>如果要指定宽度可以增加选项：–window-width 100</p>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-4">
+<h4 id="headline-10">
+通过脚本连接
+</h4>
+<div id="outline-text-headline-10" class="outline-text-4">
+<p>
+ssh_host是ssh配置文件中的host，也可以改为user@hostname的形式，需要结合termux使用</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;adb shell input keyevent 82; adb shell input keyevent 82; sleep 0.4; adb shell input text password &amp;&amp; clear&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;adb shell input keyevent 224; adb shell input keyevent 82;&#34;</span>
+</span></span><span class="line"><span class="cl">  adb kill-server
+</span></span><span class="line"><span class="cl">  adb start-server  
+</span></span><span class="line"><span class="cl">  <span class="nv">ssh_host</span><span class="o">=</span><span class="s2">&#34;rog8&#34;</span><span class="p">;</span> mapfile -t ip_array &lt; &lt;<span class="o">(</span>ssh <span class="nv">$ssh_host</span> ifconfig <span class="p">|</span> grep -oE <span class="s2">&#34;inet ?192.168.[0-9]{0,3}.[0-9]{0,3}&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span><span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  adb connect <span class="s2">&#34;</span><span class="si">${</span><span class="nv">ip_array</span><span class="p">[0]</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">  scrcpy -s <span class="k">$(</span>adb devices <span class="p">|</span> grep -Ew <span class="s2">&#34;.*device&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;{$2=&#34;&#34;; print}&#39;</span> <span class="p">|</span> head -n 1<span class="k">)</span> -S</span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-11" class="outline-5">
+<h5 id="headline-11">
+通过脚本解锁手机并连接-1
+</h5>
+<div id="outline-text-headline-11" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  adb shell input keyevent 82<span class="p">;</span> adb shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb shell input text password <span class="o">&amp;&amp;</span> clear <span class="o">&amp;&amp;</span> scrcpy --no-audio -S <span class="p">&amp;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-5">
+<h5 id="headline-12">
+通过脚本解锁手机并连接-2
+</h5>
+<div id="outline-text-headline-12" class="outline-text-5">
+<p>
+脚本名称：auto_android_scrcpy.sh</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nv">num_args</span><span class="o">=</span><span class="nv">$#</span>						<span class="c1"># 获取参数数量    </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> IPV4:Port&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb connect <span class="nv">$1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	scrcpy -s <span class="nv">$1</span> --no-audio -S <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> unlock password&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$1</span> shell input text <span class="nv">$3</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;rescrcpy&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> unlock password&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$1</span> shell input text <span class="nv">$3</span> <span class="o">&amp;&amp;</span> scrcpy -s <span class="nv">$1</span> --no-audio -S <span class="o">&amp;&amp;</span> clear <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-5">
+<h5 id="headline-13">
+通过脚本解锁手机并连接-3
+</h5>
+<div id="outline-text-headline-13" class="outline-text-5">
+<p>
+该脚本使用的前提条件是两个显示器，因为指定坐标是x=1920,y=1038。</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nv">num_args</span><span class="o">=</span><span class="nv">$#</span>                                             <span class="c1"># 获取参数数量</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> IPV4:Port&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb connect <span class="nv">$1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1"># scrcpy -s $1 --no-audio -S &amp;</span>
+</span></span><span class="line"><span class="cl">	scrcpy -s <span class="nv">$1</span> --no-audio --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> unlock password&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$1</span> shell input text <span class="nv">$3</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;rescrcpy&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> unlock password&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$1</span> shell input text <span class="nv">$3</span> <span class="o">&amp;&amp;</span> scrcpy -s <span class="nv">$1</span> --no-audio -S <span class="o">&amp;&amp;</span> clear <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-5">
+<h5 id="headline-14">
+通过脚本解锁手机并连接-4
+</h5>
+<div id="outline-text-headline-14" class="outline-text-5">
+<p>
+基于&#34;通过脚本解锁手机并连接-3&#34;，优化解锁，添加了解锁前连接adb的命令，使解决可以单独使用，添加了锁命令，使手机没有通过scrcpy远程控制时也可以通过脚本对手机进行锁屏操作。</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nv">num_args</span><span class="o">=</span><span class="nv">$#</span>						<span class="c1"># 获取参数数量    </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> IPV4:Port&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb connect <span class="nv">$1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1"># scrcpy -s $1 --no-audio -S &amp;</span>
+</span></span><span class="line"><span class="cl">	scrcpy -s <span class="nv">$1</span> --no-audio --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> unlock password&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb connect <span class="nv">$1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$1</span> shell input text <span class="nv">$3</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb connect <span class="nv">$1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="nv">$1</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;rescrcpy&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> unlock password&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$1</span> shell input text <span class="nv">$3</span> <span class="o">&amp;&amp;</span> scrcpy -s <span class="nv">$1</span> --no-audio -S <span class="o">&amp;&amp;</span> clear <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-5">
+<h5 id="headline-15">
+通过脚本解锁手机并连接-5
+</h5>
+<div id="outline-text-headline-15" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nv">num_args</span><span class="o">=</span><span class="nv">$#</span>						<span class="c1"># 获取参数数量    </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> IPV4:Port&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb connect <span class="nv">$1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1"># scrcpy -s $1 --no-audio -S &amp;</span>
+</span></span><span class="line"><span class="cl">	scrcpy -s <span class="nv">$1</span> --no-audio --keyboard<span class="o">=</span>uhid --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> unlock password&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb connect <span class="nv">$1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$1</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$1</span> shell input text <span class="nv">$3</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb connect <span class="nv">$1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="nv">$1</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-5">
+<h5 id="headline-16">
+通过脚本解锁手机并连接-6
+</h5>
+<div id="outline-text-headline-16" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nv">num_args</span><span class="o">=</span><span class="nv">$#</span>						<span class="c1"># 获取参数数量    </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> usb/net IPV4:Port&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;net&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb connect <span class="nv">$2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1"># scrcpy -s $2 --no-audio -S &amp;</span>
+</span></span><span class="line"><span class="cl">	scrcpy -s <span class="nv">$2</span> --no-audio --keyboard<span class="o">=</span>uhid --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;usb&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	scrcpy -s <span class="nv">$2</span> --no-audio --keyboard<span class="o">=</span>uhid --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S <span class="p">&amp;</span>     
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;net&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  adb connect <span class="nv">$2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$4</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> usb/net device unlock password&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="nv">$2</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$2</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$2</span> shell input text <span class="nv">$4</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="nv">$2</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-17" class="outline-5">
+<h5 id="headline-17">
+通过脚本解锁手机并连接-7
+</h5>
+<div id="outline-text-headline-17" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nv">num_args</span><span class="o">=</span><span class="nv">$#</span>						<span class="c1"># 获取参数数量    </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> usb/net IPV4:Port&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;net&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb connect <span class="nv">$2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1"># scrcpy -s $2 --no-audio -S &amp;</span>
+</span></span><span class="line"><span class="cl">	scrcpy -s <span class="nv">$2</span> --no-audio --keyboard<span class="o">=</span>uhid --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;usb&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	scrcpy -s <span class="nv">$2</span> --no-audio --keyboard<span class="o">=</span>uhid --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S <span class="p">&amp;</span>     
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;net&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  adb connect <span class="nv">$2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$4</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> usb/net device unlock passward&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="nv">$2</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$2</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$2</span> shell input text <span class="nv">$4</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="nv">$2</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">device</span><span class="o">=</span><span class="k">$(</span>adb devices <span class="p">|</span> grep -w <span class="s2">&#34;device&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;NR==1{print $1}&#39;</span><span class="k">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>	
+</span></span><span class="line"><span class="cl">	  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> unlock passward&#34;</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">else</span>
+</span></span><span class="line"><span class="cl">		adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input text <span class="nv">$2</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">	  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-18" class="outline-5">
+<h5 id="headline-18">
+通过脚本解锁手机并连接-8
+</h5>
+<div id="outline-text-headline-18" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">num_args</span><span class="o">=</span><span class="nv">$#</span>						<span class="c1"># 获取参数数量    </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> usb/net IPV4:Port&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;net&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  adb connect <span class="nv">$2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># scrcpy -s $2 --no-audio -S &amp;</span>
+</span></span><span class="line"><span class="cl">  scrcpy -s <span class="nv">$2</span> --no-audio --keyboard<span class="o">=</span>uhid --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;usb&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  scrcpy -s <span class="nv">$2</span> --no-audio --keyboard<span class="o">=</span>uhid --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S <span class="p">&amp;</span>     
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;net&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb connect <span class="nv">$2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$4</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> usb/net deviceid unlock passward&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="nv">$2</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$2</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$2</span> shell input text <span class="nv">$4</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  adb -s <span class="nv">$2</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">device</span><span class="o">=</span><span class="k">$(</span>adb devices <span class="p">|</span> grep -w <span class="s2">&#34;device&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;NR==1{print $1}&#39;</span><span class="k">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> unlock passward&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input text <span class="nv">$2</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;example&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>  
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;bash </span><span class="nv">$0</span><span class="s2"> usb \$(adb devices | grep -w \&#34;device\&#34; | awk &#39;NR==1{print \$1}&#39;) unlock \$passwd&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-19" class="outline-5">
+<h5 id="headline-19">
+通过脚本解锁手机并连接-9
+</h5>
+<div id="outline-text-headline-19" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">num_args</span><span class="o">=</span><span class="nv">$#</span>						<span class="c1"># 获取参数数量    </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> usb/net IPV4:Port&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;net&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  adb connect <span class="nv">$2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># scrcpy -s $2 --no-audio -S &amp;</span>
+</span></span><span class="line"><span class="cl">  scrcpy -s <span class="nv">$2</span> --no-audio --keyboard<span class="o">=</span>uhid --window-x <span class="m">1920</span> -S <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;usb&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  scrcpy -s <span class="nv">$2</span> --no-audio --keyboard<span class="o">=</span>uhid --window-x <span class="m">1920</span> -S <span class="p">&amp;</span>     
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;net&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb connect <span class="nv">$2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$4</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> usb/net deviceid unlock passward&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="nv">$2</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$2</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$2</span> shell input text <span class="nv">$4</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  adb -s <span class="nv">$2</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">device</span><span class="o">=</span><span class="k">$(</span>adb devices <span class="p">|</span> grep -w <span class="s2">&#34;device&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;NR==1{print $1}&#39;</span><span class="k">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> unlock passward&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input text <span class="nv">$2</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;example&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>  
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;bash </span><span class="nv">$0</span><span class="s2"> usb \$(adb devices | grep -w \&#34;device\&#34; | awk &#39;NR==1{print \$1}&#39;) unlock \$passwd&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-20" class="outline-5">
+<h5 id="headline-20">
+通过脚本解锁手机并连接-10
+</h5>
+<div id="outline-text-headline-20" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">num_args</span><span class="o">=</span><span class="nv">$#</span>						<span class="c1"># 获取参数数量    </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">num_args</span><span class="si">}</span><span class="s2">&#34;</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> usb/net IPV4:Port&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;net&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  adb connect <span class="nv">$2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># scrcpy -s $2 --no-audio -S</span>
+</span></span><span class="line"><span class="cl">  scrcpy -s <span class="nv">$2</span> --no-audio --keyboard<span class="o">=</span>uhid --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;usb&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  scrcpy -s <span class="nv">$2</span> --no-audio --keyboard<span class="o">=</span>uhid --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;net&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb connect <span class="nv">$2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$4</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> usb/net deviceid unlock passward&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">else</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="nv">$2</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="nv">$2</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="nv">$2</span> shell input text <span class="nv">$4</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$3</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  adb -s <span class="nv">$2</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nv">device</span><span class="o">=</span><span class="k">$(</span>adb devices <span class="p">|</span> grep -w <span class="s2">&#34;device&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;NR==1{print $1}&#39;</span><span class="k">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	  <span class="nb">echo</span> -e <span class="s2">&#34;Usage: \n</span><span class="nv">$0</span><span class="s2"> unlock passward&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	  adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input text <span class="nv">$2</span> <span class="o">&amp;&amp;</span> clear
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">  <span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="si">${</span><span class="nv">device</span><span class="si">}</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;example&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>  
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> <span class="s2">&#34;bash </span><span class="nv">$0</span><span class="s2"> usb \$(adb devices | grep -w \&#34;device\&#34; | awk &#39;NR==1{print \$1}&#39;) unlock \$passwd&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span></span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-21" class="outline-6">
+<h6 id="headline-21">
+如果要无限循环自动连接
+</h6>
+<div id="outline-text-headline-21" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">while</span> true<span class="p">;</span> <span class="k">do</span> ~/auto_android_scrcpy.sh usb device &gt; /dev/null 2&gt;<span class="p">&amp;</span>1<span class="p">;</span> sleep 1<span class="p">;</span> <span class="k">done</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-22" class="outline-6">
+<h6 id="headline-22">
+参考链接
+</h6>
+<div id="outline-text-headline-22" class="outline-text-6">
+<p>
+<a href="https://blog.csdn.net/LemonCloud/article/details/142874010">scrcpy无法输入中文问题解决</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-23" class="outline-5">
+<h5 id="headline-23">
+通过脚本解锁手机并连接-11
+</h5>
+<div id="outline-text-headline-23" class="outline-text-5">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 显示使用帮助</span>
+</span></span><span class="line"><span class="cl">show_usage<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;用法: </span><span class="nv">$0</span><span class="s2"> [usb|net|lock|unlock|example] [参数...]&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;示例:&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;  1) bash </span><span class="nv">$0</span><span class="s2"> usb \$(adb devices | grep -w \&#34;device\&#34; | awk &#39;NR==1{print \$1}&#39;) unlock \$passwd&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;  2) while true; do ~/auto_android_scrcpy.sh usb DEVICE_ID &gt; /dev/null 2&gt;&amp;1; sleep 1; done&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;  3) </span><span class="nv">$0</span><span class="s2"> lock                        # 锁定当前设备&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;  4) </span><span class="nv">$0</span><span class="s2"> unlock	              # 解锁当前设备&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 启动 scrcpy 会话</span>
+</span></span><span class="line"><span class="cl">start_scrcpy<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">conn_type</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">device_id</span><span class="o">=</span><span class="nv">$2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;错误: 设备ID不能为空&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$conn_type</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;net&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		adb connect <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> <span class="o">||</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> <span class="s2">&#34;错误: 无法连接到 </span><span class="nv">$device_id</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">					<span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">				<span class="o">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	scrcpy -s <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> --no-audio --window-x <span class="m">1920</span> --window-y <span class="m">0</span> --window-height <span class="m">1038</span> -S
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 解锁设备</span>
+</span></span><span class="line"><span class="cl">unlock_device<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">device_id</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">password</span><span class="o">=</span><span class="nv">$2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$password</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;错误: 未提供解锁密码&#34;</span>
+</span></span><span class="line"><span class="cl">		show_usage
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	adb -s <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> shell input keyevent <span class="m">82</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> shell input keyevent <span class="m">82</span>
+</span></span><span class="line"><span class="cl">	sleep 0.4
+</span></span><span class="line"><span class="cl">	adb -s <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> shell input text <span class="s2">&#34;</span><span class="nv">$password</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 锁定设备</span>
+</span></span><span class="line"><span class="cl">lock_device<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">device_id</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl">	adb -s <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 获取第一个已连接的设备ID</span>
+</span></span><span class="line"><span class="cl">get_first_device<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	adb devices <span class="p">|</span> grep -w <span class="s2">&#34;device&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;NR==1{print $1}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 主逻辑</span>
+</span></span><span class="line"><span class="cl">main<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">num_args</span><span class="o">=</span><span class="nv">$#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 无参数时显示交互菜单</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[[</span> <span class="nv">$num_args</span> -eq <span class="m">0</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;请选择操作模式:&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;1) USB设备 + 解锁 + 自动重连模式&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;2) 自动重连模式&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;3) 锁定设备&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;4) 解锁设备&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">read</span> -p <span class="s2">&#34;请输入选项 [1/2/3/4]: &#34;</span> choice
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="k">case</span> <span class="nv">$choice</span> in
+</span></span><span class="line"><span class="cl">			1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">local</span> <span class="nv">device_id</span><span class="o">=</span><span class="k">$(</span>get_first_device<span class="k">)</span>
+</span></span><span class="line"><span class="cl">				<span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">					<span class="nb">echo</span> <span class="s2">&#34;错误: 未检测到已连接的USB设备&#34;</span>
+</span></span><span class="line"><span class="cl">					<span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">				<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">read</span> -sp <span class="s2">&#34;请输入解锁密码: &#34;</span> passwd
+</span></span><span class="line"><span class="cl">				<span class="nb">echo</span>
+</span></span><span class="line"><span class="cl">				<span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">					<span class="s2">&#34;</span><span class="nv">$0</span><span class="s2">&#34;</span> usb <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> unlock <span class="s2">&#34;</span><span class="nv">$passwd</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">					sleep <span class="m">1</span>
+</span></span><span class="line"><span class="cl">				<span class="k">done</span>
+</span></span><span class="line"><span class="cl">				<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">			2<span class="o">)</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">local</span> <span class="nv">device_id</span><span class="o">=</span><span class="k">$(</span>get_first_device<span class="k">)</span>
+</span></span><span class="line"><span class="cl">				<span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">					<span class="nb">echo</span> <span class="s2">&#34;错误: 未检测到已连接的USB设备&#34;</span>
+</span></span><span class="line"><span class="cl">					<span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">				<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">echo</span>
+</span></span><span class="line"><span class="cl">				<span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">					<span class="s2">&#34;</span><span class="nv">$0</span><span class="s2">&#34;</span> usb <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> &gt; /dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">					sleep <span class="m">1</span>
+</span></span><span class="line"><span class="cl">				<span class="k">done</span>
+</span></span><span class="line"><span class="cl">				<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">			3<span class="o">)</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">local</span> <span class="nv">device_id</span><span class="o">=</span><span class="k">$(</span>get_first_device<span class="k">)</span>
+</span></span><span class="line"><span class="cl">				<span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">					<span class="nb">echo</span> <span class="s2">&#34;错误: 未检测到已连接的USB设备&#34;</span>
+</span></span><span class="line"><span class="cl">					<span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">				<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">				adb -s <span class="nv">$device_id</span> shell input keyevent <span class="m">26</span>
+</span></span><span class="line"><span class="cl">				<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">			4<span class="o">)</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">local</span> <span class="nv">device_id</span><span class="o">=</span><span class="k">$(</span>get_first_device<span class="k">)</span>
+</span></span><span class="line"><span class="cl">				<span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">					<span class="nb">echo</span> <span class="s2">&#34;错误: 未检测到已连接的USB设备&#34;</span>
+</span></span><span class="line"><span class="cl">					<span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">				<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">read</span> -sp <span class="s2">&#34;请输入解锁密码: &#34;</span> passwd
+</span></span><span class="line"><span class="cl">				<span class="nb">echo</span>
+</span></span><span class="line"><span class="cl">				<span class="c1"># &#34;$0&#34; usb &#34;$device_id&#34; unlock &#34;$passwd&#34;</span>
+</span></span><span class="line"><span class="cl">				adb -s <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> shell input keyevent 82<span class="p">;</span> adb -s <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb -s <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> shell input text <span class="s2">&#34;</span><span class="nv">$passwd</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">				<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">			,*<span class="o">)</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">echo</span> <span class="s2">&#34;无效选项&#34;</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">				<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">esac</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">exit</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">command</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 处理 example 命令</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$command</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;example&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		show_usage
+</span></span><span class="line"><span class="cl">		<span class="nb">exit</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 处理 lock/unlock 快捷命令（无设备ID时使用默认设备）</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$command</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]]</span> <span class="o">||</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$command</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">local</span> <span class="nv">device_id</span><span class="o">=</span><span class="k">$(</span>get_first_device<span class="k">)</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> <span class="s2">&#34;错误: 未检测到已连接的设备&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$command</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">			unlock_device <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">			lock_device <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">exit</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 主流程: usb / net 模式</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$command</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;usb&#34;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$command</span><span class="s2">&#34;</span> !<span class="o">=</span> <span class="s2">&#34;net&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;错误: 未知命令 &#39;</span><span class="nv">$command</span><span class="s2">&#39;&#34;</span>
+</span></span><span class="line"><span class="cl">		show_usage
+</span></span><span class="line"><span class="cl">		<span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">conn_type</span><span class="o">=</span><span class="nv">$command</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">device_id</span><span class="o">=</span><span class="nv">$2</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">action</span><span class="o">=</span><span class="nv">$3</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">password</span><span class="o">=</span><span class="nv">$4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 启动 scrcpy</span>
+</span></span><span class="line"><span class="cl">	start_scrcpy <span class="s2">&#34;</span><span class="nv">$conn_type</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> <span class="p">&amp;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">local</span> <span class="nv">scrcpy_pid</span><span class="o">=</span><span class="nv">$!</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 处理 unlock/lock 操作</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$action</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;unlock&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$conn_type</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;net&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">			adb connect <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> <span class="o">||</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">echo</span> <span class="s2">&#34;警告: 解锁前连接失败&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="o">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">		unlock_device <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$password</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">elif</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$action</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;lock&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		lock_device <span class="s2">&#34;</span><span class="nv">$device_id</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 等待 scrcpy 结束</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">wait</span> <span class="s2">&#34;</span><span class="nv">$scrcpy_pid</span><span class="s2">&#34;</span> 2&gt;/dev/null
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 执行主函数</span>
+</span></span><span class="line"><span class="cl">main <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span></span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-24" class="outline-6">
+<h6 id="headline-24">
+参考链接
+</h6>
+<div id="outline-text-headline-24" class="outline-text-6">
+<p>
+<a href="https://chat.deepseek.com/share/icp9uqc02mz5wouhnj">Bash脚本读取变量执行命令</a></p>
+<p>
+<a href="https://chat.deepseek.com/share/6sejcgrl09qohvrfu1">安卓脚本优化建议</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-25" class="outline-4">
+<h4 id="headline-25">
+注意事项
+</h4>
+<div id="outline-text-headline-25" class="outline-text-4">
+<p>
+scrcpy建议使用最新版本，如果手机的安卓版本较高，而scrcpy的版本又较老的话，会出现一些快捷键用不了的情况，而最新版本的scrcpy则会好很多，一般快捷键都支持</p>
+</div>
+</div>
+<div id="outline-container-headline-26" class="outline-4">
+<h4 id="headline-26">
+参考链接
+</h4>
+<div id="outline-text-headline-26" class="outline-text-4">
+<p>
+<a href="https://zhuanlan.zhihu.com/p/80264357">scrcpy - 手机无线投屏到电脑</a></p>
+<p>
+<a href="https://blog.csdn.net/qq_42747139/article/details/104163312">scrcpy使用教程</a></p>
+<p>
+<a href="https://zhuanlan.zhihu.com/p/606448877">Scrcpy – 通过Linux桌面显示和控制Android 设备</a></p>
+<p>
+<a href="https://zhuanlan.zhihu.com/p/561723992">ScrCpy工具的快捷键</a></p>
+<p>
+<a href="https://blog.csdn.net/DDJ_TEST/article/details/120287342">scrcpy投屏教程、scrcpy无线投屏、scrcpy命令大全</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-27" class="outline-3">
+<h3 id="headline-27">
+异地组网——5 分钟，使用内网穿透快速实现远程手机桌面！
+</h3>
+<div id="outline-text-headline-27" class="outline-text-3">
+<div id="outline-container-headline-28" class="outline-4">
+<h4 id="headline-28">
+准备
+</h4>
+<div id="outline-text-headline-28" class="outline-text-4">
+<div id="outline-container-headline-29" class="outline-5">
+<h5 id="headline-29">
+PC 安装 Scrcpy 控制器
+</h5>
+<div id="outline-text-headline-29" class="outline-text-5">
+<p>
+Scrpy 控制器是一款免 Root 的开源安卓设备投屏工具，支持 USB 和 WIFI 两种连接方式</p>
+<p>
+它适用于 Linux、Mac OS、Windows</p>
+<p>
+根据系统类型，通过下面链接选择合适的方式进行安装</p>
+<p>
+PS：以 Windows 为例，我们只需要下载 Zip 压缩包，然后将文件夹目录添加到 PATH 环境变量中</p>
+<p>
+https://github.com/Genymobile/scrcpy#summary</p>
+<p>
+配置教程参考，将scrcpy按照参考教程中adb的配置方式进行配置：</p>
+<p>
+https://sspai.com/post/40471</p>
+</div>
+</div>
+<div id="outline-container-headline-30" class="outline-5">
+<h5 id="headline-30">
+PC 和 Android 设备分别安装网穿透工具
+</h5>
+<div id="outline-text-headline-30" class="outline-text-5">
+<p>
+这里以蒲公英为例，到官网选择「 蒲公英-个人版 」进行下载</p>
+<p>
+下载地址：</p>
+<p>
+https://pgy.oray.com/download/personal/#visitor</p>
+<p>
+首先，保证 PC 与 Android 设备在同一局域网，这里的局域网是指通过数据线将PC与手机连接在一起</p>
+<p>
+然后，在 PC 端完成注册登录</p>
+<p>
+最后，在 Android 设备上以同一个账号进行登录</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-31" class="outline-4">
+<h4 id="headline-31">
+实操一下
+</h4>
+<div id="outline-text-headline-31" class="outline-text-4">
+<div id="outline-container-headline-32" class="outline-5">
+<h5 id="headline-32">
+Android 设备开启网络调试并连接
+</h5>
+<div id="outline-text-headline-32" class="outline-text-5">
+<p>
+首先，在 Android 设备中开启「 开发者选项 」，并打开「 USB 调试 」</p>
+<p>
+不同手机开启「 开发者选项 」的方式不一样，大家可以自行搜索，另外 MIUI 需要另外开启「 USB 调试（安全设置） 」</p>
+<p>
+然后，Android 设备通过数据线连接 PC，使用 adb 命令开启手机的网络调试</p>
+<p>
+PS：这里指定网络连接的端口号为 5555</p>
+<div id="outline-container-headline-33" class="outline-6">
+<h6 id="headline-33">
+查询连接的设备列表
+</h6>
+<div id="outline-text-headline-33" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  C:<span class="se">\U</span>sers<span class="se">\x</span>ingag&gt;adb devices
+</span></span><span class="line"><span class="cl">  List of devices attached
+</span></span><span class="line"><span class="cl">  0e279f0d7d33    device</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-34" class="outline-6">
+<h6 id="headline-34">
+开启手机的网络调试，端口为5555
+</h6>
+<div id="outline-text-headline-34" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  C:<span class="se">\U</span>sers<span class="se">\x</span>ingag&gt;adb tcpip <span class="m">5555</span>
+</span></span><span class="line"><span class="cl">  restarting in TCP mode port: <span class="m">5555</span></span></span></code></pre></div>
+</div>
+<p>
+接着，断开数据线连接，在蒲公英 PC 客户端上查看 Android 设备的 IP 地址，通过「 该 IP 地址 + 端口号 」连接手机设备</p>
+</div>
+</div>
+<div id="outline-container-headline-35" class="outline-6">
+<h6 id="headline-35">
+比如：PC版本蒲公英显示手机的ip地址为：172.11.1.233
+</h6>
+<div id="outline-text-headline-35" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  adb connect 172.11.1.233:5555</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-36" class="outline-6">
+<h6 id="headline-36">
+使用adb命令连接设备
+</h6>
+<div id="outline-text-headline-36" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  C:<span class="se">\U</span>sers<span class="se">\x</span>ingag&gt;adb connect 172.11.1.233:5555
+</span></span><span class="line"><span class="cl">  connected to 172.11.1.233:5555</span></span></code></pre></div>
+</div>
+<p>
+最后，可以通过一些简单的 adb 命令测试一下是否能控制手机</p>
+</div>
+</div>
+<div id="outline-container-headline-37" class="outline-6">
+<h6 id="headline-37">
+比如：修改屏幕的大小
+</h6>
+<div id="outline-text-headline-37" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  adb shell wm size 1000x1000</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-38" class="outline-6">
+<h6 id="headline-38">
+恢复原来屏幕尺寸
+</h6>
+<div id="outline-text-headline-38" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  adb shell wm size reset</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-39" class="outline-6">
+<h6 id="headline-39">
+休眠或者解锁屏幕
+</h6>
+<div id="outline-text-headline-39" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  adb shell input keyevent <span class="m">26</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-40" class="outline-5">
+<h5 id="headline-40">
+局域网屏幕控制
+</h5>
+<div id="outline-text-headline-40" class="outline-text-5">
+<p>
+在 CMD 命令行，使用「 scrcpy.exe 」命令就可以将手机投屏在 PC 上了，如此就能在 PC 端完成对手机的完全控制了</p>
+<p>
+scrcpy 功能非常地强大，可以通过一些参数命令设置屏幕控制的特性</p>
+<p>
+比如，通过 -S 设置投屏的同时关闭设备屏幕，也可以通过 -b、-m 改变比特率、限制分辨率，提高屏幕控制的响应速度</p>
+<div id="outline-container-headline-41" class="outline-6">
+<h6 id="headline-41">
+直接将手机界面投屏到PC上，通过PC可以控制手机界面
+</h6>
+<div id="outline-text-headline-41" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  scrcpy.exe</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-42" class="outline-6">
+<h6 id="headline-42">
+投屏的同时，关闭设备屏幕
+</h6>
+<div id="outline-text-headline-42" class="outline-text-6">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  scrcpy.exe -S</span></span></code></pre></div>
+</div>
+<ol>
+<li>通过改变比特率和限制分辨率，提高响应速度</li>
+<li>-b 2M:改变比特率为2M，减少延迟，默认码率为8M，码率越高，画质越好，但是同时延迟越大</li>
+<li>-m 1024：限制分辨率提供响应性能，分辨率越高，延迟越大</li>
+<li>–max-fps：限制帧率，提升响应速度</li>
+</ol>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  scrcpy -b 2M  -m <span class="m">1024</span> --max-fps <span class="m">15</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-43" class="outline-5">
+<h5 id="headline-43">
+远程屏幕控制
+</h5>
+<div id="outline-text-headline-43" class="outline-text-5">
+<p>
+上面的操作都是在同一局域网下完成的 PC 端对 Android 设备的屏幕控制</p>
+<p>
+事实上，只要保证 Android 设备上的蒲公英 App 一直在线，PC 即使在外网环境下，开启 PC 版本的蒲公英，也能远程控制之前配置好的 Android 设备</p>
+<p>
+如此，就完成了远程控制 Android 设备屏幕的需求了 </p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-44" class="outline-4">
+<h4 id="headline-44">
+参考链接
+</h4>
+<div id="outline-text-headline-44" class="outline-text-4">
+<p>
+<a href="https://blog.csdn.net/hsh881025/article/details/124161932">5 分钟，使用内网穿透快速实现远程手机桌面！</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-45" class="outline-3">
+<h3 id="headline-45">
+解锁手机
+</h3>
+<div id="outline-text-headline-45" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  adb shell input text password	<span class="c1"># 输入密码</span></span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-46" class="outline-4">
+<h4 id="headline-46">
+测试
+</h4>
+<div id="outline-text-headline-46" class="outline-text-4">
+<p>
+手机密码：123456</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  adb shell input keyevent 82<span class="p">;</span> adb shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb shell input text 123456<span class="p">;</span> sleep 2<span class="p">;</span> adb shell input keyevent <span class="m">26</span> <span class="c1">#输入密码解锁后延时2秒，然后再锁屏</span></span></span></code></pre></div>
+</div>
+<p>
+解锁手机：adb shell input keyevent 82</p>
+<p>
+延时0.4秒：sleep 0.4</p>
+<p>
+输入密码：adb shell input text 123456</p>
+<p>
+锁屏：adb shell input keyevent 26</p>
+</div>
+</div>
+<div id="outline-container-headline-47" class="outline-4">
+<h4 id="headline-47">
+实操命令
+</h4>
+<div id="outline-text-headline-47" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  adb shell input keyevent 82<span class="p">;</span> adb shell input keyevent 82<span class="p">;</span> sleep 0.4<span class="p">;</span> adb shell input text <span class="m">123456</span> <span class="c1"># 实操命令为去掉前边测试命令中的解锁后延时2秒再锁屏的过程</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-48" class="outline-4">
+<h4 id="headline-48">
+参考链接
+</h4>
+<div id="outline-text-headline-48" class="outline-text-4">
+<p>
+<a href="https://exp-blog.com/tools/adb-jie-suo-shou-ji-zhi-yin/">利用 ADB 解锁手机指引</a></p>
+<p>
+<a href="https://blog.csdn.net/h_bpdwn/article/details/91425599">adb shell input keyevent (具体操作) – 模拟按键事件 KeyCode</a></p>
+<p>
+<a href="https://www.jianshu.com/p/004a49035fb9">常用 adb 指令</a></p>
+<p>
+<a href="https://www.jianshu.com/p/bfc978d52e76">adb 命令模拟按键事件 KeyCode</a></p>
+<p>
+<a href="https://cto.eguidedog.net/node/609">华为手机有线连接 adb</a></p>
+<p>
+<a href="https://blog.csdn.net/ai_qh77/article/details/123383801">华为手机无线连接 adb</a></p>
+<p>
+<a href="https://stackoverflow.com/questions/23081263/adb-android-device-unauthorized">ADB Android Device Unauthorized</a></p>
+<p>
+<a href="https://www.cnblogs.com/botoo/p/9655798.html?share_token=bc2d44e1-e6d5-40fd-9890-7c6b8eebc8ed">自动化测试: adb 解锁手机的思路</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-49" class="outline-3">
+<h3 id="headline-49">
+如何用bash脚本创建screen并向其发送命令？
+</h3>
+<div id="outline-text-headline-49" class="outline-text-3">
+<div class="src src-text">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">screen -dmS test</span></span></code></pre></div>
+</div>
+<div class="src src-text">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">screen -dmS test 
+</span></span><span class="line"><span class="cl">screen -S test -X stuff &#34;ls -a\n&#34; 
+</span></span><span class="line"><span class="cl">或 
+</span></span><span class="line"><span class="cl">screen -S test -p 0 -X stuff &#34;ls -a\n&#34;</span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-50" class="outline-4">
+<h4 id="headline-50">
+解析命令-ChatGPT
+</h4>
+<div id="outline-text-headline-50" class="outline-text-4">
+<p>
+这些命令是使用 screen 进行会话管理和自动化输入的示例。我们来逐个解析：</p>
+<div id="outline-container-headline-51" class="outline-5">
+<h5 id="headline-51">
+1. screen -dmS test
+</h5>
+<div id="outline-text-headline-51" class="outline-text-5">
+<div id="outline-container-headline-52" class="outline-6">
+<h6 id="headline-52">
+各部分解析：
+</h6>
+<div id="outline-text-headline-52" class="outline-text-6">
+<ul>
+<li>screen：启动 screen 会话，screen 是一个终端多路复用器，允许在一个终端窗口内运行多个虚拟终端。</li>
+<li>-d：这个选项告诉 screen 在后台启动会话。也就是说，screen 会话启动后不会占用当前的终端窗口，而是将其放在后台运行。</li>
+<li>-m：强制启动一个新的会话，即使没有其他正在运行的 screen 会话。</li>
+<li>-S test：指定会话的名称为 test。-S 选项后面的 test 是会话的标识符，通过这个名字，你可以后续对该会话进行操作（例如发送命令、分离等）。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-53" class="outline-6">
+<h6 id="headline-53">
+作用：
+</h6>
+<div id="outline-text-headline-53" class="outline-text-6">
+<p>这个命令的作用是：启动一个名为 test 的 screen 会话，并将其放在后台运行。此时会话没有关联到任何窗口（终端）。它是一个“分离模式”启动的 screen 会话。</p>
+<p>
+—</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-54" class="outline-5">
+<h5 id="headline-54">
+2. screen -S test -X stuff &#34;ls -a\n&#34;
+</h5>
+<div id="outline-text-headline-54" class="outline-text-5">
+<div id="outline-container-headline-55" class="outline-6">
+<h6 id="headline-55">
+各部分解析：
+</h6>
+<div id="outline-text-headline-55" class="outline-text-6">
+<ul>
+<li>screen：再次调用 screen，用于对已存在的 screen 会话进行操作。</li>
+<li>-S test：指定要操作的会话名称为 test。</li>
+<li>-X：执行对 screen 会话的命令。-X 选项让我们向 screen 会话发送命令。</li>
+<li>stuff &#34;ls -a\n&#34;：stuff 命令将 ls -a（列出当前目录的所有文件，包括隐藏文件）发送到指定会话的当前窗口中，并模拟按下回车键（\n）。这等同于在该会话的终端中执行了 ls -a 命令。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-56" class="outline-6">
+<h6 id="headline-56">
+作用：
+</h6>
+<div id="outline-text-headline-56" class="outline-text-6">
+<p>该命令将 ls -a 这个命令发送到名为 test 的 screen 会话中的当前窗口，模拟在该窗口执行 ls -a。由于是后台操作，所以并不会直接在终端显示输出，命令的结果会被发送到该 screen 会话的输出流。</p>
+<p>
+—</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-57" class="outline-5">
+<h5 id="headline-57">
+3. screen -S test -p 0 -X stuff &#34;ls -a\n&#34;
+</h5>
+<div id="outline-text-headline-57" class="outline-text-5">
+<div id="outline-container-headline-58" class="outline-6">
+<h6 id="headline-58">
+各部分解析：
+</h6>
+<div id="outline-text-headline-58" class="outline-text-6">
+<ul>
+<li>screen：同样，调用 screen 来操作会话。</li>
+<li>-S test：指定会话名称为 test。</li>
+<li>-p 0：指定窗口编号为 0，即第一个窗口。screen 会话可以包含多个窗口，这个命令告诉 screen 要向编号为 0 的窗口发送命令。</li>
+<li>-X stuff &#34;ls -a\n&#34;：将 ls -a 发送到指定窗口，并模拟按下回车键。</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-headline-59" class="outline-6">
+<h6 id="headline-59">
+作用：
+</h6>
+<div id="outline-text-headline-59" class="outline-text-6">
+<p>该命令将 ls -a 命令发送到名为 test 的 screen 会话中的第一个窗口（编号为 0），并模拟按下回车键。这意味着，如果会话已经包含多个窗口，这个命令只会作用于第一个窗口，而不会影响其他窗口。</p>
+<p>
+—</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-60" class="outline-5">
+<h5 id="headline-60">
+总结
+</h5>
+<div id="outline-text-headline-60" class="outline-text-5">
+<ol>
+<li>screen -dmS test：在后台启动一个新的 screen 会话，命名为 test。</li>
+<li>screen -S test -X stuff &#34;ls -a\n&#34;：向名为 test 的 screen 会话的当前窗口发送 ls -a 命令并执行。</li>
+<li>screen -S test -p 0 -X stuff &#34;ls -a\n&#34;：向名为 test 的 screen 会话的第一个窗口（编号为 0）发送 ls -a 命令并执行。</li>
+</ol>
+<p>这些命令组合起来，可以实现对后台 screen 会话的自动化控制和命令发送，适用于需要在后台运行的程序和脚本的自动化管理。</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-61" class="outline-4">
+<h4 id="headline-61">
+参考链接
+</h4>
+<div id="outline-text-headline-61" class="outline-text-4">
+<p>
+<a href="https://cloud.tencent.com/developer/article/1856896">用bash脚本创建screen并向其发送命令</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/scrcpy/">Scrcpy</a></li>
+      <li><a href="http://localhost:1313/tags/tool/">Tool</a></li>
+      <li><a href="http://localhost:1313/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a></li>
+    </ul>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share scrcpy使用教程 on x"
+            href="https://x.com/intent/tweet/?text=scrcpy%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fscrcpy%25E4%25BD%25BF%25E7%2594%25A8%25E6%2595%2599%25E7%25A8%258B%2f&amp;hashtags=scrcpy%2ctool%2c%e7%a8%8b%e5%ba%8f%e5%91%98">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share scrcpy使用教程 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fscrcpy%25E4%25BD%25BF%25E7%2594%25A8%25E6%2595%2599%25E7%25A8%258B%2f&amp;title=scrcpy%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b&amp;summary=scrcpy%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b&amp;source=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fscrcpy%25E4%25BD%25BF%25E7%2594%25A8%25E6%2595%2599%25E7%25A8%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share scrcpy使用教程 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fscrcpy%25E4%25BD%25BF%25E7%2594%25A8%25E6%2595%2599%25E7%25A8%258B%2f&title=scrcpy%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share scrcpy使用教程 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fscrcpy%25E4%25BD%25BF%25E7%2594%25A8%25E6%2595%2599%25E7%25A8%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share scrcpy使用教程 on whatsapp"
+            href="https://api.whatsapp.com/send?text=scrcpy%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b%20-%20http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fscrcpy%25E4%25BD%25BF%25E7%2594%25A8%25E6%2595%2599%25E7%25A8%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share scrcpy使用教程 on telegram"
+            href="https://telegram.me/share/url?text=scrcpy%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fscrcpy%25E4%25BD%25BF%25E7%2594%25A8%25E6%2595%2599%25E7%25A8%258B%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share scrcpy使用教程 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=scrcpy%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b&u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fscrcpy%25E4%25BD%25BF%25E7%2594%25A8%25E6%2595%2599%25E7%25A8%258B%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

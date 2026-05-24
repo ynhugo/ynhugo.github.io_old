@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Emacs | PaperMod</title>
+<meta name="keywords" content="">
+<meta name="description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/tags/emacs/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/emacs/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/emacs/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/tags/emacs/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="Emacs">
+  <meta property="og:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="Emacs">
+  <meta name="twitter:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/tags/">Tags</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+  <h1>
+    Emacs
+    <a href="/tags/emacs/index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">什么是GTD工作法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 什么是GTD工作法？ GTD是Get Things Done的缩写。
+相关方法的英文网站是：https://gettingthingsdone.com。 这个网站的最后一句话是：
+Your mind is for having ideas, not holding them.®
+所以，很多人描述GTD的思路大致就是，每当你想到一件你无法在接下来的两分钟内把它处理干净的事情，就先把它找固定的地方记录下来，不要用脑子去惦记着。养成了这个习惯，就做到了GTD方法的一大部分（如果你不想更细节地了解GTD，就记一句古话，好记性不如烂笔头）。
+GTD的剩余部分就是一些如何把已经记录下来的事情做好的一些简单有效的好步骤好习惯。如果你还有兴趣看，分五个步骤：
+1）Capture 领悟自己要干啥
+2）Clarify 简单写处理思路，你自己做还是交给别人做，放弃还是暂时搁置还是删除它 （可以用紧急重要四象限法则）
+3）Organize (要点！)整理上述梳理结果，并确保你真的会被提醒到这些事情，所以，用软件记录也许是个好方法
+4）Reflect 没事常看看列表，好知道当下该干点啥，并保持列表更新
+5）Engage 投入注意力，干活 （可以用番茄工作法）
+划重点 GTD工作法能不能用活用好，最关键的是哪一点呢？整理。这步搞定，满盘皆活。整理任务一旦成了习惯，那前面的Clarify，后面的Reflect，都是自然而然的事情。心理压力自然而然就没有了，脑子可以松下来去解决问题了！
+参考链接 什么是GTD工作法？
+</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-12-01 13:55:39.56 +0800 +0800'>December 1, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to 什么是GTD工作法" href="http://localhost:1313/post/emacs/%E4%BB%80%E4%B9%88%E6%98%AFgtd%E5%B7%A5%E4%BD%9C%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Emacs的org-mode归档
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Emacs的org-mode归档 如果你用org-mode来做TODO管理，那么无法避免的是，随着时间的流逝，被DONE的事件会越来越多，那么TODO被会被夹杂在DONE之间，难以查找。同时，由于后期回顾的需要，你也不想简单地将DONE事件删除掉。这个时候，你就需要归档命令了。归档，就是把你不想天天看到的东西，放到你看不到了，或者不怎么影响你的注意力的地方去。org-mode提供了两种归档方式。
+内部归档 内部归档是在本文件内部给特定子树打上ACHIVED标签或者移动到名为achived的子树中去并打上标签。
+这个被认为是ACIVED的子树，会被移动了本级子树的最末端。 例如有这么一个子树，由三个TODO项目组成。
+* blog ** TODO 匈牙利命名法 ** TODO org-mode 归档 ** TODO BillG审查 C-c C-x a 将某一个节点打上ARCHIVE标签。
+* blog ** TODO 匈牙利命名法 ** TODO org-mode 归档	:ARCHIVE: ** TODO BillG审查 C-c C-x A 将当前节点归入一个名为Archive的子树中，并且这个子树是位于当前级别子树的最下方。
+* blog ** TODO org-mode 归档	:ARCHIVE: ** TODO BillG审查 ** Archive	:ARCHIVE: *** TODO 匈牙利命名法 :PROPERTIES: :ARCHIVE_TIME: 2010-01-02 六 18:14 :END: 外部归档 外部归档是指把子树移动到另一个org文件中去。文件名可以自定义。默认情况下，归档的子树会被移动到名为“当年文件名_archived”的文件中去。
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-11-26 03:14:07.26 +0800 +0800'>November 26, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to Emacs的org-mode归档" href="http://localhost:1313/post/emacs/emacs%E7%9A%84org-mode%E5%BD%92%E6%A1%A3/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Emacs使用org-agenda管理日程
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Emacs 使用org-agenda 管理日程 如何使用org设置日程上篇已经介绍完，那现在的重点就是如何查看日程，并且真正将org运用到日常工作中来。之前学习org跨越了很长时间，但一直没有落实到日常应用，所以过一阵子就会忘记，得来的教训就是学习任何语言，工具一定要落实在使用中，纸上谈兵要不得。让我们一起开始使用org-agenda查看，管理及运用设置好的日程。
+纸上得来终觉浅,绝知此事要躬行.
+日程 Agenda 定义完ToDo之后，使用M-x org-agenda 打开日程buffer，可看到当前排的所有日程，并可以直接进行优先级等操作。那如何归纳整理自己的日程表呢，通常我使用多个文件来代表不同的类型。
+日程文件 可以针对不同的任务类型，定义多个日程或任务文件，然后将文件加入全局的日程文件列表，统一纳入org的管理。
+以下来举例： 使用C-h v 查看变量org-agenda-flies，当前有一个文件，现在我们再加入另一个
+打开org文件，使用org-agenda-file-to-front或者快捷键C-c [ 将当前文件加入到全局列表。这样一来，我们定义的日程就会加入到全局列表，使用emacs统一进行管理了。也可以通过emacs配置文件加入。
+然后就可以使用M-x org-agenda a 打开agenda界面了。
+快捷键 功能 C-c [ 将当前文件加入全局列表 C-c ] 将当前文件移除全局列表 C-c C-x &lt; 锁定当前文件即在org agenda的buffer中只显示当前文件的日程（org-agenda-set-restriction-lock） C-c C-x &gt; 解锁(org-agenda-remove-restriction-lock) 可以打开speedbar ，在文件上使用&lt; 和&gt; 来锁定和解锁。
+日程操作 前一章已经介绍过，使用org-agenda打开日程buffer，此时可以选择多种视图方式，以便更加方便的查看日程。
+Emacs 内置了多种视图，下面会一一介绍，首先来看都有哪些操作。
+视图中的操作 其他快捷键及功能：
+快捷键 功能 b daily视图 w weekly视图 n/p 上/下移动光标 N/P 上/下按日程移动光标 SPC 在另一缓冲区显示任务在org文件中的定义的位置 TAB 在另一缓冲区显示任务在org文件中的定义的位置，并且光标跳转至此 L 显示任务在文件中位置并且光标居中 RET 在当前buffer打开文件并跳转 F 打开跟踪模式，即移动光标时，另一buffer显示当前任务的定义处 C-c C-x b 显示任务及子树，并可以设置层数 C-c C-o 打开链接 o 关闭另一个buffer A 打开另一种视图并嵌入到当前视图中 v 弹出多个命令进行选择 f/b 下一天 . 跳转至当天 j 选择日期并跳转 D 包含日记 r 刷新agenda buffer / 通过tag过滤 &lt; 通过类型过滤 ^ 通过 top headline 过滤 = 通过模式匹配过滤 丨 去除所有过滤 t 改变状态 C-S-Left/C-S-Right 改变状态 C-k 删除 C-w 重新归档某项日程 $ 归档，通常是另一个文件 T 显示所有tag : 设置tag , 设置优先级 &#43;/- 或者 S-up/down 设置优先级 z 添加note C-c C-a 附件 C-c C-s 安排日程 C-c C-d 设置deadline S-Left/Right 改变日期 &gt; 改变日期 I 插入clock O 停止上一个clock X 取消当前clock J 跳转之clock处 M-Up/Down 拖拽一个日程 m mark当前日程 * mark所有日程为重点 u 取消mark当前日程 U 取消mark所有日程 M-m 设置/取消当前mark M-× 设置/取消所有mark B bulk action C-x C-w 导出。可以为.html .pdf .ps .org q 退出 x 退出，包括所有相关打开的buffer 太多了，大家通过帮助自己尝试吧。
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-11-26 02:12:09.84 +0800 +0800'>November 26, 2024</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to Emacs使用org-agenda管理日程" href="http://localhost:1313/post/emacs/emacs%E4%BD%BF%E7%94%A8org-agenda%E7%AE%A1%E7%90%86%E6%97%A5%E7%A8%8B/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/tags/emacs/page/4/">
+      «&nbsp;Prev&nbsp;4/9
+    </a>
+    <a class="next" href="http://localhost:1313/tags/emacs/page/6/">Next&nbsp;6/9&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

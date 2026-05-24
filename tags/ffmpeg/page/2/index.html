@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Ffmpeg | PaperMod</title>
+<meta name="keywords" content="">
+<meta name="description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/tags/ffmpeg/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/ffmpeg/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/ffmpeg/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/tags/ffmpeg/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="Ffmpeg">
+  <meta property="og:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="Ffmpeg">
+  <meta name="twitter:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/tags/">Tags</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+  <h1>
+    Ffmpeg
+    <a href="/tags/ffmpeg/index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">ffmpeg 教程
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> ffmpeg使用教程 安装 ffmpeg windows 安装 ffmpeg 下载页面：https://ffmpeg.org/download.html
+查看设备列表 Windows查看设备列表 ffmpeg -list_devices true -f dshow -i dummy 查看设备列表结果 像我的主机上只有audio相关设备，没有video相关设备
+$ ffmpeg -list_devices true -f dshow -i dummy ffmpeg version N-112134-g9ef20920ab-20230920 Copyright (c) 2000-2023 the FFmpeg developers built with gcc 13.1.0 (crosstool-NG 1.25.0.196_227d99d) configuration: --prefix=/ffbuild/prefix --pkg-config-flags=--static --pkg-config=pkg-config --cross-prefix=x86_64-w64-mingw32- --arch=x86_64 --target-os=mingw32 --enable-gpl --enable-version3 --disable-debug --disable-w32threads --enable-pthreads --enable-iconv --enable-libxml2 --enable-zlib --enable-libfreetype --enable-libfribidi --enable-gmp --enable-lzma --enable-fontconfig --enable-libharfbuzz --enable-libvorbis --enable-opencl --disable-libpulse --enable-libvmaf --disable-libxcb --disable-xlib --enable-amf --enable-libaom --enable-libaribb24 --enable-avisynth --enable-chromaprint --enable-libdav1d --enable-libdavs2 --disable-libfdk-aac --enable-ffnvcodec --enable-cuda-llvm --enable-frei0r --enable-libgme --enable-libkvazaar --enable-libass --enable-libbluray --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librist --enable-libssh --enable-libtheora --enable-libvpx --enable-libwebp --enable-lv2 --enable-libvpl --enable-openal --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-librav1e --enable-librubberband --enable-schannel --enable-sdl2 --enable-libsoxr --enable-libsrt --enable-libsvtav1 --enable-libtwolame --enable-libuavs3d --disable-libdrm --enable-vaapi --enable-libvidstab --enable-vulkan --enable-libshaderc --enable-libplacebo --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxvid --enable-libzimg --enable-libzvbi --extra-cflags=-DLIBTWOLAME_STATIC --extra-cxxflags= --extra-ldflags=-pthread --extra-ldexeflags= --extra-libs=-lgomp --extra-version=20230920 libavutil 58. 25.100 / 58. 25.100 libavcodec 60. 26.100 / 60. 26.100 libavformat 60. 13.100 / 60. 13.100 libavdevice 60. 2.101 / 60. 2.101 libavfilter 9. 11.100 / 9. 11.100 libswscale 7. 3.100 / 7. 3.100 libswresample 4. 11.100 / 4. 11.100 libpostproc 57. 2.100 / 57. 2.100 [dshow @ 0000025ec2e24e80] &#34;OBS Virtual Camera&#34; (video) [dshow @ 0000025ec2e24e80] Alternative name &#34;@device_sw_{860BB310-5D01-11D0-BD3B-00A0C911CE86}\{A3FCE0F5-3493-419F-958A-ABA1250EC20B}&#34; [dshow @ 0000025ec2e24e80] &#34;麦克风 (Realtek(R) Audio)&#34; (audio) [dshow @ 0000025ec2e24e80] Alternative name &#34;@device_cm_{33D9A762-90C8-11D0-BD43-00A0C911CE86}\wave_{8E507121-E2A9-415D-9EC9-B975D91463F7}&#34; [dshow @ 0000025ec2e24e80] &#34;立体声混音 (Realtek(R) Audio)&#34; (audio) [dshow @ 0000025ec2e24e80] Alternative name &#34;@device_cm_{33D9A762-90C8-11D0-BD43-00A0C911CE86}\wave_{56D3F882-71A2-4A0B-BF2A-404379259FF8}&#34; [in#0 @ 0000025ec2e1f4c0] Error opening input: Immediate exit requested Error opening input file dummy. 查看视频录制的可选参数 ffmpeg -f dshow -list_options true -i video=&#34;OBS Virtual Camera&#34; 查看视频录制的可选参数结果 $ ffmpeg -f dshow -list_options true -i video=&#34;OBS Virtual Camera&#34; ffmpeg version N-112134-g9ef20920ab-20230920 Copyright (c) 2000-2023 the FFmpeg developers built with gcc 13.1.0 (crosstool-NG 1.25.0.196_227d99d) configuration: --prefix=/ffbuild/prefix --pkg-config-flags=--static --pkg-config=pkg-config --cross-prefix=x86_64-w64-mingw32- --arch=x86_64 --target-os=mingw32 --enable-gpl --enable-version3 --disable-debug --disable-w32threads --enable-pthreads --enable-iconv --enable-libxml2 --enable-zlib --enable-libfreetype --enable-libfribidi --enable-gmp --enable-lzma --enable-fontconfig --enable-libharfbuzz --enable-libvorbis --enable-opencl --disable-libpulse --enable-libvmaf --disable-libxcb --disable-xlib --enable-amf --enable-libaom --enable-libaribb24 --enable-avisynth --enable-chromaprint --enable-libdav1d --enable-libdavs2 --disable-libfdk-aac --enable-ffnvcodec --enable-cuda-llvm --enable-frei0r --enable-libgme --enable-libkvazaar --enable-libass --enable-libbluray --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librist --enable-libssh --enable-libtheora --enable-libvpx --enable-libwebp --enable-lv2 --enable-libvpl --enable-openal --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-librav1e --enable-librubberband --enable-schannel --enable-sdl2 --enable-libsoxr --enable-libsrt --enable-libsvtav1 --enable-libtwolame --enable-libuavs3d --disable-libdrm --enable-vaapi --enable-libvidstab --enable-vulkan --enable-libshaderc --enable-libplacebo --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxvid --enable-libzimg --enable-libzvbi --extra-cflags=-DLIBTWOLAME_STATIC --extra-cxxflags= --extra-ldflags=-pthread --extra-ldexeflags= --extra-libs=-lgomp --extra-version=20230920 libavutil 58. 25.100 / 58. 25.100 libavcodec 60. 26.100 / 60. 26.100 libavformat 60. 13.100 / 60. 13.100 libavdevice 60. 2.101 / 60. 2.101 libavfilter 9. 11.100 / 9. 11.100 libswscale 7. 3.100 / 7. 3.100 libswresample 4. 11.100 / 4. 11.100 libpostproc 57. 2.100 / 57. 2.100 [dshow @ 000002a9577d4180] DirectShow video device options (from video devices) [dshow @ 000002a9577d4180] Pin &#34;Video Output&#34; (alternative pin name &#34;Output Pin&#34;) [dshow @ 000002a9577d4180] pixel_format=nv12 min s=1920x1080 fps=30 max s=1920x1080 fps=30 [dshow @ 000002a9577d4180] pixel_format=yuv420p min s=1920x1080 fps=30 max s=1920x1080 fps=30 [dshow @ 000002a9577d4180] pixel_format=yuyv422 min s=1920x1080 fps=30 max s=1920x1080 fps=30 [in#0 @ 000002a9577ce5c0] Error opening input: Immediate exit requested Error opening input file video=OBS Virtual Camera. 查看音频录制的可选参数 ffmpeg -f dshow -list_options true -i audio=&#34;麦克风 (Realtek(R) Audio)&#34; 查看音频录制的可选参数结果 $ ffmpeg -f dshow -list_options true -i audio=&#34;麦克风 (Realtek(R) Audio)&#34; ffmpeg version N-112134-g9ef20920ab-20230920 Copyright (c) 2000-2023 the FFmpeg developers built with gcc 13.1.0 (crosstool-NG 1.25.0.196_227d99d) configuration: --prefix=/ffbuild/prefix --pkg-config-flags=--static --pkg-config=pkg-config --cross-prefix=x86_64-w64-mingw32- --arch=x86_64 --target-os=mingw32 --enable-gpl --enable-version3 --disable-debug --disable-w32threads --enable-pthreads --enable-iconv --enable-libxml2 --enable-zlib --enable-libfreetype --enable-libfribidi --enable-gmp --enable-lzma --enable-fontconfig --enable-libharfbuzz --enable-libvorbis --enable-opencl --disable-libpulse --enable-libvmaf --disable-libxcb --disable-xlib --enable-amf --enable-libaom --enable-libaribb24 --enable-avisynth --enable-chromaprint --enable-libdav1d --enable-libdavs2 --disable-libfdk-aac --enable-ffnvcodec --enable-cuda-llvm --enable-frei0r --enable-libgme --enable-libkvazaar --enable-libass --enable-libbluray --enable-libjxl --enable-libmp3lame --enable-libopus --enable-librist --enable-libssh --enable-libtheora --enable-libvpx --enable-libwebp --enable-lv2 --enable-libvpl --enable-openal --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-librav1e --enable-librubberband --enable-schannel --enable-sdl2 --enable-libsoxr --enable-libsrt --enable-libsvtav1 --enable-libtwolame --enable-libuavs3d --disable-libdrm --enable-vaapi --enable-libvidstab --enable-vulkan --enable-libshaderc --enable-libplacebo --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxvid --enable-libzimg --enable-libzvbi --extra-cflags=-DLIBTWOLAME_STATIC --extra-cxxflags= --extra-ldflags=-pthread --extra-ldexeflags= --extra-libs=-lgomp --extra-version=20230920 libavutil 58. 25.100 / 58. 25.100 libavcodec 60. 26.100 / 60. 26.100 libavformat 60. 13.100 / 60. 13.100 libavdevice 60. 2.101 / 60. 2.101 libavfilter 9. 11.100 / 9. 11.100 libswscale 7. 3.100 / 7. 3.100 libswresample 4. 11.100 / 4. 11.100 libpostproc 57. 2.100 / 57. 2.100 [dshow @ 000001a1c5a65e00] DirectShow audio only device options (from audio devices) [dshow @ 000001a1c5a65e00] Pin &#34;Capture&#34; (alternative pin name &#34;Capture&#34;) [dshow @ 000001a1c5a65e00] ch= 2, bits=16, rate= 44100 Last message repeated 1 times [dshow @ 000001a1c5a65e00] ch= 1, bits=16, rate= 44100 [dshow @ 000001a1c5a65e00] ch= 2, bits=16, rate= 32000 [dshow @ 000001a1c5a65e00] ch= 1, bits=16, rate= 32000 [dshow @ 000001a1c5a65e00] ch= 2, bits=16, rate= 22050 [dshow @ 000001a1c5a65e00] ch= 1, bits=16, rate= 22050 [dshow @ 000001a1c5a65e00] ch= 2, bits=16, rate= 11025 [dshow @ 000001a1c5a65e00] ch= 1, bits=16, rate= 11025 [dshow @ 000001a1c5a65e00] ch= 2, bits=16, rate= 8000 [dshow @ 000001a1c5a65e00] ch= 1, bits=16, rate= 8000 [dshow @ 000001a1c5a65e00] ch= 2, bits= 8, rate= 44100 [dshow @ 000001a1c5a65e00] ch= 1, bits= 8, rate= 44100 [dshow @ 000001a1c5a65e00] ch= 2, bits= 8, rate= 22050 [dshow @ 000001a1c5a65e00] ch= 1, bits= 8, rate= 22050 [dshow @ 000001a1c5a65e00] ch= 2, bits= 8, rate= 11025 [dshow @ 000001a1c5a65e00] ch= 1, bits= 8, rate= 11025 [dshow @ 000001a1c5a65e00] ch= 2, bits= 8, rate= 8000 [dshow @ 000001a1c5a65e00] ch= 1, bits= 8, rate= 8000 [dshow @ 000001a1c5a65e00] ch= 2, bits=16, rate= 48000 [dshow @ 000001a1c5a65e00] ch= 1, bits=16, rate= 48000 [dshow @ 000001a1c5a65e00] ch= 2, bits=16, rate= 96000 [dshow @ 000001a1c5a65e00] ch= 1, bits=16, rate= 96000 [in#0 @ 000001a1c5a5bd00] Error opening input: Immediate exit requested Error opening input file audio=麦克风 (Realtek(R) Audio). Linux查看设备列表 ffmpeg -devices true -f dshow -i dummy 查看设备列表结果 ubt@ubt:~/ts/debug$ ffmpeg -devices true -f dshow -i dummy ffmpeg version 4.3.1 Copyright (c) 2000-2020 the FFmpeg developers built with gcc 9 (Ubuntu 9.4.0-1ubuntu1~20.04.2) configuration: --enable-gpl --enable-libass --enable-libfdk-aac --enable-libfreetype --enable-libopus --enable-libvorbis --enable-libvpx --enable-libx264 --enable-libx265 --enable-nonfree libavutil 56. 51.100 / 56. 51.100 libavcodec 58. 91.100 / 58. 91.100 libavformat 58. 45.100 / 58. 45.100 libavdevice 58. 10.100 / 58. 10.100 libavfilter 7. 85.100 / 7. 85.100 libswscale 5. 7.100 / 5. 7.100 libswresample 3. 7.100 / 3. 7.100 libpostproc 55. 7.100 / 55. 7.100 Devices: D. = Demuxing supported .E = Muxing supported -- DE alsa ALSA audio output DE fbdev Linux framebuffer D lavfi Libavfilter virtual input device DE oss OSS (Open Sound System) playback E sdl,sdl2 SDL2 output device DE sndio sndio audio playback DE video4linux2,v4l2 Video4Linux2 output device D x11grab X11 screen capture, using XCB E xv XV (XVideo) output device 屏幕录制 Windows下操作 只录制画面，没有声音 ffmpeg -f gdigrab -i desktop -f mp4 out.mp4 播放视频 ffplay out.mp4 只录制声音，没有画面 ffmpeg -f dshow -i audio=&#34;麦克风 (Realtek(R) Audio)&#34; -f mp3 out.mp3 -y 播放音频 ffplay out.mp3 同时录制声音和画面-1 ffmpeg -f dshow -i audio=&#34;麦克风 (Realtek(R) Audio)&#34; -f gdigrab -i desktop -f mp4 -y out.mp4 以下是录制命令的说明： -f gdigrab 使用 FFmpeg 内置的 Windows 屏幕录制命令gdigrab，录制对象可为全屏、指定范围和指定程序。MacOS 录屏方法为AVFoundation，Linux 录屏方法为x11grab。
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-09-14 15:18:12 +0800 +0800'>September 14, 2024</span>&nbsp;·&nbsp;<span>28 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to ffmpeg 教程" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ffmpeg%E6%95%99%E7%A8%8B/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Linux下基于ffmpeg音视频解码
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Linux下基于ffmpeg音视频解码 FFmpeg开发环境配置参考：Ubuntu 20.04LTS FFmpeg 环境配置
+工程示例 #include &lt;stdio.h&gt; #include &#34;libavcodec/avcodec.h&#34; #include &#34;libavformat/avformat.h&#34; #include &#34;libswscale/swscale.h&#34; #include &lt;libswresample/swresample.h&gt; #include &lt;libavutil/mathematics.h&gt; #include &lt;libavutil/timestamp.h&gt; #include &lt;stdio.h&gt; #include &lt;linux/fb.h&gt; #include &lt;stdlib.h&gt; #include &lt;sys/mman.h&gt; #include &lt;poll.h&gt; #include &lt;string.h&gt; #include &lt;sys/stat.h&gt; #include &lt;fcntl.h&gt; #include &lt;unistd.h&gt; #include &lt;time.h&gt; #include &lt;wchar.h&gt; #include &lt;pthread.h&gt; #include &lt;signal.h&gt; #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;SDL.h&gt; #define FILE_NAME &#34;123.flv&#34; typedef unsigned char u8; typedef unsigned short u16; typedef unsigned int u32; typedef enum { false, true, }bool; uint8_t *out_buffer; #define MAX_AUDIO_FRAME_SIZE 1024*100 static Uint8* audio_chunk; static unsigned int audio_len=0; static unsigned char *audio_pos; pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;//互斥锁 //保存音频数据链表 struct AUDIO_DATA { unsigned char* audio_buffer; int audio_size; struct AUDIO_DATA *next; }; //定义一个链表头 struct AUDIO_DATA *list_head=NULL; struct AUDIO_DATA *List_CreateHead(struct AUDIO_DATA *head);//创建链表头 void List_AddNode(struct AUDIO_DATA *head,unsigned char* audio_buffer,int audio_size);//添加节点 void List_DelNode(struct AUDIO_DATA *head,unsigned char* audio_buffer);//删除节点 int List_GetNodeCnt(struct AUDIO_DATA *head);//遍历 int List_GetNode(struct AUDIO_DATA *head,char *audio_buff,int *audio_size); int file_stat=1; void AudioCallback(void *userdata, Uint8 * stream,int len) { SDL_memset(stream, 0,len); if(audio_len&lt;=0) { return ; } len=(len&gt;audio_len?audio_len:len); SDL_MixAudio(stream,audio_pos,len,SDL_MIX_MAXVOLUME); audio_pos&#43;=len; audio_len-=len; //printf(&#34;len=%d\n&#34;,len); } void *Audio_decode(void *arg) { int res; int audio_size; char audio_buff[4096*3]; while(1) { res=List_GetNode(list_head,audio_buff,&amp;audio_size); if(res==0) { audio_chunk = audio_buff; //指向音频数据 (PCM data) while(audio_len&gt;0){}//等待数据处理完 audio_len =audio_size;//音频长度 audio_pos = audio_buff;//当前播放位置 } } } int main(int argc,char *argv[]) { if(argc!=2) { printf(&#34;格式:./app 文件名\n&#34;); return 0; } char *file_name=argv[1]; /*SDL初始化*/ SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO|SDL_INIT_TIMER); printf(&#34;pth:%s\n&#34;,avcodec_configuration());/*获取ffmpeg配置信息*/ /*初始化所有组件*/ //av_register_all(); /*打开文件*/ AVCodecContext *pCodecCtx;//解码器上下文 AVFormatContext *ps=NULL;//音视频封装格式结构体信息 printf(&#34;name:%s\n&#34;,file_name); int res=avformat_open_input(&amp;ps,file_name,NULL,NULL); if(res!=0) { printf(&#34;open err: %d\n&#34;,res); return 0; } /*寻找解码信息*/ avformat_find_stream_info(ps,NULL); int64_t time=ps-&gt;duration; printf(&#34;time:%ld s\n&#34;,time/1000000); /*打印有关输入或输出格式的详细信息*/ av_dump_format(ps,0,file_name,0); /*寻找视频流信息*/ int videostream=-1; int audiostream=-1; AVCodec *vcodec; videostream=av_find_best_stream(ps,AVMEDIA_TYPE_VIDEO,-1,-1,NULL, 0); printf(&#34;video=%d\n&#34;,videostream); /*寻找音频流信息*/ audiostream=av_find_best_stream(ps,AVMEDIA_TYPE_AUDIO,-1,-1,NULL, 0); printf(&#34;audio=%d\n&#34;,audiostream); AVStream *stream; int frame_rate; if(videostream!=-1)//判断是否找到视频流数据 { /*寻找视频解码器*/ AVStream *stream = ps-&gt;streams[videostream]; vcodec=avcodec_find_decoder(stream-&gt;codecpar-&gt;codec_id); if(!vcodec) { printf(&#34;未找到视频解码器\n&#34;); return -1; }/*申请AVCodecContext空间。需要传递一个编码器，也可以不传，但不会包含编码器。*/ res=avcodec_open2(stream-&gt;codec,vcodec,NULL); if(res) { printf(&#34;打开解码器失败\n&#34;); return -1; } frame_rate=stream-&gt;avg_frame_rate.num/stream-&gt;avg_frame_rate.den;//每秒多少帧 printf(&#34;fps=%d\n&#34;,frame_rate); printf(&#34;视频流ID=%#x\n&#34;,vcodec-&gt;id);//音频流 } /*音频流数据处理*/ AVCodec *audcodec; AVStream *audstream; SwrContext *swrCtx;//保存重采样数据，即解码的信息 uint64_t out_channel_layout;//声道 int out_sample_fmt;//采样格式 int out_sample_rate;//采样率 int out_nb_samples;//样本数量 int out_channels;//通道数量 uint64_t in_channel_layout;//输入音频声道 SDL_AudioSpec desired;//SDL音频格式信息 AVFrame *audioframe;//保存音频数据 int out_buffer_size;//音频缓冲区大小 if(audiostream&gt;=0)//判断是否有音频流 { /*寻找音频解码器*/ audstream = ps-&gt;streams[audiostream]; audcodec=avcodec_find_decoder(audstream-&gt;codecpar-&gt;codec_id); if(!audcodec) { printf(&#34;audcodec failed\n&#34;); return -1; } /*申请音频AVCodecContext空间。需要传递一个编码器，也可以不传，但不会包含编码器。*/ pCodecCtx=audstream-&gt;codec;//解码器上下文 res=avcodec_open2(audstream-&gt;codec,audcodec,NULL); if(res) { printf(&#34;未找到音频解码器\n&#34;); return -1; } printf(&#34;音频流ID=%#x\n&#34;,audcodec-&gt;id);//音频流 printf(&#34;配置音频参数\n&#34;); //输出音频参数 out_channel_layout = AV_CH_LAYOUT_STEREO; //声道格式 out_sample_fmt=AV_SAMPLE_FMT_S16;//AV_SAMPLE_FMT_S32;//;//采样格式 printf(&#34;pCodecCtx-&gt;sample_rate=%d\n&#34;,pCodecCtx-&gt;sample_rate); out_sample_rate =pCodecCtx-&gt;sample_rate;//采样率，多为44100 /*样本数量*/ printf(&#34;frame_size=%d\n&#34;,pCodecCtx-&gt;frame_size); if(pCodecCtx-&gt;frame_size&gt;0)out_nb_samples=pCodecCtx-&gt;frame_size; else if(audcodec-&gt;id == AV_CODEC_ID_AAC) out_nb_samples=1024;/*样本数量nb_samples: AAC-1024 MP3-1152 格式大小 */ else if(audcodec-&gt;id == AV_CODEC_ID_MP3)out_nb_samples=1152; else out_nb_samples=1024; out_channels=av_get_channel_layout_nb_channels(out_channel_layout);//通道个数 out_buffer_size=av_samples_get_buffer_size(NULL,out_channels,out_nb_samples,out_sample_fmt,1);//获取缓冲区大小 out_buffer=(uint8_t*)av_malloc(MAX_AUDIO_FRAME_SIZE); memset(out_buffer,0,out_buffer_size); printf(&#34;声道格式:%d\n&#34;,out_channel_layout); printf(&#34;采样格式:%d\n&#34;,out_sample_fmt);	printf(&#34;样本数量:%d\n&#34;,out_nb_samples);	printf(&#34;采样率:%d\n&#34;,out_sample_rate); printf(&#34;通道个数:%d\n&#34;,out_channels); printf(&#34;缓冲区大小:%d\n&#34;,out_buffer_size); //输入音频参数 in_channel_layout=av_get_default_channel_layout(pCodecCtx-&gt;channels);//输入声道格式 swrCtx = swr_alloc(); /*对解码数据进行重采样*/ swrCtx=swr_alloc_set_opts(swrCtx,out_channel_layout,out_sample_fmt,out_sample_rate,/*输入音频格式*/ in_channel_layout,pCodecCtx-&gt;sample_fmt,pCodecCtx-&gt;sample_rate,/*输出音频格式*/ 0,NULL);	swr_init(swrCtx);//初始化swrCtx printf(&#34;输入音频格式:%d\n&#34;,in_channel_layout); printf(&#34;输入采样格式:%d\n&#34;,pCodecCtx-&gt;sample_fmt); printf(&#34;输入采样率:%d\n&#34;,pCodecCtx-&gt;sample_rate); /*设置音频数据格式*/ desired.freq=out_sample_rate;/*采样率*/ desired.format=AUDIO_S16SYS;/*无符号16位*/ desired.channels=out_channels;/*声道*/ desired.samples=out_nb_samples;/*样本数1024*/ desired.silence=0;/*静音值*/ desired.callback=AudioCallback; SDL_OpenAudio(&amp;desired,NULL); SDL_PauseAudio(0);/*开始播放音频，1为播放静音值*/ //分配内存 audioframe=av_frame_alloc();/*分配音频帧*/ printf(&#34;音频数据初始化完成&#34;); } //视频解码 AVFrame *frame=av_frame_alloc();/*分配视频帧*/ AVFrame *frameYUV=av_frame_alloc();/*申请yuv空间*/ /*分配空间，进行图像转换*/ int width=ps-&gt;streams[videostream]-&gt;codecpar-&gt;width; int height=ps-&gt;streams[videostream]-&gt;codecpar-&gt;height; int fmt=ps-&gt;streams[videostream]-&gt;codecpar-&gt;format;/*流格式*/ printf(&#34;fmt=%d\n&#34;,fmt); int size=avpicture_get_size(AV_PIX_FMT_RGB24, width,height); unsigned char *buff=NULL; printf(&#34;w=%d,h=%d,size=%d\n&#34;,width,height,size); buff=av_malloc(size); /*计算一帧空间大小*/ avpicture_fill((AVPicture *)frameYUV,buff,AV_PIX_FMT_RGB24,width,height); /*转换上下文*/ struct SwsContext *swsctx=sws_getContext(width,height, fmt,width,height, AV_PIX_FMT_RGB24,SWS_BICUBIC,NULL,NULL,NULL); /*读帧*/ int go=0; int go_audio;	list_head=List_CreateHead(list_head);//创建链表头 /*创建音频处理线程*/ pthread_t pthid; pthread_create(&amp;pthid,NULL,Audio_decode,(void *)ps); pthread_detach(pthid);//设置为分离属性 /*创建窗口*/ SDL_Window *window=SDL_CreateWindow(&#34;SDL_VIDEO&#34;, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,1280,720,SDL_WINDOW_SHOWN); /*创建渲染器*/ SDL_Renderer *render=SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED); /*清空渲染器*/ SDL_RenderClear(render);	/*创建纹理*/ SDL_Texture *sdltext=SDL_CreateTexture(render,SDL_PIXELFORMAT_RGB24,SDL_TEXTUREACCESS_STREAMING,width,height);	bool quit=true; SDL_Event event; printf(&#34;read fream buff\n&#34;); //初始化转码器 AVPacket *packet=av_malloc(sizeof(AVPacket));/*分配包*/ av_init_packet(packet);//初始化 int i=0; int index=0; long video_pts_time=0; long audio_pts_time=0;//音频解码时间 time=(1000000/frame_rate-10000);//时间 printf(&#34;time=%d\n&#34;,time); while((av_read_frame(ps,packet)&gt;=0) &amp;&amp; (quit)) { SDL_PollEvent(&amp;event); if(event.type==SDL_QUIT) { quit=false; continue; } if(packet-&gt;stream_index == videostream)/*判断是否为视频*/ { res=avcodec_send_packet(ps-&gt;streams[videostream]-&gt;codec,packet); if(res) { av_packet_unref(packet);//释放这个pkt continue; } res=avcodec_receive_frame(ps-&gt;streams[videostream]-&gt;codec,frame); if(res) { av_packet_unref(packet);//释放这个pkt	continue; } sws_scale(swsctx,(const uint8_t **)frame-&gt;data,frame-&gt;linesize,0,height,(const uint8_t **)frameYUV-&gt;data,frameYUV-&gt;linesize); video_pts_time=packet-&gt;pts; //printf(&#34;视频=%ld\n&#34;,video_pts_time); SDL_UpdateTexture(sdltext,NULL,buff, width*3); SDL_RenderCopy(render, sdltext, NULL, NULL); // 拷贝纹理到渲染器 SDL_RenderPresent(render); //渲染 usleep(time); } if(packet-&gt;stream_index == audiostream) //如果为音频标志 { if(audiostream&lt;0)continue; res=avcodec_send_packet(pCodecCtx,packet); if(res) { printf(&#34;avcodec_send_packet failed,res=%d\n&#34;,res); av_packet_unref(packet);//释放这个pkt	continue; } res=avcodec_receive_frame(pCodecCtx,audioframe); if(res) { printf(&#34;avcodec_receive_frame failed,res=%d\n&#34;,res); av_packet_unref(packet);//释放这个pkt continue; } //数据格式转换 res=swr_convert(swrCtx,&amp;out_buffer,out_buffer_size,/*重采样之后的数据*/ (const uint8_t **)audioframe-&gt;data,audioframe-&gt;nb_samples/*重采样之前数据*/ ); audio_pts_time=packet-&gt;pts; //printf(&#34;音频：%ld\n&#34;,audio_pts_time); if(res&gt;0) { //audio_chunk =out_buffer; //指向音频数据 (PCM data) //while(audio_len&gt;0){}//等待数据处理完 //audio_len =audioframe-&gt;nb_samples;//out_buffer_size;//音频长度 //audio_pos =out_buffer;//当前播放位置 List_AddNode(list_head,out_buffer,out_buffer_size);//添加节点 } } //释放数据包 av_packet_unref(packet); } sws_freeContext(swsctx); av_frame_free(&amp;frame); av_frame_free(&amp;frameYUV); avformat_free_context(ps); return 0; } /*创建链表头*/ struct AUDIO_DATA *List_CreateHead(struct AUDIO_DATA *head) { if(head==NULL) { head=malloc(sizeof(struct AUDIO_DATA)); head-&gt;next=NULL; } return head;	} /*添加节点*/ void List_AddNode(struct AUDIO_DATA *head,unsigned char* audio_buffer,int audio_size) { struct AUDIO_DATA *tmp=head; struct AUDIO_DATA *new_node; pthread_mutex_lock(&amp;mutex); /*找到链表尾部*/ while(tmp-&gt;next) { tmp=tmp-&gt;next; } /*插入新的节点*/ new_node=malloc(sizeof(struct AUDIO_DATA)); new_node-&gt;audio_size=audio_size; new_node-&gt;audio_buffer=malloc(audio_size);//分配保存音频数据大小空间 memcpy(new_node-&gt;audio_buffer,audio_buffer,audio_size); new_node-&gt;next=NULL; /*将新节点接入到链表*/ tmp-&gt;next=new_node;	pthread_mutex_unlock(&amp;mutex); } /* 函数功能:删除节点 */ void List_DelNode(struct AUDIO_DATA *head,unsigned char* audio_buffer) { struct AUDIO_DATA *tmp=head; struct AUDIO_DATA *p; /*找到链表中要删除的节点*/ pthread_mutex_lock(&amp;mutex); while(tmp-&gt;next) { p=tmp; tmp=tmp-&gt;next; if(tmp-&gt;audio_buffer==audio_buffer) { p-&gt;next=tmp-&gt;next; free(tmp-&gt;audio_buffer); free(tmp); break; } } pthread_mutex_unlock(&amp;mutex); } /* 函数功能:遍历链表，得到节点总数量 */ int List_GetNodeCnt(struct AUDIO_DATA *head) { int cnt=0; struct AUDIO_DATA *tmp=head; pthread_mutex_lock(&amp;mutex); while(tmp-&gt;next) { tmp=tmp-&gt;next; cnt&#43;&#43;; } pthread_mutex_unlock(&amp;mutex); return cnt; } /* 从链表头取数据 */ int List_GetNode(struct AUDIO_DATA *head,char *audio_buff,int *audio_size) { struct AUDIO_DATA *tmp=head; struct AUDIO_DATA *ptemp=head; pthread_mutex_lock(&amp;mutex); while(tmp-&gt;next!=NULL) { ptemp=tmp; tmp=tmp-&gt;next; if(tmp!=NULL) { *audio_size=tmp-&gt;audio_size; memcpy(audio_buff,tmp-&gt;audio_buffer,tmp-&gt;audio_size); ptemp-&gt;next=tmp-&gt;next; free(tmp-&gt;audio_buffer); free(tmp); pthread_mutex_unlock(&amp;mutex); return 0; } } pthread_mutex_unlock(&amp;mutex); return -1; } Makefile文件 注意Makefile文件中涉及到的路径要跟系统环境相匹配，如果路径不一致会编译报错
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-09-09 17:14:47.09 +0800 +0800'>September 9, 2024</span>&nbsp;·&nbsp;<span>21 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to Linux下基于ffmpeg音视频解码" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/linux%E4%B8%8B%E5%9F%BA%E4%BA%8Effmpeg%E9%9F%B3%E8%A7%86%E9%A2%91%E8%A7%A3%E7%A0%81/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">FFmpeg 实现视频编码、解码
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> FFmpeg 编码实现 本例子实现的是将视频域 YUV 数据编码为压缩域的帧数据，编码格式包含了 H.264/H.265/MPEG1/MPEG2 四种 CODEC 类型。
+实现的过程，可以大致用如下图表示:
+从图中可以大致看出视频编码的流程:
+首先要有未压缩的 YUV 原始数据。 其次要根据想要编码的格式选择特定的编码器。 最后编码器的输出即为编码后的视频帧。 根据流程可以推倒出大致的代码实现：
+存放待压缩的 YUV 原始数据。此时可以利用 FFMpeg 提供的 AVFrame 结构体，并根据 YUV 数据来填充 AVFrame　结构的视频宽高、像素格式；根据视频宽高、像素格式可以分配存放数据的内存大小，以及字节对齐情况。 获取编码器。利用想要压缩的格式，比如　H.264/H.265/MPEG1/MPEG2 等，来获取注册的编解码器，编解码器在 FFMpeg 中用 AVCodec 结构体表示，对于编解码器，肯定要对其进行配置，包括待压缩视频的宽高、像素格式、比特率等等信息，这些信息，FFMpeg 提供了一个专门的结构体 AVCodecContext 结构体。 存放编码后压缩域的视频帧。FFMpeg 中用来存放压缩编码数据相关信息的结构体为 AVPacket。最后将 AVPacket 存储的压缩数据写入文件即可。 AVFrame 结构体的分配使用av_frame_alloc()函数，该函数会对 AVFrame 结构体的某些字段设置默认值，它会返回一个指向 AVFrame 的指针或 NULL指针(失败)。
+AVFrame 结构体的释放只能通过av_frame_free()来完成。
+注意，该函数只能分配 AVFrame 结构体本身，不能分配它的 data buffers 字段指向的内容，该字段的指向要根据视频的宽高、像素格式信息手动分配，本例使用的是av_image_alloc()函数。
+代码实现大致如下：
+//allocate AVFrame struct AVFrame *frame = NULL; frame = av_frame_alloc(); if(!frame){ printf(&#34;Alloc Frame Fail\n&#34;); return -1; } //fill AVFrame struct fields frame-&gt;width = width; frame-&gt;height = height; frame-&gt;pix_fmt = AV_PIX_FMT_YUV420P; //allocate AVFrame data buffers field point ret = av_image_alloc(frame-&gt;data, frame-&gt;linesize, frame-&gt;width, frame-&gt;height, frame-&gt;pix_fmt, 32); if(ret &lt; 0){ printf(&#34;Alloc Fail\n&#34;); return -1; } //write input file data to frame-&gt;data buffer fread(frame-&gt;data[0], 1, frame-&gt;width*frame-&gt;height, pInput_File); ... av_frame_free(frame); 编解码器相关的 AVCodec 结构体的分配使用avcodec_find_encoder(enum AVCodecID id)完成，该函数的作用是找到一个与 AVCodecID 匹配的已注册过得编码器；成功则返回一个指向 AVCodec ID 的指针，失败返回 NULL 指针。
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-09-05 19:24:19.98 +0800 +0800'>September 5, 2024</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to FFmpeg 实现视频编码、解码" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ffmpeg-%E5%AE%9E%E7%8E%B0%E8%A7%86%E9%A2%91%E7%BC%96%E7%A0%81_%E8%A7%A3%E7%A0%81/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/tags/ffmpeg/">
+      «&nbsp;Prev&nbsp;1/3
+    </a>
+    <a class="next" href="http://localhost:1313/tags/ffmpeg/page/3/">Next&nbsp;3/3&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

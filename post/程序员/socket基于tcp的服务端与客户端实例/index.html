@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>socket基于tcp的服务端与客户端实例 | PaperMod</title>
+<meta name="keywords" content="socket, tcp, 程序员">
+<meta name="description" content="
+
+socket基于tcp的服务端与客户端实例
+
+
+
+先运行服务端再运行客户端，服务端收到客户端下属的开始指令后，两边同时创建线程，服务端收到客户端下属的停止指令后，两边同时停止线程
+
+
+server.c
+
+
+
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdbool.h&gt;
+#include &lt;assert.h&gt;
+
+#include &lt;fcntl.h&gt;              // Flags for open()
+#include &lt;sys/stat.h&gt;           // Open() system call
+#include &lt;sys/types.h&gt;          // Types for open()
+#include &lt;unistd.h&gt;             // Close() system call
+#include &lt;string.h&gt;             // Memory setting and copying
+#include &lt;getopt.h&gt;             // Option parsing
+#include &lt;errno.h&gt;              // Error codes
+#include&lt;sys/socket.h&gt;
+#include&lt;netinet/in.h&gt;
+#include &lt;pthread.h&gt;
+
+
+#define DEFAULT_PORT 4000
+#define MAXLINE 4096
+#define socket_send_size 4096
+
+int    socket_fd, connect_fd;
+int    flag1;
+
+// 全局变量
+pthread_t worker_thread = 0; // 工作线程 ID
+volatile int thread_running = 0; // 线程运行状态
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁
+
+int flag1;
+int socket_fd, connect_fd;
+
+void cleanup_handler() {	
+
+}
+
+void *receive_file(void *arg) {
+	printf(&#34;enter therad\n&#34;);	
+
+	pthread_cleanup_push(cleanup_handler, NULL);
+
+    int i = 0, rc = 0;
+    unsigned char send_buffer[socket_send_size] = {0};
+    memset(send_buffer, 0, socket_send_size);
+    
+	while (flag1 == 1) {
+#if 1
+		for (i = 0; i &lt; 4; i&#43;&#43;) {
+			if (flag1 != 1) break;
+		}
+		send(connect_fd, &amp;send_buffer[0], socket_send_size, 0);
+#endif
+	}
+	pthread_cleanup_pop(0);
+	pthread_exit(NULL);
+}
+
+void create_thread() {
+    pthread_mutex_lock(&amp;mutex);
+    if (!thread_running) {        
+
+		int ret = pthread_create(&amp;worker_thread, NULL, &amp;receive_file, NULL);
+		if (ret != 0) {
+			perror(&#34;pthread_create&#34;);			
+			exit(EXIT_FAILURE);
+		}
+
+        thread_running = 1;
+        printf(&#34;Main: Created thread\n&#34;);
+    } else {
+        printf(&#34;Main: Thread is already running\n&#34;);
+    }
+    pthread_mutex_unlock(&amp;mutex);
+}
+
+// 销毁线程
+void destroy_thread() {
+    pthread_mutex_lock(&amp;mutex);
+    if (thread_running) {
+        printf(&#34;Main: Stopping thread...\n&#34;);
+        int ret = pthread_cancel(worker_thread);
+        if (ret != 0) {
+            perror(&#34;pthread_cancel&#34;);
+            exit(EXIT_FAILURE);
+        }
+
+        // 等待线程退出并回收资源
+        ret = pthread_join(worker_thread, NULL);
+        if (ret != 0) {
+            perror(&#34;pthread_join&#34;);
+            exit(EXIT_FAILURE);
+        }
+
+        thread_running = 0;
+        printf(&#34;Main: Thread has exited.\n&#34;);
+    } else {
+        printf(&#34;Main: No thread is running\n&#34;);
+    }
+    pthread_mutex_unlock(&amp;mutex);
+}
+
+// 主函数
+
+
+/*----------------------------------------------------------------------------
+ * Main
+ *----------------------------------------------------------------------------*/
+
+int main(void) {		
+	// Socket相关变量
+    struct sockaddr_in     servaddr;
+	unsigned char    buff[MAXLINE];
+	int     n;
+
+    //初始化Socket
+	if( (socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1 ) {
+		printf(&#34;create socket error: %s(errno: %d)\n&#34;,strerror(errno),errno);
+		exit(0);
+	}
+	// 解决 Address already in use 问题
+    int opt = 1;
+    setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &amp;opt, sizeof(opt));
+	//初始化
+	memset(&amp;servaddr, 0, sizeof(servaddr));
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);//IP地址设置成INADDR_ANY,让系统自动获取本机的IP地址。
+	servaddr.sin_port = htons(DEFAULT_PORT);//设置的端口为DEFAULT_PORT
+
+	//将本地地址绑定到所创建的套接字上
+	if( bind(socket_fd, (struct sockaddr*)&amp;servaddr, sizeof(servaddr)) == -1) {
+		printf(&#34;bind socket error: %s(errno: %d)\n&#34;,strerror(errno),errno);
+		exit(0);
+	}
+	//开始监听是否有客户端连接
+	if( listen(socket_fd, 2) == -1) {
+		printf(&#34;listen socket error: %s(errno: %d)\n&#34;,strerror(errno),errno);
+		exit(0);
+	}
+	printf(&#34;======waiting for client&#39;s request======\n&#34;);
+	
+	flag1 = 0;
+
+	printf(&#34;start:\nFA 00 00 08 00 00 00 01\n&#34;);
+	printf(&#34;stop:\nFA 00 00 08 00 00 00 02\n&#34;);
+	while (1) {
+		if( (connect_fd = accept(socket_fd, (struct sockaddr*)NULL, NULL)) == -1) {
+			printf(&#34;accept socket error: %s(errno: %d)&#34;,strerror(errno),errno);
+			usleep(10);
+			continue;
+		}
+		printf(&#34;mark-1\n&#34;);
+		while (1) {
+			//接受客户端传过来的数据
+			n = recv(connect_fd, buff, MAXLINE, 0);
+			usleep(100);
+			printf(&#34;mark-2\n&#34;);
+			if(n &gt; 0) {
+				// 判断是开始还是停止
+				if (buff[0] == 0xFA &amp;&amp; buff[7] == 0x01) {
+					// 开始
+					printf(&#34;start\n&#34;);
+					//sleep(1200); //测试长时间不执行操作，网口是否仍正常工作
+					flag1 = 1;
+					// 复位					
+					create_thread();
+					system(&#34;date&#34;);
+				}
+				else if (buff[0] == 0xFA &amp;&amp; buff[7] == 0x02) {
+					flag1 = 2;
+					// 停止					
+					destroy_thread();
+					system(&#34;date&#34;);
+				} 
+			} else if (n &lt; 0) {
+				usleep(100);
+				continue;
+			} else {
+				close(connect_fd);
+				printf(&#34;mark-3\n&#34;);
+				usleep(100);
+				break;
+			}
+		}
+		usleep(10);
+	}
+    close(connect_fd);
+    close(socket_fd);
+    return 0;
+}
+
+
+
+
+
+client.c
+
+
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netinet/in.h&gt;
+#include &lt;arpa/inet.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;pthread.h&gt;
+
+#define DEFAULT_PORT 4000
+#define MAXLINE 4096
+
+// 全局变量
+pthread_t worker_thread = 0;          // 工作线程 ID
+volatile int thread_running = 0;      // 线程运行状态
+volatile int thread_should_exit = 0;  // 线程退出标志
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;  // 互斥锁
+
+// 线程清理函数
+void cleanup_handler(void *arg) {
+    printf(&#34;Thread: Cleaning up resources...\n&#34;);
+}
+
+// 工作线程函数
+void *receive_file(void *arg) {
+    printf(&#34;Thread: Entered thread\n&#34;);
+
+    // 注册清理函数
+    pthread_cleanup_push(cleanup_handler, NULL);
+
+    while (!thread_should_exit) {
+        // 模拟工作
+        printf(&#34;Thread: Working...\n&#34;);
+        sleep(1);
+    }
+
+    // 清理
+    pthread_cleanup_pop(1);
+    printf(&#34;Thread: Exiting...\n&#34;);
+    return NULL;
+}
+
+// 创建线程
+void create_thread() {
+    pthread_mutex_lock(&amp;mutex);
+    if (!thread_running) {
+        thread_should_exit = 0;  // 重置退出标志
+        int ret = pthread_create(&amp;worker_thread, NULL, receive_file, NULL);
+        if (ret != 0) {
+            perror(&#34;pthread_create&#34;);
+            exit(EXIT_FAILURE);
+        }
+        thread_running = 1;
+        printf(&#34;Main: Created thread\n&#34;);
+    } else {
+        printf(&#34;Main: Thread is already running\n&#34;);
+    }
+    pthread_mutex_unlock(&amp;mutex);
+}
+
+// 销毁线程
+void destroy_thread() {
+    pthread_mutex_lock(&amp;mutex);
+    if (thread_running) {
+        printf(&#34;Main: Stopping thread...\n&#34;);
+        thread_should_exit = 1;  // 设置退出标志
+
+        // 等待线程退出并回收资源
+        int ret = pthread_join(worker_thread, NULL);
+        if (ret != 0) {
+            perror(&#34;pthread_join&#34;);
+            exit(EXIT_FAILURE);
+        }
+
+        thread_running = 0;
+        printf(&#34;Main: Thread has exited.\n&#34;);
+    } else {
+        printf(&#34;Main: No thread is running\n&#34;);
+    }
+    pthread_mutex_unlock(&amp;mutex);
+}
+
+// 解析 16 进制输入
+int parse_hex_input(const char *input, unsigned char *output, size_t output_size) {
+    char *endptr;
+    for (size_t i = 0; i &lt; output_size; i&#43;&#43;) {
+        output[i] = (unsigned char)strtol(input &#43; 2 * i, &amp;endptr, 16);
+        if (endptr != input &#43; 2 * (i &#43; 1)) {
+            return -1;  // 非法输入
+        }
+    }
+    return 0;
+}
+
+int main(int argc, char *argv[]) {
+	int i = 0;
+	int input = 0;
+    int sockfd;
+    struct sockaddr_in servaddr;
+
+    // 检查命令行参数
+    if (argc != 2) {
+        printf(&#34;Usage: %s &lt;ipaddress&gt;\n&#34;, argv[0]);
+        exit(EXIT_FAILURE);
+    }
+
+    // 创建 Socket
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) &lt; 0) {
+        printf(&#34;Create socket error: %s (errno: %d)\n&#34;, strerror(errno), errno);
+        exit(EXIT_FAILURE);
+    }
+
+    // 设置服务器地址
+    memset(&amp;servaddr, 0, sizeof(servaddr));
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_port = htons(DEFAULT_PORT);
+    if (inet_pton(AF_INET, argv[1], &amp;servaddr.sin_addr) &lt;= 0) {
+        printf(&#34;inet_pton error for %s\n&#34;, argv[1]);
+        close(sockfd);
+        exit(EXIT_FAILURE);
+    }
+
+    // 连接到服务器
+    if (connect(sockfd, (struct sockaddr *)&amp;servaddr, sizeof(servaddr)) &lt; 0) {
+        printf(&#34;Connect error: %s (errno: %d)\n&#34;, strerror(errno), errno);
+        close(sockfd);
+        exit(EXIT_FAILURE);
+    }
+
+    printf(&#34;Connected to server at %s:%d\n&#34;, argv[1], DEFAULT_PORT);
+	printf(&#34;start:\nFA 00 00 08 00 00 00 01\n&#34;);
+	printf(&#34;stop:\nFA 00 00 08 00 00 00 02\n&#34;);
+
+    // 主循环
+    while (1) {
+        unsigned char input_buf[8] = {0};
+        char input_str[17];  // 8 个 16 进制数，每个占 2 字符，加上结束符
+
+        for (i = 0; i &lt; 8; i&#43;&#43;) {
+			scanf(&#34;%x&#34;, &amp;input);
+			input_buf[i] = input;
+		}
+
+        // 打印输入
+        printf(&#34;Input: &#34;);
+        for (int i = 0; i &lt; 8; i&#43;&#43;) {
+            printf(&#34;%02X &#34;, input_buf[i]);
+        }
+        printf(&#34;\n&#34;);
+
+        // 根据输入启动或停止线程
+        if (input_buf[0] == 0xFA &amp;&amp; input_buf[7] == 0x01) {
+            create_thread();
+			send(sockfd, &amp;input_buf[0], sizeof(input_buf), 0);
+        } else if (input_buf[0] == 0xFA &amp;&amp; input_buf[7] == 0x02) {
+            destroy_thread();
+			send(sockfd, &amp;input_buf[0], sizeof(input_buf), 0);
+        }
+    }
+
+    // 清理资源
+    destroy_thread();  // 确保线程退出
+    pthread_mutex_destroy(&amp;mutex);
+    close(sockfd);
+
+    return 0;
+}
+
+
+
+
+
+运行方式
+
+
+
+
+server端
+
+
+
+./server
+
+
+显示结果并等待客户端连接">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/socket%E5%9F%BA%E4%BA%8Etcp%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%9E%E4%BE%8B/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/socket%E5%9F%BA%E4%BA%8Etcp%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%9E%E4%BE%8B/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/socket%E5%9F%BA%E4%BA%8Etcp%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%9E%E4%BE%8B/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="socket基于tcp的服务端与客户端实例">
+  <meta property="og:description" content="socket基于tcp的服务端与客户端实例 先运行服务端再运行客户端，服务端收到客户端下属的开始指令后，两边同时创建线程，服务端收到客户端下属的停止指令后，两边同时停止线程
+server.c #include &lt;stdlib.h&gt; #include &lt;stdio.h&gt; #include &lt;stdbool.h&gt; #include &lt;assert.h&gt; #include &lt;fcntl.h&gt; // Flags for open() #include &lt;sys/stat.h&gt; // Open() system call #include &lt;sys/types.h&gt; // Types for open() #include &lt;unistd.h&gt; // Close() system call #include &lt;string.h&gt; // Memory setting and copying #include &lt;getopt.h&gt; // Option parsing #include &lt;errno.h&gt; // Error codes #include&lt;sys/socket.h&gt; #include&lt;netinet/in.h&gt; #include &lt;pthread.h&gt; #define DEFAULT_PORT 4000 #define MAXLINE 4096 #define socket_send_size 4096 int socket_fd, connect_fd; int flag1; // 全局变量 pthread_t worker_thread = 0; // 工作线程 ID volatile int thread_running = 0; // 线程运行状态 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁 int flag1; int socket_fd, connect_fd; void cleanup_handler() {	} void *receive_file(void *arg) { printf(&#34;enter therad\n&#34;);	pthread_cleanup_push(cleanup_handler, NULL); int i = 0, rc = 0; unsigned char send_buffer[socket_send_size] = {0}; memset(send_buffer, 0, socket_send_size); while (flag1 == 1) { #if 1 for (i = 0; i &lt; 4; i&#43;&#43;) { if (flag1 != 1) break; } send(connect_fd, &amp;send_buffer[0], socket_send_size, 0); #endif } pthread_cleanup_pop(0); pthread_exit(NULL); } void create_thread() { pthread_mutex_lock(&amp;mutex); if (!thread_running) { int ret = pthread_create(&amp;worker_thread, NULL, &amp;receive_file, NULL); if (ret != 0) { perror(&#34;pthread_create&#34;);	exit(EXIT_FAILURE); } thread_running = 1; printf(&#34;Main: Created thread\n&#34;); } else { printf(&#34;Main: Thread is already running\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 销毁线程 void destroy_thread() { pthread_mutex_lock(&amp;mutex); if (thread_running) { printf(&#34;Main: Stopping thread...\n&#34;); int ret = pthread_cancel(worker_thread); if (ret != 0) { perror(&#34;pthread_cancel&#34;); exit(EXIT_FAILURE); } // 等待线程退出并回收资源 ret = pthread_join(worker_thread, NULL); if (ret != 0) { perror(&#34;pthread_join&#34;); exit(EXIT_FAILURE); } thread_running = 0; printf(&#34;Main: Thread has exited.\n&#34;); } else { printf(&#34;Main: No thread is running\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 主函数 /*---------------------------------------------------------------------------- * Main *----------------------------------------------------------------------------*/ int main(void) {	// Socket相关变量 struct sockaddr_in servaddr; unsigned char buff[MAXLINE]; int n; //初始化Socket if( (socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1 ) { printf(&#34;create socket error: %s(errno: %d)\n&#34;,strerror(errno),errno); exit(0); } // 解决 Address already in use 问题 int opt = 1; setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &amp;opt, sizeof(opt)); //初始化 memset(&amp;servaddr, 0, sizeof(servaddr)); servaddr.sin_family = AF_INET; servaddr.sin_addr.s_addr = htonl(INADDR_ANY);//IP地址设置成INADDR_ANY,让系统自动获取本机的IP地址。 servaddr.sin_port = htons(DEFAULT_PORT);//设置的端口为DEFAULT_PORT //将本地地址绑定到所创建的套接字上 if( bind(socket_fd, (struct sockaddr*)&amp;servaddr, sizeof(servaddr)) == -1) { printf(&#34;bind socket error: %s(errno: %d)\n&#34;,strerror(errno),errno); exit(0); } //开始监听是否有客户端连接 if( listen(socket_fd, 2) == -1) { printf(&#34;listen socket error: %s(errno: %d)\n&#34;,strerror(errno),errno); exit(0); } printf(&#34;======waiting for client&#39;s request======\n&#34;); flag1 = 0; printf(&#34;start:\nFA 00 00 08 00 00 00 01\n&#34;); printf(&#34;stop:\nFA 00 00 08 00 00 00 02\n&#34;); while (1) { if( (connect_fd = accept(socket_fd, (struct sockaddr*)NULL, NULL)) == -1) { printf(&#34;accept socket error: %s(errno: %d)&#34;,strerror(errno),errno); usleep(10); continue; } printf(&#34;mark-1\n&#34;); while (1) { //接受客户端传过来的数据 n = recv(connect_fd, buff, MAXLINE, 0); usleep(100); printf(&#34;mark-2\n&#34;); if(n &gt; 0) { // 判断是开始还是停止 if (buff[0] == 0xFA &amp;&amp; buff[7] == 0x01) { // 开始 printf(&#34;start\n&#34;); //sleep(1200); //测试长时间不执行操作，网口是否仍正常工作 flag1 = 1; // 复位	create_thread(); system(&#34;date&#34;); } else if (buff[0] == 0xFA &amp;&amp; buff[7] == 0x02) { flag1 = 2; // 停止	destroy_thread(); system(&#34;date&#34;); } } else if (n &lt; 0) { usleep(100); continue; } else { close(connect_fd); printf(&#34;mark-3\n&#34;); usleep(100); break; } } usleep(10); } close(connect_fd); close(socket_fd); return 0; } client.c #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;string.h&gt; #include &lt;errno.h&gt; #include &lt;sys/types.h&gt; #include &lt;sys/socket.h&gt; #include &lt;netinet/in.h&gt; #include &lt;arpa/inet.h&gt; #include &lt;unistd.h&gt; #include &lt;pthread.h&gt; #define DEFAULT_PORT 4000 #define MAXLINE 4096 // 全局变量 pthread_t worker_thread = 0; // 工作线程 ID volatile int thread_running = 0; // 线程运行状态 volatile int thread_should_exit = 0; // 线程退出标志 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁 // 线程清理函数 void cleanup_handler(void *arg) { printf(&#34;Thread: Cleaning up resources...\n&#34;); } // 工作线程函数 void *receive_file(void *arg) { printf(&#34;Thread: Entered thread\n&#34;); // 注册清理函数 pthread_cleanup_push(cleanup_handler, NULL); while (!thread_should_exit) { // 模拟工作 printf(&#34;Thread: Working...\n&#34;); sleep(1); } // 清理 pthread_cleanup_pop(1); printf(&#34;Thread: Exiting...\n&#34;); return NULL; } // 创建线程 void create_thread() { pthread_mutex_lock(&amp;mutex); if (!thread_running) { thread_should_exit = 0; // 重置退出标志 int ret = pthread_create(&amp;worker_thread, NULL, receive_file, NULL); if (ret != 0) { perror(&#34;pthread_create&#34;); exit(EXIT_FAILURE); } thread_running = 1; printf(&#34;Main: Created thread\n&#34;); } else { printf(&#34;Main: Thread is already running\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 销毁线程 void destroy_thread() { pthread_mutex_lock(&amp;mutex); if (thread_running) { printf(&#34;Main: Stopping thread...\n&#34;); thread_should_exit = 1; // 设置退出标志 // 等待线程退出并回收资源 int ret = pthread_join(worker_thread, NULL); if (ret != 0) { perror(&#34;pthread_join&#34;); exit(EXIT_FAILURE); } thread_running = 0; printf(&#34;Main: Thread has exited.\n&#34;); } else { printf(&#34;Main: No thread is running\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 解析 16 进制输入 int parse_hex_input(const char *input, unsigned char *output, size_t output_size) { char *endptr; for (size_t i = 0; i &lt; output_size; i&#43;&#43;) { output[i] = (unsigned char)strtol(input &#43; 2 * i, &amp;endptr, 16); if (endptr != input &#43; 2 * (i &#43; 1)) { return -1; // 非法输入 } } return 0; } int main(int argc, char *argv[]) { int i = 0; int input = 0; int sockfd; struct sockaddr_in servaddr; // 检查命令行参数 if (argc != 2) { printf(&#34;Usage: %s &lt;ipaddress&gt;\n&#34;, argv[0]); exit(EXIT_FAILURE); } // 创建 Socket if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) &lt; 0) { printf(&#34;Create socket error: %s (errno: %d)\n&#34;, strerror(errno), errno); exit(EXIT_FAILURE); } // 设置服务器地址 memset(&amp;servaddr, 0, sizeof(servaddr)); servaddr.sin_family = AF_INET; servaddr.sin_port = htons(DEFAULT_PORT); if (inet_pton(AF_INET, argv[1], &amp;servaddr.sin_addr) &lt;= 0) { printf(&#34;inet_pton error for %s\n&#34;, argv[1]); close(sockfd); exit(EXIT_FAILURE); } // 连接到服务器 if (connect(sockfd, (struct sockaddr *)&amp;servaddr, sizeof(servaddr)) &lt; 0) { printf(&#34;Connect error: %s (errno: %d)\n&#34;, strerror(errno), errno); close(sockfd); exit(EXIT_FAILURE); } printf(&#34;Connected to server at %s:%d\n&#34;, argv[1], DEFAULT_PORT); printf(&#34;start:\nFA 00 00 08 00 00 00 01\n&#34;); printf(&#34;stop:\nFA 00 00 08 00 00 00 02\n&#34;); // 主循环 while (1) { unsigned char input_buf[8] = {0}; char input_str[17]; // 8 个 16 进制数，每个占 2 字符，加上结束符 for (i = 0; i &lt; 8; i&#43;&#43;) { scanf(&#34;%x&#34;, &amp;input); input_buf[i] = input; } // 打印输入 printf(&#34;Input: &#34;); for (int i = 0; i &lt; 8; i&#43;&#43;) { printf(&#34;%02X &#34;, input_buf[i]); } printf(&#34;\n&#34;); // 根据输入启动或停止线程 if (input_buf[0] == 0xFA &amp;&amp; input_buf[7] == 0x01) { create_thread(); send(sockfd, &amp;input_buf[0], sizeof(input_buf), 0); } else if (input_buf[0] == 0xFA &amp;&amp; input_buf[7] == 0x02) { destroy_thread(); send(sockfd, &amp;input_buf[0], sizeof(input_buf), 0); } } // 清理资源 destroy_thread(); // 确保线程退出 pthread_mutex_destroy(&amp;mutex); close(sockfd); return 0; } 运行方式 server端 ./server 显示结果并等待客户端连接">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2025-03-20T17:38:32+08:00">
+    <meta property="article:modified_time" content="2025-03-20T17:38:32+08:00">
+    <meta property="article:tag" content="Socket">
+    <meta property="article:tag" content="Tcp">
+    <meta property="article:tag" content="程序员">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="socket基于tcp的服务端与客户端实例">
+  <meta name="twitter:description" content="socket基于tcp的服务端与客户端实例 先运行服务端再运行客户端，服务端收到客户端下属的开始指令后，两边同时创建线程，服务端收到客户端下属的停止指令后，两边同时停止线程
+server.c #include &lt;stdlib.h&gt; #include &lt;stdio.h&gt; #include &lt;stdbool.h&gt; #include &lt;assert.h&gt; #include &lt;fcntl.h&gt; // Flags for open() #include &lt;sys/stat.h&gt; // Open() system call #include &lt;sys/types.h&gt; // Types for open() #include &lt;unistd.h&gt; // Close() system call #include &lt;string.h&gt; // Memory setting and copying #include &lt;getopt.h&gt; // Option parsing #include &lt;errno.h&gt; // Error codes #include&lt;sys/socket.h&gt; #include&lt;netinet/in.h&gt; #include &lt;pthread.h&gt; #define DEFAULT_PORT 4000 #define MAXLINE 4096 #define socket_send_size 4096 int socket_fd, connect_fd; int flag1; // 全局变量 pthread_t worker_thread = 0; // 工作线程 ID volatile int thread_running = 0; // 线程运行状态 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁 int flag1; int socket_fd, connect_fd; void cleanup_handler() {	} void *receive_file(void *arg) { printf(&#34;enter therad\n&#34;);	pthread_cleanup_push(cleanup_handler, NULL); int i = 0, rc = 0; unsigned char send_buffer[socket_send_size] = {0}; memset(send_buffer, 0, socket_send_size); while (flag1 == 1) { #if 1 for (i = 0; i &lt; 4; i&#43;&#43;) { if (flag1 != 1) break; } send(connect_fd, &amp;send_buffer[0], socket_send_size, 0); #endif } pthread_cleanup_pop(0); pthread_exit(NULL); } void create_thread() { pthread_mutex_lock(&amp;mutex); if (!thread_running) { int ret = pthread_create(&amp;worker_thread, NULL, &amp;receive_file, NULL); if (ret != 0) { perror(&#34;pthread_create&#34;);	exit(EXIT_FAILURE); } thread_running = 1; printf(&#34;Main: Created thread\n&#34;); } else { printf(&#34;Main: Thread is already running\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 销毁线程 void destroy_thread() { pthread_mutex_lock(&amp;mutex); if (thread_running) { printf(&#34;Main: Stopping thread...\n&#34;); int ret = pthread_cancel(worker_thread); if (ret != 0) { perror(&#34;pthread_cancel&#34;); exit(EXIT_FAILURE); } // 等待线程退出并回收资源 ret = pthread_join(worker_thread, NULL); if (ret != 0) { perror(&#34;pthread_join&#34;); exit(EXIT_FAILURE); } thread_running = 0; printf(&#34;Main: Thread has exited.\n&#34;); } else { printf(&#34;Main: No thread is running\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 主函数 /*---------------------------------------------------------------------------- * Main *----------------------------------------------------------------------------*/ int main(void) {	// Socket相关变量 struct sockaddr_in servaddr; unsigned char buff[MAXLINE]; int n; //初始化Socket if( (socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1 ) { printf(&#34;create socket error: %s(errno: %d)\n&#34;,strerror(errno),errno); exit(0); } // 解决 Address already in use 问题 int opt = 1; setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &amp;opt, sizeof(opt)); //初始化 memset(&amp;servaddr, 0, sizeof(servaddr)); servaddr.sin_family = AF_INET; servaddr.sin_addr.s_addr = htonl(INADDR_ANY);//IP地址设置成INADDR_ANY,让系统自动获取本机的IP地址。 servaddr.sin_port = htons(DEFAULT_PORT);//设置的端口为DEFAULT_PORT //将本地地址绑定到所创建的套接字上 if( bind(socket_fd, (struct sockaddr*)&amp;servaddr, sizeof(servaddr)) == -1) { printf(&#34;bind socket error: %s(errno: %d)\n&#34;,strerror(errno),errno); exit(0); } //开始监听是否有客户端连接 if( listen(socket_fd, 2) == -1) { printf(&#34;listen socket error: %s(errno: %d)\n&#34;,strerror(errno),errno); exit(0); } printf(&#34;======waiting for client&#39;s request======\n&#34;); flag1 = 0; printf(&#34;start:\nFA 00 00 08 00 00 00 01\n&#34;); printf(&#34;stop:\nFA 00 00 08 00 00 00 02\n&#34;); while (1) { if( (connect_fd = accept(socket_fd, (struct sockaddr*)NULL, NULL)) == -1) { printf(&#34;accept socket error: %s(errno: %d)&#34;,strerror(errno),errno); usleep(10); continue; } printf(&#34;mark-1\n&#34;); while (1) { //接受客户端传过来的数据 n = recv(connect_fd, buff, MAXLINE, 0); usleep(100); printf(&#34;mark-2\n&#34;); if(n &gt; 0) { // 判断是开始还是停止 if (buff[0] == 0xFA &amp;&amp; buff[7] == 0x01) { // 开始 printf(&#34;start\n&#34;); //sleep(1200); //测试长时间不执行操作，网口是否仍正常工作 flag1 = 1; // 复位	create_thread(); system(&#34;date&#34;); } else if (buff[0] == 0xFA &amp;&amp; buff[7] == 0x02) { flag1 = 2; // 停止	destroy_thread(); system(&#34;date&#34;); } } else if (n &lt; 0) { usleep(100); continue; } else { close(connect_fd); printf(&#34;mark-3\n&#34;); usleep(100); break; } } usleep(10); } close(connect_fd); close(socket_fd); return 0; } client.c #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;string.h&gt; #include &lt;errno.h&gt; #include &lt;sys/types.h&gt; #include &lt;sys/socket.h&gt; #include &lt;netinet/in.h&gt; #include &lt;arpa/inet.h&gt; #include &lt;unistd.h&gt; #include &lt;pthread.h&gt; #define DEFAULT_PORT 4000 #define MAXLINE 4096 // 全局变量 pthread_t worker_thread = 0; // 工作线程 ID volatile int thread_running = 0; // 线程运行状态 volatile int thread_should_exit = 0; // 线程退出标志 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁 // 线程清理函数 void cleanup_handler(void *arg) { printf(&#34;Thread: Cleaning up resources...\n&#34;); } // 工作线程函数 void *receive_file(void *arg) { printf(&#34;Thread: Entered thread\n&#34;); // 注册清理函数 pthread_cleanup_push(cleanup_handler, NULL); while (!thread_should_exit) { // 模拟工作 printf(&#34;Thread: Working...\n&#34;); sleep(1); } // 清理 pthread_cleanup_pop(1); printf(&#34;Thread: Exiting...\n&#34;); return NULL; } // 创建线程 void create_thread() { pthread_mutex_lock(&amp;mutex); if (!thread_running) { thread_should_exit = 0; // 重置退出标志 int ret = pthread_create(&amp;worker_thread, NULL, receive_file, NULL); if (ret != 0) { perror(&#34;pthread_create&#34;); exit(EXIT_FAILURE); } thread_running = 1; printf(&#34;Main: Created thread\n&#34;); } else { printf(&#34;Main: Thread is already running\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 销毁线程 void destroy_thread() { pthread_mutex_lock(&amp;mutex); if (thread_running) { printf(&#34;Main: Stopping thread...\n&#34;); thread_should_exit = 1; // 设置退出标志 // 等待线程退出并回收资源 int ret = pthread_join(worker_thread, NULL); if (ret != 0) { perror(&#34;pthread_join&#34;); exit(EXIT_FAILURE); } thread_running = 0; printf(&#34;Main: Thread has exited.\n&#34;); } else { printf(&#34;Main: No thread is running\n&#34;); } pthread_mutex_unlock(&amp;mutex); } // 解析 16 进制输入 int parse_hex_input(const char *input, unsigned char *output, size_t output_size) { char *endptr; for (size_t i = 0; i &lt; output_size; i&#43;&#43;) { output[i] = (unsigned char)strtol(input &#43; 2 * i, &amp;endptr, 16); if (endptr != input &#43; 2 * (i &#43; 1)) { return -1; // 非法输入 } } return 0; } int main(int argc, char *argv[]) { int i = 0; int input = 0; int sockfd; struct sockaddr_in servaddr; // 检查命令行参数 if (argc != 2) { printf(&#34;Usage: %s &lt;ipaddress&gt;\n&#34;, argv[0]); exit(EXIT_FAILURE); } // 创建 Socket if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) &lt; 0) { printf(&#34;Create socket error: %s (errno: %d)\n&#34;, strerror(errno), errno); exit(EXIT_FAILURE); } // 设置服务器地址 memset(&amp;servaddr, 0, sizeof(servaddr)); servaddr.sin_family = AF_INET; servaddr.sin_port = htons(DEFAULT_PORT); if (inet_pton(AF_INET, argv[1], &amp;servaddr.sin_addr) &lt;= 0) { printf(&#34;inet_pton error for %s\n&#34;, argv[1]); close(sockfd); exit(EXIT_FAILURE); } // 连接到服务器 if (connect(sockfd, (struct sockaddr *)&amp;servaddr, sizeof(servaddr)) &lt; 0) { printf(&#34;Connect error: %s (errno: %d)\n&#34;, strerror(errno), errno); close(sockfd); exit(EXIT_FAILURE); } printf(&#34;Connected to server at %s:%d\n&#34;, argv[1], DEFAULT_PORT); printf(&#34;start:\nFA 00 00 08 00 00 00 01\n&#34;); printf(&#34;stop:\nFA 00 00 08 00 00 00 02\n&#34;); // 主循环 while (1) { unsigned char input_buf[8] = {0}; char input_str[17]; // 8 个 16 进制数，每个占 2 字符，加上结束符 for (i = 0; i &lt; 8; i&#43;&#43;) { scanf(&#34;%x&#34;, &amp;input); input_buf[i] = input; } // 打印输入 printf(&#34;Input: &#34;); for (int i = 0; i &lt; 8; i&#43;&#43;) { printf(&#34;%02X &#34;, input_buf[i]); } printf(&#34;\n&#34;); // 根据输入启动或停止线程 if (input_buf[0] == 0xFA &amp;&amp; input_buf[7] == 0x01) { create_thread(); send(sockfd, &amp;input_buf[0], sizeof(input_buf), 0); } else if (input_buf[0] == 0xFA &amp;&amp; input_buf[7] == 0x02) { destroy_thread(); send(sockfd, &amp;input_buf[0], sizeof(input_buf), 0); } } // 清理资源 destroy_thread(); // 确保线程退出 pthread_mutex_destroy(&amp;mutex); close(sockfd); return 0; } 运行方式 server端 ./server 显示结果并等待客户端连接">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "socket基于tcp的服务端与客户端实例",
+      "item": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/socket%E5%9F%BA%E4%BA%8Etcp%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%9E%E4%BE%8B/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "socket基于tcp的服务端与客户端实例",
+  "name": "socket基于tcp的服务端与客户端实例",
+  "description": " socket基于tcp的服务端与客户端实例 先运行服务端再运行客户端，服务端收到客户端下属的开始指令后，两边同时创建线程，服务端收到客户端下属的停止指令后，两边同时停止线程\nserver.c #include \u0026lt;stdlib.h\u0026gt; #include \u0026lt;stdio.h\u0026gt; #include \u0026lt;stdbool.h\u0026gt; #include \u0026lt;assert.h\u0026gt; #include \u0026lt;fcntl.h\u0026gt; // Flags for open() #include \u0026lt;sys/stat.h\u0026gt; // Open() system call #include \u0026lt;sys/types.h\u0026gt; // Types for open() #include \u0026lt;unistd.h\u0026gt; // Close() system call #include \u0026lt;string.h\u0026gt; // Memory setting and copying #include \u0026lt;getopt.h\u0026gt; // Option parsing #include \u0026lt;errno.h\u0026gt; // Error codes #include\u0026lt;sys/socket.h\u0026gt; #include\u0026lt;netinet/in.h\u0026gt; #include \u0026lt;pthread.h\u0026gt; #define DEFAULT_PORT 4000 #define MAXLINE 4096 #define socket_send_size 4096 int socket_fd, connect_fd; int flag1; // 全局变量 pthread_t worker_thread = 0; // 工作线程 ID volatile int thread_running = 0; // 线程运行状态 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁 int flag1; int socket_fd, connect_fd; void cleanup_handler() {\t} void *receive_file(void *arg) { printf(\u0026#34;enter therad\\n\u0026#34;);\tpthread_cleanup_push(cleanup_handler, NULL); int i = 0, rc = 0; unsigned char send_buffer[socket_send_size] = {0}; memset(send_buffer, 0, socket_send_size); while (flag1 == 1) { #if 1 for (i = 0; i \u0026lt; 4; i++) { if (flag1 != 1) break; } send(connect_fd, \u0026amp;send_buffer[0], socket_send_size, 0); #endif } pthread_cleanup_pop(0); pthread_exit(NULL); } void create_thread() { pthread_mutex_lock(\u0026amp;mutex); if (!thread_running) { int ret = pthread_create(\u0026amp;worker_thread, NULL, \u0026amp;receive_file, NULL); if (ret != 0) { perror(\u0026#34;pthread_create\u0026#34;);\texit(EXIT_FAILURE); } thread_running = 1; printf(\u0026#34;Main: Created thread\\n\u0026#34;); } else { printf(\u0026#34;Main: Thread is already running\\n\u0026#34;); } pthread_mutex_unlock(\u0026amp;mutex); } // 销毁线程 void destroy_thread() { pthread_mutex_lock(\u0026amp;mutex); if (thread_running) { printf(\u0026#34;Main: Stopping thread...\\n\u0026#34;); int ret = pthread_cancel(worker_thread); if (ret != 0) { perror(\u0026#34;pthread_cancel\u0026#34;); exit(EXIT_FAILURE); } // 等待线程退出并回收资源 ret = pthread_join(worker_thread, NULL); if (ret != 0) { perror(\u0026#34;pthread_join\u0026#34;); exit(EXIT_FAILURE); } thread_running = 0; printf(\u0026#34;Main: Thread has exited.\\n\u0026#34;); } else { printf(\u0026#34;Main: No thread is running\\n\u0026#34;); } pthread_mutex_unlock(\u0026amp;mutex); } // 主函数 /*---------------------------------------------------------------------------- * Main *----------------------------------------------------------------------------*/ int main(void) {\t// Socket相关变量 struct sockaddr_in servaddr; unsigned char buff[MAXLINE]; int n; //初始化Socket if( (socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1 ) { printf(\u0026#34;create socket error: %s(errno: %d)\\n\u0026#34;,strerror(errno),errno); exit(0); } // 解决 Address already in use 问题 int opt = 1; setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, \u0026amp;opt, sizeof(opt)); //初始化 memset(\u0026amp;servaddr, 0, sizeof(servaddr)); servaddr.sin_family = AF_INET; servaddr.sin_addr.s_addr = htonl(INADDR_ANY);//IP地址设置成INADDR_ANY,让系统自动获取本机的IP地址。 servaddr.sin_port = htons(DEFAULT_PORT);//设置的端口为DEFAULT_PORT //将本地地址绑定到所创建的套接字上 if( bind(socket_fd, (struct sockaddr*)\u0026amp;servaddr, sizeof(servaddr)) == -1) { printf(\u0026#34;bind socket error: %s(errno: %d)\\n\u0026#34;,strerror(errno),errno); exit(0); } //开始监听是否有客户端连接 if( listen(socket_fd, 2) == -1) { printf(\u0026#34;listen socket error: %s(errno: %d)\\n\u0026#34;,strerror(errno),errno); exit(0); } printf(\u0026#34;======waiting for client\u0026#39;s request======\\n\u0026#34;); flag1 = 0; printf(\u0026#34;start:\\nFA 00 00 08 00 00 00 01\\n\u0026#34;); printf(\u0026#34;stop:\\nFA 00 00 08 00 00 00 02\\n\u0026#34;); while (1) { if( (connect_fd = accept(socket_fd, (struct sockaddr*)NULL, NULL)) == -1) { printf(\u0026#34;accept socket error: %s(errno: %d)\u0026#34;,strerror(errno),errno); usleep(10); continue; } printf(\u0026#34;mark-1\\n\u0026#34;); while (1) { //接受客户端传过来的数据 n = recv(connect_fd, buff, MAXLINE, 0); usleep(100); printf(\u0026#34;mark-2\\n\u0026#34;); if(n \u0026gt; 0) { // 判断是开始还是停止 if (buff[0] == 0xFA \u0026amp;\u0026amp; buff[7] == 0x01) { // 开始 printf(\u0026#34;start\\n\u0026#34;); //sleep(1200); //测试长时间不执行操作，网口是否仍正常工作 flag1 = 1; // 复位\tcreate_thread(); system(\u0026#34;date\u0026#34;); } else if (buff[0] == 0xFA \u0026amp;\u0026amp; buff[7] == 0x02) { flag1 = 2; // 停止\tdestroy_thread(); system(\u0026#34;date\u0026#34;); } } else if (n \u0026lt; 0) { usleep(100); continue; } else { close(connect_fd); printf(\u0026#34;mark-3\\n\u0026#34;); usleep(100); break; } } usleep(10); } close(connect_fd); close(socket_fd); return 0; } client.c #include \u0026lt;stdio.h\u0026gt; #include \u0026lt;stdlib.h\u0026gt; #include \u0026lt;string.h\u0026gt; #include \u0026lt;errno.h\u0026gt; #include \u0026lt;sys/types.h\u0026gt; #include \u0026lt;sys/socket.h\u0026gt; #include \u0026lt;netinet/in.h\u0026gt; #include \u0026lt;arpa/inet.h\u0026gt; #include \u0026lt;unistd.h\u0026gt; #include \u0026lt;pthread.h\u0026gt; #define DEFAULT_PORT 4000 #define MAXLINE 4096 // 全局变量 pthread_t worker_thread = 0; // 工作线程 ID volatile int thread_running = 0; // 线程运行状态 volatile int thread_should_exit = 0; // 线程退出标志 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁 // 线程清理函数 void cleanup_handler(void *arg) { printf(\u0026#34;Thread: Cleaning up resources...\\n\u0026#34;); } // 工作线程函数 void *receive_file(void *arg) { printf(\u0026#34;Thread: Entered thread\\n\u0026#34;); // 注册清理函数 pthread_cleanup_push(cleanup_handler, NULL); while (!thread_should_exit) { // 模拟工作 printf(\u0026#34;Thread: Working...\\n\u0026#34;); sleep(1); } // 清理 pthread_cleanup_pop(1); printf(\u0026#34;Thread: Exiting...\\n\u0026#34;); return NULL; } // 创建线程 void create_thread() { pthread_mutex_lock(\u0026amp;mutex); if (!thread_running) { thread_should_exit = 0; // 重置退出标志 int ret = pthread_create(\u0026amp;worker_thread, NULL, receive_file, NULL); if (ret != 0) { perror(\u0026#34;pthread_create\u0026#34;); exit(EXIT_FAILURE); } thread_running = 1; printf(\u0026#34;Main: Created thread\\n\u0026#34;); } else { printf(\u0026#34;Main: Thread is already running\\n\u0026#34;); } pthread_mutex_unlock(\u0026amp;mutex); } // 销毁线程 void destroy_thread() { pthread_mutex_lock(\u0026amp;mutex); if (thread_running) { printf(\u0026#34;Main: Stopping thread...\\n\u0026#34;); thread_should_exit = 1; // 设置退出标志 // 等待线程退出并回收资源 int ret = pthread_join(worker_thread, NULL); if (ret != 0) { perror(\u0026#34;pthread_join\u0026#34;); exit(EXIT_FAILURE); } thread_running = 0; printf(\u0026#34;Main: Thread has exited.\\n\u0026#34;); } else { printf(\u0026#34;Main: No thread is running\\n\u0026#34;); } pthread_mutex_unlock(\u0026amp;mutex); } // 解析 16 进制输入 int parse_hex_input(const char *input, unsigned char *output, size_t output_size) { char *endptr; for (size_t i = 0; i \u0026lt; output_size; i++) { output[i] = (unsigned char)strtol(input + 2 * i, \u0026amp;endptr, 16); if (endptr != input + 2 * (i + 1)) { return -1; // 非法输入 } } return 0; } int main(int argc, char *argv[]) { int i = 0; int input = 0; int sockfd; struct sockaddr_in servaddr; // 检查命令行参数 if (argc != 2) { printf(\u0026#34;Usage: %s \u0026lt;ipaddress\u0026gt;\\n\u0026#34;, argv[0]); exit(EXIT_FAILURE); } // 创建 Socket if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) \u0026lt; 0) { printf(\u0026#34;Create socket error: %s (errno: %d)\\n\u0026#34;, strerror(errno), errno); exit(EXIT_FAILURE); } // 设置服务器地址 memset(\u0026amp;servaddr, 0, sizeof(servaddr)); servaddr.sin_family = AF_INET; servaddr.sin_port = htons(DEFAULT_PORT); if (inet_pton(AF_INET, argv[1], \u0026amp;servaddr.sin_addr) \u0026lt;= 0) { printf(\u0026#34;inet_pton error for %s\\n\u0026#34;, argv[1]); close(sockfd); exit(EXIT_FAILURE); } // 连接到服务器 if (connect(sockfd, (struct sockaddr *)\u0026amp;servaddr, sizeof(servaddr)) \u0026lt; 0) { printf(\u0026#34;Connect error: %s (errno: %d)\\n\u0026#34;, strerror(errno), errno); close(sockfd); exit(EXIT_FAILURE); } printf(\u0026#34;Connected to server at %s:%d\\n\u0026#34;, argv[1], DEFAULT_PORT); printf(\u0026#34;start:\\nFA 00 00 08 00 00 00 01\\n\u0026#34;); printf(\u0026#34;stop:\\nFA 00 00 08 00 00 00 02\\n\u0026#34;); // 主循环 while (1) { unsigned char input_buf[8] = {0}; char input_str[17]; // 8 个 16 进制数，每个占 2 字符，加上结束符 for (i = 0; i \u0026lt; 8; i++) { scanf(\u0026#34;%x\u0026#34;, \u0026amp;input); input_buf[i] = input; } // 打印输入 printf(\u0026#34;Input: \u0026#34;); for (int i = 0; i \u0026lt; 8; i++) { printf(\u0026#34;%02X \u0026#34;, input_buf[i]); } printf(\u0026#34;\\n\u0026#34;); // 根据输入启动或停止线程 if (input_buf[0] == 0xFA \u0026amp;\u0026amp; input_buf[7] == 0x01) { create_thread(); send(sockfd, \u0026amp;input_buf[0], sizeof(input_buf), 0); } else if (input_buf[0] == 0xFA \u0026amp;\u0026amp; input_buf[7] == 0x02) { destroy_thread(); send(sockfd, \u0026amp;input_buf[0], sizeof(input_buf), 0); } } // 清理资源 destroy_thread(); // 确保线程退出 pthread_mutex_destroy(\u0026amp;mutex); close(sockfd); return 0; } 运行方式 server端 ./server 显示结果并等待客户端连接\n",
+  "keywords": [
+    "socket", "tcp", "程序员"
+  ],
+  "articleBody": " socket基于tcp的服务端与客户端实例 先运行服务端再运行客户端，服务端收到客户端下属的开始指令后，两边同时创建线程，服务端收到客户端下属的停止指令后，两边同时停止线程\nserver.c #include #include #include #include #include // Flags for open() #include // Open() system call #include // Types for open() #include // Close() system call #include // Memory setting and copying #include // Option parsing #include // Error codes #include #include #include #define DEFAULT_PORT 4000 #define MAXLINE 4096 #define socket_send_size 4096 int socket_fd, connect_fd; int flag1; // 全局变量 pthread_t worker_thread = 0; // 工作线程 ID volatile int thread_running = 0; // 线程运行状态 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁 int flag1; int socket_fd, connect_fd; void cleanup_handler() {\t} void *receive_file(void *arg) { printf(\"enter therad\\n\");\tpthread_cleanup_push(cleanup_handler, NULL); int i = 0, rc = 0; unsigned char send_buffer[socket_send_size] = {0}; memset(send_buffer, 0, socket_send_size); while (flag1 == 1) { #if 1 for (i = 0; i \u003c 4; i++) { if (flag1 != 1) break; } send(connect_fd, \u0026send_buffer[0], socket_send_size, 0); #endif } pthread_cleanup_pop(0); pthread_exit(NULL); } void create_thread() { pthread_mutex_lock(\u0026mutex); if (!thread_running) { int ret = pthread_create(\u0026worker_thread, NULL, \u0026receive_file, NULL); if (ret != 0) { perror(\"pthread_create\");\texit(EXIT_FAILURE); } thread_running = 1; printf(\"Main: Created thread\\n\"); } else { printf(\"Main: Thread is already running\\n\"); } pthread_mutex_unlock(\u0026mutex); } // 销毁线程 void destroy_thread() { pthread_mutex_lock(\u0026mutex); if (thread_running) { printf(\"Main: Stopping thread...\\n\"); int ret = pthread_cancel(worker_thread); if (ret != 0) { perror(\"pthread_cancel\"); exit(EXIT_FAILURE); } // 等待线程退出并回收资源 ret = pthread_join(worker_thread, NULL); if (ret != 0) { perror(\"pthread_join\"); exit(EXIT_FAILURE); } thread_running = 0; printf(\"Main: Thread has exited.\\n\"); } else { printf(\"Main: No thread is running\\n\"); } pthread_mutex_unlock(\u0026mutex); } // 主函数 /*---------------------------------------------------------------------------- * Main *----------------------------------------------------------------------------*/ int main(void) {\t// Socket相关变量 struct sockaddr_in servaddr; unsigned char buff[MAXLINE]; int n; //初始化Socket if( (socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1 ) { printf(\"create socket error: %s(errno: %d)\\n\",strerror(errno),errno); exit(0); } // 解决 Address already in use 问题 int opt = 1; setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, \u0026opt, sizeof(opt)); //初始化 memset(\u0026servaddr, 0, sizeof(servaddr)); servaddr.sin_family = AF_INET; servaddr.sin_addr.s_addr = htonl(INADDR_ANY);//IP地址设置成INADDR_ANY,让系统自动获取本机的IP地址。 servaddr.sin_port = htons(DEFAULT_PORT);//设置的端口为DEFAULT_PORT //将本地地址绑定到所创建的套接字上 if( bind(socket_fd, (struct sockaddr*)\u0026servaddr, sizeof(servaddr)) == -1) { printf(\"bind socket error: %s(errno: %d)\\n\",strerror(errno),errno); exit(0); } //开始监听是否有客户端连接 if( listen(socket_fd, 2) == -1) { printf(\"listen socket error: %s(errno: %d)\\n\",strerror(errno),errno); exit(0); } printf(\"======waiting for client's request======\\n\"); flag1 = 0; printf(\"start:\\nFA 00 00 08 00 00 00 01\\n\"); printf(\"stop:\\nFA 00 00 08 00 00 00 02\\n\"); while (1) { if( (connect_fd = accept(socket_fd, (struct sockaddr*)NULL, NULL)) == -1) { printf(\"accept socket error: %s(errno: %d)\",strerror(errno),errno); usleep(10); continue; } printf(\"mark-1\\n\"); while (1) { //接受客户端传过来的数据 n = recv(connect_fd, buff, MAXLINE, 0); usleep(100); printf(\"mark-2\\n\"); if(n \u003e 0) { // 判断是开始还是停止 if (buff[0] == 0xFA \u0026\u0026 buff[7] == 0x01) { // 开始 printf(\"start\\n\"); //sleep(1200); //测试长时间不执行操作，网口是否仍正常工作 flag1 = 1; // 复位\tcreate_thread(); system(\"date\"); } else if (buff[0] == 0xFA \u0026\u0026 buff[7] == 0x02) { flag1 = 2; // 停止\tdestroy_thread(); system(\"date\"); } } else if (n \u003c 0) { usleep(100); continue; } else { close(connect_fd); printf(\"mark-3\\n\"); usleep(100); break; } } usleep(10); } close(connect_fd); close(socket_fd); return 0; } client.c #include #include #include #include #include #include #include #include #include #include #define DEFAULT_PORT 4000 #define MAXLINE 4096 // 全局变量 pthread_t worker_thread = 0; // 工作线程 ID volatile int thread_running = 0; // 线程运行状态 volatile int thread_should_exit = 0; // 线程退出标志 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // 互斥锁 // 线程清理函数 void cleanup_handler(void *arg) { printf(\"Thread: Cleaning up resources...\\n\"); } // 工作线程函数 void *receive_file(void *arg) { printf(\"Thread: Entered thread\\n\"); // 注册清理函数 pthread_cleanup_push(cleanup_handler, NULL); while (!thread_should_exit) { // 模拟工作 printf(\"Thread: Working...\\n\"); sleep(1); } // 清理 pthread_cleanup_pop(1); printf(\"Thread: Exiting...\\n\"); return NULL; } // 创建线程 void create_thread() { pthread_mutex_lock(\u0026mutex); if (!thread_running) { thread_should_exit = 0; // 重置退出标志 int ret = pthread_create(\u0026worker_thread, NULL, receive_file, NULL); if (ret != 0) { perror(\"pthread_create\"); exit(EXIT_FAILURE); } thread_running = 1; printf(\"Main: Created thread\\n\"); } else { printf(\"Main: Thread is already running\\n\"); } pthread_mutex_unlock(\u0026mutex); } // 销毁线程 void destroy_thread() { pthread_mutex_lock(\u0026mutex); if (thread_running) { printf(\"Main: Stopping thread...\\n\"); thread_should_exit = 1; // 设置退出标志 // 等待线程退出并回收资源 int ret = pthread_join(worker_thread, NULL); if (ret != 0) { perror(\"pthread_join\"); exit(EXIT_FAILURE); } thread_running = 0; printf(\"Main: Thread has exited.\\n\"); } else { printf(\"Main: No thread is running\\n\"); } pthread_mutex_unlock(\u0026mutex); } // 解析 16 进制输入 int parse_hex_input(const char *input, unsigned char *output, size_t output_size) { char *endptr; for (size_t i = 0; i \u003c output_size; i++) { output[i] = (unsigned char)strtol(input + 2 * i, \u0026endptr, 16); if (endptr != input + 2 * (i + 1)) { return -1; // 非法输入 } } return 0; } int main(int argc, char *argv[]) { int i = 0; int input = 0; int sockfd; struct sockaddr_in servaddr; // 检查命令行参数 if (argc != 2) { printf(\"Usage: %s \\n\", argv[0]); exit(EXIT_FAILURE); } // 创建 Socket if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) \u003c 0) { printf(\"Create socket error: %s (errno: %d)\\n\", strerror(errno), errno); exit(EXIT_FAILURE); } // 设置服务器地址 memset(\u0026servaddr, 0, sizeof(servaddr)); servaddr.sin_family = AF_INET; servaddr.sin_port = htons(DEFAULT_PORT); if (inet_pton(AF_INET, argv[1], \u0026servaddr.sin_addr) \u003c= 0) { printf(\"inet_pton error for %s\\n\", argv[1]); close(sockfd); exit(EXIT_FAILURE); } // 连接到服务器 if (connect(sockfd, (struct sockaddr *)\u0026servaddr, sizeof(servaddr)) \u003c 0) { printf(\"Connect error: %s (errno: %d)\\n\", strerror(errno), errno); close(sockfd); exit(EXIT_FAILURE); } printf(\"Connected to server at %s:%d\\n\", argv[1], DEFAULT_PORT); printf(\"start:\\nFA 00 00 08 00 00 00 01\\n\"); printf(\"stop:\\nFA 00 00 08 00 00 00 02\\n\"); // 主循环 while (1) { unsigned char input_buf[8] = {0}; char input_str[17]; // 8 个 16 进制数，每个占 2 字符，加上结束符 for (i = 0; i \u003c 8; i++) { scanf(\"%x\", \u0026input); input_buf[i] = input; } // 打印输入 printf(\"Input: \"); for (int i = 0; i \u003c 8; i++) { printf(\"%02X \", input_buf[i]); } printf(\"\\n\"); // 根据输入启动或停止线程 if (input_buf[0] == 0xFA \u0026\u0026 input_buf[7] == 0x01) { create_thread(); send(sockfd, \u0026input_buf[0], sizeof(input_buf), 0); } else if (input_buf[0] == 0xFA \u0026\u0026 input_buf[7] == 0x02) { destroy_thread(); send(sockfd, \u0026input_buf[0], sizeof(input_buf), 0); } } // 清理资源 destroy_thread(); // 确保线程退出 pthread_mutex_destroy(\u0026mutex); close(sockfd); return 0; } 运行方式 server端 ./server 显示结果并等待客户端连接\n======waiting for client's request====== start: FA 00 00 08 00 00 00 01 stop: FA 00 00 08 00 00 00 02 client端 运行客户端后下发指令\nstart: FA 00 00 08 00 00 00 01 stop: FA 00 00 08 00 00 00 02\n$ ./client 127.0.0.1 Connected to server at 127.0.0.1:4000 start: FA 00 00 08 00 00 00 01 stop: FA 00 00 08 00 00 00 02 FA 00 00 08 00 00 00 01 Input: FA 00 00 08 00 00 00 01 Main: Created thread Thread: Entered thread Thread: Working... Thread: Working... Thread: Working... Thread: Working... FA 00 00 08 00 00 00 02Thread: Working... Input: FA 00 00 08 00 00 00 02 Main: Stopping thread... Thread: Cleaning up resources... Thread: Exiting... Main: Thread has exited. FA 00 00 08 00 00 00 01 Input: FA 00 00 08 00 00 00 01 Main: Created thread Thread: Entered thread Thread: Working... Thread: Working... Thread: Working... Thread: Working... FA 00 00 08 00 00 00 02Thread: Working... Input: FA 00 00 08 00 00 00 02 Main: Stopping thread... Thread: Cleaning up resources... Thread: Exiting... Main: Thread has exited. 此时服务端收到客户端下发的指令\n$ ./server ======waiting for client's request====== start: FA 00 00 08 00 00 00 01 stop: FA 00 00 08 00 00 00 02 mark-1 mark-2 start Main: Created thread enter therad 2025年03月20日 17:44:57 mark-2 Main: Stopping thread... Main: Thread has exited. 2025年03月20日 17:45:02 mark-2 start Main: Created thread enter therad 2025年03月20日 17:45:10 mark-2 Main: Stopping thread... Main: Thread has exited. 2025年03月20日 17:45:16 参考链接 socket基于tcp通信实例\nsocket基于tcp服务端实例\nsocket基于tcp客户端实例\n",
+  "wordCount" : "1208",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2025-03-20T17:38:32+08:00",
+  "dateModified": "2025-03-20T17:38:32+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Theme PaperMod"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/socket%E5%9F%BA%E4%BA%8Etcp%E7%9A%84%E6%9C%8D%E5%8A%A1%E7%AB%AF%E4%B8%8E%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%9E%E4%BE%8B/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PaperMod",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/post/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+    <h1 class="post-title entry-hint-parent">
+      socket基于tcp的服务端与客户端实例
+    </h1>
+    <div class="post-meta">
+
+<span title='2025-03-20 17:38:32 +0800 +0800'>March 20, 2025</span>&nbsp;·&nbsp;<span>6 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span>&nbsp;|&nbsp;<span>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content/post/%e7%a8%8b%e5%ba%8f%e5%91%98/socket%e5%9f%ba%e4%ba%8etcp%e7%9a%84%e6%9c%8d%e5%8a%a1%e7%ab%af%e4%b8%8e%e5%ae%a2%e6%88%b7%e7%ab%af%e5%ae%9e%e4%be%8b.org" rel="noopener noreferrer edit" target="_blank">Suggest Changes</a>
+    </span>
+
+</div>
+  </header> 
+
+  <div class="post-content md-content">
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+socket基于tcp的服务端与客户端实例
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>
+先运行服务端再运行客户端，服务端收到客户端下属的开始指令后，两边同时创建线程，服务端收到客户端下属的停止指令后，两边同时停止线程</p>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+server.c
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<div class="src src-c">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdbool.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;assert.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;              // Flags for open()</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/stat.h&gt;           // Open() system call</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;          // Types for open()</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;             // Close() system call</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;             // Memory setting and copying</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;getopt.h&gt;             // Option parsing</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;              // Error codes</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span><span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define DEFAULT_PORT 4000
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define MAXLINE 4096
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define socket_send_size 4096
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span>    <span class="n">socket_fd</span><span class="p">,</span> <span class="n">connect_fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span>    <span class="n">flag1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 全局变量
+</span></span></span><span class="line"><span class="cl"><span class="kt">pthread_t</span> <span class="n">worker_thread</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 工作线程 ID
+</span></span></span><span class="line"><span class="cl"><span class="k">volatile</span> <span class="kt">int</span> <span class="n">thread_running</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="c1">// 线程运行状态
+</span></span></span><span class="line"><span class="cl"><span class="kt">pthread_mutex_t</span> <span class="n">mutex</span> <span class="o">=</span> <span class="n">PTHREAD_MUTEX_INITIALIZER</span><span class="p">;</span> <span class="c1">// 互斥锁
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">flag1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">socket_fd</span><span class="p">,</span> <span class="n">connect_fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">cleanup_handler</span><span class="p">()</span> <span class="p">{</span>	
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="nf">receive_file</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;enter therad</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>	
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nf">pthread_cleanup_push</span><span class="p">(</span><span class="n">cleanup_handler</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">send_buffer</span><span class="p">[</span><span class="n">socket_send_size</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">memset</span><span class="p">(</span><span class="n">send_buffer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">socket_send_size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">flag1</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#if 1
+</span></span></span><span class="line"><span class="cl">		<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="p">(</span><span class="n">flag1</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">send</span><span class="p">(</span><span class="n">connect_fd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">send_buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">socket_send_size</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">pthread_cleanup_pop</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">pthread_exit</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">create_thread</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">thread_running</span><span class="p">)</span> <span class="p">{</span>        
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="nf">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">worker_thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">receive_file</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">perror</span><span class="p">(</span><span class="s">&#34;pthread_create&#34;</span><span class="p">);</span>			
+</span></span><span class="line"><span class="cl">			<span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">thread_running</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Created thread</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Thread is already running</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 销毁线程
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">destroy_thread</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">thread_running</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Stopping thread...</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="nf">pthread_cancel</span><span class="p">(</span><span class="n">worker_thread</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;pthread_cancel&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 等待线程退出并回收资源
+</span></span></span><span class="line"><span class="cl">        <span class="n">ret</span> <span class="o">=</span> <span class="nf">pthread_join</span><span class="p">(</span><span class="n">worker_thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;pthread_join&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">thread_running</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Thread has exited.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: No thread is running</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 主函数
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*----------------------------------------------------------------------------
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Main
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *----------------------------------------------------------------------------*/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>		
+</span></span><span class="line"><span class="cl">	<span class="c1">// Socket相关变量
+</span></span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">sockaddr_in</span>     <span class="n">servaddr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">buff</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span>     <span class="n">n</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">//初始化Socket
+</span></span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span> <span class="p">(</span><span class="n">socket_fd</span> <span class="o">=</span> <span class="nf">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;create socket error: %s(errno: %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="nf">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">),</span><span class="n">errno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 解决 Address already in use 问题
+</span></span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">opt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">setsockopt</span><span class="p">(</span><span class="n">socket_fd</span><span class="p">,</span> <span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">opt</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">opt</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//初始化
+</span></span></span><span class="line"><span class="cl">	<span class="nf">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">servaddr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">servaddr</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="n">servaddr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">servaddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="nf">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span><span class="c1">//IP地址设置成INADDR_ANY,让系统自动获取本机的IP地址。
+</span></span></span><span class="line"><span class="cl">	<span class="n">servaddr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="nf">htons</span><span class="p">(</span><span class="n">DEFAULT_PORT</span><span class="p">);</span><span class="c1">//设置的端口为DEFAULT_PORT
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//将本地地址绑定到所创建的套接字上
+</span></span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span> <span class="nf">bind</span><span class="p">(</span><span class="n">socket_fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">servaddr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">servaddr</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;bind socket error: %s(errno: %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="nf">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">),</span><span class="n">errno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//开始监听是否有客户端连接
+</span></span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span> <span class="nf">listen</span><span class="p">(</span><span class="n">socket_fd</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;listen socket error: %s(errno: %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="nf">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">),</span><span class="n">errno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;======waiting for client&#39;s request======</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">flag1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;start:</span><span class="se">\n</span><span class="s">FA 00 00 08 00 00 00 01</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;stop:</span><span class="se">\n</span><span class="s">FA 00 00 08 00 00 00 02</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span><span class="p">(</span> <span class="p">(</span><span class="n">connect_fd</span> <span class="o">=</span> <span class="nf">accept</span><span class="p">(</span><span class="n">socket_fd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="o">*</span><span class="p">)</span><span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;accept socket error: %s(errno: %d)&#34;</span><span class="p">,</span><span class="nf">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">),</span><span class="n">errno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">usleep</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;mark-1</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="c1">//接受客户端传过来的数据
+</span></span></span><span class="line"><span class="cl">			<span class="n">n</span> <span class="o">=</span> <span class="nf">recv</span><span class="p">(</span><span class="n">connect_fd</span><span class="p">,</span> <span class="n">buff</span><span class="p">,</span> <span class="n">MAXLINE</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">usleep</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;mark-2</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="c1">// 判断是开始还是停止
+</span></span></span><span class="line"><span class="cl">				<span class="k">if</span> <span class="p">(</span><span class="n">buff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0xFA</span> <span class="o">&amp;&amp;</span> <span class="n">buff</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">					<span class="c1">// 开始
+</span></span></span><span class="line"><span class="cl">					<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;start</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">					<span class="c1">//sleep(1200); //测试长时间不执行操作，网口是否仍正常工作
+</span></span></span><span class="line"><span class="cl">					<span class="n">flag1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">					<span class="c1">// 复位					
+</span></span></span><span class="line"><span class="cl">					<span class="nf">create_thread</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">					<span class="nf">system</span><span class="p">(</span><span class="s">&#34;date&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">				<span class="p">}</span>
+</span></span><span class="line"><span class="cl">				<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">buff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0xFA</span> <span class="o">&amp;&amp;</span> <span class="n">buff</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x02</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">					<span class="n">flag1</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">					<span class="c1">// 停止					
+</span></span></span><span class="line"><span class="cl">					<span class="nf">destroy_thread</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">					<span class="nf">system</span><span class="p">(</span><span class="s">&#34;date&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">				<span class="p">}</span> 
+</span></span><span class="line"><span class="cl">			<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nf">usleep</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">				<span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="nf">close</span><span class="p">(</span><span class="n">connect_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">				<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;mark-3</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">				<span class="nf">usleep</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">				<span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="nf">usleep</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">close</span><span class="p">(</span><span class="n">connect_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">close</span><span class="p">(</span><span class="n">socket_fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+client.c
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<div class="src src-c">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#define DEFAULT_PORT 4000
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define MAXLINE 4096
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 全局变量
+</span></span></span><span class="line"><span class="cl"><span class="kt">pthread_t</span> <span class="n">worker_thread</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>          <span class="c1">// 工作线程 ID
+</span></span></span><span class="line"><span class="cl"><span class="k">volatile</span> <span class="kt">int</span> <span class="n">thread_running</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="c1">// 线程运行状态
+</span></span></span><span class="line"><span class="cl"><span class="k">volatile</span> <span class="kt">int</span> <span class="n">thread_should_exit</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// 线程退出标志
+</span></span></span><span class="line"><span class="cl"><span class="kt">pthread_mutex_t</span> <span class="n">mutex</span> <span class="o">=</span> <span class="n">PTHREAD_MUTEX_INITIALIZER</span><span class="p">;</span>  <span class="c1">// 互斥锁
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 线程清理函数
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">cleanup_handler</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Thread: Cleaning up resources...</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 工作线程函数
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="nf">receive_file</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Thread: Entered thread</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 注册清理函数
+</span></span></span><span class="line"><span class="cl">    <span class="nf">pthread_cleanup_push</span><span class="p">(</span><span class="n">cleanup_handler</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">thread_should_exit</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// 模拟工作
+</span></span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Thread: Working...</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 清理
+</span></span></span><span class="line"><span class="cl">    <span class="nf">pthread_cleanup_pop</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Thread: Exiting...</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 创建线程
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">create_thread</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">thread_running</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">thread_should_exit</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// 重置退出标志
+</span></span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="nf">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">worker_thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">receive_file</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;pthread_create&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">thread_running</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Created thread</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Thread is already running</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 销毁线程
+</span></span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">destroy_thread</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">thread_running</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Stopping thread...</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">thread_should_exit</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// 设置退出标志
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 等待线程退出并回收资源
+</span></span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="nf">pthread_join</span><span class="p">(</span><span class="n">worker_thread</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">perror</span><span class="p">(</span><span class="s">&#34;pthread_join&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">thread_running</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: Thread has exited.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main: No thread is running</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 解析 16 进制输入
+</span></span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">parse_hex_input</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">input</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">output</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">output_size</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">endptr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">output_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span><span class="nf">strtol</span><span class="p">(</span><span class="n">input</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">endptr</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">endptr</span> <span class="o">!=</span> <span class="n">input</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>  <span class="c1">// 非法输入
+</span></span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">input</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">sockfd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">servaddr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 检查命令行参数
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Usage: %s &lt;ipaddress&gt;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 创建 Socket
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">((</span><span class="n">sockfd</span> <span class="o">=</span> <span class="nf">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Create socket error: %s (errno: %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">),</span> <span class="n">errno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 设置服务器地址
+</span></span></span><span class="line"><span class="cl">    <span class="nf">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">servaddr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">servaddr</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">servaddr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">servaddr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="nf">htons</span><span class="p">(</span><span class="n">DEFAULT_PORT</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nf">inet_pton</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">servaddr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;inet_pton error for %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">close</span><span class="p">(</span><span class="n">sockfd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 连接到服务器
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nf">connect</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">servaddr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">servaddr</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Connect error: %s (errno: %d)</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">),</span> <span class="n">errno</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">close</span><span class="p">(</span><span class="n">sockfd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Connected to server at %s:%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">DEFAULT_PORT</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;start:</span><span class="se">\n</span><span class="s">FA 00 00 08 00 00 00 01</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">printf</span><span class="p">(</span><span class="s">&#34;stop:</span><span class="se">\n</span><span class="s">FA 00 00 08 00 00 00 02</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 主循环
+</span></span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">input_buf</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">char</span> <span class="n">input_str</span><span class="p">[</span><span class="mi">17</span><span class="p">];</span>  <span class="c1">// 8 个 16 进制数，每个占 2 字符，加上结束符
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">scanf</span><span class="p">(</span><span class="s">&#34;%x&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">input</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">input_buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">input</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 打印输入
+</span></span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Input: &#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">8</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;%02X &#34;</span><span class="p">,</span> <span class="n">input_buf</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// 根据输入启动或停止线程
+</span></span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">input_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0xFA</span> <span class="o">&amp;&amp;</span> <span class="n">input_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x01</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">create_thread</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">send</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">input_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">input_buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">input_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0xFA</span> <span class="o">&amp;&amp;</span> <span class="n">input_buf</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="mh">0x02</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">destroy_thread</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">			<span class="nf">send</span><span class="p">(</span><span class="n">sockfd</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">input_buf</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">input_buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// 清理资源
+</span></span></span><span class="line"><span class="cl">    <span class="nf">destroy_thread</span><span class="p">();</span>  <span class="c1">// 确保线程退出
+</span></span></span><span class="line"><span class="cl">    <span class="nf">pthread_mutex_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">close</span><span class="p">(</span><span class="n">sockfd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+运行方式
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+server端
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./server</span></span></code></pre></div>
+</div>
+<p>
+显示结果并等待客户端连接</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">======</span>waiting <span class="k">for</span> client<span class="err">&#39;</span>s <span class="nv">request</span><span class="o">======</span>
+</span></span><span class="line"><span class="cl">start:
+</span></span><span class="line"><span class="cl">FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">01</span>
+</span></span><span class="line"><span class="cl">stop:
+</span></span><span class="line"><span class="cl">FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-4">
+<h4 id="headline-6">
+client端
+</h4>
+<div id="outline-text-headline-6" class="outline-text-4">
+<p>
+运行客户端后下发指令</p>
+<p>
+start: FA 00 00 08 00 00 00 01
+stop:  FA 00 00 08 00 00 00 02</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./client 127.0.0.1
+</span></span><span class="line"><span class="cl">Connected to server at 127.0.0.1:4000
+</span></span><span class="line"><span class="cl">start:
+</span></span><span class="line"><span class="cl">FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">01</span>
+</span></span><span class="line"><span class="cl">stop:
+</span></span><span class="line"><span class="cl">FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span>
+</span></span><span class="line"><span class="cl">FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">01</span>
+</span></span><span class="line"><span class="cl">Input: FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">01</span>
+</span></span><span class="line"><span class="cl">Main: Created thread
+</span></span><span class="line"><span class="cl">Thread: Entered thread
+</span></span><span class="line"><span class="cl">Thread: Working...
+</span></span><span class="line"><span class="cl">Thread: Working...
+</span></span><span class="line"><span class="cl">Thread: Working...
+</span></span><span class="line"><span class="cl">Thread: Working...
+</span></span><span class="line"><span class="cl">FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 02Thread: Working...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Input: FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span>
+</span></span><span class="line"><span class="cl">Main: Stopping thread...
+</span></span><span class="line"><span class="cl">Thread: Cleaning up resources...
+</span></span><span class="line"><span class="cl">Thread: Exiting...
+</span></span><span class="line"><span class="cl">Main: Thread has exited.
+</span></span><span class="line"><span class="cl">FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">01</span>
+</span></span><span class="line"><span class="cl">Input: FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">01</span>
+</span></span><span class="line"><span class="cl">Main: Created thread
+</span></span><span class="line"><span class="cl">Thread: Entered thread
+</span></span><span class="line"><span class="cl">Thread: Working...
+</span></span><span class="line"><span class="cl">Thread: Working...
+</span></span><span class="line"><span class="cl">Thread: Working...
+</span></span><span class="line"><span class="cl">Thread: Working...
+</span></span><span class="line"><span class="cl">FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 02Thread: Working...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Input: FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span>
+</span></span><span class="line"><span class="cl">Main: Stopping thread...
+</span></span><span class="line"><span class="cl">Thread: Cleaning up resources...
+</span></span><span class="line"><span class="cl">Thread: Exiting...
+</span></span><span class="line"><span class="cl">Main: Thread has exited.</span></span></code></pre></div>
+</div>
+<p>
+此时服务端收到客户端下发的指令</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./server
+</span></span><span class="line"><span class="cl"><span class="o">======</span>waiting <span class="k">for</span> client<span class="err">&#39;</span>s <span class="nv">request</span><span class="o">======</span>
+</span></span><span class="line"><span class="cl">start:
+</span></span><span class="line"><span class="cl">FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">01</span>
+</span></span><span class="line"><span class="cl">stop:
+</span></span><span class="line"><span class="cl">FA <span class="m">00</span> <span class="m">00</span> <span class="m">08</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span>
+</span></span><span class="line"><span class="cl">mark-1
+</span></span><span class="line"><span class="cl">mark-2
+</span></span><span class="line"><span class="cl">start
+</span></span><span class="line"><span class="cl">Main: Created thread
+</span></span><span class="line"><span class="cl">enter therad
+</span></span><span class="line"><span class="cl">2025年03月20日 17:44:57
+</span></span><span class="line"><span class="cl">mark-2
+</span></span><span class="line"><span class="cl">Main: Stopping thread...
+</span></span><span class="line"><span class="cl">Main: Thread has exited.
+</span></span><span class="line"><span class="cl">2025年03月20日 17:45:02
+</span></span><span class="line"><span class="cl">mark-2
+</span></span><span class="line"><span class="cl">start
+</span></span><span class="line"><span class="cl">Main: Created thread
+</span></span><span class="line"><span class="cl">enter therad
+</span></span><span class="line"><span class="cl">2025年03月20日 17:45:10
+</span></span><span class="line"><span class="cl">mark-2
+</span></span><span class="line"><span class="cl">Main: Stopping thread...
+</span></span><span class="line"><span class="cl">Main: Thread has exited.
+</span></span><span class="line"><span class="cl">2025年03月20日 17:45:16</span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+参考链接
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<p>
+<a href="https://ynhugo.github.io/p/socket基于tcp通信实例/">socket基于tcp通信实例</a></p>
+<p>
+<a href="https://ynhugo.github.io/p/socket基于tcp服务端实例/">socket基于tcp服务端实例</a></p>
+<p>
+<a href="https://ynhugo.github.io/p/socket基于tcp客户端实例/">socket基于tcp客户端实例</a></p>
+</div>
+</div>
+</div>
+</div>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/socket/">Socket</a></li>
+      <li><a href="http://localhost:1313/tags/tcp/">Tcp</a></li>
+      <li><a href="http://localhost:1313/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a></li>
+    </ul>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share socket基于tcp的服务端与客户端实例 on x"
+            href="https://x.com/intent/tweet/?text=socket%e5%9f%ba%e4%ba%8etcp%e7%9a%84%e6%9c%8d%e5%8a%a1%e7%ab%af%e4%b8%8e%e5%ae%a2%e6%88%b7%e7%ab%af%e5%ae%9e%e4%be%8b&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fsocket%25E5%259F%25BA%25E4%25BA%258Etcp%25E7%259A%2584%25E6%259C%258D%25E5%258A%25A1%25E7%25AB%25AF%25E4%25B8%258E%25E5%25AE%25A2%25E6%2588%25B7%25E7%25AB%25AF%25E5%25AE%259E%25E4%25BE%258B%2f&amp;hashtags=socket%2ctcp%2c%e7%a8%8b%e5%ba%8f%e5%91%98">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share socket基于tcp的服务端与客户端实例 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fsocket%25E5%259F%25BA%25E4%25BA%258Etcp%25E7%259A%2584%25E6%259C%258D%25E5%258A%25A1%25E7%25AB%25AF%25E4%25B8%258E%25E5%25AE%25A2%25E6%2588%25B7%25E7%25AB%25AF%25E5%25AE%259E%25E4%25BE%258B%2f&amp;title=socket%e5%9f%ba%e4%ba%8etcp%e7%9a%84%e6%9c%8d%e5%8a%a1%e7%ab%af%e4%b8%8e%e5%ae%a2%e6%88%b7%e7%ab%af%e5%ae%9e%e4%be%8b&amp;summary=socket%e5%9f%ba%e4%ba%8etcp%e7%9a%84%e6%9c%8d%e5%8a%a1%e7%ab%af%e4%b8%8e%e5%ae%a2%e6%88%b7%e7%ab%af%e5%ae%9e%e4%be%8b&amp;source=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fsocket%25E5%259F%25BA%25E4%25BA%258Etcp%25E7%259A%2584%25E6%259C%258D%25E5%258A%25A1%25E7%25AB%25AF%25E4%25B8%258E%25E5%25AE%25A2%25E6%2588%25B7%25E7%25AB%25AF%25E5%25AE%259E%25E4%25BE%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share socket基于tcp的服务端与客户端实例 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fsocket%25E5%259F%25BA%25E4%25BA%258Etcp%25E7%259A%2584%25E6%259C%258D%25E5%258A%25A1%25E7%25AB%25AF%25E4%25B8%258E%25E5%25AE%25A2%25E6%2588%25B7%25E7%25AB%25AF%25E5%25AE%259E%25E4%25BE%258B%2f&title=socket%e5%9f%ba%e4%ba%8etcp%e7%9a%84%e6%9c%8d%e5%8a%a1%e7%ab%af%e4%b8%8e%e5%ae%a2%e6%88%b7%e7%ab%af%e5%ae%9e%e4%be%8b">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share socket基于tcp的服务端与客户端实例 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fsocket%25E5%259F%25BA%25E4%25BA%258Etcp%25E7%259A%2584%25E6%259C%258D%25E5%258A%25A1%25E7%25AB%25AF%25E4%25B8%258E%25E5%25AE%25A2%25E6%2588%25B7%25E7%25AB%25AF%25E5%25AE%259E%25E4%25BE%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share socket基于tcp的服务端与客户端实例 on whatsapp"
+            href="https://api.whatsapp.com/send?text=socket%e5%9f%ba%e4%ba%8etcp%e7%9a%84%e6%9c%8d%e5%8a%a1%e7%ab%af%e4%b8%8e%e5%ae%a2%e6%88%b7%e7%ab%af%e5%ae%9e%e4%be%8b%20-%20http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fsocket%25E5%259F%25BA%25E4%25BA%258Etcp%25E7%259A%2584%25E6%259C%258D%25E5%258A%25A1%25E7%25AB%25AF%25E4%25B8%258E%25E5%25AE%25A2%25E6%2588%25B7%25E7%25AB%25AF%25E5%25AE%259E%25E4%25BE%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share socket基于tcp的服务端与客户端实例 on telegram"
+            href="https://telegram.me/share/url?text=socket%e5%9f%ba%e4%ba%8etcp%e7%9a%84%e6%9c%8d%e5%8a%a1%e7%ab%af%e4%b8%8e%e5%ae%a2%e6%88%b7%e7%ab%af%e5%ae%9e%e4%be%8b&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fsocket%25E5%259F%25BA%25E4%25BA%258Etcp%25E7%259A%2584%25E6%259C%258D%25E5%258A%25A1%25E7%25AB%25AF%25E4%25B8%258E%25E5%25AE%25A2%25E6%2588%25B7%25E7%25AB%25AF%25E5%25AE%259E%25E4%25BE%258B%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share socket基于tcp的服务端与客户端实例 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=socket%e5%9f%ba%e4%ba%8etcp%e7%9a%84%e6%9c%8d%e5%8a%a1%e7%ab%af%e4%b8%8e%e5%ae%a2%e6%88%b7%e7%ab%af%e5%ae%9e%e4%be%8b&u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fsocket%25E5%259F%25BA%25E4%25BA%258Etcp%25E7%259A%2584%25E6%259C%258D%25E5%258A%25A1%25E7%25AB%25AF%25E4%25B8%258E%25E5%25AE%25A2%25E6%2588%25B7%25E7%25AB%25AF%25E5%25AE%259E%25E4%25BE%258B%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

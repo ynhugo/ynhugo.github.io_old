@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>emacs_config | PaperMod</title>
+<meta name="keywords" content="emacs">
+<meta name="description" content="
+
+设置Emacs的HOME目录
+
+
+
+总的来说，Emacs的默认配置文件放在变量HOME所指的路径下，所以，只要我们把.emacs扔到HOME所指向的目录就可以了，下面就简单介绍一下在Windows下设置home目录的几种方法，并进行简单的对比。
+
+第一种方法，改变home环境变量的值。
+这种方法，改变了$home变量，也会影响Cygwin或是其他一些应用程序，因为有一些程序会根据Windows的home环境变量来寻找数据存放的路径。
+
+第二种方法，不改变Windows默认的home值，设置默认的.emacs文件读取你自己的Emacs配置文件，并重新设定Emacs的home目录。
+你可以在Emacs中输入C-x
+C-f，然后打开路径~（即当前的home环境变量所指的路径，一般来说是这样的路径：C:/Documents
+and Settings/water/Application Data）。
+
+看看显示的是哪个目录，如果此目录下没有.emacs，可以创建一个.emacs或_emacs，然后在这个.emacs文件里，加入如下语句：
+(load-file &#34;E:/water/.emacs&#34;) 文件 E:/water/.emacs
+才是我们真正的Emacs配置文件，我们可以在这个真正的配置文件里用如下语句设置我们的home目录：
+
+  ;; (setenv &#34;HOME&#34; &#34;C:/cygwin/home/username&#34;)                           
+  ;; (setenv &#34;PATH&#34; &#34;C:/cygwin/home/username&#34;)                           
+  ;; (set default-directory &#34;C:/cygwin/home/username&#34;)                   
+  ;; (add-to-list &#39;load-path &#34;C:/cygwin/home/username/.emacs.d/init.el&#34;)
+
+
+这个方法的优点是比较简单同样也方便对.emacs文件备份，不会对其它应用程序产生任何影响。
+
+第三种方法，修改注册表，在注册表中进行如下设置：
+HKEY_LOCAL_MACHINE§OFTWARE\GNU\Emacs\HOME=%emacs_dir%
+以上三种方法都可以设置好Emacs的Home目录，但是，系统是按什么顺序来解析它们的呢？大体上的顺序是这样的：
+
+如果设置了环境变量HOME，则使用HOME指定的目录。
+如果设置了注册表里的值HKCU§OFTWARE\GNU\Emacs\HOME，则使用这个值所指定的目录作为home目录。并不是太推荐使用这种方法，因为会导致用户共享一个home目录。
+如果 C:\.emacs 文件存在，则使用 C:\.emacs
+这个文件。这个是为了向低版本的Emacs兼容，因为低版本的Emacs就是默认用这个文件作为配置文件。
+把用户的AppData目录作为home目录（通常来说，就是类似这样的目录
+C:/Documents and Settings/water/Application Data
+），这个用户的数据目录根据Windows版本的不同而有所不同。
+我个人比较喜欢用第二种方法，即简单又方便备份。
+
+其实，如果你只是想要Emacs能找到你的.emacs的话，也可以不用管HOME目录的，写个批处理文件emacs.bat:
+path-of-emacs.exe -q -l path-of-your.emacs
+
+
+
+
+emacs查看快捷键是否被占用
+
+
+
+先执行C-h c，然后按下执行某快捷键，查看minibuffer提示快捷键情况
+
+
+
+
+emacs查看函数
+
+
+
+先执行C-h a，然后输入某一函数并回车，查看函数说明
+
+
+
+
+基于时间创建文件
+
+
+
+  (defun extract-time-keyword ()                                     
+	&#34;提取当前时间的关键词&#34;                                             
+	(interactive)                                                      
+	(let ((time (format-time-string &#34;%Y-%m-%d_%H-%M-%S&#34;)))             
+	  (setq time-keyword (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time))      
+	  (message &#34;提取的时间关键词为：%s&#34; time-keyword)                    
+	  (create-new-file time-keyword)))                                   
+
+  (defun create-new-file (time-keyword)                              
+	&#34;使用时间关键词创建新文件&#34;                                         
+	(let ((file-path (concat &#34;~/path/to/files/&#34; time-keyword &#34;.txt&#34;))) 
+	  (with-temp-file file-path                                          
+		(insert &#34;这是一个新文件，创建时间：&#34; time-keyword))))              
+
+  (global-set-key (kbd &#34;C-c t&#34;) &#39;extract-time-keyword)
+
+
+
+完善后
+
+
+
+  (defun extract-time-keyword ()                                
+	&#34;提取当前时间的关键词&#34;                                        
+	(interactive)                                                 
+	(let ((time (format-time-string &#34;%Y-%m-%d&#34;)))                 
+	  (setq time-keyword (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time)) 
+	  (message &#34;提取的时间关键词为：%s&#34; time-keyword)               
+	  (create-new-file time-keyword)))                              
+
+  (defun create-new-file (time-keyword)                         
+	&#34;使用时间关键词创建新文件&#34;                                    
+	(let ((file-path (concat &#34;./&#34; time-keyword &#34;.txt&#34;)))          
+	  (with-temp-file file-path                                     
+		(insert time-keyword &#34;: name\n1. &#34;))))                        
+
+  (global-set-key (kbd &#34;C-c t&#34;) &#39;extract-time-keyword)
+
+
+
+
+
+
+
+基于时间添加代码块并设置tangle
+
+
+
+  (defun add-code-block ()                                                           
+	&#34;在当前位置添加一个代码块，并以时间作为块名进行命名&#34;                               
+	(interactive)                                                                      
+	(let* ((time (format-time-string &#34;%Y-%m-%d_%H-%M-%S&#34;))  ; 获取当前时间             
+		   (clean-time (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time))  ; 去除时间中的破折号和冒号 
+		   (block-name (concat &#34;block-&#34; clean-time))  ; 构建代码块名                          
+		   (code-block (format                                                                
+						&#34;* %s  ; 创建时间：%s                                                              
+  ,#&#43;BEGIN_SRC emacs-lisp :tangle %s.el                                              
+  ;; 在这里插入你的代码\n#&#43;END_SRC&#34;                                                  
+						block-name time block-name)))                                                      
+	  (insert code-block)))  ; 在当前位置插入代码块                                      
+
+  ;; 设置快捷键 C-c b 绑定到 add-code-block 函数                                     
+  (global-set-key (kbd &#34;C-c b&#34;) &#39;add-code-block)
+
+
+
+完善后
+
+
+
+  (defun add-code-block ()                                                           
+	&#34;在当前位置添加一个代码块，并以时间作为块名进行命名&#34;                               
+	(interactive)                                                                      
+	(let* ((time (format-time-string &#34;%Y-%m-%d&#34;))  ; 获取当前时间                      
+		   (clean-time (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time))  ; 去除时间中的破折号和冒号 
+		   (block-name (concat clean-time))  ; 构建代码块名                                   
+		   (code-block (format                                                                
+						&#34;* %s                                                                              
+  ,#&#43;BEGIN_SRC emacs-lisp :tangle %s.el                                              
+  %s: name\n1.                                                                       
+  ,#&#43;END_SRC&#34;                                                                        
+						block-name clean-time block-name)))                                                
+	  (insert code-block)))  ; 在当前位置插入代码块                                      
+
+  ;; 设置快捷键 C-c b 绑定到 add-code-block 函数                                     
+  (global-set-key (kbd &#34;C-c b&#34;) &#39;add-code-block)
+
+
+
+
+
+
+
+wsl-ubuntu18.04.6安装最新版本emamcs教程
+
+
+
+  $sudo add-apt-repository ppa:ubuntu-elisp/ppa      
+  $sudo apt update                                   
+  $sudo apt install emacs-snapshot emacs-snapshot-el 
+  $emacs --version    #查看emacs版本
+
+
+
+
+
+在linux环境设置emacs守护进程
+
+
+
+
+常规操作
+
+
+
+  # 启动emacs server：
+  $ emacs --daemon  
+  # 编辑文件
+  $ emacsclient file
+  $ emacsclient -t file # 字符界面
+  $ emacsclient -c file # GUI界面 
+  # 添加命令行别名 
+  # 为了方便在终端上使用，在~/.bashrc文件中加入如下两行：
+  alias ec=&#39;emacsclient -t -a &#34;&#34;&#39;                       
+  alias sec=&#39;sudo emacsclient -t -a &#34;&#34;&#39;
+
+
+
+
+
+脚本操作
+
+
+
+如果安装了dashboard，想启动时已dashboard作为启动界面，可以更改alias别名的定义">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/post/emacs/emacs_config/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/emacs/emacs_config/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/post/emacs/emacs_config/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="emacs_config">
+  <meta property="og:description" content="设置Emacs的HOME目录 总的来说，Emacs的默认配置文件放在变量HOME所指的路径下，所以，只要我们把.emacs扔到HOME所指向的目录就可以了，下面就简单介绍一下在Windows下设置home目录的几种方法，并进行简单的对比。
+第一种方法，改变home环境变量的值。 这种方法，改变了$home变量，也会影响Cygwin或是其他一些应用程序，因为有一些程序会根据Windows的home环境变量来寻找数据存放的路径。
+第二种方法，不改变Windows默认的home值，设置默认的.emacs文件读取你自己的Emacs配置文件，并重新设定Emacs的home目录。 你可以在Emacs中输入C-x C-f，然后打开路径~（即当前的home环境变量所指的路径，一般来说是这样的路径：C:/Documents and Settings/water/Application Data）。
+看看显示的是哪个目录，如果此目录下没有.emacs，可以创建一个.emacs或_emacs，然后在这个.emacs文件里，加入如下语句： (load-file &#34;E:/water/.emacs&#34;) 文件 E:/water/.emacs 才是我们真正的Emacs配置文件，我们可以在这个真正的配置文件里用如下语句设置我们的home目录：
+;; (setenv &#34;HOME&#34; &#34;C:/cygwin/home/username&#34;) ;; (setenv &#34;PATH&#34; &#34;C:/cygwin/home/username&#34;) ;; (set default-directory &#34;C:/cygwin/home/username&#34;) ;; (add-to-list &#39;load-path &#34;C:/cygwin/home/username/.emacs.d/init.el&#34;) 这个方法的优点是比较简单同样也方便对.emacs文件备份，不会对其它应用程序产生任何影响。
+第三种方法，修改注册表，在注册表中进行如下设置： HKEY_LOCAL_MACHINE§OFTWARE\GNU\Emacs\HOME=%emacs_dir% 以上三种方法都可以设置好Emacs的Home目录，但是，系统是按什么顺序来解析它们的呢？大体上的顺序是这样的：
+如果设置了环境变量HOME，则使用HOME指定的目录。 如果设置了注册表里的值HKCU§OFTWARE\GNU\Emacs\HOME，则使用这个值所指定的目录作为home目录。并不是太推荐使用这种方法，因为会导致用户共享一个home目录。 如果 C:\.emacs 文件存在，则使用 C:\.emacs 这个文件。这个是为了向低版本的Emacs兼容，因为低版本的Emacs就是默认用这个文件作为配置文件。 把用户的AppData目录作为home目录（通常来说，就是类似这样的目录 C:/Documents and Settings/water/Application Data ），这个用户的数据目录根据Windows版本的不同而有所不同。 我个人比较喜欢用第二种方法，即简单又方便备份。
+其实，如果你只是想要Emacs能找到你的.emacs的话，也可以不用管HOME目录的，写个批处理文件emacs.bat: path-of-emacs.exe -q -l path-of-your.emacs
+emacs查看快捷键是否被占用 先执行C-h c，然后按下执行某快捷键，查看minibuffer提示快捷键情况
+emacs查看函数 先执行C-h a，然后输入某一函数并回车，查看函数说明
+基于时间创建文件 (defun extract-time-keyword () &#34;提取当前时间的关键词&#34; (interactive) (let ((time (format-time-string &#34;%Y-%m-%d_%H-%M-%S&#34;))) (setq time-keyword (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time)) (message &#34;提取的时间关键词为：%s&#34; time-keyword) (create-new-file time-keyword))) (defun create-new-file (time-keyword) &#34;使用时间关键词创建新文件&#34; (let ((file-path (concat &#34;~/path/to/files/&#34; time-keyword &#34;.txt&#34;))) (with-temp-file file-path (insert &#34;这是一个新文件，创建时间：&#34; time-keyword)))) (global-set-key (kbd &#34;C-c t&#34;) &#39;extract-time-keyword) 完善后 (defun extract-time-keyword () &#34;提取当前时间的关键词&#34; (interactive) (let ((time (format-time-string &#34;%Y-%m-%d&#34;))) (setq time-keyword (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time)) (message &#34;提取的时间关键词为：%s&#34; time-keyword) (create-new-file time-keyword))) (defun create-new-file (time-keyword) &#34;使用时间关键词创建新文件&#34; (let ((file-path (concat &#34;./&#34; time-keyword &#34;.txt&#34;))) (with-temp-file file-path (insert time-keyword &#34;: name\n1. &#34;)))) (global-set-key (kbd &#34;C-c t&#34;) &#39;extract-time-keyword) 基于时间添加代码块并设置tangle (defun add-code-block () &#34;在当前位置添加一个代码块，并以时间作为块名进行命名&#34; (interactive) (let* ((time (format-time-string &#34;%Y-%m-%d_%H-%M-%S&#34;)) ; 获取当前时间 (clean-time (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time)) ; 去除时间中的破折号和冒号 (block-name (concat &#34;block-&#34; clean-time)) ; 构建代码块名 (code-block (format &#34;* %s ; 创建时间：%s ,#&#43;BEGIN_SRC emacs-lisp :tangle %s.el ;; 在这里插入你的代码\n#&#43;END_SRC&#34; block-name time block-name))) (insert code-block))) ; 在当前位置插入代码块 ;; 设置快捷键 C-c b 绑定到 add-code-block 函数 (global-set-key (kbd &#34;C-c b&#34;) &#39;add-code-block) 完善后 (defun add-code-block () &#34;在当前位置添加一个代码块，并以时间作为块名进行命名&#34; (interactive) (let* ((time (format-time-string &#34;%Y-%m-%d&#34;)) ; 获取当前时间 (clean-time (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time)) ; 去除时间中的破折号和冒号 (block-name (concat clean-time)) ; 构建代码块名 (code-block (format &#34;* %s ,#&#43;BEGIN_SRC emacs-lisp :tangle %s.el %s: name\n1. ,#&#43;END_SRC&#34; block-name clean-time block-name))) (insert code-block))) ; 在当前位置插入代码块 ;; 设置快捷键 C-c b 绑定到 add-code-block 函数 (global-set-key (kbd &#34;C-c b&#34;) &#39;add-code-block) wsl-ubuntu18.04.6安装最新版本emamcs教程 $sudo add-apt-repository ppa:ubuntu-elisp/ppa $sudo apt update $sudo apt install emacs-snapshot emacs-snapshot-el $emacs --version #查看emacs版本 在linux环境设置emacs守护进程 常规操作 # 启动emacs server： $ emacs --daemon # 编辑文件 $ emacsclient file $ emacsclient -t file # 字符界面 $ emacsclient -c file # GUI界面 # 添加命令行别名 # 为了方便在终端上使用，在~/.bashrc文件中加入如下两行： alias ec=&#39;emacsclient -t -a &#34;&#34;&#39; alias sec=&#39;sudo emacsclient -t -a &#34;&#34;&#39; 脚本操作 如果安装了dashboard，想启动时已dashboard作为启动界面，可以更改alias别名的定义">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2025-07-08T18:57:42+08:00">
+    <meta property="article:modified_time" content="2025-07-08T18:57:42+08:00">
+    <meta property="article:tag" content="Emacs">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="emacs_config">
+  <meta name="twitter:description" content="设置Emacs的HOME目录 总的来说，Emacs的默认配置文件放在变量HOME所指的路径下，所以，只要我们把.emacs扔到HOME所指向的目录就可以了，下面就简单介绍一下在Windows下设置home目录的几种方法，并进行简单的对比。
+第一种方法，改变home环境变量的值。 这种方法，改变了$home变量，也会影响Cygwin或是其他一些应用程序，因为有一些程序会根据Windows的home环境变量来寻找数据存放的路径。
+第二种方法，不改变Windows默认的home值，设置默认的.emacs文件读取你自己的Emacs配置文件，并重新设定Emacs的home目录。 你可以在Emacs中输入C-x C-f，然后打开路径~（即当前的home环境变量所指的路径，一般来说是这样的路径：C:/Documents and Settings/water/Application Data）。
+看看显示的是哪个目录，如果此目录下没有.emacs，可以创建一个.emacs或_emacs，然后在这个.emacs文件里，加入如下语句： (load-file &#34;E:/water/.emacs&#34;) 文件 E:/water/.emacs 才是我们真正的Emacs配置文件，我们可以在这个真正的配置文件里用如下语句设置我们的home目录：
+;; (setenv &#34;HOME&#34; &#34;C:/cygwin/home/username&#34;) ;; (setenv &#34;PATH&#34; &#34;C:/cygwin/home/username&#34;) ;; (set default-directory &#34;C:/cygwin/home/username&#34;) ;; (add-to-list &#39;load-path &#34;C:/cygwin/home/username/.emacs.d/init.el&#34;) 这个方法的优点是比较简单同样也方便对.emacs文件备份，不会对其它应用程序产生任何影响。
+第三种方法，修改注册表，在注册表中进行如下设置： HKEY_LOCAL_MACHINE§OFTWARE\GNU\Emacs\HOME=%emacs_dir% 以上三种方法都可以设置好Emacs的Home目录，但是，系统是按什么顺序来解析它们的呢？大体上的顺序是这样的：
+如果设置了环境变量HOME，则使用HOME指定的目录。 如果设置了注册表里的值HKCU§OFTWARE\GNU\Emacs\HOME，则使用这个值所指定的目录作为home目录。并不是太推荐使用这种方法，因为会导致用户共享一个home目录。 如果 C:\.emacs 文件存在，则使用 C:\.emacs 这个文件。这个是为了向低版本的Emacs兼容，因为低版本的Emacs就是默认用这个文件作为配置文件。 把用户的AppData目录作为home目录（通常来说，就是类似这样的目录 C:/Documents and Settings/water/Application Data ），这个用户的数据目录根据Windows版本的不同而有所不同。 我个人比较喜欢用第二种方法，即简单又方便备份。
+其实，如果你只是想要Emacs能找到你的.emacs的话，也可以不用管HOME目录的，写个批处理文件emacs.bat: path-of-emacs.exe -q -l path-of-your.emacs
+emacs查看快捷键是否被占用 先执行C-h c，然后按下执行某快捷键，查看minibuffer提示快捷键情况
+emacs查看函数 先执行C-h a，然后输入某一函数并回车，查看函数说明
+基于时间创建文件 (defun extract-time-keyword () &#34;提取当前时间的关键词&#34; (interactive) (let ((time (format-time-string &#34;%Y-%m-%d_%H-%M-%S&#34;))) (setq time-keyword (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time)) (message &#34;提取的时间关键词为：%s&#34; time-keyword) (create-new-file time-keyword))) (defun create-new-file (time-keyword) &#34;使用时间关键词创建新文件&#34; (let ((file-path (concat &#34;~/path/to/files/&#34; time-keyword &#34;.txt&#34;))) (with-temp-file file-path (insert &#34;这是一个新文件，创建时间：&#34; time-keyword)))) (global-set-key (kbd &#34;C-c t&#34;) &#39;extract-time-keyword) 完善后 (defun extract-time-keyword () &#34;提取当前时间的关键词&#34; (interactive) (let ((time (format-time-string &#34;%Y-%m-%d&#34;))) (setq time-keyword (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time)) (message &#34;提取的时间关键词为：%s&#34; time-keyword) (create-new-file time-keyword))) (defun create-new-file (time-keyword) &#34;使用时间关键词创建新文件&#34; (let ((file-path (concat &#34;./&#34; time-keyword &#34;.txt&#34;))) (with-temp-file file-path (insert time-keyword &#34;: name\n1. &#34;)))) (global-set-key (kbd &#34;C-c t&#34;) &#39;extract-time-keyword) 基于时间添加代码块并设置tangle (defun add-code-block () &#34;在当前位置添加一个代码块，并以时间作为块名进行命名&#34; (interactive) (let* ((time (format-time-string &#34;%Y-%m-%d_%H-%M-%S&#34;)) ; 获取当前时间 (clean-time (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time)) ; 去除时间中的破折号和冒号 (block-name (concat &#34;block-&#34; clean-time)) ; 构建代码块名 (code-block (format &#34;* %s ; 创建时间：%s ,#&#43;BEGIN_SRC emacs-lisp :tangle %s.el ;; 在这里插入你的代码\n#&#43;END_SRC&#34; block-name time block-name))) (insert code-block))) ; 在当前位置插入代码块 ;; 设置快捷键 C-c b 绑定到 add-code-block 函数 (global-set-key (kbd &#34;C-c b&#34;) &#39;add-code-block) 完善后 (defun add-code-block () &#34;在当前位置添加一个代码块，并以时间作为块名进行命名&#34; (interactive) (let* ((time (format-time-string &#34;%Y-%m-%d&#34;)) ; 获取当前时间 (clean-time (replace-regexp-in-string &#34;[-:]&#34; &#34;&#34; time)) ; 去除时间中的破折号和冒号 (block-name (concat clean-time)) ; 构建代码块名 (code-block (format &#34;* %s ,#&#43;BEGIN_SRC emacs-lisp :tangle %s.el %s: name\n1. ,#&#43;END_SRC&#34; block-name clean-time block-name))) (insert code-block))) ; 在当前位置插入代码块 ;; 设置快捷键 C-c b 绑定到 add-code-block 函数 (global-set-key (kbd &#34;C-c b&#34;) &#39;add-code-block) wsl-ubuntu18.04.6安装最新版本emamcs教程 $sudo add-apt-repository ppa:ubuntu-elisp/ppa $sudo apt update $sudo apt install emacs-snapshot emacs-snapshot-el $emacs --version #查看emacs版本 在linux环境设置emacs守护进程 常规操作 # 启动emacs server： $ emacs --daemon # 编辑文件 $ emacsclient file $ emacsclient -t file # 字符界面 $ emacsclient -c file # GUI界面 # 添加命令行别名 # 为了方便在终端上使用，在~/.bashrc文件中加入如下两行： alias ec=&#39;emacsclient -t -a &#34;&#34;&#39; alias sec=&#39;sudo emacsclient -t -a &#34;&#34;&#39; 脚本操作 如果安装了dashboard，想启动时已dashboard作为启动界面，可以更改alias别名的定义">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "emacs_config",
+      "item": "http://localhost:1313/post/emacs/emacs_config/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "emacs_config",
+  "name": "emacs_config",
+  "description": " 设置Emacs的HOME目录 总的来说，Emacs的默认配置文件放在变量HOME所指的路径下，所以，只要我们把.emacs扔到HOME所指向的目录就可以了，下面就简单介绍一下在Windows下设置home目录的几种方法，并进行简单的对比。\n第一种方法，改变home环境变量的值。 这种方法，改变了$home变量，也会影响Cygwin或是其他一些应用程序，因为有一些程序会根据Windows的home环境变量来寻找数据存放的路径。\n第二种方法，不改变Windows默认的home值，设置默认的.emacs文件读取你自己的Emacs配置文件，并重新设定Emacs的home目录。 你可以在Emacs中输入C-x C-f，然后打开路径~（即当前的home环境变量所指的路径，一般来说是这样的路径：C:/Documents and Settings/water/Application Data）。\n看看显示的是哪个目录，如果此目录下没有.emacs，可以创建一个.emacs或_emacs，然后在这个.emacs文件里，加入如下语句： (load-file \u0026#34;E:/water/.emacs\u0026#34;) 文件 E:/water/.emacs 才是我们真正的Emacs配置文件，我们可以在这个真正的配置文件里用如下语句设置我们的home目录：\n;; (setenv \u0026#34;HOME\u0026#34; \u0026#34;C:/cygwin/home/username\u0026#34;) ;; (setenv \u0026#34;PATH\u0026#34; \u0026#34;C:/cygwin/home/username\u0026#34;) ;; (set default-directory \u0026#34;C:/cygwin/home/username\u0026#34;) ;; (add-to-list \u0026#39;load-path \u0026#34;C:/cygwin/home/username/.emacs.d/init.el\u0026#34;) 这个方法的优点是比较简单同样也方便对.emacs文件备份，不会对其它应用程序产生任何影响。\n第三种方法，修改注册表，在注册表中进行如下设置： HKEY_LOCAL_MACHINE§OFTWARE\\GNU\\Emacs\\HOME=%emacs_dir% 以上三种方法都可以设置好Emacs的Home目录，但是，系统是按什么顺序来解析它们的呢？大体上的顺序是这样的：\n如果设置了环境变量HOME，则使用HOME指定的目录。 如果设置了注册表里的值HKCU§OFTWARE\\GNU\\Emacs\\HOME，则使用这个值所指定的目录作为home目录。并不是太推荐使用这种方法，因为会导致用户共享一个home目录。 如果 C:\\.emacs 文件存在，则使用 C:\\.emacs 这个文件。这个是为了向低版本的Emacs兼容，因为低版本的Emacs就是默认用这个文件作为配置文件。 把用户的AppData目录作为home目录（通常来说，就是类似这样的目录 C:/Documents and Settings/water/Application Data ），这个用户的数据目录根据Windows版本的不同而有所不同。 我个人比较喜欢用第二种方法，即简单又方便备份。\n其实，如果你只是想要Emacs能找到你的.emacs的话，也可以不用管HOME目录的，写个批处理文件emacs.bat: path-of-emacs.exe -q -l path-of-your.emacs\nemacs查看快捷键是否被占用 先执行C-h c，然后按下执行某快捷键，查看minibuffer提示快捷键情况\nemacs查看函数 先执行C-h a，然后输入某一函数并回车，查看函数说明\n基于时间创建文件 (defun extract-time-keyword () \u0026#34;提取当前时间的关键词\u0026#34; (interactive) (let ((time (format-time-string \u0026#34;%Y-%m-%d_%H-%M-%S\u0026#34;))) (setq time-keyword (replace-regexp-in-string \u0026#34;[-:]\u0026#34; \u0026#34;\u0026#34; time)) (message \u0026#34;提取的时间关键词为：%s\u0026#34; time-keyword) (create-new-file time-keyword))) (defun create-new-file (time-keyword) \u0026#34;使用时间关键词创建新文件\u0026#34; (let ((file-path (concat \u0026#34;~/path/to/files/\u0026#34; time-keyword \u0026#34;.txt\u0026#34;))) (with-temp-file file-path (insert \u0026#34;这是一个新文件，创建时间：\u0026#34; time-keyword)))) (global-set-key (kbd \u0026#34;C-c t\u0026#34;) \u0026#39;extract-time-keyword) 完善后 (defun extract-time-keyword () \u0026#34;提取当前时间的关键词\u0026#34; (interactive) (let ((time (format-time-string \u0026#34;%Y-%m-%d\u0026#34;))) (setq time-keyword (replace-regexp-in-string \u0026#34;[-:]\u0026#34; \u0026#34;\u0026#34; time)) (message \u0026#34;提取的时间关键词为：%s\u0026#34; time-keyword) (create-new-file time-keyword))) (defun create-new-file (time-keyword) \u0026#34;使用时间关键词创建新文件\u0026#34; (let ((file-path (concat \u0026#34;./\u0026#34; time-keyword \u0026#34;.txt\u0026#34;))) (with-temp-file file-path (insert time-keyword \u0026#34;: name\\n1. \u0026#34;)))) (global-set-key (kbd \u0026#34;C-c t\u0026#34;) \u0026#39;extract-time-keyword) 基于时间添加代码块并设置tangle (defun add-code-block () \u0026#34;在当前位置添加一个代码块，并以时间作为块名进行命名\u0026#34; (interactive) (let* ((time (format-time-string \u0026#34;%Y-%m-%d_%H-%M-%S\u0026#34;)) ; 获取当前时间 (clean-time (replace-regexp-in-string \u0026#34;[-:]\u0026#34; \u0026#34;\u0026#34; time)) ; 去除时间中的破折号和冒号 (block-name (concat \u0026#34;block-\u0026#34; clean-time)) ; 构建代码块名 (code-block (format \u0026#34;* %s ; 创建时间：%s ,#+BEGIN_SRC emacs-lisp :tangle %s.el ;; 在这里插入你的代码\\n#+END_SRC\u0026#34; block-name time block-name))) (insert code-block))) ; 在当前位置插入代码块 ;; 设置快捷键 C-c b 绑定到 add-code-block 函数 (global-set-key (kbd \u0026#34;C-c b\u0026#34;) \u0026#39;add-code-block) 完善后 (defun add-code-block () \u0026#34;在当前位置添加一个代码块，并以时间作为块名进行命名\u0026#34; (interactive) (let* ((time (format-time-string \u0026#34;%Y-%m-%d\u0026#34;)) ; 获取当前时间 (clean-time (replace-regexp-in-string \u0026#34;[-:]\u0026#34; \u0026#34;\u0026#34; time)) ; 去除时间中的破折号和冒号 (block-name (concat clean-time)) ; 构建代码块名 (code-block (format \u0026#34;* %s ,#+BEGIN_SRC emacs-lisp :tangle %s.el %s: name\\n1. ,#+END_SRC\u0026#34; block-name clean-time block-name))) (insert code-block))) ; 在当前位置插入代码块 ;; 设置快捷键 C-c b 绑定到 add-code-block 函数 (global-set-key (kbd \u0026#34;C-c b\u0026#34;) \u0026#39;add-code-block) wsl-ubuntu18.04.6安装最新版本emamcs教程 $sudo add-apt-repository ppa:ubuntu-elisp/ppa $sudo apt update $sudo apt install emacs-snapshot emacs-snapshot-el $emacs --version #查看emacs版本 在linux环境设置emacs守护进程 常规操作 # 启动emacs server： $ emacs --daemon # 编辑文件 $ emacsclient file $ emacsclient -t file # 字符界面 $ emacsclient -c file # GUI界面 # 添加命令行别名 # 为了方便在终端上使用，在~/.bashrc文件中加入如下两行： alias ec=\u0026#39;emacsclient -t -a \u0026#34;\u0026#34;\u0026#39; alias sec=\u0026#39;sudo emacsclient -t -a \u0026#34;\u0026#34;\u0026#39; 脚本操作 如果安装了dashboard，想启动时已dashboard作为启动界面，可以更改alias别名的定义\n",
+  "keywords": [
+    "emacs"
+  ],
+  "articleBody": " 设置Emacs的HOME目录 总的来说，Emacs的默认配置文件放在变量HOME所指的路径下，所以，只要我们把.emacs扔到HOME所指向的目录就可以了，下面就简单介绍一下在Windows下设置home目录的几种方法，并进行简单的对比。\n第一种方法，改变home环境变量的值。 这种方法，改变了$home变量，也会影响Cygwin或是其他一些应用程序，因为有一些程序会根据Windows的home环境变量来寻找数据存放的路径。\n第二种方法，不改变Windows默认的home值，设置默认的.emacs文件读取你自己的Emacs配置文件，并重新设定Emacs的home目录。 你可以在Emacs中输入C-x C-f，然后打开路径~（即当前的home环境变量所指的路径，一般来说是这样的路径：C:/Documents and Settings/water/Application Data）。\n看看显示的是哪个目录，如果此目录下没有.emacs，可以创建一个.emacs或_emacs，然后在这个.emacs文件里，加入如下语句： (load-file \"E:/water/.emacs\") 文件 E:/water/.emacs 才是我们真正的Emacs配置文件，我们可以在这个真正的配置文件里用如下语句设置我们的home目录：\n;; (setenv \"HOME\" \"C:/cygwin/home/username\") ;; (setenv \"PATH\" \"C:/cygwin/home/username\") ;; (set default-directory \"C:/cygwin/home/username\") ;; (add-to-list 'load-path \"C:/cygwin/home/username/.emacs.d/init.el\") 这个方法的优点是比较简单同样也方便对.emacs文件备份，不会对其它应用程序产生任何影响。\n第三种方法，修改注册表，在注册表中进行如下设置： HKEY_LOCAL_MACHINE§OFTWARE\\GNU\\Emacs\\HOME=%emacs_dir% 以上三种方法都可以设置好Emacs的Home目录，但是，系统是按什么顺序来解析它们的呢？大体上的顺序是这样的：\n如果设置了环境变量HOME，则使用HOME指定的目录。 如果设置了注册表里的值HKCU§OFTWARE\\GNU\\Emacs\\HOME，则使用这个值所指定的目录作为home目录。并不是太推荐使用这种方法，因为会导致用户共享一个home目录。 如果 C:\\.emacs 文件存在，则使用 C:\\.emacs 这个文件。这个是为了向低版本的Emacs兼容，因为低版本的Emacs就是默认用这个文件作为配置文件。 把用户的AppData目录作为home目录（通常来说，就是类似这样的目录 C:/Documents and Settings/water/Application Data ），这个用户的数据目录根据Windows版本的不同而有所不同。 我个人比较喜欢用第二种方法，即简单又方便备份。\n其实，如果你只是想要Emacs能找到你的.emacs的话，也可以不用管HOME目录的，写个批处理文件emacs.bat: path-of-emacs.exe -q -l path-of-your.emacs\nemacs查看快捷键是否被占用 先执行C-h c，然后按下执行某快捷键，查看minibuffer提示快捷键情况\nemacs查看函数 先执行C-h a，然后输入某一函数并回车，查看函数说明\n基于时间创建文件 (defun extract-time-keyword () \"提取当前时间的关键词\" (interactive) (let ((time (format-time-string \"%Y-%m-%d_%H-%M-%S\"))) (setq time-keyword (replace-regexp-in-string \"[-:]\" \"\" time)) (message \"提取的时间关键词为：%s\" time-keyword) (create-new-file time-keyword))) (defun create-new-file (time-keyword) \"使用时间关键词创建新文件\" (let ((file-path (concat \"~/path/to/files/\" time-keyword \".txt\"))) (with-temp-file file-path (insert \"这是一个新文件，创建时间：\" time-keyword)))) (global-set-key (kbd \"C-c t\") 'extract-time-keyword) 完善后 (defun extract-time-keyword () \"提取当前时间的关键词\" (interactive) (let ((time (format-time-string \"%Y-%m-%d\"))) (setq time-keyword (replace-regexp-in-string \"[-:]\" \"\" time)) (message \"提取的时间关键词为：%s\" time-keyword) (create-new-file time-keyword))) (defun create-new-file (time-keyword) \"使用时间关键词创建新文件\" (let ((file-path (concat \"./\" time-keyword \".txt\"))) (with-temp-file file-path (insert time-keyword \": name\\n1. \")))) (global-set-key (kbd \"C-c t\") 'extract-time-keyword) 基于时间添加代码块并设置tangle (defun add-code-block () \"在当前位置添加一个代码块，并以时间作为块名进行命名\" (interactive) (let* ((time (format-time-string \"%Y-%m-%d_%H-%M-%S\")) ; 获取当前时间 (clean-time (replace-regexp-in-string \"[-:]\" \"\" time)) ; 去除时间中的破折号和冒号 (block-name (concat \"block-\" clean-time)) ; 构建代码块名 (code-block (format \"* %s ; 创建时间：%s ,#+BEGIN_SRC emacs-lisp :tangle %s.el ;; 在这里插入你的代码\\n#+END_SRC\" block-name time block-name))) (insert code-block))) ; 在当前位置插入代码块 ;; 设置快捷键 C-c b 绑定到 add-code-block 函数 (global-set-key (kbd \"C-c b\") 'add-code-block) 完善后 (defun add-code-block () \"在当前位置添加一个代码块，并以时间作为块名进行命名\" (interactive) (let* ((time (format-time-string \"%Y-%m-%d\")) ; 获取当前时间 (clean-time (replace-regexp-in-string \"[-:]\" \"\" time)) ; 去除时间中的破折号和冒号 (block-name (concat clean-time)) ; 构建代码块名 (code-block (format \"* %s ,#+BEGIN_SRC emacs-lisp :tangle %s.el %s: name\\n1. ,#+END_SRC\" block-name clean-time block-name))) (insert code-block))) ; 在当前位置插入代码块 ;; 设置快捷键 C-c b 绑定到 add-code-block 函数 (global-set-key (kbd \"C-c b\") 'add-code-block) wsl-ubuntu18.04.6安装最新版本emamcs教程 $sudo add-apt-repository ppa:ubuntu-elisp/ppa $sudo apt update $sudo apt install emacs-snapshot emacs-snapshot-el $emacs --version #查看emacs版本 在linux环境设置emacs守护进程 常规操作 # 启动emacs server： $ emacs --daemon # 编辑文件 $ emacsclient file $ emacsclient -t file # 字符界面 $ emacsclient -c file # GUI界面 # 添加命令行别名 # 为了方便在终端上使用，在~/.bashrc文件中加入如下两行： alias ec='emacsclient -t -a \"\"' alias sec='sudo emacsclient -t -a \"\"' 脚本操作 如果安装了dashboard，想启动时已dashboard作为启动界面，可以更改alias别名的定义\nalias ec='emacsclient -c -e \"(dashboard-setup-startup-hook)\"' find ./ -name \"*~\" | xargs rm ps -ef | grep \"emacs --daemon\" | grep -v \"grep\" \u003e /dev/null 2\u003e\u00261 if [ $? -ne 0 ] then nohup emacs --daemon \u0026 fi alias 'emacs'='emacsclient' if [ -e \"~/null\" ] then rm ~/null fi if [ -e \"~/nohup.out\" ] then rm ~/nohup.out fi alias ec='emacsclient -c -e \"(dashboard-setup-startup-hook)\"' 在windows环境可以如下操作 首先下载emacs最新版本，并将其添加windows系统环境变量，然后在终端中执行\"emacs –daemon\"，如果该命令占用终端，可以将其作为守护进程运行，在cygwin环境中参考linux环境操作 还有就是在.emacs.d/下有了server(socket文件)后，可以执行\"emacs –server-file .emacs/server\"指定socket文件路径 第二步的前提是通过第一步产生了server文件，或者在emacs中通过运行\"server-start\"设置守护进程\n在windows创建守护进程脚本 @echo off if \"%1\"==\"h\" goto begin start mshta vbscript:createobject(\"wscript.shell\").run(\"\"\"%~nx0\"\" h\",0)(window.close)\u0026\u0026exit :begin emacs --daemon doskey emacs=emacsclient 在windows_Cygwin创建启动脚本，因从守护进程运行的emacsclient与正常运行emacs效果不一样，因此只是介绍方法，不过多介绍 #!/usr/bin/bash cmd /c emacs --daemon \u0026 在emacs中获取终端家目录或者用户，用户对就\"USER\" (setq terminal-home (getenv \"HOME\")) (setq relative-path \"Documents/example.txt\") (setq absolute-path (expand-file-name relative-path terminal-home)) (message \"Absolute path: %s\" absolute-path) emacs的init.el，我保存在.emacs.d/init.el中 ;; 实用参考链接 ;; 列出一些常用学习链接 ;; https://zhuanlan.zhihu.com/p/385214753 ;; https://github.com/emacs-china/Spacemacs-rocks#%E5%AE%89%E8%A3%85-spacemacs ;; https://www.cnblogs.com/holbrook/archive/2012/04/12/2444992.html ;; https://www.cnblogs.com/ts65214/p/5561646.html ;; 目录配置 ;; (setenv \"HOME\" \"C:/cygwin/home/username\") ;; (setenv \"PATH\" \"C:/cygwin/home/username\") ;; (set default-directory \"C:/cygwin/home/username\") ;; (add-to-list 'load-path \"C:/cygwin/home/username/.emacs.d/init.el\") ;; 函数配置 (setq inhibit-startup-message 1) ;; 禁止Emacs显示启动画面 (fset 'display-startup-echo-area-message 'ignore) ;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a (setq-default indent-tabs-mode 1) ;; 在缩进时使用制表符 (setq-default tab-width 4) ;; 指定制表符的宽度为4个空格 (setq c-default-style \"linux\") ;; 指定C语言的默认代码样式为Linux风格，这其中包含了一些特定的规则和约定，例如缩进方式、括号对齐等等，可心根据自己的喜好和项目要求来修改这个值 (setq c-basic-offset 4) ;; 在C语言模式下，每个缩进级别使用4个空格 (recentf-mode 0) ;; recentf-mode是一个Emacs历史记录插件，它允许你在Emacs会话之间保留文件的历史记录，一旦启用recentf-mode，它将自动跟踪你最近打开的文件，并将它们保存在一个列表中，当你需要再次访问这些文件时，可以通过recentf-mode提供的命令和功能来查找和打开它们 ;; (tool-bar-mode 0) ;; 禁用工具栏显示，工具栏通过包含了一些常用的功能按键 (menu-bar-mode 0) ;; 禁用菜单栏显示，菜单栏通过包含了一系列的菜单项 ;; (scroll-bar-mode 0) ;; 禁用滚动条显示，滚动条通过用来显示当前文档的滚动位置 ;; (global-hl-line-mode 1) ;; 全局高亮当前行模式，这个模式会在当前行添加高这显示 (global-linum-mode 1) ;; 全局显示行号，这个模式会在每行的左侧显示行号 (column-number-mode 1) ;; 显示列号 (xterm-mouse-mode 1) ;; 启用xterm鼠标模式，这个模式允许使用鼠标进行交互操作 ;; (desktop-save-mode 1) ;; 启用Emacs的桌面保存模式，当桌面保存模式开启后，Emacs会在退出时保存当前的工作 环境(打开的文件、窗口配置等)，以便在下次启动时自动恢复 (save-place-mode 1) ;; 是用来启用Emacs的记忆光标位置模式，开启后，Emacs会记录你最后离开每个文件时的光 标位置，在再次打开该文件时会自动将光标定位到上次的位置 ;; (toggle-truncate-lines t) ;; 换行模式，每次加载变量的值都会被再次取反 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil))) ;; org-mode固定自动换行 (setq default-major-mode 'text-mode) (add-to-list 'default-frame-alist '(foreground-color . \"#FFFFFF\")) ;; 配置emacs前景颜色 (add-to-list 'default-frame-alist '(background-color . \"#000000\")) ;; 配置emacs背景颜色 (defun g-org-insert-note-header () ;; 定义一个名为g-org-insert-note-header ()的函数 (interactive) ;; 函数的一个特殊声明，表示函数可以被用户调用 (insert \"#+options: ^:nil\\n#+title: \\n#+options: \\n:t\\n#+author: yenao\\n\")) ;; insert函数用于在当前光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title: 和#+author: yenao (with-eval-after-load 'eww (custom-set-variables '(eww-search-prefix \"https://bing.com/search?q=\"))) ;; 参考链接：https://www.jianshu.com/p/af9e43f7f13e ;; 尝试配置GTD (unless (file-exists-p \"~/.emacs.d/OneDrive\") (make-directory \"~/.emacs.d/OneDrive\") );; 检测OneDrive目录是否存在，如果不存在就创建这个目录 (unless (file-exists-p \"~/.emacs.d/OneDrive/org\") (make-directory \"~/.emacs.d/OneDrive/org\") );; 检测org目录是否存在，如果不存在就创建这个目录 (let ((filename \"~/.emacs.d/my-agenda.el\")) ;; 如果my-agenda.el文件不存在，就创建这个文件，如果需要往 该文件内写入内容，将该段该中insert的注释取消即可 (unless (file-exists-p filename) (with-temp-file filename ;; (insert \"这是文件内容\") ;; 写入文件内容 ))) (let ((filename \"~/.emacs.d/OneDrive/org/todo.org\")) ;; 如果todo.org文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可 (unless (file-exists-p filename) (with-temp-file filename ;; (insert \"这是文件内容\") ;; 写入文件内容 ))) (load-file \"~/.emacs.d/my-agenda.el\") ;; 加载my-agenda.el配置文件 (setq org-agenda-files '(\"~/.emacs.d/OneDrive/org\")) ;; 指定data存放目录 (setq org-default-notes-file \"~/.emacs.d/OneDrive/org/todo.org\") ;; 配置好data目录后，再配置具体要将信息写于哪个文件，可以配置多个文件，出于简化，这里将所有的agenda todo写入~/Onedrive/org/todo.org文件下 (global-set-key \"\\C-cl\" 'org-store-link) (global-set-key \"\\C-cc\" 'org-capture) (global-set-key \"\\C-ca\" 'org-agenda) (global-set-key \"\\C-cb\" 'org-iswitchb) (define-key global-map \"\\C-cr\" 'remember) (setq org-todo-keywords '((sequence \"TODO(t!)\" \"NEXT(n)\" \"WAITTING(w)\" \"SOMEDAY(s)\" \" \" \"DONE(d@/!)\" \"ABORT(a@/!)\"))) (setq org-tag-alist '((\"@office\" . ?w) (\"@home\" . ?h) (\"traffic\" . ?t) (\"computer\" . ?c) (\"nocomputer\" . ?n) (\"either\" . ?e) (\"immediately\" . ?i) (\"wait\" . ?w) (\"action\" . ?a))) ; 插件配置 (require 'package) (add-to-list 'package-archives '(\"melpa-stable\" . \"https://stable.melpa.org/packages/\") t) ;; 配置melpa-stable仓库，如果不配置的话，use-package安装不了，比如在wsl-ubuntu18.04环境上就是这样 (package-initialize) ;; 配置use-package用于安装各种插件 (eval-when-compile (require 'use-package) ) ;; 配置company用于文本补全 (use-package company :ensure t :init (global-company-mode 1) ;; 启用全局的自动补全功能，这将使得在所有的缓冲区中的文本输入时，company会自动显示可能的实例选项 :config (setq company-minimun-prefix-length 1) ;; 只需敲一个字母就开始进行自动补全 (setq company-tooltip-align-annotations t) ;; 设定自动补全提示框与注解的对齐方式，如果设为nil，则对 齐，如果设为t，则不对齐 (setq company-idle-delay 0.0) ;; 设置自动补全的延时，在输入之后立即触发自动补全 (setq company-show-numbers 1) ;; 给选项编号(按快捷键M-1、M-2等等来进行选择) (setq company-selection-wrap-around 1) ;; 当光标移到最后一个选项后，再按下TAB键时，光标将回到第一个 选项 (setq company-transformers '(company-sort-by-occurrence)) ;; 根据选择的频率进行排序，如果不喜欢可以 去掉 ) (use-package ox-hugo :ensure t ) ",
+  "wordCount" : "790",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2025-07-08T18:57:42.57+08:00",
+  "dateModified": "2025-07-08T18:57:42.57+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Theme PaperMod"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/post/emacs/emacs_config/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PaperMod",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/post/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+    <h1 class="post-title entry-hint-parent">
+      emacs_config
+    </h1>
+    <div class="post-meta">
+
+<span title='2025-07-08 18:57:42.57 +0800 +0800'>July 8, 2025</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span>&nbsp;|&nbsp;<span>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content/post/emacs/emacs_config.org" rel="noopener noreferrer edit" target="_blank">Suggest Changes</a>
+    </span>
+
+</div>
+  </header> 
+
+  <div class="post-content md-content">
+<div id="outline-container-headline-1" class="outline-3">
+<h3 id="headline-1">
+设置Emacs的HOME目录
+</h3>
+<div id="outline-text-headline-1" class="outline-text-3">
+<p>
+总的来说，Emacs的默认配置文件放在变量HOME所指的路径下，所以，只要我们把.emacs扔到HOME所指向的目录就可以了，下面就简单介绍一下在Windows下设置home目录的几种方法，并进行简单的对比。</p>
+<p>
+第一种方法，改变home环境变量的值。
+这种方法，改变了$home变量，也会影响Cygwin或是其他一些应用程序，因为有一些程序会根据Windows的home环境变量来寻找数据存放的路径。</p>
+<p>
+第二种方法，不改变Windows默认的home值，设置默认的.emacs文件读取你自己的Emacs配置文件，并重新设定Emacs的home目录。
+你可以在Emacs中输入C-x
+C-f，然后打开路径~（即当前的home环境变量所指的路径，一般来说是这样的路径：C:/Documents
+and Settings/water/Application Data）。</p>
+<p>
+看看显示的是哪个目录，如果此目录下没有.emacs，可以创建一个.emacs或_emacs，然后在这个.emacs文件里，加入如下语句：
+(load-file &#34;E:/water/.emacs&#34;) 文件 E:/water/.emacs
+才是我们真正的Emacs配置文件，我们可以在这个真正的配置文件里用如下语句设置我们的home目录：</p>
+<div class="src src-emacs-lisp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-emacs-lisp" data-lang="emacs-lisp"><span class="line"><span class="cl">  <span class="c1">;; (setenv &#34;HOME&#34; &#34;C:/cygwin/home/username&#34;)                           </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (setenv &#34;PATH&#34; &#34;C:/cygwin/home/username&#34;)                           </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (set default-directory &#34;C:/cygwin/home/username&#34;)                   </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (add-to-list &#39;load-path &#34;C:/cygwin/home/username/.emacs.d/init.el&#34;)</span></span></span></code></pre></div>
+</div>
+<p>
+这个方法的优点是比较简单同样也方便对.emacs文件备份，不会对其它应用程序产生任何影响。</p>
+<p>
+第三种方法，修改注册表，在注册表中进行如下设置：
+HKEY_LOCAL_MACHINE§OFTWARE\GNU\Emacs\HOME=%emacs_dir%
+以上三种方法都可以设置好Emacs的Home目录，但是，系统是按什么顺序来解析它们的呢？大体上的顺序是这样的：</p>
+<p>
+如果设置了环境变量HOME，则使用HOME指定的目录。
+如果设置了注册表里的值HKCU§OFTWARE\GNU\Emacs\HOME，则使用这个值所指定的目录作为home目录。并不是太推荐使用这种方法，因为会导致用户共享一个home目录。
+如果 C:\.emacs 文件存在，则使用 C:\.emacs
+这个文件。这个是为了向低版本的Emacs兼容，因为低版本的Emacs就是默认用这个文件作为配置文件。
+把用户的AppData目录作为home目录（通常来说，就是类似这样的目录
+C:/Documents and Settings/water/Application Data
+），这个用户的数据目录根据Windows版本的不同而有所不同。
+我个人比较喜欢用第二种方法，即简单又方便备份。</p>
+<p>
+其实，如果你只是想要Emacs能找到你的.emacs的话，也可以不用管HOME目录的，写个批处理文件emacs.bat:
+path-of-emacs.exe -q -l path-of-your.emacs</p>
+</div>
+</div>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+emacs查看快捷键是否被占用
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>
+先执行C-h c，然后按下执行某快捷键，查看minibuffer提示快捷键情况</p>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+emacs查看函数
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>
+先执行C-h a，然后输入某一函数并回车，查看函数说明</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+基于时间创建文件
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<div class="src src-emacs-lisp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-emacs-lisp" data-lang="emacs-lisp"><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">defun</span> <span class="nv">extract-time-keyword</span> <span class="p">()</span>                                     
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;提取当前时间的关键词&#34;</span>                                             
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">interactive</span><span class="p">)</span>                                                      
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">let</span> <span class="p">((</span><span class="nv">time</span> <span class="p">(</span><span class="nf">format-time-string</span> <span class="s">&#34;%Y-%m-%d_%H-%M-%S&#34;</span><span class="p">)))</span>             
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nb">setq</span> <span class="nv">time-keyword</span> <span class="p">(</span><span class="nv">replace-regexp-in-string</span> <span class="s">&#34;[-:]&#34;</span> <span class="s">&#34;&#34;</span> <span class="nv">time</span><span class="p">))</span>      
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nf">message</span> <span class="s">&#34;提取的时间关键词为：%s&#34;</span> <span class="nv">time-keyword</span><span class="p">)</span>                    
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nv">create-new-file</span> <span class="nv">time-keyword</span><span class="p">)))</span>                                   
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">defun</span> <span class="nv">create-new-file</span> <span class="p">(</span><span class="nv">time-keyword</span><span class="p">)</span>                              
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;使用时间关键词创建新文件&#34;</span>                                         
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">let</span> <span class="p">((</span><span class="nv">file-path</span> <span class="p">(</span><span class="nf">concat</span> <span class="s">&#34;~/path/to/files/&#34;</span> <span class="nv">time-keyword</span> <span class="s">&#34;.txt&#34;</span><span class="p">)))</span> 
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nb">with-temp-file</span> <span class="nv">file-path</span>                                          
+</span></span><span class="line"><span class="cl">		<span class="p">(</span><span class="nf">insert</span> <span class="s">&#34;这是一个新文件，创建时间：&#34;</span> <span class="nv">time-keyword</span><span class="p">))))</span>              
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">global-set-key</span> <span class="p">(</span><span class="nv">kbd</span> <span class="s">&#34;C-c t&#34;</span><span class="p">)</span> <span class="ss">&#39;extract-time-keyword</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+完善后
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<div class="src src-emacs-lisp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-emacs-lisp" data-lang="emacs-lisp"><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">defun</span> <span class="nv">extract-time-keyword</span> <span class="p">()</span>                                
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;提取当前时间的关键词&#34;</span>                                        
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">interactive</span><span class="p">)</span>                                                 
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">let</span> <span class="p">((</span><span class="nv">time</span> <span class="p">(</span><span class="nf">format-time-string</span> <span class="s">&#34;%Y-%m-%d&#34;</span><span class="p">)))</span>                 
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nb">setq</span> <span class="nv">time-keyword</span> <span class="p">(</span><span class="nv">replace-regexp-in-string</span> <span class="s">&#34;[-:]&#34;</span> <span class="s">&#34;&#34;</span> <span class="nv">time</span><span class="p">))</span> 
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nf">message</span> <span class="s">&#34;提取的时间关键词为：%s&#34;</span> <span class="nv">time-keyword</span><span class="p">)</span>               
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nv">create-new-file</span> <span class="nv">time-keyword</span><span class="p">)))</span>                              
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">defun</span> <span class="nv">create-new-file</span> <span class="p">(</span><span class="nv">time-keyword</span><span class="p">)</span>                         
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;使用时间关键词创建新文件&#34;</span>                                    
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">let</span> <span class="p">((</span><span class="nv">file-path</span> <span class="p">(</span><span class="nf">concat</span> <span class="s">&#34;./&#34;</span> <span class="nv">time-keyword</span> <span class="s">&#34;.txt&#34;</span><span class="p">)))</span>          
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nb">with-temp-file</span> <span class="nv">file-path</span>                                     
+</span></span><span class="line"><span class="cl">		<span class="p">(</span><span class="nf">insert</span> <span class="nv">time-keyword</span> <span class="s">&#34;: name\n1. &#34;</span><span class="p">))))</span>                        
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">global-set-key</span> <span class="p">(</span><span class="nv">kbd</span> <span class="s">&#34;C-c t&#34;</span><span class="p">)</span> <span class="ss">&#39;extract-time-keyword</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+基于时间添加代码块并设置tangle
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<div class="src src-emacs-lisp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-emacs-lisp" data-lang="emacs-lisp"><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">defun</span> <span class="nv">add-code-block</span> <span class="p">()</span>                                                           
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;在当前位置添加一个代码块，并以时间作为块名进行命名&#34;</span>                               
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">interactive</span><span class="p">)</span>                                                                      
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">let*</span> <span class="p">((</span><span class="nv">time</span> <span class="p">(</span><span class="nf">format-time-string</span> <span class="s">&#34;%Y-%m-%d_%H-%M-%S&#34;</span><span class="p">))</span>  <span class="c1">; 获取当前时间             </span>
+</span></span><span class="line"><span class="cl">		   <span class="p">(</span><span class="nv">clean-time</span> <span class="p">(</span><span class="nv">replace-regexp-in-string</span> <span class="s">&#34;[-:]&#34;</span> <span class="s">&#34;&#34;</span> <span class="nv">time</span><span class="p">))</span>  <span class="c1">; 去除时间中的破折号和冒号 </span>
+</span></span><span class="line"><span class="cl">		   <span class="p">(</span><span class="nv">block-name</span> <span class="p">(</span><span class="nf">concat</span> <span class="s">&#34;block-&#34;</span> <span class="nv">clean-time</span><span class="p">))</span>  <span class="c1">; 构建代码块名                          </span>
+</span></span><span class="line"><span class="cl">		   <span class="p">(</span><span class="nv">code-block</span> <span class="p">(</span><span class="nf">format</span>                                                                
+</span></span><span class="line"><span class="cl">						<span class="s">&#34;* %s  ; 创建时间：%s                                                              
+</span></span></span><span class="line"><span class="cl"><span class="s">  ,#+BEGIN_SRC emacs-lisp :tangle %s.el                                              
+</span></span></span><span class="line"><span class="cl"><span class="s">  ;; 在这里插入你的代码\n#+END_SRC&#34;</span>                                                  
+</span></span><span class="line"><span class="cl">						<span class="nv">block-name</span> <span class="nv">time</span> <span class="nv">block-name</span><span class="p">)))</span>                                                      
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nf">insert</span> <span class="nv">code-block</span><span class="p">)))</span>  <span class="c1">; 在当前位置插入代码块                                      </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">;; 设置快捷键 C-c b 绑定到 add-code-block 函数                                     </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">global-set-key</span> <span class="p">(</span><span class="nv">kbd</span> <span class="s">&#34;C-c b&#34;</span><span class="p">)</span> <span class="ss">&#39;add-code-block</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+<div id="outline-container-headline-7" class="outline-4">
+<h4 id="headline-7">
+完善后
+</h4>
+<div id="outline-text-headline-7" class="outline-text-4">
+<div class="src src-emacs-lisp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-emacs-lisp" data-lang="emacs-lisp"><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">defun</span> <span class="nv">add-code-block</span> <span class="p">()</span>                                                           
+</span></span><span class="line"><span class="cl">	<span class="s">&#34;在当前位置添加一个代码块，并以时间作为块名进行命名&#34;</span>                               
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">interactive</span><span class="p">)</span>                                                                      
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">let*</span> <span class="p">((</span><span class="nv">time</span> <span class="p">(</span><span class="nf">format-time-string</span> <span class="s">&#34;%Y-%m-%d&#34;</span><span class="p">))</span>  <span class="c1">; 获取当前时间                      </span>
+</span></span><span class="line"><span class="cl">		   <span class="p">(</span><span class="nv">clean-time</span> <span class="p">(</span><span class="nv">replace-regexp-in-string</span> <span class="s">&#34;[-:]&#34;</span> <span class="s">&#34;&#34;</span> <span class="nv">time</span><span class="p">))</span>  <span class="c1">; 去除时间中的破折号和冒号 </span>
+</span></span><span class="line"><span class="cl">		   <span class="p">(</span><span class="nv">block-name</span> <span class="p">(</span><span class="nf">concat</span> <span class="nv">clean-time</span><span class="p">))</span>  <span class="c1">; 构建代码块名                                   </span>
+</span></span><span class="line"><span class="cl">		   <span class="p">(</span><span class="nv">code-block</span> <span class="p">(</span><span class="nf">format</span>                                                                
+</span></span><span class="line"><span class="cl">						<span class="s">&#34;* %s                                                                              
+</span></span></span><span class="line"><span class="cl"><span class="s">  ,#+BEGIN_SRC emacs-lisp :tangle %s.el                                              
+</span></span></span><span class="line"><span class="cl"><span class="s">  %s: name\n1.                                                                       
+</span></span></span><span class="line"><span class="cl"><span class="s">  ,#+END_SRC&#34;</span>                                                                        
+</span></span><span class="line"><span class="cl">						<span class="nv">block-name</span> <span class="nv">clean-time</span> <span class="nv">block-name</span><span class="p">)))</span>                                                
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nf">insert</span> <span class="nv">code-block</span><span class="p">)))</span>  <span class="c1">; 在当前位置插入代码块                                      </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">;; 设置快捷键 C-c b 绑定到 add-code-block 函数                                     </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">global-set-key</span> <span class="p">(</span><span class="nv">kbd</span> <span class="s">&#34;C-c b&#34;</span><span class="p">)</span> <span class="ss">&#39;add-code-block</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
+wsl-ubuntu18.04.6安装最新版本emamcs教程
+</h3>
+<div id="outline-text-headline-8" class="outline-text-3">
+<div class="src src-emacs-lisp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-emacs-lisp" data-lang="emacs-lisp"><span class="line"><span class="cl">  <span class="nv">$sudo</span> <span class="nv">add-apt-repository</span> <span class="nv">ppa:ubuntu-elisp/ppa</span>      
+</span></span><span class="line"><span class="cl">  <span class="nv">$sudo</span> <span class="nv">apt</span> <span class="nv">update</span>                                   
+</span></span><span class="line"><span class="cl">  <span class="nv">$sudo</span> <span class="nv">apt</span> <span class="nv">install</span> <span class="nv">emacs-snapshot</span> <span class="nv">emacs-snapshot-el</span> 
+</span></span><span class="line"><span class="cl">  <span class="nv">$emacs</span> <span class="nv">--version</span>    <span class="err">#</span><span class="nv">查看emacs版本</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-3">
+<h3 id="headline-9">
+在linux环境设置emacs守护进程
+</h3>
+<div id="outline-text-headline-9" class="outline-text-3">
+<div id="outline-container-headline-10" class="outline-4">
+<h4 id="headline-10">
+常规操作
+</h4>
+<div id="outline-text-headline-10" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="c1"># 启动emacs server：</span>
+</span></span><span class="line"><span class="cl">  $ emacs --daemon  
+</span></span><span class="line"><span class="cl">  <span class="c1"># 编辑文件</span>
+</span></span><span class="line"><span class="cl">  $ emacsclient file
+</span></span><span class="line"><span class="cl">  $ emacsclient -t file <span class="c1"># 字符界面</span>
+</span></span><span class="line"><span class="cl">  $ emacsclient -c file <span class="c1"># GUI界面 </span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># 添加命令行别名 </span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># 为了方便在终端上使用，在~/.bashrc文件中加入如下两行：</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">alias</span> <span class="nv">ec</span><span class="o">=</span><span class="s1">&#39;emacsclient -t -a &#34;&#34;&#39;</span>                       
+</span></span><span class="line"><span class="cl">  <span class="nb">alias</span> <span class="nv">sec</span><span class="o">=</span><span class="s1">&#39;sudo emacsclient -t -a &#34;&#34;&#39;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-4">
+<h4 id="headline-11">
+脚本操作
+</h4>
+<div id="outline-text-headline-11" class="outline-text-4">
+<p>
+如果安装了dashboard，想启动时已dashboard作为启动界面，可以更改alias别名的定义</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="nb">alias</span> <span class="nv">ec</span><span class="o">=</span><span class="s1">&#39;emacsclient -c -e &#34;(dashboard-setup-startup-hook)&#34;&#39;</span></span></span></code></pre></div>
+</div>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  find ./ -name <span class="s2">&#34;*~&#34;</span> <span class="p">|</span> xargs rm
+</span></span><span class="line"><span class="cl">  ps -ef <span class="p">|</span> grep <span class="s2">&#34;emacs --daemon&#34;</span> <span class="p">|</span> grep -v <span class="s2">&#34;grep&#34;</span> &gt; /dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> -ne <span class="m">0</span> <span class="o">]</span>                                                                               
+</span></span><span class="line"><span class="cl">  <span class="k">then</span>                                                                                          
+</span></span><span class="line"><span class="cl">	  nohup emacs --daemon <span class="p">&amp;</span>                                                                        
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>                                                                                            
+</span></span><span class="line"><span class="cl">  <span class="nb">alias</span> <span class="s1">&#39;emacs&#39;</span><span class="o">=</span><span class="s1">&#39;emacsclient&#39;</span>                                                                   
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> -e <span class="s2">&#34;~/null&#34;</span> <span class="o">]</span>                                                                            
+</span></span><span class="line"><span class="cl">  <span class="k">then</span>                                                                                          
+</span></span><span class="line"><span class="cl">	  rm ~/null                                                                                     
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>                                                                                            
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span> -e <span class="s2">&#34;~/nohup.out&#34;</span> <span class="o">]</span>                                                                       
+</span></span><span class="line"><span class="cl">  <span class="k">then</span>                                                                                          
+</span></span><span class="line"><span class="cl">	  rm ~/nohup.out                                                                                
+</span></span><span class="line"><span class="cl">  <span class="k">fi</span>                                                                                            
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nb">alias</span> <span class="nv">ec</span><span class="o">=</span><span class="s1">&#39;emacsclient -c -e &#34;(dashboard-setup-startup-hook)&#34;&#39;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-3">
+<h3 id="headline-12">
+在windows环境可以如下操作
+</h3>
+<div id="outline-text-headline-12" class="outline-text-3">
+<p>
+首先下载emacs最新版本，并将其添加windows系统环境变量，然后在终端中执行&#34;emacs
+–daemon&#34;，如果该命令占用终端，可以将其作为守护进程运行，在cygwin环境中参考linux环境操作
+还有就是在.emacs.d/下有了server(socket文件)后，可以执行&#34;emacs
+–server-file .emacs/server&#34;指定socket文件路径
+第二步的前提是通过第一步产生了server文件，或者在emacs中通过运行&#34;server-start&#34;设置守护进程</p>
+<div id="outline-container-headline-13" class="outline-4">
+<h4 id="headline-13">
+在windows创建守护进程脚本
+</h4>
+<div id="outline-text-headline-13" class="outline-text-4">
+<div class="src src-bat">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bat" data-lang="bat"><span class="line"><span class="cl">  <span class="p">@</span><span class="k">echo</span> off                                                                                   
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="s2">&#34;</span><span class="nv">%1</span><span class="s2">&#34;</span><span class="o">==</span><span class="s2">&#34;h&#34;</span> <span class="k">goto</span> <span class="nl">begin</span><span class="c1">                                                                     </span>
+</span></span><span class="line"><span class="cl">  <span class="k">start</span> mshta vbscript:createobject(<span class="s2">&#34;wscript.shell&#34;</span>).run(<span class="s2">&#34;&#34;&#34;</span><span class="nv">%~nx0</span><span class="s2">&#34;&#34; h&#34;</span>,0)(window.close)<span class="p">&amp;&amp;</span><span class="k">exit</span> 
+</span></span><span class="line"><span class="cl">  <span class="p">:</span><span class="nl">begin</span><span class="c1">                                                                                      </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  emacs --daemon                                                                              
+</span></span><span class="line"><span class="cl">  doskey emacs=emacsclient</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-4">
+<h4 id="headline-14">
+在windows_Cygwin创建启动脚本，因从守护进程运行的emacsclient与正常运行emacs效果不一样，因此只是介绍方法，不过多介绍
+</h4>
+<div id="outline-text-headline-14" class="outline-text-4">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  <span class="c1">#!/usr/bin/bash         </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  cmd /c emacs --daemon <span class="p">&amp;</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-15" class="outline-3">
+<h3 id="headline-15">
+在emacs中获取终端家目录或者用户，用户对就&#34;USER&#34;
+</h3>
+<div id="outline-text-headline-15" class="outline-text-3">
+<div class="src src-emacs-lisp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-emacs-lisp" data-lang="emacs-lisp"><span class="line"><span class="cl"><span class="p">(</span><span class="nb">setq</span> <span class="nv">terminal-home</span> <span class="p">(</span><span class="nv">getenv</span> <span class="s">&#34;HOME&#34;</span><span class="p">))</span>                                
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="nb">setq</span> <span class="nv">relative-path</span> <span class="s">&#34;Documents/example.txt&#34;</span><span class="p">)</span>                        
+</span></span><span class="line"><span class="cl">                                                                    
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="nb">setq</span> <span class="nv">absolute-path</span> <span class="p">(</span><span class="nf">expand-file-name</span> <span class="nv">relative-path</span> <span class="nv">terminal-home</span><span class="p">))</span> 
+</span></span><span class="line"><span class="cl">                                                                    
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="nf">message</span> <span class="s">&#34;Absolute path: %s&#34;</span> <span class="nv">absolute-path</span><span class="p">)</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-16" class="outline-3">
+<h3 id="headline-16">
+emacs的init.el，我保存在.emacs.d/init.el中
+</h3>
+<div id="outline-text-headline-16" class="outline-text-3">
+<div class="src src-emacs-lisp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-emacs-lisp" data-lang="emacs-lisp"><span class="line"><span class="cl">  <span class="c1">;; 实用参考链接</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">;; 列出一些常用学习链接                                                                                                                                                                                                                                                                           </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; https://zhuanlan.zhihu.com/p/385214753                                                                                                                                                                                                                                                         </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; https://github.com/emacs-china/Spacemacs-rocks#%E5%AE%89%E8%A3%85-spacemacs                                                                                                                                                                                                                    </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; https://www.cnblogs.com/holbrook/archive/2012/04/12/2444992.html                                                                                                                                                                                                                               </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; https://www.cnblogs.com/ts65214/p/5561646.html                                                                                                                                                                                                                                                 </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">;; 目录配置</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (setenv &#34;HOME&#34; &#34;C:/cygwin/home/username&#34;)                                                                                                                                                                                                                                                      </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (setenv &#34;PATH&#34; &#34;C:/cygwin/home/username&#34;)                                                                                                                                                                                                                                                      </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (set default-directory &#34;C:/cygwin/home/username&#34;)                                                                                                                                                                                                                                              </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (add-to-list &#39;load-path &#34;C:/cygwin/home/username/.emacs.d/init.el&#34;)                                                                                                                                                                                                                            </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">;; 函数配置</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">setq</span> <span class="nv">inhibit-startup-message</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;; 禁止Emacs显示启动画面                                                                                                                                                                                                                                         </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nf">fset</span> <span class="ss">&#39;display-startup-echo-area-message</span> <span class="ss">&#39;ignore</span><span class="p">)</span> <span class="c1">;; 禁止Echo Area显示For information about GNU Emacs and the GNU system,type C-h C-a                                                                                                                                                             </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">setq-default</span> <span class="nv">indent-tabs-mode</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;; 在缩进时使用制表符                                                                                                                                                                                                                                           </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">setq-default</span> <span class="nv">tab-width</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">;; 指定制表符的宽度为4个空格                                                                                                                                                                                                                                           </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">setq</span> <span class="nv">c-default-style</span> <span class="s">&#34;linux&#34;</span><span class="p">)</span> <span class="c1">;; 指定C语言的默认代码样式为Linux风格，这其中包含了一些特定的规则和约定，例如缩进方式、括号对齐等等，可心根据自己的喜好和项目要求来修改这个值                                                                                                                      </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">setq</span> <span class="nv">c-basic-offset</span> <span class="mi">4</span><span class="p">)</span> <span class="c1">;; 在C语言模式下，每个缩进级别使用4个空格                                                                                                                                                                                                                                 </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">recentf-mode</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">;; recentf-mode是一个Emacs历史记录插件，它允许你在Emacs会话之间保留文件的历史记录，一旦启用recentf-mode，它将自动跟踪你最近打开的文件，并将它们保存在一个列表中，当你需要再次访问这些文件时，可以通过recentf-mode提供的命令和功能来查找和打开它们                                </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (tool-bar-mode 0) ;; 禁用工具栏显示，工具栏通过包含了一些常用的功能按键                                                                                                                                                                                                                        </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">menu-bar-mode</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">;; 禁用菜单栏显示，菜单栏通过包含了一系列的菜单项                                                                                                                                                                                                                               </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (scroll-bar-mode 0) ;; 禁用滚动条显示，滚动条通过用来显示当前文档的滚动位置                                                                                                                                                                                                                    </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (global-hl-line-mode 1) ;; 全局高亮当前行模式，这个模式会在当前行添加高这显示                                                                                                                                                                                                                  </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">global-linum-mode</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;; 全局显示行号，这个模式会在每行的左侧显示行号                                                                                                                                                                                                                             </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">column-number-mode</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;; 显示列号                                                                                                                                                                                                                                                                </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">xterm-mouse-mode</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;; 启用xterm鼠标模式，这个模式允许使用鼠标进行交互操作                                                                                                                                                                                                                       </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (desktop-save-mode 1) ;; 启用Emacs的桌面保存模式，当桌面保存模式开启后，Emacs会在退出时保存当前的工作 环境(打开的文件、窗口配置等)，以便在下次启动时自动恢复                                                                                                                                   </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">save-place-mode</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;; 是用来启用Emacs的记忆光标位置模式，开启后，Emacs会记录你最后离开每个文件时的光 标位置，在再次打开该文件时会自动将光标定位到上次的位置                                                                                                                                      </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; (toggle-truncate-lines t) ;; 换行模式，每次加载变量的值都会被再次取反                                                                                                                                                                                                                          </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">add-hook</span> <span class="ss">&#39;org-mode-hook</span> <span class="p">(</span><span class="nb">lambda</span> <span class="p">()</span> <span class="p">(</span><span class="nb">setq</span> <span class="nv">truncate-lines</span> <span class="no">nil</span><span class="p">)))</span> <span class="c1">;; org-mode固定自动换行                                                                                                                                                                                                           </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">setq</span> <span class="nv">default-major-mode</span> <span class="ss">&#39;text-mode</span><span class="p">)</span>                                                                                                                                                                                                                                                              
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">add-to-list</span> <span class="ss">&#39;default-frame-alist</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">foreground-color</span> <span class="o">.</span> <span class="s">&#34;#FFFFFF&#34;</span><span class="p">))</span> <span class="c1">;; 配置emacs前景颜色                                                                                                                                                                                                           </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">add-to-list</span> <span class="ss">&#39;default-frame-alist</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">background-color</span> <span class="o">.</span> <span class="s">&#34;#000000&#34;</span><span class="p">))</span> <span class="c1">;; 配置emacs背景颜色                                                                                                                                                                                                           </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">defun</span> <span class="nv">g-org-insert-note-header</span> <span class="p">()</span> <span class="c1">;; 定义一个名为g-org-insert-note-header ()的函数                                                                                                                                                                                                               </span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">interactive</span><span class="p">)</span> <span class="c1">;; 函数的一个特殊声明，表示函数可以被用户调用                                                                                                                                                                                                                                       </span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nf">insert</span> <span class="s">&#34;#+options: ^:nil\n#+title: \n#+options: \n:t\n#+author: yenao\n&#34;</span><span class="p">))</span> <span class="c1">;; insert函数用于在当前光标位置插入指定的文本内容，当你调用这个函数时，它会在当前光标位置插入文本#+options: ^:nil、#+title: 和#+author: yenao                                                                         </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">with-eval-after-load</span> <span class="ss">&#39;eww</span>                                                                                                                                                                                                                                                                        
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nv">custom-set-variables</span>                                                                                                                                                                                                                                                                             
+</span></span><span class="line"><span class="cl">	 <span class="o">&#39;</span><span class="p">(</span><span class="nv">eww-search-prefix</span> <span class="s">&#34;https://bing.com/search?q=&#34;</span><span class="p">)))</span>                                                                                                                                                                                                                                               
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">;; 参考链接：https://www.jianshu.com/p/af9e43f7f13e                                                                                                                                                                                                                                               </span>
+</span></span><span class="line"><span class="cl">  <span class="c1">;; 尝试配置GTD                                                                                                                                                                                                                                                                                    </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">unless</span> <span class="p">(</span><span class="nf">file-exists-p</span> <span class="s">&#34;~/.emacs.d/OneDrive&#34;</span><span class="p">)</span>                                                                                                                                                                                                                                                     
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nv">make-directory</span> <span class="s">&#34;~/.emacs.d/OneDrive&#34;</span><span class="p">)</span>                                                                                                                                                                                                                                                            
+</span></span><span class="line"><span class="cl">	<span class="p">)</span><span class="c1">;; 检测OneDrive目录是否存在，如果不存在就创建这个目录                                                                                                                                                                                                                                            </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">unless</span> <span class="p">(</span><span class="nf">file-exists-p</span> <span class="s">&#34;~/.emacs.d/OneDrive/org&#34;</span><span class="p">)</span>                                                                                                                                                                                                                                                 
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nv">make-directory</span> <span class="s">&#34;~/.emacs.d/OneDrive/org&#34;</span><span class="p">)</span>                                                                                                                                                                                                                                                        
+</span></span><span class="line"><span class="cl">	<span class="p">)</span><span class="c1">;; 检测org目录是否存在，如果不存在就创建这个目录                                                                                                                                                                                                                                                 </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">let</span> <span class="p">((</span><span class="nv">filename</span> <span class="s">&#34;~/.emacs.d/my-agenda.el&#34;</span><span class="p">))</span> <span class="c1">;; 如果my-agenda.el文件不存在，就创建这个文件，如果需要往 该文件内写入内容，将该段该中insert的注释取消即可                                                                                                                                            </span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">unless</span> <span class="p">(</span><span class="nf">file-exists-p</span> <span class="nv">filename</span><span class="p">)</span>                                                                                                                                                                                                                                                                  
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nb">with-temp-file</span> <span class="nv">filename</span>                                                                                                                                                                                                                                                                          
+</span></span><span class="line"><span class="cl">		<span class="c1">;; (insert &#34;这是文件内容&#34;) ;; 写入文件内容                                                                                                                                                                                                                                                        </span>
+</span></span><span class="line"><span class="cl">		<span class="p">)))</span>                                                                                                                                                                                                                                                                                               
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">let</span> <span class="p">((</span><span class="nv">filename</span> <span class="s">&#34;~/.emacs.d/OneDrive/org/todo.org&#34;</span><span class="p">))</span> <span class="c1">;; 如果todo.org文件不存在，就创建这个文件，如果需要往该文件内写入内容，将该段该中insert的注释取消即可                                                                                                                                        </span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">unless</span> <span class="p">(</span><span class="nf">file-exists-p</span> <span class="nv">filename</span><span class="p">)</span>                                                                                                                                                                                                                                                                  
+</span></span><span class="line"><span class="cl">	  <span class="p">(</span><span class="nb">with-temp-file</span> <span class="nv">filename</span>                                                                                                                                                                                                                                                                          
+</span></span><span class="line"><span class="cl">		<span class="c1">;; (insert &#34;这是文件内容&#34;) ;; 写入文件内容                                                                                                                                                                                                                                                        </span>
+</span></span><span class="line"><span class="cl">		<span class="p">)))</span>                                                                                                                                                                                                                                                                                               
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">load-file</span> <span class="s">&#34;~/.emacs.d/my-agenda.el&#34;</span><span class="p">)</span> <span class="c1">;; 加载my-agenda.el配置文件                                                                                                                                                                                                                                 </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">setq</span> <span class="nv">org-agenda-files</span> <span class="o">&#39;</span><span class="p">(</span><span class="s">&#34;~/.emacs.d/OneDrive/org&#34;</span><span class="p">))</span> <span class="c1">;; 指定data存放目录                                                                                                                                                                                                                          </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">setq</span> <span class="nv">org-default-notes-file</span> <span class="s">&#34;~/.emacs.d/OneDrive/org/todo.org&#34;</span><span class="p">)</span> <span class="c1">;; 配置好data目录后，再配置具体要将信息写于哪个文件，可以配置多个文件，出于简化，这里将所有的agenda todo写入~/Onedrive/org/todo.org文件下                                                                                        </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">global-set-key</span> <span class="s">&#34;\C-cl&#34;</span> <span class="ss">&#39;org-store-link</span><span class="p">)</span>                                                                                                                                                                                                                                                          
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">global-set-key</span> <span class="s">&#34;\C-cc&#34;</span> <span class="ss">&#39;org-capture</span><span class="p">)</span>                                                                                                                                                                                                                                                             
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">global-set-key</span> <span class="s">&#34;\C-ca&#34;</span> <span class="ss">&#39;org-agenda</span><span class="p">)</span>                                                                                                                                                                                                                                                              
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">global-set-key</span> <span class="s">&#34;\C-cb&#34;</span> <span class="ss">&#39;org-iswitchb</span><span class="p">)</span>                                                                                                                                                                                                                                                            
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nf">define-key</span> <span class="nv">global-map</span> <span class="s">&#34;\C-cr&#34;</span> <span class="ss">&#39;remember</span><span class="p">)</span>                                                                                                                                                                                                                                                         
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">setq</span> <span class="nv">org-todo-keywords</span> <span class="o">&#39;</span><span class="p">((</span><span class="nv">sequence</span> <span class="s">&#34;TODO(t!)&#34;</span> <span class="s">&#34;NEXT(n)&#34;</span> <span class="s">&#34;WAITTING(w)&#34;</span> <span class="s">&#34;SOMEDAY(s)&#34;</span> <span class="s">&#34;                                                                                                                                                                             &#34;</span> <span class="s">&#34;DONE(d@/!)&#34;</span> <span class="s">&#34;ABORT(a@/!)&#34;</span><span class="p">)))</span> 
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">setq</span> <span class="nv">org-tag-alist</span> <span class="o">&#39;</span><span class="p">((</span><span class="s">&#34;@office&#34;</span> <span class="o">.</span> <span class="sc">?w</span><span class="p">)</span> <span class="p">(</span><span class="s">&#34;@home&#34;</span> <span class="o">.</span> <span class="sc">?h</span><span class="p">)</span> <span class="p">(</span><span class="s">&#34;traffic&#34;</span> <span class="o">.</span> <span class="sc">?t</span><span class="p">)</span> <span class="p">(</span><span class="s">&#34;computer&#34;</span> <span class="o">.</span> <span class="sc">?c</span><span class="p">)</span> <span class="p">(</span><span class="s">&#34;nocomputer&#34;</span> <span class="o">.</span> <span class="sc">?n</span><span class="p">)</span> <span class="p">(</span><span class="s">&#34;either&#34;</span> <span class="o">.</span> <span class="sc">?e</span><span class="p">)</span> <span class="p">(</span><span class="s">&#34;immediately&#34;</span> <span class="o">.</span> <span class="sc">?i</span><span class="p">)</span> <span class="p">(</span><span class="s">&#34;wait&#34;</span> <span class="o">.</span> <span class="sc">?w</span><span class="p">)</span> <span class="p">(</span><span class="s">&#34;action&#34;</span> <span class="o">.</span> <span class="sc">?a</span><span class="p">)))</span>                                                                                                                 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">										  <span class="c1">; 插件配置                                                                                                                                                                                                                                                                                        </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">require</span> <span class="ss">&#39;package</span><span class="p">)</span>                                                                                                                                                                                                                                                                                
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">add-to-list</span> <span class="ss">&#39;package-archives</span>                                                                                                                                                                                                                                                                    
+</span></span><span class="line"><span class="cl">			   <span class="o">&#39;</span><span class="p">(</span><span class="s">&#34;melpa-stable&#34;</span> <span class="o">.</span> <span class="s">&#34;https://stable.melpa.org/packages/&#34;</span><span class="p">)</span> <span class="no">t</span><span class="p">)</span> <span class="c1">;; 配置melpa-stable仓库，如果不配置的话，use-package安装不了，比如在wsl-ubuntu18.04环境上就是这样                                                                                                                                     </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nv">package-initialize</span><span class="p">)</span>                                                                                                                                                                                                                                                                              
+</span></span><span class="line"><span class="cl">  <span class="c1">;; 配置use-package用于安装各种插件                                                                                                                                                                                                                                                                </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">eval-when-compile</span>                                                                                                                                                                                                                                                                                
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">require</span> <span class="ss">&#39;use-package</span><span class="p">)</span>                                                                                                                                                                                                                                                                            
+</span></span><span class="line"><span class="cl">	<span class="p">)</span>                                                                                                                                                                                                                                                                                                 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">;; 配置company用于文本补全                                                                                                                                                                                                                                                                        </span>
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">use-package</span> <span class="nv">company</span>                                                                                                                                                                                                                                                                              
+</span></span><span class="line"><span class="cl">	<span class="nb">:ensure</span> <span class="no">t</span>                                                                                                                                                                                                                                                                                         
+</span></span><span class="line"><span class="cl">	<span class="nb">:init</span> <span class="p">(</span><span class="nv">global-company-mode</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;; 启用全局的自动补全功能，这将使得在所有的缓冲区中的文本输入时，company会自动显示可能的实例选项                                                                                                                                                                    </span>
+</span></span><span class="line"><span class="cl">	<span class="nb">:config</span>                                                                                                                                                                                                                                                                                           
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">setq</span> <span class="nv">company-minimun-prefix-length</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;; 只需敲一个字母就开始进行自动补全                                                                                                                                                                                                                        </span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">setq</span> <span class="nv">company-tooltip-align-annotations</span> <span class="no">t</span><span class="p">)</span> <span class="c1">;; 设定自动补全提示框与注解的对齐方式，如果设为nil，则对 齐，如果设为t，则不对齐                                                                                                                                                                       </span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">setq</span> <span class="nv">company-idle-delay</span> <span class="mf">0.0</span><span class="p">)</span> <span class="c1">;; 设置自动补全的延时，在输入之后立即触发自动补全                                                                                                                                                                                                                   </span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">setq</span> <span class="nv">company-show-numbers</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;; 给选项编号(按快捷键M-1、M-2等等来进行选择)                                                                                                                                                                                                                       </span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">setq</span> <span class="nv">company-selection-wrap-around</span> <span class="mi">1</span><span class="p">)</span> <span class="c1">;; 当光标移到最后一个选项后，再按下TAB键时，光标将回到第一个 选项                                                                                                                                                                                          </span>
+</span></span><span class="line"><span class="cl">	<span class="p">(</span><span class="nb">setq</span> <span class="nv">company-transformers</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">company-sort-by-occurrence</span><span class="p">))</span> <span class="c1">;; 根据选择的频率进行排序，如果不喜欢可以 去掉                                                                                                                                                                                          </span>
+</span></span><span class="line"><span class="cl">	<span class="p">)</span>                                                                                                                                                                                                                                                                                                 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="p">(</span><span class="nb">use-package</span> <span class="nv">ox-hugo</span>                                                                                                                                                                                                                                                                              
+</span></span><span class="line"><span class="cl">	<span class="nb">:ensure</span> <span class="no">t</span>                                                                                                                                                                                                                                                                                         
+</span></span><span class="line"><span class="cl">	<span class="p">)</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/emacs/">Emacs</a></li>
+    </ul>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share emacs_config on x"
+            href="https://x.com/intent/tweet/?text=emacs_config&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs_config%2f&amp;hashtags=emacs">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share emacs_config on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs_config%2f&amp;title=emacs_config&amp;summary=emacs_config&amp;source=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs_config%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share emacs_config on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs_config%2f&title=emacs_config">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share emacs_config on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs_config%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share emacs_config on whatsapp"
+            href="https://api.whatsapp.com/send?text=emacs_config%20-%20http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs_config%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share emacs_config on telegram"
+            href="https://telegram.me/share/url?text=emacs_config&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs_config%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share emacs_config on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=emacs_config&u=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs_config%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

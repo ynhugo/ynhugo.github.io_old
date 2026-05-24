@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>如何编写一个Linux内核模块 | PaperMod</title>
+<meta name="keywords" content="linux, 程序员">
+<meta name="description" content="
+
+参考链接
+
+
+
+https://zhuanlan.zhihu.com/p/420194002
+
+
+
+
+如何编写一个Linux内核模块
+
+
+
+
+前言
+
+
+
+Linux 系统为应用程序提供了功能强大且容易扩展的 API，但在某些情况下，这还远远不够。与硬件交互或进行需要访问系统中特权信息的操作时，就需要一个内核模块。
+
+Linux 内核模块是一段编译后的二进制代码，直接插入 Linux 内核中，在 Ring 0 （x86–64处理器中执行最低和受保护程度最低的执行环）上运行。这里的代码完全不受检查，但是运行速度很快，可以访问系统中的所有内容。
+
+Intel X86架构使用了4个级别来标明不同的特权级。 Ring 0 实际就是内核态，拥有最高权限。而一般应用程序处于 Ring 3状态–用户态。在Linux中，还存在 Ring 1 和 Ring 2 两个级别，一般归属驱动程序的级别。在Windows平台没有 Ring 1 和 Ring 2 两个级别，只用 Ring 0 内核态和 Ring 3 用户态。在权限约束上，高特权等级状态可以阅读低特权等级状态的数据，例如进程上下文、代码、数据等等，但反之则不可。 Ring 0 最高可以读取 Ring 0-3 所有的内容， Ring 1 可以读 Ring 1-3 的， Ring 2 以此类推， Ring 3 只能读自己的数据。
+
+
+
+
+为什么要开发内核模块
+
+
+
+编写 Linux 内核模块并不是因为内核太庞大而不敢修改。直接修改内核源码会导致很多问题，例如：通过更改内核，你将面临数据丢失和系统损坏的风险。内核代码没有常规 Linux 应用程序所拥有的安全防护机制，如果内核发生故障，将锁死整个系统。">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AAlinux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AAlinux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AAlinux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="如何编写一个Linux内核模块">
+  <meta property="og:description" content="参考链接 https://zhuanlan.zhihu.com/p/420194002
+如何编写一个Linux内核模块 前言 Linux 系统为应用程序提供了功能强大且容易扩展的 API，但在某些情况下，这还远远不够。与硬件交互或进行需要访问系统中特权信息的操作时，就需要一个内核模块。
+Linux 内核模块是一段编译后的二进制代码，直接插入 Linux 内核中，在 Ring 0 （x86–64处理器中执行最低和受保护程度最低的执行环）上运行。这里的代码完全不受检查，但是运行速度很快，可以访问系统中的所有内容。
+Intel X86架构使用了4个级别来标明不同的特权级。 Ring 0 实际就是内核态，拥有最高权限。而一般应用程序处于 Ring 3状态–用户态。在Linux中，还存在 Ring 1 和 Ring 2 两个级别，一般归属驱动程序的级别。在Windows平台没有 Ring 1 和 Ring 2 两个级别，只用 Ring 0 内核态和 Ring 3 用户态。在权限约束上，高特权等级状态可以阅读低特权等级状态的数据，例如进程上下文、代码、数据等等，但反之则不可。 Ring 0 最高可以读取 Ring 0-3 所有的内容， Ring 1 可以读 Ring 1-3 的， Ring 2 以此类推， Ring 3 只能读自己的数据。
+为什么要开发内核模块 编写 Linux 内核模块并不是因为内核太庞大而不敢修改。直接修改内核源码会导致很多问题，例如：通过更改内核，你将面临数据丢失和系统损坏的风险。内核代码没有常规 Linux 应用程序所拥有的安全防护机制，如果内核发生故障，将锁死整个系统。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-03-26T00:24:36+08:00">
+    <meta property="article:modified_time" content="2024-03-26T00:24:36+08:00">
+    <meta property="article:tag" content="Linux">
+    <meta property="article:tag" content="程序员">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="如何编写一个Linux内核模块">
+  <meta name="twitter:description" content="参考链接 https://zhuanlan.zhihu.com/p/420194002
+如何编写一个Linux内核模块 前言 Linux 系统为应用程序提供了功能强大且容易扩展的 API，但在某些情况下，这还远远不够。与硬件交互或进行需要访问系统中特权信息的操作时，就需要一个内核模块。
+Linux 内核模块是一段编译后的二进制代码，直接插入 Linux 内核中，在 Ring 0 （x86–64处理器中执行最低和受保护程度最低的执行环）上运行。这里的代码完全不受检查，但是运行速度很快，可以访问系统中的所有内容。
+Intel X86架构使用了4个级别来标明不同的特权级。 Ring 0 实际就是内核态，拥有最高权限。而一般应用程序处于 Ring 3状态–用户态。在Linux中，还存在 Ring 1 和 Ring 2 两个级别，一般归属驱动程序的级别。在Windows平台没有 Ring 1 和 Ring 2 两个级别，只用 Ring 0 内核态和 Ring 3 用户态。在权限约束上，高特权等级状态可以阅读低特权等级状态的数据，例如进程上下文、代码、数据等等，但反之则不可。 Ring 0 最高可以读取 Ring 0-3 所有的内容， Ring 1 可以读 Ring 1-3 的， Ring 2 以此类推， Ring 3 只能读自己的数据。
+为什么要开发内核模块 编写 Linux 内核模块并不是因为内核太庞大而不敢修改。直接修改内核源码会导致很多问题，例如：通过更改内核，你将面临数据丢失和系统损坏的风险。内核代码没有常规 Linux 应用程序所拥有的安全防护机制，如果内核发生故障，将锁死整个系统。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "如何编写一个Linux内核模块",
+      "item": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AAlinux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "如何编写一个Linux内核模块",
+  "name": "如何编写一个Linux内核模块",
+  "description": " 参考链接 https://zhuanlan.zhihu.com/p/420194002\n如何编写一个Linux内核模块 前言 Linux 系统为应用程序提供了功能强大且容易扩展的 API，但在某些情况下，这还远远不够。与硬件交互或进行需要访问系统中特权信息的操作时，就需要一个内核模块。\nLinux 内核模块是一段编译后的二进制代码，直接插入 Linux 内核中，在 Ring 0 （x86–64处理器中执行最低和受保护程度最低的执行环）上运行。这里的代码完全不受检查，但是运行速度很快，可以访问系统中的所有内容。\nIntel X86架构使用了4个级别来标明不同的特权级。 Ring 0 实际就是内核态，拥有最高权限。而一般应用程序处于 Ring 3状态–用户态。在Linux中，还存在 Ring 1 和 Ring 2 两个级别，一般归属驱动程序的级别。在Windows平台没有 Ring 1 和 Ring 2 两个级别，只用 Ring 0 内核态和 Ring 3 用户态。在权限约束上，高特权等级状态可以阅读低特权等级状态的数据，例如进程上下文、代码、数据等等，但反之则不可。 Ring 0 最高可以读取 Ring 0-3 所有的内容， Ring 1 可以读 Ring 1-3 的， Ring 2 以此类推， Ring 3 只能读自己的数据。\n为什么要开发内核模块 编写 Linux 内核模块并不是因为内核太庞大而不敢修改。直接修改内核源码会导致很多问题，例如：通过更改内核，你将面临数据丢失和系统损坏的风险。内核代码没有常规 Linux 应用程序所拥有的安全防护机制，如果内核发生故障，将锁死整个系统。\n",
+  "keywords": [
+    "linux", "程序员"
+  ],
+  "articleBody": " 参考链接 https://zhuanlan.zhihu.com/p/420194002\n如何编写一个Linux内核模块 前言 Linux 系统为应用程序提供了功能强大且容易扩展的 API，但在某些情况下，这还远远不够。与硬件交互或进行需要访问系统中特权信息的操作时，就需要一个内核模块。\nLinux 内核模块是一段编译后的二进制代码，直接插入 Linux 内核中，在 Ring 0 （x86–64处理器中执行最低和受保护程度最低的执行环）上运行。这里的代码完全不受检查，但是运行速度很快，可以访问系统中的所有内容。\nIntel X86架构使用了4个级别来标明不同的特权级。 Ring 0 实际就是内核态，拥有最高权限。而一般应用程序处于 Ring 3状态–用户态。在Linux中，还存在 Ring 1 和 Ring 2 两个级别，一般归属驱动程序的级别。在Windows平台没有 Ring 1 和 Ring 2 两个级别，只用 Ring 0 内核态和 Ring 3 用户态。在权限约束上，高特权等级状态可以阅读低特权等级状态的数据，例如进程上下文、代码、数据等等，但反之则不可。 Ring 0 最高可以读取 Ring 0-3 所有的内容， Ring 1 可以读 Ring 1-3 的， Ring 2 以此类推， Ring 3 只能读自己的数据。\n为什么要开发内核模块 编写 Linux 内核模块并不是因为内核太庞大而不敢修改。直接修改内核源码会导致很多问题，例如：通过更改内核，你将面临数据丢失和系统损坏的风险。内核代码没有常规 Linux 应用程序所拥有的安全防护机制，如果内核发生故障，将锁死整个系统。\n更糟糕的是，当你修改内核并导致错误后，可能不会立即表现出来。如果模块发生错误，在其加载时就锁定系统是最好的选择，如果不锁定，当你向模块中添加更多代码时，你将会面临失控循环和内存泄漏的风险，如果不小心，它们会随着计算机继续运行而持续增长，最终，关键的存储器结构甚至缓冲区都可能被覆盖。\n编写内核模块时，基本是可以丢弃传统的应用程序开发范例。除了加载和卸载模块之外，你还需要编写响应系统事件的代码（而不是按顺序模式执行的代码）。通过内核开发，你正在编写API，而不是应用程序。\n你也无权访问标准库，虽然内核提供了一些函数，例如 printk （可替代 printf）和 kmalloc （以与 malloc 相似的方式运行），但你在很大程度上只能使用自己的设备。此外，在卸载模块时，你需要将自己清理干净，系统不会在你的模块被卸载后进行垃圾回收。\n开发的工具准备 开始编写 Linux 内核模块之前，我们首先要准备一些工具。最重要的是，你需要有一台 Linux 机器，尽管可以使用任何 Linux 发行版，但本文中，我使用的是 Ubuntu 16.04 LTS，如果你使用的其他发行版，可能需要稍微调整安装命令。\n其次，你需要一台物理机或虚拟机，我不建议你直接使用物理机编写内核模块，因为当你出错时，主机的数据可能会丢失。在编写和调试内核模块的过程中，你至少会锁定机器几次，内核崩溃时，最新的代码更改可能仍在写缓冲区中，因此，你的源文件可能会损坏，在虚拟机中进行测试可以避免这种风险。\n最后，你至少需要了解一些C。对于内核来说，C++ 在运行时太大了，因此编写纯 C 代码是必不可少的。另外，对于其与硬件的交互，了解一些组件可能会有所帮助。\n安装开发环境 让我们开始编写一些代码，准备环境：\nmkdir -p ~/src/lkm_example cd ~/src/lkm_example 启动您喜欢的编辑器（在我的例子中是vim），并创建具有以下内容的文件 lkm_example.c\n#include #include #include MODULE_LICENSE(\"GPL\"); MODULE_AUTHOR(\"abin\"); MODULE_DESCRIPTION(\"A simple example Linux module.\"); MODULE_VERSION(\"0.01\"); static int __init lkm_example_init(void) { printk(KERN_INFO \"Hello, World!\\n\"); return 0; } static void __exit lkm_example_exit(void) { printk(KERN_INFO \"Goodbye, World!\\n\"); } module_init(lkm_example_init); module_exit(lkm_example_exit); 现在，我们已经构建了最简单的内核模块，下面介绍代码的细节：\n#includes 包括 Linux 内核开发所需的必需头文件。\n根据模块的许可证，可以将 MODULE_LICENSE 设置为各种值。要查看完整列表，请运行：\ngrep \"MODULE_LICENSE\" -B 27 /usr/src/linux-headers-`uname -r`/include/linux/module.h 我们将 init （加载）和 exit （卸载）函数都定义为静态并返回 int 。\n注意使用 printk 而不是 printf ，另外， printk 与 printf 共享的参数也不相同。例如， KERN_INFO 是一个标志，用于声明应为该行设置的日志记录优先级，并且不带逗号。内核在printk函数中对此进行分类以节省堆栈内存。\n在文件末尾，我们调用 module_init 和 module_exit 函数告诉内核哪些函数是内核模块的加载和卸载函数。这使我们可以任意命名这两个函数。\n目前，还无法编译此文件，我们需要一个 Makefile ，请注意， make 对于空格和制表符敏感，因此请确保在适当的地方使用制表符而不是空格。\nobj-m += lkm_example.o all: make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules clean: make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean 如果我们运行 \"make\"，它将成功编译你编写的模块，编译后的文件为 \"lkm_example.ko\"，如果收到任何错误，请检查示例源文件中的引号是否正确，并且不要将其粘贴为UTF-8字符。\n现在我们可以将此模块加载进内核进行测试了，命令如下：\nsudo insmod lkm_example.ko 如果一切顺利，你将看不到任何输出，因为 printk 函数不会输出到控制台，而是输出到内核日志。要看到内核日志中的内容，我们需要运行：\nsudo dmesg 你应该看到以时间戳为前缀的行：\"Hello, World!\"，这意味着我们的内核模块已加载并成功打印到内核日志中。\n我们还可以检查模块是否已被加载：\nlsmod | grep \"lkm_example\" 要卸载模块，运行：\nsudo rmmod lkm_example 如果再次运行 dmesg ，你将看到\"Goodbye, World!\" 在日志中。你也可以再次使用 lsmod 命令确认它已卸载。\n如你所见，此测试工作流程有点繁琐，因此要使其自动化，我们可以在 Makefile 中添加：\ntest: sudo dmesg -C sudo insmod lkm_example.ko sudo rmmod lkm_example.ko dmesg 现在，运行：\nmake test 一般模块 让我们再思考下。尽管内核模块可以完成各种任务，但与应用程序进行交互是其最常见的用途之一。\n由于操作系统限制了应用程序查看内核空间内存的内容，因此，应用程序必须使用API与内核进行通信。尽管从技术上讲，有多种方法可以完成此操作，但最常见的方法是创建设备文件。\n你以前可能已经与设备文件进行过交互。使用 /dev/zero ， /dev/null 或类似设备的命令就是与名为 zero 和 null 的设备进行交互，这些设备将返回期望的值。\n在我们的示例中，我们将返回 \"Hello，World\"，虽然这些字符串对于应用程序并没有什么用，但它将显示通过设备文件响应应用程序的过程。\n这是完整代码：\n#include #include #include #include #include MODULE_LICENSE(\"GPL\"); MODULE_AUTHOR(\"Robert W. Oliver II\"); MODULE_DESCRIPTION(\"A simple example Linux module.\"); MODULE_VERSION(\"0.01\"); #define DEVICE_NAME \"lkm_example\" #define EXAMPLE_MSG \"Hello, World!\\n\" #define MSG_BUFFER_LEN 15 /* Prototypes for device functions */ static int device_open(struct inode *, struct file *); static int device_release(struct inode *, struct file *); static ssize_t device_read(struct file *, char *, size_t, loff_t *); static ssize_t device_write(struct file *, const char *, size_t, loff_t *); static int major_num; static int device_open_count = 0; static char msg_buffer[MSG_BUFFER_LEN]; static char *msg_ptr; /* This structure points to all of the device functions */ static struct file_operations file_ops = { .read = device_read, .write = device_write, .open = device_open, .release = device_release }; /* When a process reads from our device, this gets called. */ static ssize_t device_read(struct file *flip, char *buffer, size_t len, loff_t *offset) { int bytes_read = 0; /* If we’re at the end, loop back to the beginning */ if (*msg_ptr == 0) { msg_ptr = msg_buffer; } /* Put data in the buffer */ while (len \u0026\u0026 *msg_ptr) { /* Buffer is in user data, not kernel, so you can’t just reference ,* with a pointer. The function put_user handles this for us */ put_user(*(msg_ptr++), buffer++); len--; bytes_read++; } return bytes_read; } /* Called when a process tries to write to our device */ static ssize_t device_write(struct file *flip, const char *buffer, size_t len, loff_t *offset) { /* This is a read-only device */ printk(KERN_ALERT \"This operation is not supported.\\n\"); return -EINVAL; } /* Called when a process opens our device */ static int device_open(struct inode *inode, struct file *file) { /* If device is open, return busy */ if (device_open_count) { return -EBUSY; } device_open_count++; try_module_get(THIS_MODULE); return 0; } /* Called when a process closes our device */ static int device_release(struct inode *inode, struct file *file) { /* Decrement the open counter and usage count. Without this, the module would not unload. */ device_open_count--; module_put(THIS_MODULE); return 0; } static int __init lkm_example_init(void) { /* Fill buffer with our message */ strncpy(msg_buffer, EXAMPLE_MSG, MSG_BUFFER_LEN); /* Set the msg_ptr to the buffer */ msg_ptr = msg_buffer; /* Try to register character device */ major_num = register_chrdev(0, \"lkm_example\", \u0026file_ops); if (major_num \u003c 0) { printk(KERN_ALERT \"Could not register device: %d\\n\", major_num); return major_num; } else { printk(KERN_INFO \"lkm_example module loaded with device major number %d\\n\", major_num); return 0; } } static void __exit lkm_example_exit(void) { /* Remember — we have to clean up after ourselves. Unregister the character device. */ unregister_chrdev(major_num, DEVICE_NAME); printk(KERN_INFO \"Goodbye, World!\\n\"); } /* Register module functions */ module_init(lkm_example_init); module_exit(lkm_example_exit); 既然我们的示例所做的不仅仅是在加载和卸载时打印一条消息，让我们修改 Makefile，使其仅加载模块而不卸载模块：\nobj-m += lkm_example.o all: make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules clean: make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean test: # We put a — in front of the rmmod command to tell make to ignore # an error in case the module isn’t loaded. -sudo rmmod lkm_example # Clear the kernel log without echo sudo dmesg -C # Insert the module sudo insmod lkm_example.ko # Display the kernel log dmesg 现在，当您运行 \"make test\" 时，您将看到设备主号码的输出。在我们的示例中，这是由内核自动分配的，但是，你需要此值来创建设备。\n获取从 \"make test\" 获得的值，并使用它来创建设备文件，以便我们可以从用户空间与内核模块进行通信：\nsudo mknod /dev/lkm_example c MAJOR 0 在上面的示例中，将 MAJOR 替换为你运行 \"make test\" 或 \"dmesg\" 后得到的值，我得到的 MAJOR 为 236，如上图，mknod 命令中的 \"c\" 告诉 mknod 我们需要创建一个字符设备文件。\n现在我们可以从设备中获取内容：\ncat /dev/lkm_example 或者通过 \"dd\" 命令：\ndd if=/dev/lkm_example of=test bs=14 count=100 你也可以通过应用程序访问此设备，它们不必编译应用程序–甚至Python、Ruby和PHP脚本也可以访问这些数据。\n完成测试后，将其删除并卸载模块：\nsudo rm /dev/lkm_example sudo rmmod lkm_example 总结 尽管提供的示例是简单内核模块，但完全可以根据此结构来构造自己的模块，以完成非常复杂的任务。\n请记住，在内核模块开发过程中完全靠自己。如果为客户提供一个项目的报价，一定要把预期的调试时间增加一倍，甚至三倍。内核代码必须尽可能的完美，以确保运行它的系统的完整性和可靠性。\n",
+  "wordCount" : "813",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2024-03-26T00:24:36+08:00",
+  "dateModified": "2024-03-26T00:24:36+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Theme PaperMod"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%E4%B8%80%E4%B8%AAlinux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PaperMod",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/post/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+    <h1 class="post-title entry-hint-parent">
+      如何编写一个Linux内核模块
+    </h1>
+    <div class="post-meta">
+
+<span title='2024-03-26 00:24:36 +0800 +0800'>March 26, 2024</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span>&nbsp;|&nbsp;<span>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content/post/%e7%a8%8b%e5%ba%8f%e5%91%98/%e5%a6%82%e4%bd%95%e7%bc%96%e5%86%99%e4%b8%80%e4%b8%aaLinux%e5%86%85%e6%a0%b8%e6%a8%a1%e5%9d%97.org" rel="noopener noreferrer edit" target="_blank">Suggest Changes</a>
+    </span>
+
+</div>
+  </header> 
+
+  <div class="post-content md-content">
+<div id="outline-container-headline-1" class="outline-3">
+<h3 id="headline-1">
+参考链接
+</h3>
+<div id="outline-text-headline-1" class="outline-text-3">
+<p>
+<a href="如何编写一个Linux内核模块，这次手把手教你"><a href="https://zhuanlan.zhihu.com/p/420194002">https://zhuanlan.zhihu.com/p/420194002</a></a></p>
+</div>
+</div>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+如何编写一个Linux内核模块
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<div id="outline-container-headline-3" class="outline-4">
+<h4 id="headline-3">
+前言
+</h4>
+<div id="outline-text-headline-3" class="outline-text-4">
+<p>
+Linux 系统为应用程序提供了功能强大且容易扩展的 API，但在某些情况下，这还远远不够。与硬件交互或进行需要访问系统中特权信息的操作时，就需要一个内核模块。</p>
+<p>
+Linux 内核模块是一段编译后的二进制代码，直接插入 Linux 内核中，在 Ring 0 （x86–64处理器中执行最低和受保护程度最低的执行环）上运行。这里的代码完全不受检查，但是运行速度很快，可以访问系统中的所有内容。</p>
+<p>
+Intel X86架构使用了4个级别来标明不同的特权级。 Ring 0 实际就是内核态，拥有最高权限。而一般应用程序处于 Ring 3状态–用户态。在Linux中，还存在 Ring 1 和 Ring 2 两个级别，一般归属驱动程序的级别。在Windows平台没有 Ring 1 和 Ring 2 两个级别，只用 Ring 0 内核态和 Ring 3 用户态。在权限约束上，高特权等级状态可以阅读低特权等级状态的数据，例如进程上下文、代码、数据等等，但反之则不可。 Ring 0 最高可以读取 Ring 0-3 所有的内容， Ring 1 可以读 Ring 1-3 的， Ring 2 以此类推， Ring 3 只能读自己的数据。</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-4">
+<h4 id="headline-4">
+为什么要开发内核模块
+</h4>
+<div id="outline-text-headline-4" class="outline-text-4">
+<p>
+编写 Linux 内核模块并不是因为内核太庞大而不敢修改。直接修改内核源码会导致很多问题，例如：通过更改内核，你将面临数据丢失和系统损坏的风险。内核代码没有常规 Linux 应用程序所拥有的安全防护机制，如果内核发生故障，将锁死整个系统。</p>
+<p>
+更糟糕的是，当你修改内核并导致错误后，可能不会立即表现出来。如果模块发生错误，在其加载时就锁定系统是最好的选择，如果不锁定，当你向模块中添加更多代码时，你将会面临失控循环和内存泄漏的风险，如果不小心，它们会随着计算机继续运行而持续增长，最终，关键的存储器结构甚至缓冲区都可能被覆盖。</p>
+<p>
+编写内核模块时，基本是可以丢弃传统的应用程序开发范例。除了加载和卸载模块之外，你还需要编写响应系统事件的代码（而不是按顺序模式执行的代码）。通过内核开发，你正在编写API，而不是应用程序。</p>
+<p>
+你也无权访问标准库，虽然内核提供了一些函数，例如 printk （可替代 printf）和 kmalloc （以与 malloc 相似的方式运行），但你在很大程度上只能使用自己的设备。此外，在卸载模块时，你需要将自己清理干净，系统不会在你的模块被卸载后进行垃圾回收。</p>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-4">
+<h4 id="headline-5">
+开发的工具准备
+</h4>
+<div id="outline-text-headline-5" class="outline-text-4">
+<p>
+开始编写 Linux 内核模块之前，我们首先要准备一些工具。最重要的是，你需要有一台 Linux 机器，尽管可以使用任何 Linux 发行版，但本文中，我使用的是 Ubuntu 16.04 LTS，如果你使用的其他发行版，可能需要稍微调整安装命令。</p>
+<p>
+其次，你需要一台物理机或虚拟机，我不建议你直接使用物理机编写内核模块，因为当你出错时，主机的数据可能会丢失。在编写和调试内核模块的过程中，你至少会锁定机器几次，内核崩溃时，最新的代码更改可能仍在写缓冲区中，因此，你的源文件可能会损坏，在虚拟机中进行测试可以避免这种风险。</p>
+<p>
+最后，你至少需要了解一些C。对于内核来说，C++ 在运行时太大了，因此编写纯 C 代码是必不可少的。另外，对于其与硬件的交互，了解一些组件可能会有所帮助。</p>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-4">
+<h4 id="headline-6">
+安装开发环境
+</h4>
+<div id="outline-text-headline-6" class="outline-text-4">
+<p>
+让我们开始编写一些代码，准备环境：</p>
+<div class="src src-c">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">~/</span><span class="n">src</span><span class="o">/</span><span class="n">lkm_example</span>
+</span></span><span class="line"><span class="cl">  <span class="n">cd</span> <span class="o">~/</span><span class="n">src</span><span class="o">/</span><span class="n">lkm_example</span></span></span></code></pre></div>
+</div>
+<p>
+启动您喜欢的编辑器（在我的例子中是vim），并创建具有以下内容的文件 lkm_example.c</p>
+<div class="src src-c">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;linux/init.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;linux/module.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;linux/kernel.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">MODULE_LICENSE</span><span class="p">(</span><span class="s">&#34;GPL&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">MODULE_AUTHOR</span><span class="p">(</span><span class="s">&#34;abin&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">MODULE_DESCRIPTION</span><span class="p">(</span><span class="s">&#34;A simple example Linux module.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">MODULE_VERSION</span><span class="p">(</span><span class="s">&#34;0.01&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">int</span> <span class="n">__init</span> <span class="nf">lkm_example_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">printk</span><span class="p">(</span><span class="n">KERN_INFO</span> <span class="s">&#34;Hello, World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">void</span> <span class="n">__exit</span> <span class="nf">lkm_example_exit</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">printk</span><span class="p">(</span><span class="n">KERN_INFO</span> <span class="s">&#34;Goodbye, World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">module_init</span><span class="p">(</span><span class="n">lkm_example_init</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">module_exit</span><span class="p">(</span><span class="n">lkm_example_exit</span><span class="p">);</span></span></span></code></pre></div>
+</div>
+<p>
+现在，我们已经构建了最简单的内核模块，下面介绍代码的细节：</p>
+<p>
+#includes 包括 Linux 内核开发所需的必需头文件。</p>
+<p>
+根据模块的许可证，可以将 MODULE_LICENSE 设置为各种值。要查看完整列表，请运行：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  grep <span class="s2">&#34;MODULE_LICENSE&#34;</span> -B <span class="m">27</span> /usr/src/linux-headers-<span class="sb">`</span>uname -r<span class="sb">`</span>/include/linux/module.h</span></span></code></pre></div>
+</div>
+<p>
+我们将 init （加载）和 exit （卸载）函数都定义为静态并返回 int 。</p>
+<p>
+注意使用 printk 而不是 printf ，另外， printk 与 printf 共享的参数也不相同。例如， KERN_INFO 是一个标志，用于声明应为该行设置的日志记录优先级，并且不带逗号。内核在printk函数中对此进行分类以节省堆栈内存。</p>
+<p>
+在文件末尾，我们调用 module_init 和 module_exit 函数告诉内核哪些函数是内核模块的加载和卸载函数。这使我们可以任意命名这两个函数。</p>
+<p>
+目前，还无法编译此文件，我们需要一个 Makefile ，请注意， make 对于空格和制表符敏感，因此请确保在适当的地方使用制表符而不是空格。</p>
+<div class="src src-txt">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">obj-m += lkm_example.o
+</span></span><span class="line"><span class="cl">all:
+</span></span><span class="line"><span class="cl">	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+</span></span><span class="line"><span class="cl">clean:
+</span></span><span class="line"><span class="cl">	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean</span></span></code></pre></div>
+</div>
+<p>
+如果我们运行 &#34;make&#34;，它将成功编译你编写的模块，编译后的文件为 &#34;lkm_example.ko&#34;，如果收到任何错误，请检查示例源文件中的引号是否正确，并且不要将其粘贴为UTF-8字符。</p>
+<p>
+现在我们可以将此模块加载进内核进行测试了，命令如下：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo insmod lkm_example.ko</span></span></code></pre></div>
+</div>
+<p>
+如果一切顺利，你将看不到任何输出，因为 printk 函数不会输出到控制台，而是输出到内核日志。要看到内核日志中的内容，我们需要运行：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo dmesg</span></span></code></pre></div>
+</div>
+<p>
+你应该看到以时间戳为前缀的行：&#34;Hello, World!&#34;，这意味着我们的内核模块已加载并成功打印到内核日志中。</p>
+<p>
+我们还可以检查模块是否已被加载：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  lsmod <span class="p">|</span> grep <span class="s2">&#34;lkm_example&#34;</span></span></span></code></pre></div>
+</div>
+<p>
+要卸载模块，运行：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo rmmod lkm_example</span></span></code></pre></div>
+</div>
+<p>
+如果再次运行 dmesg ，你将看到&#34;Goodbye, World!&#34; 在日志中。你也可以再次使用 lsmod 命令确认它已卸载。</p>
+<p>
+如你所见，此测试工作流程有点繁琐，因此要使其自动化，我们可以在 Makefile 中添加：</p>
+<div class="src src-txt">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">test:
+</span></span><span class="line"><span class="cl">	sudo dmesg -C
+</span></span><span class="line"><span class="cl">	sudo insmod lkm_example.ko
+</span></span><span class="line"><span class="cl">	sudo rmmod lkm_example.ko
+</span></span><span class="line"><span class="cl">	dmesg</span></span></code></pre></div>
+</div>
+<p>
+现在，运行：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  make test</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-4">
+<h4 id="headline-7">
+一般模块
+</h4>
+<div id="outline-text-headline-7" class="outline-text-4">
+<p>
+让我们再思考下。尽管内核模块可以完成各种任务，但与应用程序进行交互是其最常见的用途之一。</p>
+<p>
+由于操作系统限制了应用程序查看内核空间内存的内容，因此，应用程序必须使用API与内核进行通信。尽管从技术上讲，有多种方法可以完成此操作，但最常见的方法是创建设备文件。</p>
+<p>
+你以前可能已经与设备文件进行过交互。使用 /dev/zero ， /dev/null 或类似设备的命令就是与名为 zero 和 null 的设备进行交互，这些设备将返回期望的值。</p>
+<p>
+在我们的示例中，我们将返回 &#34;Hello，World&#34;，虽然这些字符串对于应用程序并没有什么用，但它将显示通过设备文件响应应用程序的过程。</p>
+<p>
+这是完整代码：</p>
+<div class="src src-c">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;linux/init.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;linux/module.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;linux/kernel.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;linux/fs.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#include</span> <span class="cpf">&lt;linux/uaccess.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nf">MODULE_LICENSE</span><span class="p">(</span><span class="s">&#34;GPL&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">MODULE_AUTHOR</span><span class="p">(</span><span class="s">&#34;Robert W. Oliver II&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">MODULE_DESCRIPTION</span><span class="p">(</span><span class="s">&#34;A simple example Linux module.&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">MODULE_VERSION</span><span class="p">(</span><span class="s">&#34;0.01&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="cp">#define DEVICE_NAME &#34;lkm_example&#34;
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#define EXAMPLE_MSG &#34;Hello, World!\n&#34;
+</span></span></span><span class="line"><span class="cl">  <span class="cp">#define MSG_BUFFER_LEN 15
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="cm">/* Prototypes for device functions */</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">int</span> <span class="nf">device_open</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span> <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">int</span> <span class="nf">device_release</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="p">,</span> <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">ssize_t</span> <span class="nf">device_read</span><span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="kt">size_t</span><span class="p">,</span> <span class="kt">loff_t</span> <span class="o">*</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">ssize_t</span> <span class="nf">device_write</span><span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="kt">size_t</span><span class="p">,</span> <span class="kt">loff_t</span> <span class="o">*</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">int</span> <span class="n">major_num</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">int</span> <span class="n">device_open_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">char</span> <span class="n">msg_buffer</span><span class="p">[</span><span class="n">MSG_BUFFER_LEN</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">char</span> <span class="o">*</span><span class="n">msg_ptr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="cm">/* This structure points to all of the device functions */</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="k">struct</span> <span class="n">file_operations</span> <span class="n">file_ops</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">.</span><span class="n">read</span> <span class="o">=</span> <span class="n">device_read</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">.</span><span class="n">write</span> <span class="o">=</span> <span class="n">device_write</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">.</span><span class="n">open</span> <span class="o">=</span> <span class="n">device_open</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">.</span><span class="n">release</span> <span class="o">=</span> <span class="n">device_release</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="cm">/* When a process reads from our device, this gets called. */</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">ssize_t</span> <span class="nf">device_read</span><span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">flip</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buffer</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">len</span><span class="p">,</span> <span class="kt">loff_t</span> <span class="o">*</span><span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="kt">int</span> <span class="n">bytes_read</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="cm">/* If we’re at the end, loop back to the beginning */</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">msg_ptr</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="n">msg_ptr</span> <span class="o">=</span> <span class="n">msg_buffer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	  <span class="cm">/* Put data in the buffer */</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">while</span> <span class="p">(</span><span class="n">len</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="n">msg_ptr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="cm">/* Buffer is in user data, not kernel, so you can’t just reference
+</span></span></span><span class="line"><span class="cl"><span class="cm">		   ,* with a pointer. The function put_user handles this for us */</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">put_user</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">msg_ptr</span><span class="o">++</span><span class="p">),</span> <span class="n">buffer</span><span class="o">++</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="n">len</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		  <span class="n">bytes_read</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">return</span> <span class="n">bytes_read</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="cm">/* Called when a process tries to write to our device */</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">ssize_t</span> <span class="nf">device_write</span><span class="p">(</span><span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">flip</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buffer</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">len</span><span class="p">,</span> <span class="kt">loff_t</span> <span class="o">*</span><span class="n">offset</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="cm">/* This is a read-only device */</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">printk</span><span class="p">(</span><span class="n">KERN_ALERT</span> <span class="s">&#34;This operation is not supported.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">return</span> <span class="o">-</span><span class="n">EINVAL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="cm">/* Called when a process opens our device */</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">int</span> <span class="nf">device_open</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">,</span> <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="cm">/* If device is open, return busy */</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">if</span> <span class="p">(</span><span class="n">device_open_count</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="k">return</span> <span class="o">-</span><span class="n">EBUSY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">device_open_count</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">try_module_get</span><span class="p">(</span><span class="n">THIS_MODULE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="cm">/* Called when a process closes our device */</span>
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">int</span> <span class="nf">device_release</span><span class="p">(</span><span class="k">struct</span> <span class="n">inode</span> <span class="o">*</span><span class="n">inode</span><span class="p">,</span> <span class="k">struct</span> <span class="n">file</span> <span class="o">*</span><span class="n">file</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="cm">/* Decrement the open counter and usage count. Without this, the module would not unload. */</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">device_open_count</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">module_put</span><span class="p">(</span><span class="n">THIS_MODULE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">int</span> <span class="n">__init</span> <span class="nf">lkm_example_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="cm">/* Fill buffer with our message */</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">strncpy</span><span class="p">(</span><span class="n">msg_buffer</span><span class="p">,</span> <span class="n">EXAMPLE_MSG</span><span class="p">,</span> <span class="n">MSG_BUFFER_LEN</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="cm">/* Set the msg_ptr to the buffer */</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">msg_ptr</span> <span class="o">=</span> <span class="n">msg_buffer</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="cm">/* Try to register character device */</span>
+</span></span><span class="line"><span class="cl">	  <span class="n">major_num</span> <span class="o">=</span> <span class="nf">register_chrdev</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#34;lkm_example&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">file_ops</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="k">if</span> <span class="p">(</span><span class="n">major_num</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">printk</span><span class="p">(</span><span class="n">KERN_ALERT</span> <span class="s">&#34;Could not register device: %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">major_num</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="k">return</span> <span class="n">major_num</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		  <span class="nf">printk</span><span class="p">(</span><span class="n">KERN_INFO</span> <span class="s">&#34;lkm_example module loaded with device major number %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">major_num</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">static</span> <span class="kt">void</span> <span class="n">__exit</span> <span class="nf">lkm_example_exit</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	  <span class="cm">/* Remember — we have to clean up after ourselves. Unregister the character device. */</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">unregister_chrdev</span><span class="p">(</span><span class="n">major_num</span><span class="p">,</span> <span class="n">DEVICE_NAME</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	  <span class="nf">printk</span><span class="p">(</span><span class="n">KERN_INFO</span> <span class="s">&#34;Goodbye, World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="cm">/* Register module functions */</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">module_init</span><span class="p">(</span><span class="n">lkm_example_init</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">module_exit</span><span class="p">(</span><span class="n">lkm_example_exit</span><span class="p">);</span></span></span></code></pre></div>
+</div>
+<p>
+既然我们的示例所做的不仅仅是在加载和卸载时打印一条消息，让我们修改 Makefile，使其仅加载模块而不卸载模块：</p>
+<div class="src src-txt">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">obj-m += lkm_example.o
+</span></span><span class="line"><span class="cl">all:
+</span></span><span class="line"><span class="cl">make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+</span></span><span class="line"><span class="cl">clean:
+</span></span><span class="line"><span class="cl">make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
+</span></span><span class="line"><span class="cl">test:
+</span></span><span class="line"><span class="cl"># We put a — in front of the rmmod command to tell make to ignore
+</span></span><span class="line"><span class="cl"># an error in case the module isn’t loaded.
+</span></span><span class="line"><span class="cl">-sudo rmmod lkm_example
+</span></span><span class="line"><span class="cl"># Clear the kernel log without echo
+</span></span><span class="line"><span class="cl">sudo dmesg -C
+</span></span><span class="line"><span class="cl"># Insert the module
+</span></span><span class="line"><span class="cl">sudo insmod lkm_example.ko
+</span></span><span class="line"><span class="cl"># Display the kernel log
+</span></span><span class="line"><span class="cl">dmesg</span></span></code></pre></div>
+</div>
+<p>
+现在，当您运行 &#34;make test&#34; 时，您将看到设备主号码的输出。在我们的示例中，这是由内核自动分配的，但是，你需要此值来创建设备。</p>
+<p>
+获取从 &#34;make test&#34; 获得的值，并使用它来创建设备文件，以便我们可以从用户空间与内核模块进行通信：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  sudo mknod /dev/lkm_example c MAJOR <span class="m">0</span></span></span></code></pre></div>
+</div>
+<p>
+在上面的示例中，将 MAJOR 替换为你运行 &#34;make test&#34; 或 &#34;dmesg&#34; 后得到的值，我得到的 MAJOR 为 236，如上图，mknod 命令中的 &#34;c&#34; 告诉 mknod 我们需要创建一个字符设备文件。</p>
+<p>
+现在我们可以从设备中获取内容：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  cat /dev/lkm_example</span></span></code></pre></div>
+</div>
+<p>
+或者通过 &#34;dd&#34; 命令：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">	dd <span class="k">if</span><span class="o">=</span>/dev/lkm_example <span class="nv">of</span><span class="o">=</span><span class="nb">test</span> <span class="nv">bs</span><span class="o">=</span><span class="m">14</span> <span class="nv">count</span><span class="o">=</span><span class="m">100</span></span></span></code></pre></div>
+</div>
+<p>
+你也可以通过应用程序访问此设备，它们不必编译应用程序–甚至Python、Ruby和PHP脚本也可以访问这些数据。</p>
+<p>
+完成测试后，将其删除并卸载模块：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">	sudo rm /dev/lkm_example
+</span></span><span class="line"><span class="cl">	sudo rmmod lkm_example</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-4">
+<h4 id="headline-8">
+总结
+</h4>
+<div id="outline-text-headline-8" class="outline-text-4">
+<p>
+尽管提供的示例是简单内核模块，但完全可以根据此结构来构造自己的模块，以完成非常复杂的任务。</p>
+<p>
+请记住，在内核模块开发过程中完全靠自己。如果为客户提供一个项目的报价，一定要把预期的调试时间增加一倍，甚至三倍。内核代码必须尽可能的完美，以确保运行它的系统的完整性和可靠性。</p>
+</div>
+</div>
+</div>
+</div>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/linux/">Linux</a></li>
+      <li><a href="http://localhost:1313/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/">程序员</a></li>
+    </ul>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 如何编写一个Linux内核模块 on x"
+            href="https://x.com/intent/tweet/?text=%e5%a6%82%e4%bd%95%e7%bc%96%e5%86%99%e4%b8%80%e4%b8%aaLinux%e5%86%85%e6%a0%b8%e6%a8%a1%e5%9d%97&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2f%25E5%25A6%2582%25E4%25BD%2595%25E7%25BC%2596%25E5%2586%2599%25E4%25B8%2580%25E4%25B8%25AAlinux%25E5%2586%2585%25E6%25A0%25B8%25E6%25A8%25A1%25E5%259D%2597%2f&amp;hashtags=linux%2c%e7%a8%8b%e5%ba%8f%e5%91%98">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 如何编写一个Linux内核模块 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2f%25E5%25A6%2582%25E4%25BD%2595%25E7%25BC%2596%25E5%2586%2599%25E4%25B8%2580%25E4%25B8%25AAlinux%25E5%2586%2585%25E6%25A0%25B8%25E6%25A8%25A1%25E5%259D%2597%2f&amp;title=%e5%a6%82%e4%bd%95%e7%bc%96%e5%86%99%e4%b8%80%e4%b8%aaLinux%e5%86%85%e6%a0%b8%e6%a8%a1%e5%9d%97&amp;summary=%e5%a6%82%e4%bd%95%e7%bc%96%e5%86%99%e4%b8%80%e4%b8%aaLinux%e5%86%85%e6%a0%b8%e6%a8%a1%e5%9d%97&amp;source=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2f%25E5%25A6%2582%25E4%25BD%2595%25E7%25BC%2596%25E5%2586%2599%25E4%25B8%2580%25E4%25B8%25AAlinux%25E5%2586%2585%25E6%25A0%25B8%25E6%25A8%25A1%25E5%259D%2597%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 如何编写一个Linux内核模块 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2f%25E5%25A6%2582%25E4%25BD%2595%25E7%25BC%2596%25E5%2586%2599%25E4%25B8%2580%25E4%25B8%25AAlinux%25E5%2586%2585%25E6%25A0%25B8%25E6%25A8%25A1%25E5%259D%2597%2f&title=%e5%a6%82%e4%bd%95%e7%bc%96%e5%86%99%e4%b8%80%e4%b8%aaLinux%e5%86%85%e6%a0%b8%e6%a8%a1%e5%9d%97">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 如何编写一个Linux内核模块 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2f%25E5%25A6%2582%25E4%25BD%2595%25E7%25BC%2596%25E5%2586%2599%25E4%25B8%2580%25E4%25B8%25AAlinux%25E5%2586%2585%25E6%25A0%25B8%25E6%25A8%25A1%25E5%259D%2597%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 如何编写一个Linux内核模块 on whatsapp"
+            href="https://api.whatsapp.com/send?text=%e5%a6%82%e4%bd%95%e7%bc%96%e5%86%99%e4%b8%80%e4%b8%aaLinux%e5%86%85%e6%a0%b8%e6%a8%a1%e5%9d%97%20-%20http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2f%25E5%25A6%2582%25E4%25BD%2595%25E7%25BC%2596%25E5%2586%2599%25E4%25B8%2580%25E4%25B8%25AAlinux%25E5%2586%2585%25E6%25A0%25B8%25E6%25A8%25A1%25E5%259D%2597%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 如何编写一个Linux内核模块 on telegram"
+            href="https://telegram.me/share/url?text=%e5%a6%82%e4%bd%95%e7%bc%96%e5%86%99%e4%b8%80%e4%b8%aaLinux%e5%86%85%e6%a0%b8%e6%a8%a1%e5%9d%97&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2f%25E5%25A6%2582%25E4%25BD%2595%25E7%25BC%2596%25E5%2586%2599%25E4%25B8%2580%25E4%25B8%25AAlinux%25E5%2586%2585%25E6%25A0%25B8%25E6%25A8%25A1%25E5%259D%2597%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share 如何编写一个Linux内核模块 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=%e5%a6%82%e4%bd%95%e7%bc%96%e5%86%99%e4%b8%80%e4%b8%aaLinux%e5%86%85%e6%a0%b8%e6%a8%a1%e5%9d%97&u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2f%25E5%25A6%2582%25E4%25BD%2595%25E7%25BC%2596%25E5%2586%2599%25E4%25B8%2580%25E4%25B8%25AAlinux%25E5%2586%2585%25E6%25A0%25B8%25E6%25A8%25A1%25E5%259D%2597%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

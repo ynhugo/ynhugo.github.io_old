@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Socket | PaperMod</title>
+<meta name="keywords" content="">
+<meta name="description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/tags/socket/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/socket/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/socket/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/tags/socket/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="Socket">
+  <meta property="og:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="Socket">
+  <meta name="twitter:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/tags/">Tags</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+  <h1>
+    Socket
+    <a href="/tags/socket/index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">socket基于tcp服务端实例
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> socket基于tcp服务端实例 #include &lt;stdlib.h&gt; #include &lt;stdio.h&gt; #include &lt;stdbool.h&gt; #include &lt;assert.h&gt; #include &lt;fcntl.h&gt; // Flags for open() #include &lt;sys/stat.h&gt; // Open() system call #include &lt;sys/types.h&gt; // Types for open() #include &lt;unistd.h&gt; // Close() system call #include &lt;string.h&gt; // Memory setting and copying #include &lt;getopt.h&gt; // Option parsing #include &lt;errno.h&gt; // Error codes #include&lt;sys/socket.h&gt; #include&lt;netinet/in.h&gt; #include &lt;pthread.h&gt; #define DEFAULT_PORT 7 #define MAXLINE 4096 int socket_fd, connect_fd; int flag1; struct test { int flag1; }; /*---------------------------------------------------------------------------- * DMA File Transfer Functions *----------------------------------------------------------------------------*/ void *receive_file(void *arg) { struct test *my = (struct test *)arg; while (1) { if (my-&gt;flag1 == 1) { printf(&#34;test1\n&#34;); } else if (my-&gt;flag1 == 2) { printf(&#34;test2\n&#34;); } sleep(1); } // pthread_exit(NULL); return NULL; } /*---------------------------------------------------------------------------- * Main *----------------------------------------------------------------------------*/ int main(void) { // Socket相关变量 struct sockaddr_in servaddr; unsigned char buff[MAXLINE]; int n; int err; pthread_t tid; struct test *ts = (struct test *)malloc(sizeof(struct test)); ts-&gt;flag1 = 0; //初始化Socket if( (socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1 ) { printf(&#34;create socket error: %s(errno: %d)\n&#34;,strerror(errno),errno); exit(0); } // 解决 Address already in use 问题 int opt = 1; setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &amp;opt, sizeof(opt)); //初始化 memset(&amp;servaddr, 0, sizeof(servaddr)); servaddr.sin_family = AF_INET; servaddr.sin_addr.s_addr = htonl(INADDR_ANY);//IP地址设置成INADDR_ANY,让系统自动获取本机的IP地址。 servaddr.sin_port = htons(DEFAULT_PORT);//设置的端口为DEFAULT_PORT //将本地地址绑定到所创建的套接字上 if( bind(socket_fd, (struct sockaddr*)&amp;servaddr, sizeof(servaddr)) == -1) { printf(&#34;bind socket error: %s(errno: %d)\n&#34;,strerror(errno),errno); exit(0); } //开始监听是否有客户端连接 if( listen(socket_fd, 2) == -1) { printf(&#34;listen socket error: %s(errno: %d)\n&#34;,strerror(errno),errno); exit(0); } printf(&#34;======waiting for client&#39;s request======\n&#34;); // 启动线程 if ((err = pthread_create(&amp;tid, NULL, &amp;receive_file, ts)) != 0) { printf(&#34;err = %d, can&#39;t create thread&#34;, err); } pthread_detach(tid); //分离线程，避免僵尸进程 while (1) { //阻塞直到有客户端连接，不然多浪费CPU资源。 if( (connect_fd = accept(socket_fd, (struct sockaddr*)NULL, NULL)) == -1) { printf(&#34;accept socket error: %s(errno: %d)&#34;,strerror(errno),errno); continue; } while (1) { //接受客户端传过来的数据 n = recv(connect_fd, buff, MAXLINE, 0); if(n &gt; 0) { // 判断是开始还是停止 if (buff[0] == 0xFA &amp;&amp; buff[7] == 0x01) { ts-&gt;flag1 = 1; printf(&#34;start\n&#34;); } else if (buff[0] == 0xFA &amp;&amp; buff[7] == 0x02) { ts-&gt;flag1 = 2; // 停止 printf(&#34;stop\n&#34;); } else if (buff[0] == 0xFA &amp;&amp; buff[7] == 0x03) { ts-&gt;flag1 = 3; } } else { close(connect_fd); break; } } usleep(100); } close(connect_fd); close(socket_fd); return 0; } 参考链接 socket基于tcp通信实例
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2025-03-18 10:51:57.78 +0800 +0800'>March 18, 2025</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to socket基于tcp服务端实例" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/socket%E5%9F%BA%E4%BA%8Etcp%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AE%9E%E4%BE%8B/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Linux 网络编程从入门到进阶 学习指南
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Linux 网络编程从入门到进阶 学习指南 网络通信基础 思考一下，如果计算机想要“交朋友”，它们需要怎样互相沟通？正如人们交流需要使用语言一样，计算机通信也必须遵守一套规则 ― 这就是网络协议。
+协议确保信息可以在不同的设备和平台之间清晰、准确地传递。要深入理解协议，我们首先要熟悉两个基础的通信模型：OSI 和 TCP/IP 模型。
+OSI 模型和 TCP/IP 模型 在网络通信的世界里，OSI（开放式系统互联通信参考模型）和 TCP/IP（传输控制协议/网际协议）模型扮演着基础框架的角色。它们各自描述了网络通信的多个层次和阶段，但以不同的方式来分类和处理数据传输的细节。
+OSI模型 OSI（Open Systems Interconnection）模型是一个概念性框架，用于描述网络中不同操作层次的功能。由七层组成，从物理硬件的电气信号（物理层），到应用层（如网页浏览器），每一层都有其独特的功能和协议。
+TCP/IP模型 TCP/IP 模型，则更加贴近实际网络中的运作。Linux 的网络协议栈就是基于该模型实现的。它是基于四层架构，将网络通信过程简化并集中在协议族上，如传输控制协议（TCP）和互联网协议（IP），这两种协议是现代网络通信中最为核心的部分。
+基本概念 地址簿：IP地址和MAC地址 想象一下，互联网是一个巨大的数字城市，而每台计算机或网络设备就像是住在这个城市里的居民。
+IP地址：数字世界的“家庭住址”
+每台设备的 IP 地址就像是它在这个数字城市里的家庭住址。当计算机需要发送信息或访问网络资源时，它会使用目的地设备的 IP 地址来确保信息正确地送达。这个地址有点像是我们现实世界中的邮寄地址，可以根据网络环境的变化而变化（例如，当设备从家庭网络移动到办公室网络时）。
+MAC地址：网络中的“身份证”
+然后，我们有 MAC 地址，这是网络设备的另一个关键标识。每台设备的 MAC 地址都是独一无二的，类似于每个人的身份证号码。它是在设备制造时就被分配的，并且在大多数情况下，这个地址是固定不变的。MAC 地址在本地网络（如家庭或办公室网络）内起着重要作用，它帮助确保信息被准确地送达到特定设备，就像邮递员需要知道收件人的详细身份信息才能将包裹准确递交。
+总结一下 ：ip 地址可以让数据包找到目的主机所在的网络，而 MAC 地址确保数据包能准确送到目的主机上。
+导航路线：子网掩码和网关 子网掩码：定位网络的“区域地图”
+子网掩码可以被视为定位网络内部和外部地址的“区域地图”。就像在一个大城市中，你需要知道哪些街道属于你的社区，哪些通往城市的其他部分。子网掩码帮助计算机确定一个 IP 地址是属于本地网络（即同一个子网）还是位于外部网络。
+内部导航：如果目的地IP地址与计算机所在的子网相匹配（根据子网掩码判断），则数据包在本地网络内传送。 外部导航：如果目的地不在本地子网内，计算机知道它需要将数据发送到更远的目的地。 网关：网络间的“中转站”
+网关在网络通信中扮演中转站的角色。当你的数据包需要从一个网络（比如你的家庭网络）发送到另一个网络（比如你的工作地点的网络）时，网关是这个旅程的第一站。
+路由决策： 网关检查数据包的目的 IP 地址，然后使用它的路由表来决定最佳的路径将数据包发送到目标网络。 总结： 子网掩码和网关共同协作，帮助数据包在复杂的网络结构中找到最有效的路径。子网掩码确定数据包是否在本地网络内，而网关指导跨网络的数据传输。
+端口 ：确保数据到达正确的“应用程序门牌号” 好了，现在我们的数据包已经知道了去哪里，但它如何确保被正确的程序接收呢？这就是端口登场的时候了。端口号就像是收件人的门牌号，确保数据不只是送到了正确的地址，而且被正确的应用程序接收。
+Linux 套接字编程 套接字是什么 在网络编程中，套接字就像是网络世界的通信端口。每一个联网的应用程序，为了能够互发消息，都会使用到这样一个端口。这个端口允许数据从一个程序流向另一个程序。简而言之，套接字是应用程序用来在网络上交流的桥梁。
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2025-03-14 19:20:40.36 +0800 +0800'>March 14, 2025</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to Linux 网络编程从入门到进阶 学习指南" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/linux_%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E8%BF%9B%E9%98%B6-%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8D%97/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/tags/socket/">
+      «&nbsp;Prev&nbsp;1/2
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

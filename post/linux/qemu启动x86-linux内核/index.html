@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>QEMU启动x86-Linux内核 | PaperMod</title>
+<meta name="keywords" content="qemu, linux, x86">
+<meta name="description" content="
+
+脚本使用方式
+
+
+
+
+环境部署
+
+
+第一次使用该脚本需要先搭建环境，执行命令如下：
+
+qemu-x86-linux.sh default
+
+
+
+
+
+运行方式
+
+
+
+在环境完备的情况下，可以使用两种启动方式启动，一种是通过图形化界面启动，还有一种是通过控制台启动，命令分别如下：
+
+qemu-x86-linux.sh run graphic
+和
+qemu-x86-linux.sh run nographic
+
+
+
+
+
+输出运行命令
+
+
+
+如果想输出启动方式，需要执行的命令如下：
+
+qemu-x86-linux.sh run_way graphic
+和
+qemu-x86-linux.sh run_way nographic
+
+
+
+
+
+脚本内容
+
+
+
+linux=&#34;linux-5.19&#34;;
+busybox=&#34;busybox-1.35.0&#34;;
+file_linux=&#34;${linux}.tar.gz&#34;;
+file_busybox=&#34;${busybox}.tar.bz2&#34;;
+busybox_config=&#34;busybox-1.35.0/.config&#34;;
+work_dir_name=&#34;qemu-x86-linux&#34;;
+work_dir=&#34;${HOME}/${work_dir_name}&#34;;
+mkdir -p ${work_dir};
+qemu_arch=&#34;qemu-system-x86_64&#34;
+cd ${work_dir};
+
+tools-install()
+{
+	package_array=(flex bison libncurses5-dev libelf-dev libssl-dev qemu-system-x86)
+	package_array_size=${#package_array[@]}
+	for ((i = 0; i &lt; package_array_size; i&#43;&#43;))
+	do
+		# 软件安装
+		if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then
+			echo -e &#34;\e[34m&#34;
+			sudo apt-get install ${package_array[${i}]} -y
+			echo -e &#34;\e[0m&#34;
+			if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then
+				echo -e &#34;\e[31m${package_array[${i}]} 未安装\e[0m&#34;
+			else
+				echo -e &#34;\e[32m${package_array[${i}]} 已安装\e[0m&#34;
+			fi		  
+		else
+			echo -e &#34;\e[32m${package_array[${i}]} 已安装\e[0m&#34;
+		fi
+	done	
+}
+
+if [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp;  [ &#34;$2&#34; = &#34;graphic&#34; ]; then		
+	$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append &#34;init=/init&#34;
+elif [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp;  [ &#34;$2&#34; = &#34;nographic&#34; ]; then	
+    $qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append &#34;init=/init console=ttyS0&#34;
+elif [ &#34;$1&#34; = &#34;help&#34; ]; then
+	echo &#34;$0 graphic&#34;
+	echo &#34;$0 nographic&#34;
+elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;graphic&#34; ]; then
+	echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append \&#34;init=/init\&#34;&#34;
+elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;nographic&#34; ]; then
+	echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append \&#34;init=/init console=ttyS0\&#34;&#34;
+elif [ &#34;$1&#34; = &#34;default&#34; ]; then
+	tools-install
+
+	# 判断linux内核是否准备好	
+	while true;
+	do
+		if [ ! -f &#34;${work_dir}/$file_linux&#34; ]; then		  
+			echo -e &#34;\e[32m&#34;
+			wget https://mirrors.aliyun.com/linux-kernel/v5.x/$file_linux
+			echo -e  &#34;\e[0m&#34;
+		else
+			echo -e &#34;\e[32m${file_linux} 已下载\e[0m&#34;
+			break;
+		fi		
+	done
+
+	# 判断busybox文件是否准备好
+	while true;
+	do
+		if [ ! -f &#34;${work_dir}/$file_busybox&#34; ]; then
+			echo -e  &#34;\e[33m&#34;
+			# wget --no-check-certificate https://busybox.net/downloads/busybox-1.32.0.tar.bz2
+			wget --no-check-certificate https://busybox.net/downloads/${file_busybox}
+			echo -e  &#34;\e[0m&#34;
+		else
+			echo -e &#34;\e[32m$file_busybox 已下载\e[0m&#34;
+			break;
+		fi	  	  
+	done	
+
+	# 判断linux内核是否解压
+	echo -e  &#34;\e[32m&#34;
+	# kernel
+	if [ -d &#34;${work_dir}/$linux&#34; ]; then
+		echo &#34;$linux exists.&#34;
+	else
+		tar xf ${work_dir}/$file_linux -C ${work_dir};
+	fi
+	echo -e  &#34;\e[0m&#34;
+
+	# 判断busybox文件是否解压
+	echo -e  &#34;\e[33m&#34;
+	if [ -d &#34;${work_dir}/$busybox&#34; ]; then
+		echo &#34;$busybox exists.&#34;
+	else
+		tar xf ${work_dir}/$file_busybox -C ${work_dir};
+	fi
+	echo -e  &#34;\e[0m&#34;	
+
+	# 编译linux内核
+	echo -e  &#34;\e[32m&#34;
+	cd  ${work_dir}/${linux};
+	make defconfig				# 在x86_64架构上默认编译x86_64_defconfig
+	make -j$(nproc)
+	echo -e  &#34;\e[0m&#34;
+
+	# 编译busybox，编译之后把&#34;${busybox}/_install/*&#34;拷贝到rootfs目录下
+	cd  ${work_dir}/${busybox};
+	if [ ! -f &#34;${work_dir}/${busybox}/_install/bin/busybox&#34; ]; then
+		echo &#34;# 修改配置，选中如下项目，静态编译&#34;
+		echo -e &#34;\e[31m# Settings ?C&gt; Build Options ?C&gt; [*] Build static binary（no share libs）\e[0m&#34;
+		echo &#34;# 反选如下项目，否则后续qemu执行会提示 /bin/sh:can&#39;t access tty;job control turned off&#34;
+		echo -e &#34;\e[31m# Shells  ---&gt;  [ ]   Job control\e[0m&#34;
+		read -p &#34;仅第一次编译运行时需要进行该操作，回车后要返回该界面可以执行快捷键Ctrl&#43;z，回到menuconfig界面则执行fg，配置完毕后退出并确认保存即可，回车继续&#34; continue;
+		make menuconfig	
+	fi	
+	make -j$(nproc)
+	make install
+	
+	# 制作initramfs
+	cd  ${work_dir}/${busybox}/_install/	
+	mkdir -p proc sys dev tmp
+	touch init
+	chmod &#43;x init
+	cat &gt; init &lt;&lt; \EOF
+#!/bin/sh
+
+# 挂载一些必要的文件系统
+mount -t proc none /proc
+mount -t sysfs none /sys
+mount -t tmpfs none /tmp
+mount -t devtmpfs none /dev
+
+echo
+echo &#34;Hello Linux&#34;
+
+# 显示开机消耗时间
+
+echo &#34;This boot took $(cut -d&#39; &#39; -f1 /proc/uptime) seconds&#34;
+echo
+
+# 停留在控制台
+exec /bin/sh
+EOF
+
+	if [ -f &#34;initramfs.cpio.gz&#34; ]; then
+		echo &#34;initramfs.cpio.gz exists&#34;
+	else
+		find . -print0 | cpio --null -ov --format=newc | gzip -9 &gt; ../initramfs.cpio.gz
+	fi
+	
+	# QEMU运行虚拟机，通过sd卡加载linux内核	
+	$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -device edu -append &#34;init=/init console=ttyS0&#34;	
+elif [ &#34;$1&#34; = &#34;install&#34; ]; then
+	tools-install
+fi
+
+
+
+
+
+参考链接
+
+
+
+QEMU启动x86-Linux内核">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/post/linux/qemu%E5%90%AF%E5%8A%A8x86-linux%E5%86%85%E6%A0%B8/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/linux/qemu%E5%90%AF%E5%8A%A8x86-linux%E5%86%85%E6%A0%B8/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/post/linux/qemu%E5%90%AF%E5%8A%A8x86-linux%E5%86%85%E6%A0%B8/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="QEMU启动x86-Linux内核">
+  <meta property="og:description" content="脚本使用方式 环境部署 第一次使用该脚本需要先搭建环境，执行命令如下：
+qemu-x86-linux.sh default 运行方式 在环境完备的情况下，可以使用两种启动方式启动，一种是通过图形化界面启动，还有一种是通过控制台启动，命令分别如下：
+qemu-x86-linux.sh run graphic 和 qemu-x86-linux.sh run nographic 输出运行命令 如果想输出启动方式，需要执行的命令如下：
+qemu-x86-linux.sh run_way graphic 和 qemu-x86-linux.sh run_way nographic 脚本内容 linux=&#34;linux-5.19&#34;; busybox=&#34;busybox-1.35.0&#34;; file_linux=&#34;${linux}.tar.gz&#34;; file_busybox=&#34;${busybox}.tar.bz2&#34;; busybox_config=&#34;busybox-1.35.0/.config&#34;; work_dir_name=&#34;qemu-x86-linux&#34;; work_dir=&#34;${HOME}/${work_dir_name}&#34;; mkdir -p ${work_dir}; qemu_arch=&#34;qemu-system-x86_64&#34; cd ${work_dir}; tools-install() { package_array=(flex bison libncurses5-dev libelf-dev libssl-dev qemu-system-x86) package_array_size=${#package_array[@]} for ((i = 0; i &lt; package_array_size; i&#43;&#43;)) do # 软件安装 if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then echo -e &#34;\e[34m&#34; sudo apt-get install ${package_array[${i}]} -y echo -e &#34;\e[0m&#34; if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then echo -e &#34;\e[31m${package_array[${i}]} 未安装\e[0m&#34; else echo -e &#34;\e[32m${package_array[${i}]} 已安装\e[0m&#34; fi	else echo -e &#34;\e[32m${package_array[${i}]} 已安装\e[0m&#34; fi done	} if [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;graphic&#34; ]; then	$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append &#34;init=/init&#34; elif [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;nographic&#34; ]; then	$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append &#34;init=/init console=ttyS0&#34; elif [ &#34;$1&#34; = &#34;help&#34; ]; then echo &#34;$0 graphic&#34; echo &#34;$0 nographic&#34; elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;graphic&#34; ]; then echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append \&#34;init=/init\&#34;&#34; elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;nographic&#34; ]; then echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append \&#34;init=/init console=ttyS0\&#34;&#34; elif [ &#34;$1&#34; = &#34;default&#34; ]; then tools-install # 判断linux内核是否准备好	while true; do if [ ! -f &#34;${work_dir}/$file_linux&#34; ]; then	echo -e &#34;\e[32m&#34; wget https://mirrors.aliyun.com/linux-kernel/v5.x/$file_linux echo -e &#34;\e[0m&#34; else echo -e &#34;\e[32m${file_linux} 已下载\e[0m&#34; break; fi	done # 判断busybox文件是否准备好 while true; do if [ ! -f &#34;${work_dir}/$file_busybox&#34; ]; then echo -e &#34;\e[33m&#34; # wget --no-check-certificate https://busybox.net/downloads/busybox-1.32.0.tar.bz2 wget --no-check-certificate https://busybox.net/downloads/${file_busybox} echo -e &#34;\e[0m&#34; else echo -e &#34;\e[32m$file_busybox 已下载\e[0m&#34; break; fi	done	# 判断linux内核是否解压 echo -e &#34;\e[32m&#34; # kernel if [ -d &#34;${work_dir}/$linux&#34; ]; then echo &#34;$linux exists.&#34; else tar xf ${work_dir}/$file_linux -C ${work_dir}; fi echo -e &#34;\e[0m&#34; # 判断busybox文件是否解压 echo -e &#34;\e[33m&#34; if [ -d &#34;${work_dir}/$busybox&#34; ]; then echo &#34;$busybox exists.&#34; else tar xf ${work_dir}/$file_busybox -C ${work_dir}; fi echo -e &#34;\e[0m&#34;	# 编译linux内核 echo -e &#34;\e[32m&#34; cd ${work_dir}/${linux}; make defconfig	# 在x86_64架构上默认编译x86_64_defconfig make -j$(nproc) echo -e &#34;\e[0m&#34; # 编译busybox，编译之后把&#34;${busybox}/_install/*&#34;拷贝到rootfs目录下 cd ${work_dir}/${busybox}; if [ ! -f &#34;${work_dir}/${busybox}/_install/bin/busybox&#34; ]; then echo &#34;# 修改配置，选中如下项目，静态编译&#34; echo -e &#34;\e[31m# Settings ?C&gt; Build Options ?C&gt; [*] Build static binary（no share libs）\e[0m&#34; echo &#34;# 反选如下项目，否则后续qemu执行会提示 /bin/sh:can&#39;t access tty;job control turned off&#34; echo -e &#34;\e[31m# Shells ---&gt; [ ] Job control\e[0m&#34; read -p &#34;仅第一次编译运行时需要进行该操作，回车后要返回该界面可以执行快捷键Ctrl&#43;z，回到menuconfig界面则执行fg，配置完毕后退出并确认保存即可，回车继续&#34; continue; make menuconfig	fi	make -j$(nproc) make install # 制作initramfs cd ${work_dir}/${busybox}/_install/	mkdir -p proc sys dev tmp touch init chmod &#43;x init cat &gt; init &lt;&lt; \EOF #!/bin/sh # 挂载一些必要的文件系统 mount -t proc none /proc mount -t sysfs none /sys mount -t tmpfs none /tmp mount -t devtmpfs none /dev echo echo &#34;Hello Linux&#34; # 显示开机消耗时间 echo &#34;This boot took $(cut -d&#39; &#39; -f1 /proc/uptime) seconds&#34; echo # 停留在控制台 exec /bin/sh EOF if [ -f &#34;initramfs.cpio.gz&#34; ]; then echo &#34;initramfs.cpio.gz exists&#34; else find . -print0 | cpio --null -ov --format=newc | gzip -9 &gt; ../initramfs.cpio.gz fi # QEMU运行虚拟机，通过sd卡加载linux内核	$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -device edu -append &#34;init=/init console=ttyS0&#34;	elif [ &#34;$1&#34; = &#34;install&#34; ]; then tools-install fi 参考链接 QEMU启动x86-Linux内核">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2025-03-16T03:26:36+08:00">
+    <meta property="article:modified_time" content="2025-03-16T03:26:36+08:00">
+    <meta property="article:tag" content="Qemu">
+    <meta property="article:tag" content="Linux">
+    <meta property="article:tag" content="X86">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="QEMU启动x86-Linux内核">
+  <meta name="twitter:description" content="脚本使用方式 环境部署 第一次使用该脚本需要先搭建环境，执行命令如下：
+qemu-x86-linux.sh default 运行方式 在环境完备的情况下，可以使用两种启动方式启动，一种是通过图形化界面启动，还有一种是通过控制台启动，命令分别如下：
+qemu-x86-linux.sh run graphic 和 qemu-x86-linux.sh run nographic 输出运行命令 如果想输出启动方式，需要执行的命令如下：
+qemu-x86-linux.sh run_way graphic 和 qemu-x86-linux.sh run_way nographic 脚本内容 linux=&#34;linux-5.19&#34;; busybox=&#34;busybox-1.35.0&#34;; file_linux=&#34;${linux}.tar.gz&#34;; file_busybox=&#34;${busybox}.tar.bz2&#34;; busybox_config=&#34;busybox-1.35.0/.config&#34;; work_dir_name=&#34;qemu-x86-linux&#34;; work_dir=&#34;${HOME}/${work_dir_name}&#34;; mkdir -p ${work_dir}; qemu_arch=&#34;qemu-system-x86_64&#34; cd ${work_dir}; tools-install() { package_array=(flex bison libncurses5-dev libelf-dev libssl-dev qemu-system-x86) package_array_size=${#package_array[@]} for ((i = 0; i &lt; package_array_size; i&#43;&#43;)) do # 软件安装 if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then echo -e &#34;\e[34m&#34; sudo apt-get install ${package_array[${i}]} -y echo -e &#34;\e[0m&#34; if [ ! &#34;$(apt list --installed | grep -wo &#34;${package_array[${i}]}&#34; | head -n 1)&#34; = &#34;${package_array[${i}]}&#34; ]; then echo -e &#34;\e[31m${package_array[${i}]} 未安装\e[0m&#34; else echo -e &#34;\e[32m${package_array[${i}]} 已安装\e[0m&#34; fi	else echo -e &#34;\e[32m${package_array[${i}]} 已安装\e[0m&#34; fi done	} if [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;graphic&#34; ]; then	$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append &#34;init=/init&#34; elif [ &#34;$1&#34; = &#34;run&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;nographic&#34; ]; then	$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append &#34;init=/init console=ttyS0&#34; elif [ &#34;$1&#34; = &#34;help&#34; ]; then echo &#34;$0 graphic&#34; echo &#34;$0 nographic&#34; elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;graphic&#34; ]; then echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append \&#34;init=/init\&#34;&#34; elif [ &#34;$1&#34; = &#34;run_way&#34; ] &amp;&amp; [ &#34;$2&#34; = &#34;nographic&#34; ]; then echo &#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append \&#34;init=/init console=ttyS0\&#34;&#34; elif [ &#34;$1&#34; = &#34;default&#34; ]; then tools-install # 判断linux内核是否准备好	while true; do if [ ! -f &#34;${work_dir}/$file_linux&#34; ]; then	echo -e &#34;\e[32m&#34; wget https://mirrors.aliyun.com/linux-kernel/v5.x/$file_linux echo -e &#34;\e[0m&#34; else echo -e &#34;\e[32m${file_linux} 已下载\e[0m&#34; break; fi	done # 判断busybox文件是否准备好 while true; do if [ ! -f &#34;${work_dir}/$file_busybox&#34; ]; then echo -e &#34;\e[33m&#34; # wget --no-check-certificate https://busybox.net/downloads/busybox-1.32.0.tar.bz2 wget --no-check-certificate https://busybox.net/downloads/${file_busybox} echo -e &#34;\e[0m&#34; else echo -e &#34;\e[32m$file_busybox 已下载\e[0m&#34; break; fi	done	# 判断linux内核是否解压 echo -e &#34;\e[32m&#34; # kernel if [ -d &#34;${work_dir}/$linux&#34; ]; then echo &#34;$linux exists.&#34; else tar xf ${work_dir}/$file_linux -C ${work_dir}; fi echo -e &#34;\e[0m&#34; # 判断busybox文件是否解压 echo -e &#34;\e[33m&#34; if [ -d &#34;${work_dir}/$busybox&#34; ]; then echo &#34;$busybox exists.&#34; else tar xf ${work_dir}/$file_busybox -C ${work_dir}; fi echo -e &#34;\e[0m&#34;	# 编译linux内核 echo -e &#34;\e[32m&#34; cd ${work_dir}/${linux}; make defconfig	# 在x86_64架构上默认编译x86_64_defconfig make -j$(nproc) echo -e &#34;\e[0m&#34; # 编译busybox，编译之后把&#34;${busybox}/_install/*&#34;拷贝到rootfs目录下 cd ${work_dir}/${busybox}; if [ ! -f &#34;${work_dir}/${busybox}/_install/bin/busybox&#34; ]; then echo &#34;# 修改配置，选中如下项目，静态编译&#34; echo -e &#34;\e[31m# Settings ?C&gt; Build Options ?C&gt; [*] Build static binary（no share libs）\e[0m&#34; echo &#34;# 反选如下项目，否则后续qemu执行会提示 /bin/sh:can&#39;t access tty;job control turned off&#34; echo -e &#34;\e[31m# Shells ---&gt; [ ] Job control\e[0m&#34; read -p &#34;仅第一次编译运行时需要进行该操作，回车后要返回该界面可以执行快捷键Ctrl&#43;z，回到menuconfig界面则执行fg，配置完毕后退出并确认保存即可，回车继续&#34; continue; make menuconfig	fi	make -j$(nproc) make install # 制作initramfs cd ${work_dir}/${busybox}/_install/	mkdir -p proc sys dev tmp touch init chmod &#43;x init cat &gt; init &lt;&lt; \EOF #!/bin/sh # 挂载一些必要的文件系统 mount -t proc none /proc mount -t sysfs none /sys mount -t tmpfs none /tmp mount -t devtmpfs none /dev echo echo &#34;Hello Linux&#34; # 显示开机消耗时间 echo &#34;This boot took $(cut -d&#39; &#39; -f1 /proc/uptime) seconds&#34; echo # 停留在控制台 exec /bin/sh EOF if [ -f &#34;initramfs.cpio.gz&#34; ]; then echo &#34;initramfs.cpio.gz exists&#34; else find . -print0 | cpio --null -ov --format=newc | gzip -9 &gt; ../initramfs.cpio.gz fi # QEMU运行虚拟机，通过sd卡加载linux内核	$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -device edu -append &#34;init=/init console=ttyS0&#34;	elif [ &#34;$1&#34; = &#34;install&#34; ]; then tools-install fi 参考链接 QEMU启动x86-Linux内核">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "QEMU启动x86-Linux内核",
+      "item": "http://localhost:1313/post/linux/qemu%E5%90%AF%E5%8A%A8x86-linux%E5%86%85%E6%A0%B8/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "QEMU启动x86-Linux内核",
+  "name": "QEMU启动x86-Linux内核",
+  "description": " 脚本使用方式 环境部署 第一次使用该脚本需要先搭建环境，执行命令如下：\nqemu-x86-linux.sh default 运行方式 在环境完备的情况下，可以使用两种启动方式启动，一种是通过图形化界面启动，还有一种是通过控制台启动，命令分别如下：\nqemu-x86-linux.sh run graphic 和 qemu-x86-linux.sh run nographic 输出运行命令 如果想输出启动方式，需要执行的命令如下：\nqemu-x86-linux.sh run_way graphic 和 qemu-x86-linux.sh run_way nographic 脚本内容 linux=\u0026#34;linux-5.19\u0026#34;; busybox=\u0026#34;busybox-1.35.0\u0026#34;; file_linux=\u0026#34;${linux}.tar.gz\u0026#34;; file_busybox=\u0026#34;${busybox}.tar.bz2\u0026#34;; busybox_config=\u0026#34;busybox-1.35.0/.config\u0026#34;; work_dir_name=\u0026#34;qemu-x86-linux\u0026#34;; work_dir=\u0026#34;${HOME}/${work_dir_name}\u0026#34;; mkdir -p ${work_dir}; qemu_arch=\u0026#34;qemu-system-x86_64\u0026#34; cd ${work_dir}; tools-install() { package_array=(flex bison libncurses5-dev libelf-dev libssl-dev qemu-system-x86) package_array_size=${#package_array[@]} for ((i = 0; i \u0026lt; package_array_size; i++)) do # 软件安装 if [ ! \u0026#34;$(apt list --installed | grep -wo \u0026#34;${package_array[${i}]}\u0026#34; | head -n 1)\u0026#34; = \u0026#34;${package_array[${i}]}\u0026#34; ]; then echo -e \u0026#34;\\e[34m\u0026#34; sudo apt-get install ${package_array[${i}]} -y echo -e \u0026#34;\\e[0m\u0026#34; if [ ! \u0026#34;$(apt list --installed | grep -wo \u0026#34;${package_array[${i}]}\u0026#34; | head -n 1)\u0026#34; = \u0026#34;${package_array[${i}]}\u0026#34; ]; then echo -e \u0026#34;\\e[31m${package_array[${i}]} 未安装\\e[0m\u0026#34; else echo -e \u0026#34;\\e[32m${package_array[${i}]} 已安装\\e[0m\u0026#34; fi\telse echo -e \u0026#34;\\e[32m${package_array[${i}]} 已安装\\e[0m\u0026#34; fi done\t} if [ \u0026#34;$1\u0026#34; = \u0026#34;run\u0026#34; ] \u0026amp;\u0026amp; [ \u0026#34;$2\u0026#34; = \u0026#34;graphic\u0026#34; ]; then\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append \u0026#34;init=/init\u0026#34; elif [ \u0026#34;$1\u0026#34; = \u0026#34;run\u0026#34; ] \u0026amp;\u0026amp; [ \u0026#34;$2\u0026#34; = \u0026#34;nographic\u0026#34; ]; then\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append \u0026#34;init=/init console=ttyS0\u0026#34; elif [ \u0026#34;$1\u0026#34; = \u0026#34;help\u0026#34; ]; then echo \u0026#34;$0 graphic\u0026#34; echo \u0026#34;$0 nographic\u0026#34; elif [ \u0026#34;$1\u0026#34; = \u0026#34;run_way\u0026#34; ] \u0026amp;\u0026amp; [ \u0026#34;$2\u0026#34; = \u0026#34;graphic\u0026#34; ]; then echo \u0026#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append \\\u0026#34;init=/init\\\u0026#34;\u0026#34; elif [ \u0026#34;$1\u0026#34; = \u0026#34;run_way\u0026#34; ] \u0026amp;\u0026amp; [ \u0026#34;$2\u0026#34; = \u0026#34;nographic\u0026#34; ]; then echo \u0026#34;$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append \\\u0026#34;init=/init console=ttyS0\\\u0026#34;\u0026#34; elif [ \u0026#34;$1\u0026#34; = \u0026#34;default\u0026#34; ]; then tools-install # 判断linux内核是否准备好\twhile true; do if [ ! -f \u0026#34;${work_dir}/$file_linux\u0026#34; ]; then\techo -e \u0026#34;\\e[32m\u0026#34; wget https://mirrors.aliyun.com/linux-kernel/v5.x/$file_linux echo -e \u0026#34;\\e[0m\u0026#34; else echo -e \u0026#34;\\e[32m${file_linux} 已下载\\e[0m\u0026#34; break; fi\tdone # 判断busybox文件是否准备好 while true; do if [ ! -f \u0026#34;${work_dir}/$file_busybox\u0026#34; ]; then echo -e \u0026#34;\\e[33m\u0026#34; # wget --no-check-certificate https://busybox.net/downloads/busybox-1.32.0.tar.bz2 wget --no-check-certificate https://busybox.net/downloads/${file_busybox} echo -e \u0026#34;\\e[0m\u0026#34; else echo -e \u0026#34;\\e[32m$file_busybox 已下载\\e[0m\u0026#34; break; fi\tdone\t# 判断linux内核是否解压 echo -e \u0026#34;\\e[32m\u0026#34; # kernel if [ -d \u0026#34;${work_dir}/$linux\u0026#34; ]; then echo \u0026#34;$linux exists.\u0026#34; else tar xf ${work_dir}/$file_linux -C ${work_dir}; fi echo -e \u0026#34;\\e[0m\u0026#34; # 判断busybox文件是否解压 echo -e \u0026#34;\\e[33m\u0026#34; if [ -d \u0026#34;${work_dir}/$busybox\u0026#34; ]; then echo \u0026#34;$busybox exists.\u0026#34; else tar xf ${work_dir}/$file_busybox -C ${work_dir}; fi echo -e \u0026#34;\\e[0m\u0026#34;\t# 编译linux内核 echo -e \u0026#34;\\e[32m\u0026#34; cd ${work_dir}/${linux}; make defconfig\t# 在x86_64架构上默认编译x86_64_defconfig make -j$(nproc) echo -e \u0026#34;\\e[0m\u0026#34; # 编译busybox，编译之后把\u0026#34;${busybox}/_install/*\u0026#34;拷贝到rootfs目录下 cd ${work_dir}/${busybox}; if [ ! -f \u0026#34;${work_dir}/${busybox}/_install/bin/busybox\u0026#34; ]; then echo \u0026#34;# 修改配置，选中如下项目，静态编译\u0026#34; echo -e \u0026#34;\\e[31m# Settings ?C\u0026gt; Build Options ?C\u0026gt; [*] Build static binary（no share libs）\\e[0m\u0026#34; echo \u0026#34;# 反选如下项目，否则后续qemu执行会提示 /bin/sh:can\u0026#39;t access tty;job control turned off\u0026#34; echo -e \u0026#34;\\e[31m# Shells ---\u0026gt; [ ] Job control\\e[0m\u0026#34; read -p \u0026#34;仅第一次编译运行时需要进行该操作，回车后要返回该界面可以执行快捷键Ctrl+z，回到menuconfig界面则执行fg，配置完毕后退出并确认保存即可，回车继续\u0026#34; continue; make menuconfig\tfi\tmake -j$(nproc) make install # 制作initramfs cd ${work_dir}/${busybox}/_install/\tmkdir -p proc sys dev tmp touch init chmod +x init cat \u0026gt; init \u0026lt;\u0026lt; \\EOF #!/bin/sh # 挂载一些必要的文件系统 mount -t proc none /proc mount -t sysfs none /sys mount -t tmpfs none /tmp mount -t devtmpfs none /dev echo echo \u0026#34;Hello Linux\u0026#34; # 显示开机消耗时间 echo \u0026#34;This boot took $(cut -d\u0026#39; \u0026#39; -f1 /proc/uptime) seconds\u0026#34; echo # 停留在控制台 exec /bin/sh EOF if [ -f \u0026#34;initramfs.cpio.gz\u0026#34; ]; then echo \u0026#34;initramfs.cpio.gz exists\u0026#34; else find . -print0 | cpio --null -ov --format=newc | gzip -9 \u0026gt; ../initramfs.cpio.gz fi # QEMU运行虚拟机，通过sd卡加载linux内核\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -device edu -append \u0026#34;init=/init console=ttyS0\u0026#34;\telif [ \u0026#34;$1\u0026#34; = \u0026#34;install\u0026#34; ]; then tools-install fi 参考链接 QEMU启动x86-Linux内核\n",
+  "keywords": [
+    "qemu", "linux", "x86"
+  ],
+  "articleBody": " 脚本使用方式 环境部署 第一次使用该脚本需要先搭建环境，执行命令如下：\nqemu-x86-linux.sh default 运行方式 在环境完备的情况下，可以使用两种启动方式启动，一种是通过图形化界面启动，还有一种是通过控制台启动，命令分别如下：\nqemu-x86-linux.sh run graphic 和 qemu-x86-linux.sh run nographic 输出运行命令 如果想输出启动方式，需要执行的命令如下：\nqemu-x86-linux.sh run_way graphic 和 qemu-x86-linux.sh run_way nographic 脚本内容 linux=\"linux-5.19\"; busybox=\"busybox-1.35.0\"; file_linux=\"${linux}.tar.gz\"; file_busybox=\"${busybox}.tar.bz2\"; busybox_config=\"busybox-1.35.0/.config\"; work_dir_name=\"qemu-x86-linux\"; work_dir=\"${HOME}/${work_dir_name}\"; mkdir -p ${work_dir}; qemu_arch=\"qemu-system-x86_64\" cd ${work_dir}; tools-install() { package_array=(flex bison libncurses5-dev libelf-dev libssl-dev qemu-system-x86) package_array_size=${#package_array[@]} for ((i = 0; i \u003c package_array_size; i++)) do # 软件安装 if [ ! \"$(apt list --installed | grep -wo \"${package_array[${i}]}\" | head -n 1)\" = \"${package_array[${i}]}\" ]; then echo -e \"\\e[34m\" sudo apt-get install ${package_array[${i}]} -y echo -e \"\\e[0m\" if [ ! \"$(apt list --installed | grep -wo \"${package_array[${i}]}\" | head -n 1)\" = \"${package_array[${i}]}\" ]; then echo -e \"\\e[31m${package_array[${i}]} 未安装\\e[0m\" else echo -e \"\\e[32m${package_array[${i}]} 已安装\\e[0m\" fi\telse echo -e \"\\e[32m${package_array[${i}]} 已安装\\e[0m\" fi done\t} if [ \"$1\" = \"run\" ] \u0026\u0026 [ \"$2\" = \"graphic\" ]; then\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append \"init=/init\" elif [ \"$1\" = \"run\" ] \u0026\u0026 [ \"$2\" = \"nographic\" ]; then\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append \"init=/init console=ttyS0\" elif [ \"$1\" = \"help\" ]; then echo \"$0 graphic\" echo \"$0 nographic\" elif [ \"$1\" = \"run_way\" ] \u0026\u0026 [ \"$2\" = \"graphic\" ]; then echo \"$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -append \\\"init=/init\\\"\" elif [ \"$1\" = \"run_way\" ] \u0026\u0026 [ \"$2\" = \"nographic\" ]; then echo \"$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -append \\\"init=/init console=ttyS0\\\"\" elif [ \"$1\" = \"default\" ]; then tools-install # 判断linux内核是否准备好\twhile true; do if [ ! -f \"${work_dir}/$file_linux\" ]; then\techo -e \"\\e[32m\" wget https://mirrors.aliyun.com/linux-kernel/v5.x/$file_linux echo -e \"\\e[0m\" else echo -e \"\\e[32m${file_linux} 已下载\\e[0m\" break; fi\tdone # 判断busybox文件是否准备好 while true; do if [ ! -f \"${work_dir}/$file_busybox\" ]; then echo -e \"\\e[33m\" # wget --no-check-certificate https://busybox.net/downloads/busybox-1.32.0.tar.bz2 wget --no-check-certificate https://busybox.net/downloads/${file_busybox} echo -e \"\\e[0m\" else echo -e \"\\e[32m$file_busybox 已下载\\e[0m\" break; fi\tdone\t# 判断linux内核是否解压 echo -e \"\\e[32m\" # kernel if [ -d \"${work_dir}/$linux\" ]; then echo \"$linux exists.\" else tar xf ${work_dir}/$file_linux -C ${work_dir}; fi echo -e \"\\e[0m\" # 判断busybox文件是否解压 echo -e \"\\e[33m\" if [ -d \"${work_dir}/$busybox\" ]; then echo \"$busybox exists.\" else tar xf ${work_dir}/$file_busybox -C ${work_dir}; fi echo -e \"\\e[0m\"\t# 编译linux内核 echo -e \"\\e[32m\" cd ${work_dir}/${linux}; make defconfig\t# 在x86_64架构上默认编译x86_64_defconfig make -j$(nproc) echo -e \"\\e[0m\" # 编译busybox，编译之后把\"${busybox}/_install/*\"拷贝到rootfs目录下 cd ${work_dir}/${busybox}; if [ ! -f \"${work_dir}/${busybox}/_install/bin/busybox\" ]; then echo \"# 修改配置，选中如下项目，静态编译\" echo -e \"\\e[31m# Settings ?C\u003e Build Options ?C\u003e [*] Build static binary（no share libs）\\e[0m\" echo \"# 反选如下项目，否则后续qemu执行会提示 /bin/sh:can't access tty;job control turned off\" echo -e \"\\e[31m# Shells ---\u003e [ ] Job control\\e[0m\" read -p \"仅第一次编译运行时需要进行该操作，回车后要返回该界面可以执行快捷键Ctrl+z，回到menuconfig界面则执行fg，配置完毕后退出并确认保存即可，回车继续\" continue; make menuconfig\tfi\tmake -j$(nproc) make install # 制作initramfs cd ${work_dir}/${busybox}/_install/\tmkdir -p proc sys dev tmp touch init chmod +x init cat \u003e init \u003c\u003c \\EOF #!/bin/sh # 挂载一些必要的文件系统 mount -t proc none /proc mount -t sysfs none /sys mount -t tmpfs none /tmp mount -t devtmpfs none /dev echo echo \"Hello Linux\" # 显示开机消耗时间 echo \"This boot took $(cut -d' ' -f1 /proc/uptime) seconds\" echo # 停留在控制台 exec /bin/sh EOF if [ -f \"initramfs.cpio.gz\" ]; then echo \"initramfs.cpio.gz exists\" else find . -print0 | cpio --null -ov --format=newc | gzip -9 \u003e ../initramfs.cpio.gz fi # QEMU运行虚拟机，通过sd卡加载linux内核\t$qemu_arch -kernel $work_dir/$linux/arch/x86/boot/bzImage -initrd $work_dir/$busybox/initramfs.cpio.gz -nographic -device edu -append \"init=/init console=ttyS0\"\telif [ \"$1\" = \"install\" ]; then tools-install fi 参考链接 QEMU启动x86-Linux内核\n使用qemu搭建arm嵌入式linux开发环境\n",
+  "wordCount" : "527",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2025-03-16T03:26:36.67+08:00",
+  "dateModified": "2025-03-16T03:26:36.67+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Theme PaperMod"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/post/linux/qemu%E5%90%AF%E5%8A%A8x86-linux%E5%86%85%E6%A0%B8/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PaperMod",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/post/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+    <h1 class="post-title entry-hint-parent">
+      QEMU启动x86-Linux内核
+    </h1>
+    <div class="post-meta">
+
+<span title='2025-03-16 03:26:36.67 +0800 +0800'>March 16, 2025</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span>&nbsp;|&nbsp;<span>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content/post/linux/QEMU%e5%90%af%e5%8a%a8x86-Linux%e5%86%85%e6%a0%b8.org" rel="noopener noreferrer edit" target="_blank">Suggest Changes</a>
+    </span>
+
+</div>
+  </header> 
+
+  <div class="post-content md-content">
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+脚本使用方式
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+环境部署
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>第一次使用该脚本需要先搭建环境，执行命令如下：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">qemu-x86-linux.sh default</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+运行方式
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>
+在环境完备的情况下，可以使用两种启动方式启动，一种是通过图形化界面启动，还有一种是通过控制台启动，命令分别如下：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">qemu-x86-linux.sh run graphic
+</span></span><span class="line"><span class="cl">和
+</span></span><span class="line"><span class="cl">qemu-x86-linux.sh run nographic</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+输出运行命令
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>
+如果想输出启动方式，需要执行的命令如下：</p>
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">qemu-x86-linux.sh run_way graphic
+</span></span><span class="line"><span class="cl">和
+</span></span><span class="line"><span class="cl">qemu-x86-linux.sh run_way nographic</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+脚本内容
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<div class="src src-bash">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">linux</span><span class="o">=</span><span class="s2">&#34;linux-5.19&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">busybox</span><span class="o">=</span><span class="s2">&#34;busybox-1.35.0&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">file_linux</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">linux</span><span class="si">}</span><span class="s2">.tar.gz&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">file_busybox</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">busybox</span><span class="si">}</span><span class="s2">.tar.bz2&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">busybox_config</span><span class="o">=</span><span class="s2">&#34;busybox-1.35.0/.config&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">work_dir_name</span><span class="o">=</span><span class="s2">&#34;qemu-x86-linux&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">work_dir</span><span class="o">=</span><span class="s2">&#34;</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">work_dir_name</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">mkdir -p <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">qemu_arch</span><span class="o">=</span><span class="s2">&#34;qemu-system-x86_64&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">tools-install<span class="o">()</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">package_array</span><span class="o">=(</span>flex bison libncurses5-dev libelf-dev libssl-dev qemu-system-x86<span class="o">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">package_array_size</span><span class="o">=</span><span class="si">${#</span><span class="nv">package_array</span><span class="p">[@]</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="o">((</span><span class="nv">i</span> <span class="o">=</span> 0<span class="p">;</span> i &lt; package_array_size<span class="p">;</span> i++<span class="o">))</span>
+</span></span><span class="line"><span class="cl">	<span class="k">do</span>
+</span></span><span class="line"><span class="cl">		<span class="c1"># 软件安装</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[</span> ! <span class="s2">&#34;</span><span class="k">$(</span>apt list --installed <span class="p">|</span> grep -wo <span class="s2">&#34;</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span> <span class="p">|</span> head -n 1<span class="k">)</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[34m&#34;</span>
+</span></span><span class="line"><span class="cl">			sudo apt-get install <span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span> -y
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="o">[</span> ! <span class="s2">&#34;</span><span class="k">$(</span>apt list --installed <span class="p">|</span> grep -wo <span class="s2">&#34;</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span> <span class="p">|</span> head -n 1<span class="k">)</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">echo</span> -e <span class="s2">&#34;\e[31m</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2"> 未安装\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">else</span>
+</span></span><span class="line"><span class="cl">				<span class="nb">echo</span> -e <span class="s2">&#34;\e[32m</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2"> 已安装\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">fi</span>		  
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[32m</span><span class="si">${</span><span class="nv">package_array</span><span class="p">[</span><span class="si">${</span><span class="nv">i</span><span class="si">}</span><span class="p">]</span><span class="si">}</span><span class="s2"> 已安装\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="k">done</span>	
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;run&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span>  <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;graphic&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>		
+</span></span><span class="line"><span class="cl">	<span class="nv">$qemu_arch</span> -kernel <span class="nv">$work_dir</span>/<span class="nv">$linux</span>/arch/x86/boot/bzImage -initrd <span class="nv">$work_dir</span>/<span class="nv">$busybox</span>/initramfs.cpio.gz -append <span class="s2">&#34;init=/init&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;run&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span>  <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;nographic&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>	
+</span></span><span class="line"><span class="cl">    <span class="nv">$qemu_arch</span> -kernel <span class="nv">$work_dir</span>/<span class="nv">$linux</span>/arch/x86/boot/bzImage -initrd <span class="nv">$work_dir</span>/<span class="nv">$busybox</span>/initramfs.cpio.gz -nographic -append <span class="s2">&#34;init=/init console=ttyS0&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;help&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2"> graphic&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2"> nographic&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;run_way&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;graphic&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$qemu_arch</span><span class="s2"> -kernel </span><span class="nv">$work_dir</span><span class="s2">/</span><span class="nv">$linux</span><span class="s2">/arch/x86/boot/bzImage -initrd </span><span class="nv">$work_dir</span><span class="s2">/</span><span class="nv">$busybox</span><span class="s2">/initramfs.cpio.gz -append \&#34;init=/init\&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;run_way&#34;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$2</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;nographic&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$qemu_arch</span><span class="s2"> -kernel </span><span class="nv">$work_dir</span><span class="s2">/</span><span class="nv">$linux</span><span class="s2">/arch/x86/boot/bzImage -initrd </span><span class="nv">$work_dir</span><span class="s2">/</span><span class="nv">$busybox</span><span class="s2">/initramfs.cpio.gz -nographic -append \&#34;init=/init console=ttyS0\&#34;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;default&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	tools-install
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 判断linux内核是否准备好	</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> true<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">do</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="s2">/</span><span class="nv">$file_linux</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>		  
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[32m&#34;</span>
+</span></span><span class="line"><span class="cl">			wget https://mirrors.aliyun.com/linux-kernel/v5.x/<span class="nv">$file_linux</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e  <span class="s2">&#34;\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[32m</span><span class="si">${</span><span class="nv">file_linux</span><span class="si">}</span><span class="s2"> 已下载\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">			break<span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>		
+</span></span><span class="line"><span class="cl">	<span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 判断busybox文件是否准备好</span>
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> true<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">do</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="s2">/</span><span class="nv">$file_busybox</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e  <span class="s2">&#34;\e[33m&#34;</span>
+</span></span><span class="line"><span class="cl">			<span class="c1"># wget --no-check-certificate https://busybox.net/downloads/busybox-1.32.0.tar.bz2</span>
+</span></span><span class="line"><span class="cl">			wget --no-check-certificate https://busybox.net/downloads/<span class="si">${</span><span class="nv">file_busybox</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e  <span class="s2">&#34;\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">			<span class="nb">echo</span> -e <span class="s2">&#34;\e[32m</span><span class="nv">$file_busybox</span><span class="s2"> 已下载\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">			break<span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>	  	  
+</span></span><span class="line"><span class="cl">	<span class="k">done</span>	
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 判断linux内核是否解压</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[32m&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1"># kernel</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> -d <span class="s2">&#34;</span><span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="s2">/</span><span class="nv">$linux</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$linux</span><span class="s2"> exists.&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		tar xf <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span>/<span class="nv">$file_linux</span> -C <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 判断busybox文件是否解压</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[33m&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> -d <span class="s2">&#34;</span><span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="s2">/</span><span class="nv">$busybox</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$busybox</span><span class="s2"> exists.&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		tar xf <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span>/<span class="nv">$file_busybox</span> -C <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[0m&#34;</span>	
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 编译linux内核</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[32m&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">cd</span>  <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span>/<span class="si">${</span><span class="nv">linux</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	make defconfig				<span class="c1"># 在x86_64架构上默认编译x86_64_defconfig</span>
+</span></span><span class="line"><span class="cl">	make -j<span class="k">$(</span>nproc<span class="k">)</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> -e  <span class="s2">&#34;\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 编译busybox，编译之后把&#34;${busybox}/_install/*&#34;拷贝到rootfs目录下</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">cd</span>  <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span>/<span class="si">${</span><span class="nv">busybox</span><span class="si">}</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&#34;</span><span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">busybox</span><span class="si">}</span><span class="s2">/_install/bin/busybox&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;# 修改配置，选中如下项目，静态编译&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> -e <span class="s2">&#34;\e[31m# Settings ?C&gt; Build Options ?C&gt; [*] Build static binary（no share libs）\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;# 反选如下项目，否则后续qemu执行会提示 /bin/sh:can&#39;t access tty;job control turned off&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> -e <span class="s2">&#34;\e[31m# Shells  ---&gt;  [ ]   Job control\e[0m&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">read</span> -p <span class="s2">&#34;仅第一次编译运行时需要进行该操作，回车后要返回该界面可以执行快捷键Ctrl+z，回到menuconfig界面则执行fg，配置完毕后退出并确认保存即可，回车继续&#34;</span> <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		make menuconfig	
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>	
+</span></span><span class="line"><span class="cl">	make -j<span class="k">$(</span>nproc<span class="k">)</span>
+</span></span><span class="line"><span class="cl">	make install
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1"># 制作initramfs</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">cd</span>  <span class="si">${</span><span class="nv">work_dir</span><span class="si">}</span>/<span class="si">${</span><span class="nv">busybox</span><span class="si">}</span>/_install/	
+</span></span><span class="line"><span class="cl">	mkdir -p proc sys dev tmp
+</span></span><span class="line"><span class="cl">	touch init
+</span></span><span class="line"><span class="cl">	chmod +x init
+</span></span><span class="line"><span class="cl">	cat &gt; init <span class="s">&lt;&lt; \EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 挂载一些必要的文件系统
+</span></span></span><span class="line"><span class="cl"><span class="s">mount -t proc none /proc
+</span></span></span><span class="line"><span class="cl"><span class="s">mount -t sysfs none /sys
+</span></span></span><span class="line"><span class="cl"><span class="s">mount -t tmpfs none /tmp
+</span></span></span><span class="line"><span class="cl"><span class="s">mount -t devtmpfs none /dev
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">echo
+</span></span></span><span class="line"><span class="cl"><span class="s">echo &#34;Hello Linux&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 显示开机消耗时间
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">echo &#34;This boot took $(cut -d&#39; &#39; -f1 /proc/uptime) seconds&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">echo
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># 停留在控制台
+</span></span></span><span class="line"><span class="cl"><span class="s">exec /bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="o">[</span> -f <span class="s2">&#34;initramfs.cpio.gz&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;initramfs.cpio.gz exists&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		find . -print0 <span class="p">|</span> cpio --null -ov --format<span class="o">=</span>newc <span class="p">|</span> gzip -9 &gt; ../initramfs.cpio.gz
+</span></span><span class="line"><span class="cl">	<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="c1"># QEMU运行虚拟机，通过sd卡加载linux内核	</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">$qemu_arch</span> -kernel <span class="nv">$work_dir</span>/<span class="nv">$linux</span>/arch/x86/boot/bzImage -initrd <span class="nv">$work_dir</span>/<span class="nv">$busybox</span>/initramfs.cpio.gz -nographic -device edu -append <span class="s2">&#34;init=/init console=ttyS0&#34;</span>	
+</span></span><span class="line"><span class="cl"><span class="k">elif</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">=</span> <span class="s2">&#34;install&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	tools-install
+</span></span><span class="line"><span class="cl"><span class="k">fi</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+参考链接
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<p>
+<a href="https://blog.csdn.net/benkaoya/article/details/129469116">QEMU启动x86-Linux内核</a></p>
+<p>
+<a href="https://ynhugo.github.io/p/使用qemu搭建arm嵌入式linux开发环境/">使用qemu搭建arm嵌入式linux开发环境</a></p>
+</div>
+</div>
+</div>
+</div>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/qemu/">Qemu</a></li>
+      <li><a href="http://localhost:1313/tags/linux/">Linux</a></li>
+      <li><a href="http://localhost:1313/tags/x86/">X86</a></li>
+    </ul>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share QEMU启动x86-Linux内核 on x"
+            href="https://x.com/intent/tweet/?text=QEMU%e5%90%af%e5%8a%a8x86-Linux%e5%86%85%e6%a0%b8&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2flinux%2fqemu%25E5%2590%25AF%25E5%258A%25A8x86-linux%25E5%2586%2585%25E6%25A0%25B8%2f&amp;hashtags=qemu%2clinux%2cx86">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share QEMU启动x86-Linux内核 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2flinux%2fqemu%25E5%2590%25AF%25E5%258A%25A8x86-linux%25E5%2586%2585%25E6%25A0%25B8%2f&amp;title=QEMU%e5%90%af%e5%8a%a8x86-Linux%e5%86%85%e6%a0%b8&amp;summary=QEMU%e5%90%af%e5%8a%a8x86-Linux%e5%86%85%e6%a0%b8&amp;source=http%3a%2f%2flocalhost%3a1313%2fpost%2flinux%2fqemu%25E5%2590%25AF%25E5%258A%25A8x86-linux%25E5%2586%2585%25E6%25A0%25B8%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share QEMU启动x86-Linux内核 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fpost%2flinux%2fqemu%25E5%2590%25AF%25E5%258A%25A8x86-linux%25E5%2586%2585%25E6%25A0%25B8%2f&title=QEMU%e5%90%af%e5%8a%a8x86-Linux%e5%86%85%e6%a0%b8">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share QEMU启动x86-Linux内核 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fpost%2flinux%2fqemu%25E5%2590%25AF%25E5%258A%25A8x86-linux%25E5%2586%2585%25E6%25A0%25B8%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share QEMU启动x86-Linux内核 on whatsapp"
+            href="https://api.whatsapp.com/send?text=QEMU%e5%90%af%e5%8a%a8x86-Linux%e5%86%85%e6%a0%b8%20-%20http%3a%2f%2flocalhost%3a1313%2fpost%2flinux%2fqemu%25E5%2590%25AF%25E5%258A%25A8x86-linux%25E5%2586%2585%25E6%25A0%25B8%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share QEMU启动x86-Linux内核 on telegram"
+            href="https://telegram.me/share/url?text=QEMU%e5%90%af%e5%8a%a8x86-Linux%e5%86%85%e6%a0%b8&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2flinux%2fqemu%25E5%2590%25AF%25E5%258A%25A8x86-linux%25E5%2586%2585%25E6%25A0%25B8%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share QEMU启动x86-Linux内核 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=QEMU%e5%90%af%e5%8a%a8x86-Linux%e5%86%85%e6%a0%b8&u=http%3a%2f%2flocalhost%3a1313%2fpost%2flinux%2fqemu%25E5%2590%25AF%25E5%258A%25A8x86-linux%25E5%2586%2585%25E6%25A0%25B8%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

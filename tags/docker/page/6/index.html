@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Docker | PaperMod</title>
+<meta name="keywords" content="">
+<meta name="description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/tags/docker/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/docker/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/docker/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/tags/docker/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="Docker">
+  <meta property="og:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="Docker">
+  <meta name="twitter:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/tags/">Tags</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+  <h1>
+    Docker
+    <a href="/tags/docker/index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">云服务器搭建Docker
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 云服务器搭建Docker 系统环境 ~# cat /etc/os-release PRETTY_NAME=&#34;Ubuntu 24.04 LTS&#34; NAME=&#34;Ubuntu&#34; VERSION_ID=&#34;24.04&#34; VERSION=&#34;24.04 LTS (Noble Numbat)&#34; VERSION_CODENAME=noble ID=ubuntu ID_LIKE=debian HOME_URL=&#34;https://www.ubuntu.com/&#34; SUPPORT_URL=&#34;https://help.ubuntu.com/&#34; BUG_REPORT_URL=&#34;https://bugs.launchpad.net/ubuntu/&#34; PRIVACY_POLICY_URL=&#34;https://www.ubuntu.com/legal/terms-and-policies/privacy-policy&#34; UBUNTU_CODENAME=noble LOGO=ubuntu-logo ~# uname -a Linux VM-4-13-ubuntu 6.8.0-71-generic #71-Ubuntu SMP PREEMPT_DYNAMIC Tue Jul 22 16:52:38 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux 搭建Docker 安装Docker # 1. 执行以下命令，添加 Docker 软件源 sudo apt-get update sudo apt-get install ca-certificates curl -y sudo install -m 0755 -d /etc/apt/keyrings sudo curl -fsSL https://mirrors.cloud.tencent.com/docker-ce/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc sudo chmod a&#43;r /etc/apt/keyrings/docker.asc echo &#34;deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://mirrors.cloud.tencent.com/docker-ce/linux/ubuntu/ \ $(. /etc/os-release &amp;&amp; echo &#34;$VERSION_CODENAME&#34;) stable&#34; | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null sudo apt-get update # 2. 执行以下命令，安装 Docker sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin # 3. 执行以下命令，运行 Docker sudo systemctl start docker # 4. 执行以下命令，检查安装结果 sudo docker info # 返回如下信息，即表示安装成功 &lt;&lt;&#39;CONTENT&#39; Client: Docker Engine - Community Version: 29.3.0 Context: default Debug Mode: false Plugins: buildx: Docker Buildx (Docker Inc.) Version: v0.31.1 Path: /usr/libexec/docker/cli-plugins/docker-buildx compose: Docker Compose (Docker Inc.) Version: v5.1.0 Path: /usr/libexec/docker/cli-plugins/docker-compose Server: Containers: 0 Running: 0 Paused: 0 Stopped: 0 Images: 0 Server Version: 29.3.0 Storage Driver: overlayfs driver-type: io.containerd.snapshotter.v1 Logging Driver: json-file Cgroup Driver: systemd Cgroup Version: 2 Plugins: Volume: local Network: bridge host ipvlan macvlan null overlay Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog CDI spec directories: /etc/cdi /var/run/cdi Swarm: inactive Runtimes: runc io.containerd.runc.v2 Default Runtime: runc Init Binary: docker-init containerd version: 301b2dac98f15c27117da5c8af12118a041a31d9 runc version: v1.3.4-0-gd6d73eb8 init version: de40ad0 Security Options: apparmor seccomp Profile: builtin cgroupns Kernel Version: 6.8.0-71-generic Operating System: Ubuntu 24.04 LTS OSType: linux Architecture: x86_64 CPUs: 2 Total Memory: 3.637GiB Name: VM-4-13-ubuntu ID: 7ba0d015-bc67-4fdf-aa10-22fb3cef9c62 Docker Root Dir: /var/lib/docker Debug Mode: false Experimental: false Insecure Registries: ::1/128 127.0.0.0/8 Live Restore Enabled: false Firewall Backend: iptables CONTENT Docker换源 sudo mkdir -p /etc/docker # sudo tee /etc/docker/daemon.json &lt;&lt;EOF # { # &#34;registry-mirrors&#34;: [ # &#34;https://docker.m.daocloud.io&#34; # ] # } # EOF sudo tee /etc/docker/daemon.json &lt;&lt;EOF { &#34;builder&#34;: { &#34;gc&#34;: { &#34;defaultKeepStorage&#34;: &#34;50GB&#34;, &#34;enabled&#34;: true } }, &#34;experimental&#34;: false, &#34;registry-mirrors&#34;: [ &#34;https://docker.m.daocloud.io&#34; ] } EOF sudo systemctl daemon-reload sudo systemctl restart docker # docker pull docker.m.daocloud.io/library/mysql:5.7 docker pull nginx 参考链接 3月17日更新 | 2026 最新可用 Docker 国内镜像源加速列表
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2026-03-19 00:38:20.06 +0800 +0800'>March 19, 2026</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to 云服务器搭建Docker" href="http://localhost:1313/post/linux/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BAdocker/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">ubuntu16.04使用docker运行微信.org
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 参考链接 [已更新: 安装原生版微信] 超详细教程 - Ubuntu等Linux分支利用Docker安装并使用微信详细教程
+使用 Docker 运行微信 PC 客户端
+Ubuntu等Linux分支利用Docker安装并使用微信详细教程 引言 通过Docker安装微信相比于wine和deepwine都稳定的多，毕竟整个环境是被测试过重新封装好的，所以这种又稳定又不占用太多内存的方式在我使用一段时间之后还是基本满意的。
+但是毕竟是第三方做的，肯定没有深度(deepin)或者windows那种官方维护的体验好，不过只要能解决基本通信使用的需求就谢天谢地了。
+安装Docker（已经有docker的直接跳过这部分，去看第二步） #先来更新一下包管理库 sudo apt update #添加一下docker的包仓库的依赖文件 sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common #添加仓库钥匙 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - #把在线仓库连接加到你的更新源里 sudo add-apt-repository &#34;deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&#34; #默认安装最新版docker sudo apt update sudo apt install docker-ce docker-ce-cli containerd.io -y 检查一下docker状态：
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-03-26 00:24:20 +0800 +0800'>March 26, 2024</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to ubuntu16.04使用docker运行微信.org" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ubuntu16.04%E4%BD%BF%E7%94%A8docker%E8%BF%90%E8%A1%8C%E5%BE%AE%E4%BF%A1/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">docker安装wechat微信、wxwork企业微信脚本整理(转载)
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 假设已安装docker
+还需要安装fcitx，如果安装ibus的话需要将脚本中的输入法替换一下
+wechat微信 sudo docker run -d --name wechat --rm --device /dev/snd --ipc=&#34;host&#34; \ -v /tmp/.X11-unix:/tmp/.X11-unix \ -v /D/CACHE/docker/WeChatFiles:/WeChatFiles \ -e DISPLAY=unix$DISPLAY \ -e XMODIFIERS=@im=fcitx \ -e QT_IM_MODULE=fcitx \ -e GTK_IM_MODULE=fcitx \ -e AUDIO_GID=`getent group audio | cut -d: -f3` \ -e GID=`id -g` \ -e UID=`id -u` \ bestwu/wechat wxwork企业微信 linux环境登录的时候提示版本太低，因此登录不上去
+sudo docker run -d --name wxwork --rm --device /dev/snd --ipc=&#34;host&#34; \ -v /tmp/.X11-unix:/tmp/.X11-unix \ -v $HOME/WXWork:/WXWork \ -v $HOME:/HostHome \ -v $HOME/wine-WXWork:/home/wechat/.deepinwine/Deepin-WXWork \ -e DISPLAY=unix$DISPLAY \ -e XMODIFIERS=@im=fcitx \ -e QT_IM_MODULE=fcitx \ -e GTK_IM_MODULE=fcitx \ -e AUDIO_GID=`getent group audio | cut -d: -f3` \ -e GID=`id -g` \ -e UID=`id -u` \ -e DPI=96 \ -e WAIT_FOR_SLEEP=1 \ boringcat/wechat:work 参考链接 docker安装wechat微信、wxwork企业微信脚本整理 原创
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-03-26 00:24:18 +0800 +0800'>March 26, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to docker安装wechat微信、wxwork企业微信脚本整理(转载)" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/ubuntu16.04%E4%BD%BF%E7%94%A8docker%E8%BF%90%E8%A1%8C%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/tags/docker/page/5/">
+      «&nbsp;Prev&nbsp;5/7
+    </a>
+    <a class="next" href="http://localhost:1313/tags/docker/page/7/">Next&nbsp;7/7&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

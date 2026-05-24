@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>autojsPro实现soul循环自动发送指定文本 | PaperMod</title>
+<meta name="keywords" content="autojsPro, soul">
+<meta name="description" content="
+
+autojsPro实现soul循环自动发送指定文本
+
+
+
+
+代码1
+
+
+
+var appName = &#34;Soul&#34;
+
+var 话术1 = rawInput(&#34;请输入第一句话&#34;, &#34;❤️欢迎加入泡泡同城单身交友大家庭\n💛包脱单，包分配，包售后\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\n\n\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\n\n\n注意：不要只是关注群主，关注是没用的，公屏有提示&#34;);
+
+// toastLog(话术1)
+
+function 开始滚屏() {
+    while (true) {
+        // toastLog(话术1)
+
+        launchApp(appName);
+        sleep(3000)
+
+        for (i =0; i &lt; 3; i&#43;&#43;) {
+            if (id(&#34;tvChat&#34;).exists()) {
+                id(&#34;tvChat&#34;).findOne(10000).click()
+                setText(话术1)
+            } else if (id(&#34;btnSend&#34;).exists()) {
+                id(&#34;btnSend&#34;).findOne(10000).click()		
+                back()                       
+            } else if (id(&#34;etInputView&#34;).exists()) {
+                setText(话术1)
+            }
+        }        
+        sleep(57000)
+    }
+}
+
+开始滚屏()
+
+
+
+
+
+代码2
+
+
+
+&#34;rhino&#34;;
+let LOGFLOAT = false;
+/**
+ * 日志悬浮窗按钮组件
+ * @param {Number} x 坐标x
+ * @param {Number} y 坐标y
+ * @param {Function} executeMethod 需要执行的方法
+ */
+function 日志显示(x, y, executeMethod) {
+  if (LOGFLOAT) {
+    return toastLog(&#39;已启动悬浮窗&#39;);
+  }
+  LOGFLOAT = true;
+  if (typeof x != &#39;number&#39;) x = 0;
+  if (typeof y != &#39;number&#39;) y = 10;
+  let floatyLogW = floaty.rawWindow(
+    &lt;card id=&#34;main&#34; h=&#34;150&#34; cardBackgroundColor=&#34;#b3000000&#34; cardCornerRadius=&#34;8dp&#34; cardElevation=&#34;1dp&#34; gravity=&#34;center_vertical&#34;&gt;
+      &lt;vertical paddingLeft=&#34;5&#34; paddingRight=&#34;5&#34; w=&#34;*&#34;&gt;
+        &lt;horizontal margin=&#34;15 5 15 0&#34;&gt;
+          &lt;horizontal h=&#34;auto&#34; w=&#34;0&#34; layout_weight=&#34;1&#34;&gt;
+            &lt;text id=&#34;title&#34; text=&#34;&#34; textSize=&#34;13dp&#34; textColor=&#34;#FFD700&#34; textStyle=&#34;bold&#34; style=&#34;Widget/AppCompat.Button.Borderless&#34; /&gt;
+            &lt;text id=&#34;label&#34; text=&#34;&#34; textSize=&#34;13dp&#34; textColor=&#34;#1E90FF&#34; textStyle=&#34;bold&#34; style=&#34;Widget/AppCompat.Button.Borderless&#34; marginLeft=&#34;10&#34; /&gt;
+          &lt;/horizontal&gt;
+          &lt;Chronometer id=&#34;runTime&#34; textSize=&#34;13dp&#34; textColor=&#34;#03D96A&#34; w=&#34;auto&#34; style=&#34;Widget/AppCompat.Button.Borderless&#34; textStyle=&#34;bold&#34; /&gt;
+        &lt;/horizontal&gt;
+        &lt;button gravity=&#34;center_horizontal&#34; textColor=&#34;#DC143C&#34; w=&#34;*&#34; h=&#34;13&#34; textStyle=&#34;bold&#34; /&gt;
+        &lt;console id=&#34;console&#34; w=&#34;*&#34; h=&#34;*&#34; padding=&#34;5&#34; /&gt;
+      &lt;/vertical&gt;
+    &lt;/card&gt;
+  );
+
+  let controller = floaty.rawWindow(
+    &lt;vertical h=&#34;150&#34; id=&#34;main&#34;&gt;
+      &lt;text layout_weight=&#34;5&#34; id=&#34;start&#34; textStyle=&#34;bold&#34; gravity=&#34;center&#34; w=&#34;22dp&#34; text=&#34;启动&#34; bg=&#34;#00a86b&#34; /&gt;
+      &lt;text layout_weight=&#34;5&#34; id=&#34;hide&#34; textStyle=&#34;bold&#34; gravity=&#34;center&#34; w=&#34;22dp&#34; text=&#34;日志&#34; bg=&#34;#FF8E12&#34; /&gt;
+      &lt;text layout_weight=&#34;5&#34; id=&#34;stop&#34; textStyle=&#34;bold&#34; gravity=&#34;center&#34; w=&#34;22dp&#34; text=&#34;结束&#34; bg=&#34;#ee4d2d&#34; /&gt;
+    &lt;/vertical&gt;
+  );
+  let hideButton = controller.hide;
+  let startButton = controller.start;
+  let stopButton = controller.stop;
+  let runTimeView = floatyLogW.runTime;
+  let floatConsole = floatyLogW.console;
+
+  let _thread = null;
+
+  setFloatyTitle = function (title) {
+    ui.run(() =&gt; {
+      floatyLogW.title.setText(title);
+    });
+  };
+  setFloatyLabel = function (label) {
+    ui.run(() =&gt; {&#34;&#34;
+      floatyLogW.label.setText(label);
+    });
+  };
+  setFloatyOnStatus = function (enabled) {
+    $ui.post(() =&gt; {
+      if (floatyLogW &amp;&amp; controller &amp;&amp; runTimeView &amp;&amp; startButton) {
+        if (enabled) {
+          // 开
+          runTimeView.setBase(android.os.SystemClock.elapsedRealtime());
+          runTimeView.start();
+          startButton.setText(&#39;停止&#39;);
+          startButton.attr(&#39;background&#39;, &#39;#05a7f4&#39;);
+        } else {
+          runTimeView.stop();
+          startButton.setText(&#39;启动&#39;);
+          startButton.attr(&#39;background&#39;, &#39;#00a86b&#39;);
+        }
+      }
+    });
+  };
+  function dateFormat(date, fmt_str) {
+    return java.text.SimpleDateFormat(fmt_str).format(new Date(date || new Date()));
+  }
+
+  ui.run(() =&gt; {
+    runTimeView.setFormat(&#39;[运行时长 %s ]&#39;);
+    runTimeView.setBase(android.os.SystemClock.elapsedRealtime());
+
+    floatConsole.setConsole(runtime.console); // 设置控制台
+    floatConsole.setInputEnabled(false); // 控制台输入框禁用
+    floatConsole.setColor(&#39;V&#39;, &#39;#ffff00&#39;);
+    floatConsole.setColor(&#39;I&#39;, &#39;#ffffff&#39;);
+    floatConsole.setColor(&#39;D&#39;, &#39;#ffff00&#39;);
+    floatConsole.setColor(&#39;W&#39;, &#39;#673ab7&#39;);
+    floatConsole.setColor(&#39;E&#39;, &#39;#ff0000&#39;);
+    floatConsole.setTextSize(13);
+
+    floatyLogW.setTouchable(false);
+    floatyLogW.setSize(-1, -2);
+    floatyLogW.setPosition(3000, 3000);
+    controller.setPosition(0, y);
+  });
+  controller.stop.click(() =&gt; {
+    $app.launchPackage(context.getPackageName()); // 返回脚本应用界面
+    toast(&#39;停止本次任务&#39;);
+    // exit()
+    if (_thread) {
+      _isStop = true;
+      _thread.interrupt();
+    }
+    $threads.shutDownAll();
+    floatyLogW.close();
+    controller.close();
+    LOGFLOAT = false;
+  });
+  controller.hide.click(() =&gt; {
+    hideButton.setEnabled(false);
+    setTimeout(() =&gt; {
+      hideButton.setEnabled(true);
+    }, 3000);
+
+    if (hideButton.text() == &#39;隐藏&#39;) {
+      let animator = android.animation.ObjectAnimator.ofFloat(floatyLogW.main, &#39;translationX&#39;, 0, -1500);
+      let mTimeInterpolator = new android.view.animation.DecelerateInterpolator();
+      animator.setInterpolator(mTimeInterpolator);
+      animator.setDuration(3000); //动画时间
+      animator.start();
+      setTimeout(() =&gt; {
+        ui.post(() =&gt; {
+          floatyLogW.setPosition(3000, 3000);
+          hideButton.attr(&#39;text&#39;, &#39;日志&#39;);
+          hideButton.attr(&#39;background&#39;, &#39;#FF8E12&#39;);
+        });
+      }, 2000);
+    } else if (hideButton.text() == &#39;日志&#39;) {
+      setTimeout(() =&gt; {
+        ui.post(() =&gt; {
+          hideButton.setText(&#39;隐藏&#39;);
+          hideButton.attr(&#39;background&#39;, &#39;#d1c7b7&#39;);
+          floatyLogW.setSize($device.width - 60, floatyLogW.getHeight());
+          floatyLogW.setPosition(0 &#43; 60, y);
+        });
+      }, 200);
+      let animator = android.animation.ObjectAnimator.ofFloat(floatyLogW.main, &#39;translationX&#39;, -1500, 0);
+      let mTimeInterpolator = new android.view.animation.DecelerateInterpolator(); // 头快尾慢
+      animator.setInterpolator(mTimeInterpolator);
+      animator.setDuration(3000); //动画时间
+      animator.start();
+    }
+  });
+  controller.start.click(() =&gt; {
+    if (_thread ? !_thread.isAlive() : true) {
+      //线程没有运行
+      if (controller) setFloatyOnStatus(true);
+      _isStop = false;
+      //新建一个线程，赋值给变量_thread
+      _thread = threads.start(function () {
+        try {
+          printLog(&#39;Task started&#39;);
+          executeMethod();
+          if (controller) setFloatyOnStatus(false);
+          printLog(&#39;Task finished&#39;);
+        } catch (e) {
+          let info = $debug.getStackTrace(e);
+          if (info.includes(&#39;com.stardust.autojs.runtime.exception.ScriptInterruptedException&#39;)) {
+            printInfo(`Task Stop`);
+          } else {
+            printError(&#39;Task error:&#39;, e);
+            printError(&#39;程序运行失败&#39; &#43; info);
+          }
+          // _this.log(&#34;程序运行失败&gt;&gt;打开软件右上角&gt;&gt;查看日志&#34;);
+          setFloatyOnStatus(false);
+        }
+        //运行完毕修改按钮文字
+        setFloatyOnStatus(false);
+      });
+    } else {
+      setFloatyOnStatus(false);
+      //线程正在运行
+      _isStop = true;
+      _thread &amp;&amp; _thread.interrupt();
+      //中断线程;
+    }
+  });
+  printInfo = function (msg) {
+    console.info(&#39;[&#39; &#43; dateFormat(new Date(), &#39;HH:mm:ss&#39;) &#43; &#39;] &#39; &#43; msg);
+  };
+  printLog = function (msg) {
+    console.log(&#39;[&#39; &#43; dateFormat(new Date(), &#39;HH:mm:ss&#39;) &#43; &#39;] &#39; &#43; msg);
+  };
+  printError = function (msg) {
+    console.error(&#39;[&#39; &#43; dateFormat(new Date(), &#39;HH:mm:ss&#39;) &#43; &#39;] &#39; &#43; msg);
+  };
+}
+
+日志显示(0, 60, function(){
+     log(&#34;这是需要运行的函数&#34;)
+
+     var appName = &#34;Soul&#34;
+
+     var 话术1 = rawInput(&#34;请输入第一句话&#34;, &#34;❤️欢迎加入泡泡同城单身交友大家庭\n💛包脱单，包分配，包售后\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\n\n\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\n\n\n注意：不要只是关注群主，关注是没用的，公屏有提示&#34;);
+
+    // toastLog(话术1)
+
+    while (true) {
+        // toastLog(话术1)
+
+        launchApp(appName);
+        sleep(3000)
+
+        for (i =0; i &lt; 3; i&#43;&#43;) {
+            if (id(&#34;tvChat&#34;).exists()) {
+                id(&#34;tvChat&#34;).findOne(10000).click()
+                setText(话术1)
+            } else if (id(&#34;btnSend&#34;).exists()) {
+                id(&#34;btnSend&#34;).findOne(10000).click()		
+                back()                       
+            } else if (id(&#34;etInputView&#34;).exists()) {
+                setText(话术1)
+            }
+        }        
+        sleep(57000)
+    }
+
+    });
+setFloatyTitle(&#39;Soul派对循环发送文案&#39;);
+
+setInterval(() =&gt; {
+  
+}, 2000);
+
+
+
+
+">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/autojspro%E5%AE%9E%E7%8E%B0soul%E5%BE%AA%E7%8E%AF%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81%E6%8C%87%E5%AE%9A%E6%96%87%E6%9C%AC/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/autojspro%E5%AE%9E%E7%8E%B0soul%E5%BE%AA%E7%8E%AF%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81%E6%8C%87%E5%AE%9A%E6%96%87%E6%9C%AC/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/autojspro%E5%AE%9E%E7%8E%B0soul%E5%BE%AA%E7%8E%AF%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81%E6%8C%87%E5%AE%9A%E6%96%87%E6%9C%AC/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="autojsPro实现soul循环自动发送指定文本">
+  <meta property="og:description" content="autojsPro实现soul循环自动发送指定文本 代码1 var appName = &#34;Soul&#34; var 话术1 = rawInput(&#34;请输入第一句话&#34;, &#34;❤️欢迎加入泡泡同城单身交友大家庭\n💛包脱单，包分配，包售后\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\n\n\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\n\n\n注意：不要只是关注群主，关注是没用的，公屏有提示&#34;); // toastLog(话术1) function 开始滚屏() { while (true) { // toastLog(话术1) launchApp(appName); sleep(3000) for (i =0; i &lt; 3; i&#43;&#43;) { if (id(&#34;tvChat&#34;).exists()) { id(&#34;tvChat&#34;).findOne(10000).click() setText(话术1) } else if (id(&#34;btnSend&#34;).exists()) { id(&#34;btnSend&#34;).findOne(10000).click()	back() } else if (id(&#34;etInputView&#34;).exists()) { setText(话术1) } } sleep(57000) } } 开始滚屏() 代码2 &#34;rhino&#34;; let LOGFLOAT = false; /** * 日志悬浮窗按钮组件 * @param {Number} x 坐标x * @param {Number} y 坐标y * @param {Function} executeMethod 需要执行的方法 */ function 日志显示(x, y, executeMethod) { if (LOGFLOAT) { return toastLog(&#39;已启动悬浮窗&#39;); } LOGFLOAT = true; if (typeof x != &#39;number&#39;) x = 0; if (typeof y != &#39;number&#39;) y = 10; let floatyLogW = floaty.rawWindow( &lt;card id=&#34;main&#34; h=&#34;150&#34; cardBackgroundColor=&#34;#b3000000&#34; cardCornerRadius=&#34;8dp&#34; cardElevation=&#34;1dp&#34; gravity=&#34;center_vertical&#34;&gt; &lt;vertical paddingLeft=&#34;5&#34; paddingRight=&#34;5&#34; w=&#34;*&#34;&gt; &lt;horizontal margin=&#34;15 5 15 0&#34;&gt; &lt;horizontal h=&#34;auto&#34; w=&#34;0&#34; layout_weight=&#34;1&#34;&gt; &lt;text id=&#34;title&#34; text=&#34;&#34; textSize=&#34;13dp&#34; textColor=&#34;#FFD700&#34; textStyle=&#34;bold&#34; style=&#34;Widget/AppCompat.Button.Borderless&#34; /&gt; &lt;text id=&#34;label&#34; text=&#34;&#34; textSize=&#34;13dp&#34; textColor=&#34;#1E90FF&#34; textStyle=&#34;bold&#34; style=&#34;Widget/AppCompat.Button.Borderless&#34; marginLeft=&#34;10&#34; /&gt; &lt;/horizontal&gt; &lt;Chronometer id=&#34;runTime&#34; textSize=&#34;13dp&#34; textColor=&#34;#03D96A&#34; w=&#34;auto&#34; style=&#34;Widget/AppCompat.Button.Borderless&#34; textStyle=&#34;bold&#34; /&gt; &lt;/horizontal&gt; &lt;button gravity=&#34;center_horizontal&#34; textColor=&#34;#DC143C&#34; w=&#34;*&#34; h=&#34;13&#34; textStyle=&#34;bold&#34; /&gt; &lt;console id=&#34;console&#34; w=&#34;*&#34; h=&#34;*&#34; padding=&#34;5&#34; /&gt; &lt;/vertical&gt; &lt;/card&gt; ); let controller = floaty.rawWindow( &lt;vertical h=&#34;150&#34; id=&#34;main&#34;&gt; &lt;text layout_weight=&#34;5&#34; id=&#34;start&#34; textStyle=&#34;bold&#34; gravity=&#34;center&#34; w=&#34;22dp&#34; text=&#34;启动&#34; bg=&#34;#00a86b&#34; /&gt; &lt;text layout_weight=&#34;5&#34; id=&#34;hide&#34; textStyle=&#34;bold&#34; gravity=&#34;center&#34; w=&#34;22dp&#34; text=&#34;日志&#34; bg=&#34;#FF8E12&#34; /&gt; &lt;text layout_weight=&#34;5&#34; id=&#34;stop&#34; textStyle=&#34;bold&#34; gravity=&#34;center&#34; w=&#34;22dp&#34; text=&#34;结束&#34; bg=&#34;#ee4d2d&#34; /&gt; &lt;/vertical&gt; ); let hideButton = controller.hide; let startButton = controller.start; let stopButton = controller.stop; let runTimeView = floatyLogW.runTime; let floatConsole = floatyLogW.console; let _thread = null; setFloatyTitle = function (title) { ui.run(() =&gt; { floatyLogW.title.setText(title); }); }; setFloatyLabel = function (label) { ui.run(() =&gt; {&#34;&#34; floatyLogW.label.setText(label); }); }; setFloatyOnStatus = function (enabled) { $ui.post(() =&gt; { if (floatyLogW &amp;&amp; controller &amp;&amp; runTimeView &amp;&amp; startButton) { if (enabled) { // 开 runTimeView.setBase(android.os.SystemClock.elapsedRealtime()); runTimeView.start(); startButton.setText(&#39;停止&#39;); startButton.attr(&#39;background&#39;, &#39;#05a7f4&#39;); } else { runTimeView.stop(); startButton.setText(&#39;启动&#39;); startButton.attr(&#39;background&#39;, &#39;#00a86b&#39;); } } }); }; function dateFormat(date, fmt_str) { return java.text.SimpleDateFormat(fmt_str).format(new Date(date || new Date())); } ui.run(() =&gt; { runTimeView.setFormat(&#39;[运行时长 %s ]&#39;); runTimeView.setBase(android.os.SystemClock.elapsedRealtime()); floatConsole.setConsole(runtime.console); // 设置控制台 floatConsole.setInputEnabled(false); // 控制台输入框禁用 floatConsole.setColor(&#39;V&#39;, &#39;#ffff00&#39;); floatConsole.setColor(&#39;I&#39;, &#39;#ffffff&#39;); floatConsole.setColor(&#39;D&#39;, &#39;#ffff00&#39;); floatConsole.setColor(&#39;W&#39;, &#39;#673ab7&#39;); floatConsole.setColor(&#39;E&#39;, &#39;#ff0000&#39;); floatConsole.setTextSize(13); floatyLogW.setTouchable(false); floatyLogW.setSize(-1, -2); floatyLogW.setPosition(3000, 3000); controller.setPosition(0, y); }); controller.stop.click(() =&gt; { $app.launchPackage(context.getPackageName()); // 返回脚本应用界面 toast(&#39;停止本次任务&#39;); // exit() if (_thread) { _isStop = true; _thread.interrupt(); } $threads.shutDownAll(); floatyLogW.close(); controller.close(); LOGFLOAT = false; }); controller.hide.click(() =&gt; { hideButton.setEnabled(false); setTimeout(() =&gt; { hideButton.setEnabled(true); }, 3000); if (hideButton.text() == &#39;隐藏&#39;) { let animator = android.animation.ObjectAnimator.ofFloat(floatyLogW.main, &#39;translationX&#39;, 0, -1500); let mTimeInterpolator = new android.view.animation.DecelerateInterpolator(); animator.setInterpolator(mTimeInterpolator); animator.setDuration(3000); //动画时间 animator.start(); setTimeout(() =&gt; { ui.post(() =&gt; { floatyLogW.setPosition(3000, 3000); hideButton.attr(&#39;text&#39;, &#39;日志&#39;); hideButton.attr(&#39;background&#39;, &#39;#FF8E12&#39;); }); }, 2000); } else if (hideButton.text() == &#39;日志&#39;) { setTimeout(() =&gt; { ui.post(() =&gt; { hideButton.setText(&#39;隐藏&#39;); hideButton.attr(&#39;background&#39;, &#39;#d1c7b7&#39;); floatyLogW.setSize($device.width - 60, floatyLogW.getHeight()); floatyLogW.setPosition(0 &#43; 60, y); }); }, 200); let animator = android.animation.ObjectAnimator.ofFloat(floatyLogW.main, &#39;translationX&#39;, -1500, 0); let mTimeInterpolator = new android.view.animation.DecelerateInterpolator(); // 头快尾慢 animator.setInterpolator(mTimeInterpolator); animator.setDuration(3000); //动画时间 animator.start(); } }); controller.start.click(() =&gt; { if (_thread ? !_thread.isAlive() : true) { //线程没有运行 if (controller) setFloatyOnStatus(true); _isStop = false; //新建一个线程，赋值给变量_thread _thread = threads.start(function () { try { printLog(&#39;Task started&#39;); executeMethod(); if (controller) setFloatyOnStatus(false); printLog(&#39;Task finished&#39;); } catch (e) { let info = $debug.getStackTrace(e); if (info.includes(&#39;com.stardust.autojs.runtime.exception.ScriptInterruptedException&#39;)) { printInfo(`Task Stop`); } else { printError(&#39;Task error:&#39;, e); printError(&#39;程序运行失败&#39; &#43; info); } // _this.log(&#34;程序运行失败&gt;&gt;打开软件右上角&gt;&gt;查看日志&#34;); setFloatyOnStatus(false); } //运行完毕修改按钮文字 setFloatyOnStatus(false); }); } else { setFloatyOnStatus(false); //线程正在运行 _isStop = true; _thread &amp;&amp; _thread.interrupt(); //中断线程; } }); printInfo = function (msg) { console.info(&#39;[&#39; &#43; dateFormat(new Date(), &#39;HH:mm:ss&#39;) &#43; &#39;] &#39; &#43; msg); }; printLog = function (msg) { console.log(&#39;[&#39; &#43; dateFormat(new Date(), &#39;HH:mm:ss&#39;) &#43; &#39;] &#39; &#43; msg); }; printError = function (msg) { console.error(&#39;[&#39; &#43; dateFormat(new Date(), &#39;HH:mm:ss&#39;) &#43; &#39;] &#39; &#43; msg); }; } 日志显示(0, 60, function(){ log(&#34;这是需要运行的函数&#34;) var appName = &#34;Soul&#34; var 话术1 = rawInput(&#34;请输入第一句话&#34;, &#34;❤️欢迎加入泡泡同城单身交友大家庭\n💛包脱单，包分配，包售后\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\n\n\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\n\n\n注意：不要只是关注群主，关注是没用的，公屏有提示&#34;); // toastLog(话术1) while (true) { // toastLog(话术1) launchApp(appName); sleep(3000) for (i =0; i &lt; 3; i&#43;&#43;) { if (id(&#34;tvChat&#34;).exists()) { id(&#34;tvChat&#34;).findOne(10000).click() setText(话术1) } else if (id(&#34;btnSend&#34;).exists()) { id(&#34;btnSend&#34;).findOne(10000).click()	back() } else if (id(&#34;etInputView&#34;).exists()) { setText(话术1) } } sleep(57000) } }); setFloatyTitle(&#39;Soul派对循环发送文案&#39;); setInterval(() =&gt; { }, 2000);">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2025-10-27T10:11:29+08:00">
+    <meta property="article:modified_time" content="2025-10-27T10:11:29+08:00">
+    <meta property="article:tag" content="AutojsPro">
+    <meta property="article:tag" content="Soul">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="autojsPro实现soul循环自动发送指定文本">
+  <meta name="twitter:description" content="autojsPro实现soul循环自动发送指定文本 代码1 var appName = &#34;Soul&#34; var 话术1 = rawInput(&#34;请输入第一句话&#34;, &#34;❤️欢迎加入泡泡同城单身交友大家庭\n💛包脱单，包分配，包售后\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\n\n\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\n\n\n注意：不要只是关注群主，关注是没用的，公屏有提示&#34;); // toastLog(话术1) function 开始滚屏() { while (true) { // toastLog(话术1) launchApp(appName); sleep(3000) for (i =0; i &lt; 3; i&#43;&#43;) { if (id(&#34;tvChat&#34;).exists()) { id(&#34;tvChat&#34;).findOne(10000).click() setText(话术1) } else if (id(&#34;btnSend&#34;).exists()) { id(&#34;btnSend&#34;).findOne(10000).click()	back() } else if (id(&#34;etInputView&#34;).exists()) { setText(话术1) } } sleep(57000) } } 开始滚屏() 代码2 &#34;rhino&#34;; let LOGFLOAT = false; /** * 日志悬浮窗按钮组件 * @param {Number} x 坐标x * @param {Number} y 坐标y * @param {Function} executeMethod 需要执行的方法 */ function 日志显示(x, y, executeMethod) { if (LOGFLOAT) { return toastLog(&#39;已启动悬浮窗&#39;); } LOGFLOAT = true; if (typeof x != &#39;number&#39;) x = 0; if (typeof y != &#39;number&#39;) y = 10; let floatyLogW = floaty.rawWindow( &lt;card id=&#34;main&#34; h=&#34;150&#34; cardBackgroundColor=&#34;#b3000000&#34; cardCornerRadius=&#34;8dp&#34; cardElevation=&#34;1dp&#34; gravity=&#34;center_vertical&#34;&gt; &lt;vertical paddingLeft=&#34;5&#34; paddingRight=&#34;5&#34; w=&#34;*&#34;&gt; &lt;horizontal margin=&#34;15 5 15 0&#34;&gt; &lt;horizontal h=&#34;auto&#34; w=&#34;0&#34; layout_weight=&#34;1&#34;&gt; &lt;text id=&#34;title&#34; text=&#34;&#34; textSize=&#34;13dp&#34; textColor=&#34;#FFD700&#34; textStyle=&#34;bold&#34; style=&#34;Widget/AppCompat.Button.Borderless&#34; /&gt; &lt;text id=&#34;label&#34; text=&#34;&#34; textSize=&#34;13dp&#34; textColor=&#34;#1E90FF&#34; textStyle=&#34;bold&#34; style=&#34;Widget/AppCompat.Button.Borderless&#34; marginLeft=&#34;10&#34; /&gt; &lt;/horizontal&gt; &lt;Chronometer id=&#34;runTime&#34; textSize=&#34;13dp&#34; textColor=&#34;#03D96A&#34; w=&#34;auto&#34; style=&#34;Widget/AppCompat.Button.Borderless&#34; textStyle=&#34;bold&#34; /&gt; &lt;/horizontal&gt; &lt;button gravity=&#34;center_horizontal&#34; textColor=&#34;#DC143C&#34; w=&#34;*&#34; h=&#34;13&#34; textStyle=&#34;bold&#34; /&gt; &lt;console id=&#34;console&#34; w=&#34;*&#34; h=&#34;*&#34; padding=&#34;5&#34; /&gt; &lt;/vertical&gt; &lt;/card&gt; ); let controller = floaty.rawWindow( &lt;vertical h=&#34;150&#34; id=&#34;main&#34;&gt; &lt;text layout_weight=&#34;5&#34; id=&#34;start&#34; textStyle=&#34;bold&#34; gravity=&#34;center&#34; w=&#34;22dp&#34; text=&#34;启动&#34; bg=&#34;#00a86b&#34; /&gt; &lt;text layout_weight=&#34;5&#34; id=&#34;hide&#34; textStyle=&#34;bold&#34; gravity=&#34;center&#34; w=&#34;22dp&#34; text=&#34;日志&#34; bg=&#34;#FF8E12&#34; /&gt; &lt;text layout_weight=&#34;5&#34; id=&#34;stop&#34; textStyle=&#34;bold&#34; gravity=&#34;center&#34; w=&#34;22dp&#34; text=&#34;结束&#34; bg=&#34;#ee4d2d&#34; /&gt; &lt;/vertical&gt; ); let hideButton = controller.hide; let startButton = controller.start; let stopButton = controller.stop; let runTimeView = floatyLogW.runTime; let floatConsole = floatyLogW.console; let _thread = null; setFloatyTitle = function (title) { ui.run(() =&gt; { floatyLogW.title.setText(title); }); }; setFloatyLabel = function (label) { ui.run(() =&gt; {&#34;&#34; floatyLogW.label.setText(label); }); }; setFloatyOnStatus = function (enabled) { $ui.post(() =&gt; { if (floatyLogW &amp;&amp; controller &amp;&amp; runTimeView &amp;&amp; startButton) { if (enabled) { // 开 runTimeView.setBase(android.os.SystemClock.elapsedRealtime()); runTimeView.start(); startButton.setText(&#39;停止&#39;); startButton.attr(&#39;background&#39;, &#39;#05a7f4&#39;); } else { runTimeView.stop(); startButton.setText(&#39;启动&#39;); startButton.attr(&#39;background&#39;, &#39;#00a86b&#39;); } } }); }; function dateFormat(date, fmt_str) { return java.text.SimpleDateFormat(fmt_str).format(new Date(date || new Date())); } ui.run(() =&gt; { runTimeView.setFormat(&#39;[运行时长 %s ]&#39;); runTimeView.setBase(android.os.SystemClock.elapsedRealtime()); floatConsole.setConsole(runtime.console); // 设置控制台 floatConsole.setInputEnabled(false); // 控制台输入框禁用 floatConsole.setColor(&#39;V&#39;, &#39;#ffff00&#39;); floatConsole.setColor(&#39;I&#39;, &#39;#ffffff&#39;); floatConsole.setColor(&#39;D&#39;, &#39;#ffff00&#39;); floatConsole.setColor(&#39;W&#39;, &#39;#673ab7&#39;); floatConsole.setColor(&#39;E&#39;, &#39;#ff0000&#39;); floatConsole.setTextSize(13); floatyLogW.setTouchable(false); floatyLogW.setSize(-1, -2); floatyLogW.setPosition(3000, 3000); controller.setPosition(0, y); }); controller.stop.click(() =&gt; { $app.launchPackage(context.getPackageName()); // 返回脚本应用界面 toast(&#39;停止本次任务&#39;); // exit() if (_thread) { _isStop = true; _thread.interrupt(); } $threads.shutDownAll(); floatyLogW.close(); controller.close(); LOGFLOAT = false; }); controller.hide.click(() =&gt; { hideButton.setEnabled(false); setTimeout(() =&gt; { hideButton.setEnabled(true); }, 3000); if (hideButton.text() == &#39;隐藏&#39;) { let animator = android.animation.ObjectAnimator.ofFloat(floatyLogW.main, &#39;translationX&#39;, 0, -1500); let mTimeInterpolator = new android.view.animation.DecelerateInterpolator(); animator.setInterpolator(mTimeInterpolator); animator.setDuration(3000); //动画时间 animator.start(); setTimeout(() =&gt; { ui.post(() =&gt; { floatyLogW.setPosition(3000, 3000); hideButton.attr(&#39;text&#39;, &#39;日志&#39;); hideButton.attr(&#39;background&#39;, &#39;#FF8E12&#39;); }); }, 2000); } else if (hideButton.text() == &#39;日志&#39;) { setTimeout(() =&gt; { ui.post(() =&gt; { hideButton.setText(&#39;隐藏&#39;); hideButton.attr(&#39;background&#39;, &#39;#d1c7b7&#39;); floatyLogW.setSize($device.width - 60, floatyLogW.getHeight()); floatyLogW.setPosition(0 &#43; 60, y); }); }, 200); let animator = android.animation.ObjectAnimator.ofFloat(floatyLogW.main, &#39;translationX&#39;, -1500, 0); let mTimeInterpolator = new android.view.animation.DecelerateInterpolator(); // 头快尾慢 animator.setInterpolator(mTimeInterpolator); animator.setDuration(3000); //动画时间 animator.start(); } }); controller.start.click(() =&gt; { if (_thread ? !_thread.isAlive() : true) { //线程没有运行 if (controller) setFloatyOnStatus(true); _isStop = false; //新建一个线程，赋值给变量_thread _thread = threads.start(function () { try { printLog(&#39;Task started&#39;); executeMethod(); if (controller) setFloatyOnStatus(false); printLog(&#39;Task finished&#39;); } catch (e) { let info = $debug.getStackTrace(e); if (info.includes(&#39;com.stardust.autojs.runtime.exception.ScriptInterruptedException&#39;)) { printInfo(`Task Stop`); } else { printError(&#39;Task error:&#39;, e); printError(&#39;程序运行失败&#39; &#43; info); } // _this.log(&#34;程序运行失败&gt;&gt;打开软件右上角&gt;&gt;查看日志&#34;); setFloatyOnStatus(false); } //运行完毕修改按钮文字 setFloatyOnStatus(false); }); } else { setFloatyOnStatus(false); //线程正在运行 _isStop = true; _thread &amp;&amp; _thread.interrupt(); //中断线程; } }); printInfo = function (msg) { console.info(&#39;[&#39; &#43; dateFormat(new Date(), &#39;HH:mm:ss&#39;) &#43; &#39;] &#39; &#43; msg); }; printLog = function (msg) { console.log(&#39;[&#39; &#43; dateFormat(new Date(), &#39;HH:mm:ss&#39;) &#43; &#39;] &#39; &#43; msg); }; printError = function (msg) { console.error(&#39;[&#39; &#43; dateFormat(new Date(), &#39;HH:mm:ss&#39;) &#43; &#39;] &#39; &#43; msg); }; } 日志显示(0, 60, function(){ log(&#34;这是需要运行的函数&#34;) var appName = &#34;Soul&#34; var 话术1 = rawInput(&#34;请输入第一句话&#34;, &#34;❤️欢迎加入泡泡同城单身交友大家庭\n💛包脱单，包分配，包售后\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\n\n\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\n\n\n注意：不要只是关注群主，关注是没用的，公屏有提示&#34;); // toastLog(话术1) while (true) { // toastLog(话术1) launchApp(appName); sleep(3000) for (i =0; i &lt; 3; i&#43;&#43;) { if (id(&#34;tvChat&#34;).exists()) { id(&#34;tvChat&#34;).findOne(10000).click() setText(话术1) } else if (id(&#34;btnSend&#34;).exists()) { id(&#34;btnSend&#34;).findOne(10000).click()	back() } else if (id(&#34;etInputView&#34;).exists()) { setText(话术1) } } sleep(57000) } }); setFloatyTitle(&#39;Soul派对循环发送文案&#39;); setInterval(() =&gt; { }, 2000);">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "autojsPro实现soul循环自动发送指定文本",
+      "item": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/autojspro%E5%AE%9E%E7%8E%B0soul%E5%BE%AA%E7%8E%AF%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81%E6%8C%87%E5%AE%9A%E6%96%87%E6%9C%AC/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "autojsPro实现soul循环自动发送指定文本",
+  "name": "autojsPro实现soul循环自动发送指定文本",
+  "description": " autojsPro实现soul循环自动发送指定文本 代码1 var appName = \u0026#34;Soul\u0026#34; var 话术1 = rawInput(\u0026#34;请输入第一句话\u0026#34;, \u0026#34;❤️欢迎加入泡泡同城单身交友大家庭\\n💛包脱单，包分配，包售后\\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\\n\\n\\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\\n\\n\\n注意：不要只是关注群主，关注是没用的，公屏有提示\u0026#34;); // toastLog(话术1) function 开始滚屏() { while (true) { // toastLog(话术1) launchApp(appName); sleep(3000) for (i =0; i \u0026lt; 3; i++) { if (id(\u0026#34;tvChat\u0026#34;).exists()) { id(\u0026#34;tvChat\u0026#34;).findOne(10000).click() setText(话术1) } else if (id(\u0026#34;btnSend\u0026#34;).exists()) { id(\u0026#34;btnSend\u0026#34;).findOne(10000).click()\tback() } else if (id(\u0026#34;etInputView\u0026#34;).exists()) { setText(话术1) } } sleep(57000) } } 开始滚屏() 代码2 \u0026#34;rhino\u0026#34;; let LOGFLOAT = false; /** * 日志悬浮窗按钮组件 * @param {Number} x 坐标x * @param {Number} y 坐标y * @param {Function} executeMethod 需要执行的方法 */ function 日志显示(x, y, executeMethod) { if (LOGFLOAT) { return toastLog(\u0026#39;已启动悬浮窗\u0026#39;); } LOGFLOAT = true; if (typeof x != \u0026#39;number\u0026#39;) x = 0; if (typeof y != \u0026#39;number\u0026#39;) y = 10; let floatyLogW = floaty.rawWindow( \u0026lt;card id=\u0026#34;main\u0026#34; h=\u0026#34;150\u0026#34; cardBackgroundColor=\u0026#34;#b3000000\u0026#34; cardCornerRadius=\u0026#34;8dp\u0026#34; cardElevation=\u0026#34;1dp\u0026#34; gravity=\u0026#34;center_vertical\u0026#34;\u0026gt; \u0026lt;vertical paddingLeft=\u0026#34;5\u0026#34; paddingRight=\u0026#34;5\u0026#34; w=\u0026#34;*\u0026#34;\u0026gt; \u0026lt;horizontal margin=\u0026#34;15 5 15 0\u0026#34;\u0026gt; \u0026lt;horizontal h=\u0026#34;auto\u0026#34; w=\u0026#34;0\u0026#34; layout_weight=\u0026#34;1\u0026#34;\u0026gt; \u0026lt;text id=\u0026#34;title\u0026#34; text=\u0026#34;\u0026#34; textSize=\u0026#34;13dp\u0026#34; textColor=\u0026#34;#FFD700\u0026#34; textStyle=\u0026#34;bold\u0026#34; style=\u0026#34;Widget/AppCompat.Button.Borderless\u0026#34; /\u0026gt; \u0026lt;text id=\u0026#34;label\u0026#34; text=\u0026#34;\u0026#34; textSize=\u0026#34;13dp\u0026#34; textColor=\u0026#34;#1E90FF\u0026#34; textStyle=\u0026#34;bold\u0026#34; style=\u0026#34;Widget/AppCompat.Button.Borderless\u0026#34; marginLeft=\u0026#34;10\u0026#34; /\u0026gt; \u0026lt;/horizontal\u0026gt; \u0026lt;Chronometer id=\u0026#34;runTime\u0026#34; textSize=\u0026#34;13dp\u0026#34; textColor=\u0026#34;#03D96A\u0026#34; w=\u0026#34;auto\u0026#34; style=\u0026#34;Widget/AppCompat.Button.Borderless\u0026#34; textStyle=\u0026#34;bold\u0026#34; /\u0026gt; \u0026lt;/horizontal\u0026gt; \u0026lt;button gravity=\u0026#34;center_horizontal\u0026#34; textColor=\u0026#34;#DC143C\u0026#34; w=\u0026#34;*\u0026#34; h=\u0026#34;13\u0026#34; textStyle=\u0026#34;bold\u0026#34; /\u0026gt; \u0026lt;console id=\u0026#34;console\u0026#34; w=\u0026#34;*\u0026#34; h=\u0026#34;*\u0026#34; padding=\u0026#34;5\u0026#34; /\u0026gt; \u0026lt;/vertical\u0026gt; \u0026lt;/card\u0026gt; ); let controller = floaty.rawWindow( \u0026lt;vertical h=\u0026#34;150\u0026#34; id=\u0026#34;main\u0026#34;\u0026gt; \u0026lt;text layout_weight=\u0026#34;5\u0026#34; id=\u0026#34;start\u0026#34; textStyle=\u0026#34;bold\u0026#34; gravity=\u0026#34;center\u0026#34; w=\u0026#34;22dp\u0026#34; text=\u0026#34;启动\u0026#34; bg=\u0026#34;#00a86b\u0026#34; /\u0026gt; \u0026lt;text layout_weight=\u0026#34;5\u0026#34; id=\u0026#34;hide\u0026#34; textStyle=\u0026#34;bold\u0026#34; gravity=\u0026#34;center\u0026#34; w=\u0026#34;22dp\u0026#34; text=\u0026#34;日志\u0026#34; bg=\u0026#34;#FF8E12\u0026#34; /\u0026gt; \u0026lt;text layout_weight=\u0026#34;5\u0026#34; id=\u0026#34;stop\u0026#34; textStyle=\u0026#34;bold\u0026#34; gravity=\u0026#34;center\u0026#34; w=\u0026#34;22dp\u0026#34; text=\u0026#34;结束\u0026#34; bg=\u0026#34;#ee4d2d\u0026#34; /\u0026gt; \u0026lt;/vertical\u0026gt; ); let hideButton = controller.hide; let startButton = controller.start; let stopButton = controller.stop; let runTimeView = floatyLogW.runTime; let floatConsole = floatyLogW.console; let _thread = null; setFloatyTitle = function (title) { ui.run(() =\u0026gt; { floatyLogW.title.setText(title); }); }; setFloatyLabel = function (label) { ui.run(() =\u0026gt; {\u0026#34;\u0026#34; floatyLogW.label.setText(label); }); }; setFloatyOnStatus = function (enabled) { $ui.post(() =\u0026gt; { if (floatyLogW \u0026amp;\u0026amp; controller \u0026amp;\u0026amp; runTimeView \u0026amp;\u0026amp; startButton) { if (enabled) { // 开 runTimeView.setBase(android.os.SystemClock.elapsedRealtime()); runTimeView.start(); startButton.setText(\u0026#39;停止\u0026#39;); startButton.attr(\u0026#39;background\u0026#39;, \u0026#39;#05a7f4\u0026#39;); } else { runTimeView.stop(); startButton.setText(\u0026#39;启动\u0026#39;); startButton.attr(\u0026#39;background\u0026#39;, \u0026#39;#00a86b\u0026#39;); } } }); }; function dateFormat(date, fmt_str) { return java.text.SimpleDateFormat(fmt_str).format(new Date(date || new Date())); } ui.run(() =\u0026gt; { runTimeView.setFormat(\u0026#39;[运行时长 %s ]\u0026#39;); runTimeView.setBase(android.os.SystemClock.elapsedRealtime()); floatConsole.setConsole(runtime.console); // 设置控制台 floatConsole.setInputEnabled(false); // 控制台输入框禁用 floatConsole.setColor(\u0026#39;V\u0026#39;, \u0026#39;#ffff00\u0026#39;); floatConsole.setColor(\u0026#39;I\u0026#39;, \u0026#39;#ffffff\u0026#39;); floatConsole.setColor(\u0026#39;D\u0026#39;, \u0026#39;#ffff00\u0026#39;); floatConsole.setColor(\u0026#39;W\u0026#39;, \u0026#39;#673ab7\u0026#39;); floatConsole.setColor(\u0026#39;E\u0026#39;, \u0026#39;#ff0000\u0026#39;); floatConsole.setTextSize(13); floatyLogW.setTouchable(false); floatyLogW.setSize(-1, -2); floatyLogW.setPosition(3000, 3000); controller.setPosition(0, y); }); controller.stop.click(() =\u0026gt; { $app.launchPackage(context.getPackageName()); // 返回脚本应用界面 toast(\u0026#39;停止本次任务\u0026#39;); // exit() if (_thread) { _isStop = true; _thread.interrupt(); } $threads.shutDownAll(); floatyLogW.close(); controller.close(); LOGFLOAT = false; }); controller.hide.click(() =\u0026gt; { hideButton.setEnabled(false); setTimeout(() =\u0026gt; { hideButton.setEnabled(true); }, 3000); if (hideButton.text() == \u0026#39;隐藏\u0026#39;) { let animator = android.animation.ObjectAnimator.ofFloat(floatyLogW.main, \u0026#39;translationX\u0026#39;, 0, -1500); let mTimeInterpolator = new android.view.animation.DecelerateInterpolator(); animator.setInterpolator(mTimeInterpolator); animator.setDuration(3000); //动画时间 animator.start(); setTimeout(() =\u0026gt; { ui.post(() =\u0026gt; { floatyLogW.setPosition(3000, 3000); hideButton.attr(\u0026#39;text\u0026#39;, \u0026#39;日志\u0026#39;); hideButton.attr(\u0026#39;background\u0026#39;, \u0026#39;#FF8E12\u0026#39;); }); }, 2000); } else if (hideButton.text() == \u0026#39;日志\u0026#39;) { setTimeout(() =\u0026gt; { ui.post(() =\u0026gt; { hideButton.setText(\u0026#39;隐藏\u0026#39;); hideButton.attr(\u0026#39;background\u0026#39;, \u0026#39;#d1c7b7\u0026#39;); floatyLogW.setSize($device.width - 60, floatyLogW.getHeight()); floatyLogW.setPosition(0 + 60, y); }); }, 200); let animator = android.animation.ObjectAnimator.ofFloat(floatyLogW.main, \u0026#39;translationX\u0026#39;, -1500, 0); let mTimeInterpolator = new android.view.animation.DecelerateInterpolator(); // 头快尾慢 animator.setInterpolator(mTimeInterpolator); animator.setDuration(3000); //动画时间 animator.start(); } }); controller.start.click(() =\u0026gt; { if (_thread ? !_thread.isAlive() : true) { //线程没有运行 if (controller) setFloatyOnStatus(true); _isStop = false; //新建一个线程，赋值给变量_thread _thread = threads.start(function () { try { printLog(\u0026#39;Task started\u0026#39;); executeMethod(); if (controller) setFloatyOnStatus(false); printLog(\u0026#39;Task finished\u0026#39;); } catch (e) { let info = $debug.getStackTrace(e); if (info.includes(\u0026#39;com.stardust.autojs.runtime.exception.ScriptInterruptedException\u0026#39;)) { printInfo(`Task Stop`); } else { printError(\u0026#39;Task error:\u0026#39;, e); printError(\u0026#39;程序运行失败\u0026#39; + info); } // _this.log(\u0026#34;程序运行失败\u0026gt;\u0026gt;打开软件右上角\u0026gt;\u0026gt;查看日志\u0026#34;); setFloatyOnStatus(false); } //运行完毕修改按钮文字 setFloatyOnStatus(false); }); } else { setFloatyOnStatus(false); //线程正在运行 _isStop = true; _thread \u0026amp;\u0026amp; _thread.interrupt(); //中断线程; } }); printInfo = function (msg) { console.info(\u0026#39;[\u0026#39; + dateFormat(new Date(), \u0026#39;HH:mm:ss\u0026#39;) + \u0026#39;] \u0026#39; + msg); }; printLog = function (msg) { console.log(\u0026#39;[\u0026#39; + dateFormat(new Date(), \u0026#39;HH:mm:ss\u0026#39;) + \u0026#39;] \u0026#39; + msg); }; printError = function (msg) { console.error(\u0026#39;[\u0026#39; + dateFormat(new Date(), \u0026#39;HH:mm:ss\u0026#39;) + \u0026#39;] \u0026#39; + msg); }; } 日志显示(0, 60, function(){ log(\u0026#34;这是需要运行的函数\u0026#34;) var appName = \u0026#34;Soul\u0026#34; var 话术1 = rawInput(\u0026#34;请输入第一句话\u0026#34;, \u0026#34;❤️欢迎加入泡泡同城单身交友大家庭\\n💛包脱单，包分配，包售后\\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\\n\\n\\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\\n\\n\\n注意：不要只是关注群主，关注是没用的，公屏有提示\u0026#34;); // toastLog(话术1) while (true) { // toastLog(话术1) launchApp(appName); sleep(3000) for (i =0; i \u0026lt; 3; i++) { if (id(\u0026#34;tvChat\u0026#34;).exists()) { id(\u0026#34;tvChat\u0026#34;).findOne(10000).click() setText(话术1) } else if (id(\u0026#34;btnSend\u0026#34;).exists()) { id(\u0026#34;btnSend\u0026#34;).findOne(10000).click()\tback() } else if (id(\u0026#34;etInputView\u0026#34;).exists()) { setText(话术1) } } sleep(57000) } }); setFloatyTitle(\u0026#39;Soul派对循环发送文案\u0026#39;); setInterval(() =\u0026gt; { }, 2000); ",
+  "keywords": [
+    "autojsPro", "soul"
+  ],
+  "articleBody": " autojsPro实现soul循环自动发送指定文本 代码1 var appName = \"Soul\" var 话术1 = rawInput(\"请输入第一句话\", \"❤️欢迎加入泡泡同城单身交友大家庭\\n💛包脱单，包分配，包售后\\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\\n\\n\\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\\n\\n\\n注意：不要只是关注群主，关注是没用的，公屏有提示\"); // toastLog(话术1) function 开始滚屏() { while (true) { // toastLog(话术1) launchApp(appName); sleep(3000) for (i =0; i \u003c 3; i++) { if (id(\"tvChat\").exists()) { id(\"tvChat\").findOne(10000).click() setText(话术1) } else if (id(\"btnSend\").exists()) { id(\"btnSend\").findOne(10000).click()\tback() } else if (id(\"etInputView\").exists()) { setText(话术1) } } sleep(57000) } } 开始滚屏() 代码2 \"rhino\"; let LOGFLOAT = false; /** * 日志悬浮窗按钮组件 * @param {Number} x 坐标x * @param {Number} y 坐标y * @param {Function} executeMethod 需要执行的方法 */ function 日志显示(x, y, executeMethod) { if (LOGFLOAT) { return toastLog('已启动悬浮窗'); } LOGFLOAT = true; if (typeof x != 'number') x = 0; if (typeof y != 'number') y = 10; let floatyLogW = floaty.rawWindow( \u003ccard id=\"main\" h=\"150\" cardBackgroundColor=\"#b3000000\" cardCornerRadius=\"8dp\" cardElevation=\"1dp\" gravity=\"center_vertical\"\u003e \u003cvertical paddingLeft=\"5\" paddingRight=\"5\" w=\"*\"\u003e \u003chorizontal margin=\"15 5 15 0\"\u003e \u003chorizontal h=\"auto\" w=\"0\" layout_weight=\"1\"\u003e \u003ctext id=\"title\" text=\"\" textSize=\"13dp\" textColor=\"#FFD700\" textStyle=\"bold\" style=\"Widget/AppCompat.Button.Borderless\" /\u003e \u003ctext id=\"label\" text=\"\" textSize=\"13dp\" textColor=\"#1E90FF\" textStyle=\"bold\" style=\"Widget/AppCompat.Button.Borderless\" marginLeft=\"10\" /\u003e \u003c/horizontal\u003e \u003cChronometer id=\"runTime\" textSize=\"13dp\" textColor=\"#03D96A\" w=\"auto\" style=\"Widget/AppCompat.Button.Borderless\" textStyle=\"bold\" /\u003e \u003c/horizontal\u003e \u003cbutton gravity=\"center_horizontal\" textColor=\"#DC143C\" w=\"*\" h=\"13\" textStyle=\"bold\" /\u003e \u003cconsole id=\"console\" w=\"*\" h=\"*\" padding=\"5\" /\u003e \u003c/vertical\u003e \u003c/card\u003e ); let controller = floaty.rawWindow( \u003cvertical h=\"150\" id=\"main\"\u003e \u003ctext layout_weight=\"5\" id=\"start\" textStyle=\"bold\" gravity=\"center\" w=\"22dp\" text=\"启动\" bg=\"#00a86b\" /\u003e \u003ctext layout_weight=\"5\" id=\"hide\" textStyle=\"bold\" gravity=\"center\" w=\"22dp\" text=\"日志\" bg=\"#FF8E12\" /\u003e \u003ctext layout_weight=\"5\" id=\"stop\" textStyle=\"bold\" gravity=\"center\" w=\"22dp\" text=\"结束\" bg=\"#ee4d2d\" /\u003e \u003c/vertical\u003e ); let hideButton = controller.hide; let startButton = controller.start; let stopButton = controller.stop; let runTimeView = floatyLogW.runTime; let floatConsole = floatyLogW.console; let _thread = null; setFloatyTitle = function (title) { ui.run(() =\u003e { floatyLogW.title.setText(title); }); }; setFloatyLabel = function (label) { ui.run(() =\u003e {\"\" floatyLogW.label.setText(label); }); }; setFloatyOnStatus = function (enabled) { $ui.post(() =\u003e { if (floatyLogW \u0026\u0026 controller \u0026\u0026 runTimeView \u0026\u0026 startButton) { if (enabled) { // 开 runTimeView.setBase(android.os.SystemClock.elapsedRealtime()); runTimeView.start(); startButton.setText('停止'); startButton.attr('background', '#05a7f4'); } else { runTimeView.stop(); startButton.setText('启动'); startButton.attr('background', '#00a86b'); } } }); }; function dateFormat(date, fmt_str) { return java.text.SimpleDateFormat(fmt_str).format(new Date(date || new Date())); } ui.run(() =\u003e { runTimeView.setFormat('[运行时长 %s ]'); runTimeView.setBase(android.os.SystemClock.elapsedRealtime()); floatConsole.setConsole(runtime.console); // 设置控制台 floatConsole.setInputEnabled(false); // 控制台输入框禁用 floatConsole.setColor('V', '#ffff00'); floatConsole.setColor('I', '#ffffff'); floatConsole.setColor('D', '#ffff00'); floatConsole.setColor('W', '#673ab7'); floatConsole.setColor('E', '#ff0000'); floatConsole.setTextSize(13); floatyLogW.setTouchable(false); floatyLogW.setSize(-1, -2); floatyLogW.setPosition(3000, 3000); controller.setPosition(0, y); }); controller.stop.click(() =\u003e { $app.launchPackage(context.getPackageName()); // 返回脚本应用界面 toast('停止本次任务'); // exit() if (_thread) { _isStop = true; _thread.interrupt(); } $threads.shutDownAll(); floatyLogW.close(); controller.close(); LOGFLOAT = false; }); controller.hide.click(() =\u003e { hideButton.setEnabled(false); setTimeout(() =\u003e { hideButton.setEnabled(true); }, 3000); if (hideButton.text() == '隐藏') { let animator = android.animation.ObjectAnimator.ofFloat(floatyLogW.main, 'translationX', 0, -1500); let mTimeInterpolator = new android.view.animation.DecelerateInterpolator(); animator.setInterpolator(mTimeInterpolator); animator.setDuration(3000); //动画时间 animator.start(); setTimeout(() =\u003e { ui.post(() =\u003e { floatyLogW.setPosition(3000, 3000); hideButton.attr('text', '日志'); hideButton.attr('background', '#FF8E12'); }); }, 2000); } else if (hideButton.text() == '日志') { setTimeout(() =\u003e { ui.post(() =\u003e { hideButton.setText('隐藏'); hideButton.attr('background', '#d1c7b7'); floatyLogW.setSize($device.width - 60, floatyLogW.getHeight()); floatyLogW.setPosition(0 + 60, y); }); }, 200); let animator = android.animation.ObjectAnimator.ofFloat(floatyLogW.main, 'translationX', -1500, 0); let mTimeInterpolator = new android.view.animation.DecelerateInterpolator(); // 头快尾慢 animator.setInterpolator(mTimeInterpolator); animator.setDuration(3000); //动画时间 animator.start(); } }); controller.start.click(() =\u003e { if (_thread ? !_thread.isAlive() : true) { //线程没有运行 if (controller) setFloatyOnStatus(true); _isStop = false; //新建一个线程，赋值给变量_thread _thread = threads.start(function () { try { printLog('Task started'); executeMethod(); if (controller) setFloatyOnStatus(false); printLog('Task finished'); } catch (e) { let info = $debug.getStackTrace(e); if (info.includes('com.stardust.autojs.runtime.exception.ScriptInterruptedException')) { printInfo(`Task Stop`); } else { printError('Task error:', e); printError('程序运行失败' + info); } // _this.log(\"程序运行失败\u003e\u003e打开软件右上角\u003e\u003e查看日志\"); setFloatyOnStatus(false); } //运行完毕修改按钮文字 setFloatyOnStatus(false); }); } else { setFloatyOnStatus(false); //线程正在运行 _isStop = true; _thread \u0026\u0026 _thread.interrupt(); //中断线程; } }); printInfo = function (msg) { console.info('[' + dateFormat(new Date(), 'HH:mm:ss') + '] ' + msg); }; printLog = function (msg) { console.log('[' + dateFormat(new Date(), 'HH:mm:ss') + '] ' + msg); }; printError = function (msg) { console.error('[' + dateFormat(new Date(), 'HH:mm:ss') + '] ' + msg); }; } 日志显示(0, 60, function(){ log(\"这是需要运行的函数\") var appName = \"Soul\" var 话术1 = rawInput(\"请输入第一句话\", \"❤️欢迎加入泡泡同城单身交友大家庭\\n💛包脱单，包分配，包售后\\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\\n\\n\\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\\n\\n\\n注意：不要只是关注群主，关注是没用的，公屏有提示\"); // toastLog(话术1) while (true) { // toastLog(话术1) launchApp(appName); sleep(3000) for (i =0; i \u003c 3; i++) { if (id(\"tvChat\").exists()) { id(\"tvChat\").findOne(10000).click() setText(话术1) } else if (id(\"btnSend\").exists()) { id(\"btnSend\").findOne(10000).click()\tback() } else if (id(\"etInputView\").exists()) { setText(话术1) } } sleep(57000) } }); setFloatyTitle('Soul派对循环发送文案'); setInterval(() =\u003e { }, 2000); ",
+  "wordCount" : "642",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2025-10-27T10:11:29.52+08:00",
+  "dateModified": "2025-10-27T10:11:29.52+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Theme PaperMod"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/autojspro%E5%AE%9E%E7%8E%B0soul%E5%BE%AA%E7%8E%AF%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81%E6%8C%87%E5%AE%9A%E6%96%87%E6%9C%AC/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PaperMod",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/post/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+    <h1 class="post-title entry-hint-parent">
+      autojsPro实现soul循环自动发送指定文本
+    </h1>
+    <div class="post-meta">
+
+<span title='2025-10-27 10:11:29.52 +0800 +0800'>October 27, 2025</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span>&nbsp;|&nbsp;<span>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content/post/%e7%a8%8b%e5%ba%8f%e5%91%98/autojsPro%e5%ae%9e%e7%8e%b0soul%e5%be%aa%e7%8e%af%e8%87%aa%e5%8a%a8%e5%8f%91%e9%80%81%e6%8c%87%e5%ae%9a%e6%96%87%e6%9c%ac.org" rel="noopener noreferrer edit" target="_blank">Suggest Changes</a>
+    </span>
+
+</div>
+  </header> 
+
+  <div class="post-content md-content">
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+autojsPro实现soul循环自动发送指定文本
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+代码1
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<div class="src src-javascript">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">appName</span> <span class="o">=</span> <span class="s2">&#34;Soul&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">话术1</span> <span class="o">=</span> <span class="nx">rawInput</span><span class="p">(</span><span class="s2">&#34;请输入第一句话&#34;</span><span class="p">,</span> <span class="s2">&#34;❤️欢迎加入泡泡同城单身交友大家庭\n💛包脱单，包分配，包售后\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\n\n\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\n\n\n注意：不要只是关注群主，关注是没用的，公屏有提示&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// toastLog(话术1)
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">开始滚屏</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// toastLog(话术1)
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nx">launchApp</span><span class="p">(</span><span class="nx">appName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">sleep</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="nx">id</span><span class="p">(</span><span class="s2">&#34;tvChat&#34;</span><span class="p">).</span><span class="nx">exists</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">id</span><span class="p">(</span><span class="s2">&#34;tvChat&#34;</span><span class="p">).</span><span class="nx">findOne</span><span class="p">(</span><span class="mi">10000</span><span class="p">).</span><span class="nx">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">setText</span><span class="p">(</span><span class="nx">话术1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">id</span><span class="p">(</span><span class="s2">&#34;btnSend&#34;</span><span class="p">).</span><span class="nx">exists</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">id</span><span class="p">(</span><span class="s2">&#34;btnSend&#34;</span><span class="p">).</span><span class="nx">findOne</span><span class="p">(</span><span class="mi">10000</span><span class="p">).</span><span class="nx">click</span><span class="p">()</span>		
+</span></span><span class="line"><span class="cl">                <span class="nx">back</span><span class="p">()</span>                       
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">id</span><span class="p">(</span><span class="s2">&#34;etInputView&#34;</span><span class="p">).</span><span class="nx">exists</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">setText</span><span class="p">(</span><span class="nx">话术1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>        
+</span></span><span class="line"><span class="cl">        <span class="nx">sleep</span><span class="p">(</span><span class="mi">57000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">开始滚屏</span><span class="p">()</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+代码2
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<div class="src src-javascript">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="s2">&#34;rhino&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">let</span> <span class="nx">LOGFLOAT</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/**
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * 日志悬浮窗按钮组件
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @param {Number} x 坐标x
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @param {Number} y 坐标y
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * @param {Function} executeMethod 需要执行的方法
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">日志显示</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">executeMethod</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="nx">LOGFLOAT</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">toastLog</span><span class="p">(</span><span class="s1">&#39;已启动悬浮窗&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">LOGFLOAT</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">x</span> <span class="o">!=</span> <span class="s1">&#39;number&#39;</span><span class="p">)</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">y</span> <span class="o">!=</span> <span class="s1">&#39;number&#39;</span><span class="p">)</span> <span class="nx">y</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">floatyLogW</span> <span class="o">=</span> <span class="nx">floaty</span><span class="p">.</span><span class="nx">rawWindow</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="nx">card</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&#34;main&#34;</span> <span class="nx">h</span><span class="o">=</span><span class="s2">&#34;150&#34;</span> <span class="nx">cardBackgroundColor</span><span class="o">=</span><span class="s2">&#34;#b3000000&#34;</span> <span class="nx">cardCornerRadius</span><span class="o">=</span><span class="s2">&#34;8dp&#34;</span> <span class="nx">cardElevation</span><span class="o">=</span><span class="s2">&#34;1dp&#34;</span> <span class="nx">gravity</span><span class="o">=</span><span class="s2">&#34;center_vertical&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="o">&lt;</span><span class="nx">vertical</span> <span class="nx">paddingLeft</span><span class="o">=</span><span class="s2">&#34;5&#34;</span> <span class="nx">paddingRight</span><span class="o">=</span><span class="s2">&#34;5&#34;</span> <span class="nx">w</span><span class="o">=</span><span class="s2">&#34;*&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">&lt;</span><span class="nx">horizontal</span> <span class="nx">margin</span><span class="o">=</span><span class="s2">&#34;15 5 15 0&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">          <span class="o">&lt;</span><span class="nx">horizontal</span> <span class="nx">h</span><span class="o">=</span><span class="s2">&#34;auto&#34;</span> <span class="nx">w</span><span class="o">=</span><span class="s2">&#34;0&#34;</span> <span class="nx">layout_weight</span><span class="o">=</span><span class="s2">&#34;1&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">&lt;</span><span class="nx">text</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&#34;title&#34;</span> <span class="nx">text</span><span class="o">=</span><span class="s2">&#34;&#34;</span> <span class="nx">textSize</span><span class="o">=</span><span class="s2">&#34;13dp&#34;</span> <span class="nx">textColor</span><span class="o">=</span><span class="s2">&#34;#FFD700&#34;</span> <span class="nx">textStyle</span><span class="o">=</span><span class="s2">&#34;bold&#34;</span> <span class="nx">style</span><span class="o">=</span><span class="s2">&#34;Widget/AppCompat.Button.Borderless&#34;</span> <span class="o">/&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="o">&lt;</span><span class="nx">text</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&#34;label&#34;</span> <span class="nx">text</span><span class="o">=</span><span class="s2">&#34;&#34;</span> <span class="nx">textSize</span><span class="o">=</span><span class="s2">&#34;13dp&#34;</span> <span class="nx">textColor</span><span class="o">=</span><span class="s2">&#34;#1E90FF&#34;</span> <span class="nx">textStyle</span><span class="o">=</span><span class="s2">&#34;bold&#34;</span> <span class="nx">style</span><span class="o">=</span><span class="s2">&#34;Widget/AppCompat.Button.Borderless&#34;</span> <span class="nx">marginLeft</span><span class="o">=</span><span class="s2">&#34;10&#34;</span> <span class="o">/&gt;</span>
+</span></span><span class="line"><span class="cl">          <span class="o">&lt;</span><span class="err">/horizontal&gt;</span>
+</span></span><span class="line"><span class="cl">          <span class="o">&lt;</span><span class="nx">Chronometer</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&#34;runTime&#34;</span> <span class="nx">textSize</span><span class="o">=</span><span class="s2">&#34;13dp&#34;</span> <span class="nx">textColor</span><span class="o">=</span><span class="s2">&#34;#03D96A&#34;</span> <span class="nx">w</span><span class="o">=</span><span class="s2">&#34;auto&#34;</span> <span class="nx">style</span><span class="o">=</span><span class="s2">&#34;Widget/AppCompat.Button.Borderless&#34;</span> <span class="nx">textStyle</span><span class="o">=</span><span class="s2">&#34;bold&#34;</span> <span class="o">/&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">&lt;</span><span class="err">/horizontal&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">gravity</span><span class="o">=</span><span class="s2">&#34;center_horizontal&#34;</span> <span class="nx">textColor</span><span class="o">=</span><span class="s2">&#34;#DC143C&#34;</span> <span class="nx">w</span><span class="o">=</span><span class="s2">&#34;*&#34;</span> <span class="nx">h</span><span class="o">=</span><span class="s2">&#34;13&#34;</span> <span class="nx">textStyle</span><span class="o">=</span><span class="s2">&#34;bold&#34;</span> <span class="o">/&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">&lt;</span><span class="nx">console</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&#34;console&#34;</span> <span class="nx">w</span><span class="o">=</span><span class="s2">&#34;*&#34;</span> <span class="nx">h</span><span class="o">=</span><span class="s2">&#34;*&#34;</span> <span class="nx">padding</span><span class="o">=</span><span class="s2">&#34;5&#34;</span> <span class="o">/&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="o">&lt;</span><span class="err">/vertical&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="err">/card&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">controller</span> <span class="o">=</span> <span class="nx">floaty</span><span class="p">.</span><span class="nx">rawWindow</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="nx">vertical</span> <span class="nx">h</span><span class="o">=</span><span class="s2">&#34;150&#34;</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&#34;main&#34;</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="o">&lt;</span><span class="nx">text</span> <span class="nx">layout_weight</span><span class="o">=</span><span class="s2">&#34;5&#34;</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&#34;start&#34;</span> <span class="nx">textStyle</span><span class="o">=</span><span class="s2">&#34;bold&#34;</span> <span class="nx">gravity</span><span class="o">=</span><span class="s2">&#34;center&#34;</span> <span class="nx">w</span><span class="o">=</span><span class="s2">&#34;22dp&#34;</span> <span class="nx">text</span><span class="o">=</span><span class="s2">&#34;启动&#34;</span> <span class="nx">bg</span><span class="o">=</span><span class="s2">&#34;#00a86b&#34;</span> <span class="o">/&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="o">&lt;</span><span class="nx">text</span> <span class="nx">layout_weight</span><span class="o">=</span><span class="s2">&#34;5&#34;</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&#34;hide&#34;</span> <span class="nx">textStyle</span><span class="o">=</span><span class="s2">&#34;bold&#34;</span> <span class="nx">gravity</span><span class="o">=</span><span class="s2">&#34;center&#34;</span> <span class="nx">w</span><span class="o">=</span><span class="s2">&#34;22dp&#34;</span> <span class="nx">text</span><span class="o">=</span><span class="s2">&#34;日志&#34;</span> <span class="nx">bg</span><span class="o">=</span><span class="s2">&#34;#FF8E12&#34;</span> <span class="o">/&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="o">&lt;</span><span class="nx">text</span> <span class="nx">layout_weight</span><span class="o">=</span><span class="s2">&#34;5&#34;</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&#34;stop&#34;</span> <span class="nx">textStyle</span><span class="o">=</span><span class="s2">&#34;bold&#34;</span> <span class="nx">gravity</span><span class="o">=</span><span class="s2">&#34;center&#34;</span> <span class="nx">w</span><span class="o">=</span><span class="s2">&#34;22dp&#34;</span> <span class="nx">text</span><span class="o">=</span><span class="s2">&#34;结束&#34;</span> <span class="nx">bg</span><span class="o">=</span><span class="s2">&#34;#ee4d2d&#34;</span> <span class="o">/&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="err">/vertical&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">hideButton</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">hide</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">startButton</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">start</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">stopButton</span> <span class="o">=</span> <span class="nx">controller</span><span class="p">.</span><span class="nx">stop</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">runTimeView</span> <span class="o">=</span> <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">runTime</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">floatConsole</span> <span class="o">=</span> <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">console</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">_thread</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">setFloatyTitle</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ui</span><span class="p">.</span><span class="nx">run</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">title</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="nx">title</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">setFloatyLabel</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">label</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ui</span><span class="p">.</span><span class="nx">run</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="nx">label</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">setFloatyOnStatus</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">enabled</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">$ui</span><span class="p">.</span><span class="nx">post</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">floatyLogW</span> <span class="o">&amp;&amp;</span> <span class="nx">controller</span> <span class="o">&amp;&amp;</span> <span class="nx">runTimeView</span> <span class="o">&amp;&amp;</span> <span class="nx">startButton</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">enabled</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="c1">// 开
+</span></span></span><span class="line"><span class="cl">          <span class="nx">runTimeView</span><span class="p">.</span><span class="nx">setBase</span><span class="p">(</span><span class="nx">android</span><span class="p">.</span><span class="nx">os</span><span class="p">.</span><span class="nx">SystemClock</span><span class="p">.</span><span class="nx">elapsedRealtime</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">runTimeView</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">startButton</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s1">&#39;停止&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">startButton</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;background&#39;</span><span class="p">,</span> <span class="s1">&#39;#05a7f4&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">runTimeView</span><span class="p">.</span><span class="nx">stop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">startButton</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s1">&#39;启动&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">startButton</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;background&#39;</span><span class="p">,</span> <span class="s1">&#39;#00a86b&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="kd">function</span> <span class="nx">dateFormat</span><span class="p">(</span><span class="nx">date</span><span class="p">,</span> <span class="nx">fmt_str</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">java</span><span class="p">.</span><span class="nx">text</span><span class="p">.</span><span class="nx">SimpleDateFormat</span><span class="p">(</span><span class="nx">fmt_str</span><span class="p">).</span><span class="nx">format</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">date</span> <span class="o">||</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">()));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">ui</span><span class="p">.</span><span class="nx">run</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">runTimeView</span><span class="p">.</span><span class="nx">setFormat</span><span class="p">(</span><span class="s1">&#39;[运行时长 %s ]&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">runTimeView</span><span class="p">.</span><span class="nx">setBase</span><span class="p">(</span><span class="nx">android</span><span class="p">.</span><span class="nx">os</span><span class="p">.</span><span class="nx">SystemClock</span><span class="p">.</span><span class="nx">elapsedRealtime</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">floatConsole</span><span class="p">.</span><span class="nx">setConsole</span><span class="p">(</span><span class="nx">runtime</span><span class="p">.</span><span class="nx">console</span><span class="p">);</span> <span class="c1">// 设置控制台
+</span></span></span><span class="line"><span class="cl">    <span class="nx">floatConsole</span><span class="p">.</span><span class="nx">setInputEnabled</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span> <span class="c1">// 控制台输入框禁用
+</span></span></span><span class="line"><span class="cl">    <span class="nx">floatConsole</span><span class="p">.</span><span class="nx">setColor</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffff00&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">floatConsole</span><span class="p">.</span><span class="nx">setColor</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffffff&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">floatConsole</span><span class="p">.</span><span class="nx">setColor</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;#ffff00&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">floatConsole</span><span class="p">.</span><span class="nx">setColor</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="s1">&#39;#673ab7&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">floatConsole</span><span class="p">.</span><span class="nx">setColor</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;#ff0000&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">floatConsole</span><span class="p">.</span><span class="nx">setTextSize</span><span class="p">(</span><span class="mi">13</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">setTouchable</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">controller</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">controller</span><span class="p">.</span><span class="nx">stop</span><span class="p">.</span><span class="nx">click</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">$app</span><span class="p">.</span><span class="nx">launchPackage</span><span class="p">(</span><span class="nx">context</span><span class="p">.</span><span class="nx">getPackageName</span><span class="p">());</span> <span class="c1">// 返回脚本应用界面
+</span></span></span><span class="line"><span class="cl">    <span class="nx">toast</span><span class="p">(</span><span class="s1">&#39;停止本次任务&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// exit()
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">_thread</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">_isStop</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">_thread</span><span class="p">.</span><span class="nx">interrupt</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">$threads</span><span class="p">.</span><span class="nx">shutDownAll</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">controller</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">LOGFLOAT</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">controller</span><span class="p">.</span><span class="nx">hide</span><span class="p">.</span><span class="nx">click</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">hideButton</span><span class="p">.</span><span class="nx">setEnabled</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">hideButton</span><span class="p">.</span><span class="nx">setEnabled</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span> <span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">hideButton</span><span class="p">.</span><span class="nx">text</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;隐藏&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">animator</span> <span class="o">=</span> <span class="nx">android</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">ObjectAnimator</span><span class="p">.</span><span class="nx">ofFloat</span><span class="p">(</span><span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">main</span><span class="p">,</span> <span class="s1">&#39;translationX&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1500</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">mTimeInterpolator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">android</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">DecelerateInterpolator</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">animator</span><span class="p">.</span><span class="nx">setInterpolator</span><span class="p">(</span><span class="nx">mTimeInterpolator</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">animator</span><span class="p">.</span><span class="nx">setDuration</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span> <span class="c1">//动画时间
+</span></span></span><span class="line"><span class="cl">      <span class="nx">animator</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">ui</span><span class="p">.</span><span class="nx">post</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="mi">3000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">hideButton</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;日志&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">hideButton</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;background&#39;</span><span class="p">,</span> <span class="s1">&#39;#FF8E12&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span> <span class="mi">2000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">hideButton</span><span class="p">.</span><span class="nx">text</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;日志&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">ui</span><span class="p">.</span><span class="nx">post</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">hideButton</span><span class="p">.</span><span class="nx">setText</span><span class="p">(</span><span class="s1">&#39;隐藏&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">hideButton</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;background&#39;</span><span class="p">,</span> <span class="s1">&#39;#d1c7b7&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="nx">$device</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">60</span><span class="p">,</span> <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">getHeight</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">setPosition</span><span class="p">(</span><span class="mi">0</span> <span class="o">+</span> <span class="mi">60</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span> <span class="mi">200</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">animator</span> <span class="o">=</span> <span class="nx">android</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">ObjectAnimator</span><span class="p">.</span><span class="nx">ofFloat</span><span class="p">(</span><span class="nx">floatyLogW</span><span class="p">.</span><span class="nx">main</span><span class="p">,</span> <span class="s1">&#39;translationX&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1500</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="kd">let</span> <span class="nx">mTimeInterpolator</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">android</span><span class="p">.</span><span class="nx">view</span><span class="p">.</span><span class="nx">animation</span><span class="p">.</span><span class="nx">DecelerateInterpolator</span><span class="p">();</span> <span class="c1">// 头快尾慢
+</span></span></span><span class="line"><span class="cl">      <span class="nx">animator</span><span class="p">.</span><span class="nx">setInterpolator</span><span class="p">(</span><span class="nx">mTimeInterpolator</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">animator</span><span class="p">.</span><span class="nx">setDuration</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span> <span class="c1">//动画时间
+</span></span></span><span class="line"><span class="cl">      <span class="nx">animator</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">controller</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">click</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">_thread</span> <span class="o">?</span> <span class="o">!</span><span class="nx">_thread</span><span class="p">.</span><span class="nx">isAlive</span><span class="p">()</span> <span class="o">:</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">//线程没有运行
+</span></span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">controller</span><span class="p">)</span> <span class="nx">setFloatyOnStatus</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">_isStop</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">//新建一个线程，赋值给变量_thread
+</span></span></span><span class="line"><span class="cl">      <span class="nx">_thread</span> <span class="o">=</span> <span class="nx">threads</span><span class="p">.</span><span class="nx">start</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">printLog</span><span class="p">(</span><span class="s1">&#39;Task started&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">executeMethod</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="nx">controller</span><span class="p">)</span> <span class="nx">setFloatyOnStatus</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="nx">printLog</span><span class="p">(</span><span class="s1">&#39;Task finished&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">          <span class="kd">let</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">$debug</span><span class="p">.</span><span class="nx">getStackTrace</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="k">if</span> <span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s1">&#39;com.stardust.autojs.runtime.exception.ScriptInterruptedException&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">printInfo</span><span class="p">(</span><span class="sb">`Task Stop`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">printError</span><span class="p">(</span><span class="s1">&#39;Task error:&#39;</span><span class="p">,</span> <span class="nx">e</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">printError</span><span class="p">(</span><span class="s1">&#39;程序运行失败&#39;</span> <span class="o">+</span> <span class="nx">info</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">          <span class="p">}</span>
+</span></span><span class="line"><span class="cl">          <span class="c1">// _this.log(&#34;程序运行失败&gt;&gt;打开软件右上角&gt;&gt;查看日志&#34;);
+</span></span></span><span class="line"><span class="cl">          <span class="nx">setFloatyOnStatus</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//运行完毕修改按钮文字
+</span></span></span><span class="line"><span class="cl">        <span class="nx">setFloatyOnStatus</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">setFloatyOnStatus</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">//线程正在运行
+</span></span></span><span class="line"><span class="cl">      <span class="nx">_isStop</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">_thread</span> <span class="o">&amp;&amp;</span> <span class="nx">_thread</span><span class="p">.</span><span class="nx">interrupt</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">//中断线程;
+</span></span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">printInfo</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">info</span><span class="p">(</span><span class="s1">&#39;[&#39;</span> <span class="o">+</span> <span class="nx">dateFormat</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s1">&#39;HH:mm:ss&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;] &#39;</span> <span class="o">+</span> <span class="nx">msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">printLog</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;[&#39;</span> <span class="o">+</span> <span class="nx">dateFormat</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s1">&#39;HH:mm:ss&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;] &#39;</span> <span class="o">+</span> <span class="nx">msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">printError</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;[&#39;</span> <span class="o">+</span> <span class="nx">dateFormat</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="s1">&#39;HH:mm:ss&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;] &#39;</span> <span class="o">+</span> <span class="nx">msg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">日志显示</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+</span></span><span class="line"><span class="cl">     <span class="nx">log</span><span class="p">(</span><span class="s2">&#34;这是需要运行的函数&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="kd">var</span> <span class="nx">appName</span> <span class="o">=</span> <span class="s2">&#34;Soul&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="kd">var</span> <span class="nx">话术1</span> <span class="o">=</span> <span class="nx">rawInput</span><span class="p">(</span><span class="s2">&#34;请输入第一句话&#34;</span><span class="p">,</span> <span class="s2">&#34;❤️欢迎加入泡泡同城单身交友大家庭\n💛包脱单，包分配，包售后\n💚看2麦管理瞬间小猪🐷小猪屁股那一串白色的摩斯密码，备注soul名字，拉你进大家庭～\n\n\n今晚周六有个轰趴聚会，心动恋爱小游戏，火锅酒水一应俱全，小组破冰嗨起来，经典真心话大冒险，k歌桌游通通拿下。场地含KTV、台球、麻将，然后有社牛主持人带队，互相了解，互相认识。一次认识20➕同城单身朋友，欢迎加入～\n\n\n注意：不要只是关注群主，关注是没用的，公屏有提示&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// toastLog(话术1)
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// toastLog(话术1)
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nx">launchApp</span><span class="p">(</span><span class="nx">appName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">sleep</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="nx">id</span><span class="p">(</span><span class="s2">&#34;tvChat&#34;</span><span class="p">).</span><span class="nx">exists</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">id</span><span class="p">(</span><span class="s2">&#34;tvChat&#34;</span><span class="p">).</span><span class="nx">findOne</span><span class="p">(</span><span class="mi">10000</span><span class="p">).</span><span class="nx">click</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">setText</span><span class="p">(</span><span class="nx">话术1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">id</span><span class="p">(</span><span class="s2">&#34;btnSend&#34;</span><span class="p">).</span><span class="nx">exists</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">id</span><span class="p">(</span><span class="s2">&#34;btnSend&#34;</span><span class="p">).</span><span class="nx">findOne</span><span class="p">(</span><span class="mi">10000</span><span class="p">).</span><span class="nx">click</span><span class="p">()</span>		
+</span></span><span class="line"><span class="cl">                <span class="nx">back</span><span class="p">()</span>                       
+</span></span><span class="line"><span class="cl">            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">id</span><span class="p">(</span><span class="s2">&#34;etInputView&#34;</span><span class="p">).</span><span class="nx">exists</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">setText</span><span class="p">(</span><span class="nx">话术1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>        
+</span></span><span class="line"><span class="cl">        <span class="nx">sleep</span><span class="p">(</span><span class="mi">57000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="nx">setFloatyTitle</span><span class="p">(</span><span class="s1">&#39;Soul派对循环发送文案&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">setInterval</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl"><span class="p">},</span> <span class="mi">2000</span><span class="p">);</span></span></span></code></pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/autojspro/">AutojsPro</a></li>
+      <li><a href="http://localhost:1313/tags/soul/">Soul</a></li>
+    </ul>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share autojsPro实现soul循环自动发送指定文本 on x"
+            href="https://x.com/intent/tweet/?text=autojsPro%e5%ae%9e%e7%8e%b0soul%e5%be%aa%e7%8e%af%e8%87%aa%e5%8a%a8%e5%8f%91%e9%80%81%e6%8c%87%e5%ae%9a%e6%96%87%e6%9c%ac&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fautojspro%25E5%25AE%259E%25E7%258E%25B0soul%25E5%25BE%25AA%25E7%258E%25AF%25E8%2587%25AA%25E5%258A%25A8%25E5%258F%2591%25E9%2580%2581%25E6%258C%2587%25E5%25AE%259A%25E6%2596%2587%25E6%259C%25AC%2f&amp;hashtags=autojsPro%2csoul">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share autojsPro实现soul循环自动发送指定文本 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fautojspro%25E5%25AE%259E%25E7%258E%25B0soul%25E5%25BE%25AA%25E7%258E%25AF%25E8%2587%25AA%25E5%258A%25A8%25E5%258F%2591%25E9%2580%2581%25E6%258C%2587%25E5%25AE%259A%25E6%2596%2587%25E6%259C%25AC%2f&amp;title=autojsPro%e5%ae%9e%e7%8e%b0soul%e5%be%aa%e7%8e%af%e8%87%aa%e5%8a%a8%e5%8f%91%e9%80%81%e6%8c%87%e5%ae%9a%e6%96%87%e6%9c%ac&amp;summary=autojsPro%e5%ae%9e%e7%8e%b0soul%e5%be%aa%e7%8e%af%e8%87%aa%e5%8a%a8%e5%8f%91%e9%80%81%e6%8c%87%e5%ae%9a%e6%96%87%e6%9c%ac&amp;source=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fautojspro%25E5%25AE%259E%25E7%258E%25B0soul%25E5%25BE%25AA%25E7%258E%25AF%25E8%2587%25AA%25E5%258A%25A8%25E5%258F%2591%25E9%2580%2581%25E6%258C%2587%25E5%25AE%259A%25E6%2596%2587%25E6%259C%25AC%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share autojsPro实现soul循环自动发送指定文本 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fautojspro%25E5%25AE%259E%25E7%258E%25B0soul%25E5%25BE%25AA%25E7%258E%25AF%25E8%2587%25AA%25E5%258A%25A8%25E5%258F%2591%25E9%2580%2581%25E6%258C%2587%25E5%25AE%259A%25E6%2596%2587%25E6%259C%25AC%2f&title=autojsPro%e5%ae%9e%e7%8e%b0soul%e5%be%aa%e7%8e%af%e8%87%aa%e5%8a%a8%e5%8f%91%e9%80%81%e6%8c%87%e5%ae%9a%e6%96%87%e6%9c%ac">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share autojsPro实现soul循环自动发送指定文本 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fautojspro%25E5%25AE%259E%25E7%258E%25B0soul%25E5%25BE%25AA%25E7%258E%25AF%25E8%2587%25AA%25E5%258A%25A8%25E5%258F%2591%25E9%2580%2581%25E6%258C%2587%25E5%25AE%259A%25E6%2596%2587%25E6%259C%25AC%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share autojsPro实现soul循环自动发送指定文本 on whatsapp"
+            href="https://api.whatsapp.com/send?text=autojsPro%e5%ae%9e%e7%8e%b0soul%e5%be%aa%e7%8e%af%e8%87%aa%e5%8a%a8%e5%8f%91%e9%80%81%e6%8c%87%e5%ae%9a%e6%96%87%e6%9c%ac%20-%20http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fautojspro%25E5%25AE%259E%25E7%258E%25B0soul%25E5%25BE%25AA%25E7%258E%25AF%25E8%2587%25AA%25E5%258A%25A8%25E5%258F%2591%25E9%2580%2581%25E6%258C%2587%25E5%25AE%259A%25E6%2596%2587%25E6%259C%25AC%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share autojsPro实现soul循环自动发送指定文本 on telegram"
+            href="https://telegram.me/share/url?text=autojsPro%e5%ae%9e%e7%8e%b0soul%e5%be%aa%e7%8e%af%e8%87%aa%e5%8a%a8%e5%8f%91%e9%80%81%e6%8c%87%e5%ae%9a%e6%96%87%e6%9c%ac&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fautojspro%25E5%25AE%259E%25E7%258E%25B0soul%25E5%25BE%25AA%25E7%258E%25AF%25E8%2587%25AA%25E5%258A%25A8%25E5%258F%2591%25E9%2580%2581%25E6%258C%2587%25E5%25AE%259A%25E6%2596%2587%25E6%259C%25AC%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share autojsPro实现soul循环自动发送指定文本 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=autojsPro%e5%ae%9e%e7%8e%b0soul%e5%be%aa%e7%8e%af%e8%87%aa%e5%8a%a8%e5%8f%91%e9%80%81%e6%8c%87%e5%ae%9a%e6%96%87%e6%9c%ac&u=http%3a%2f%2flocalhost%3a1313%2fpost%2f%25E7%25A8%258B%25E5%25BA%258F%25E5%2591%2598%2fautojspro%25E5%25AE%259E%25E7%258E%25B0soul%25E5%25BE%25AA%25E7%258E%25AF%25E8%2587%25AA%25E5%258A%25A8%25E5%258F%2591%25E9%2580%2581%25E6%258C%2587%25E5%25AE%259A%25E6%2596%2587%25E6%259C%25AC%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

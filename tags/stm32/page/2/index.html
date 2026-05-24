@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Stm32 | PaperMod</title>
+<meta name="keywords" content="">
+<meta name="description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/tags/stm32/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/stm32/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/stm32/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/tags/stm32/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="Stm32">
+  <meta property="og:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="website">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="Stm32">
+  <meta name="twitter:description" content="Theme PaperMod - https://github.com/adityatelange/hugo-PaperMod">
+
+</head>
+<body class="list" id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/tags/">Tags</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+  <h1>
+    Stm32
+    <a href="/tags/stm32/index.xml" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Proteus导入第三方元件
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> Proteus导入第三方元件 proteus是我们常用的用来模拟仿真的EDA软件之一，但是有些仿真确苦于没有自带的软件库无法实现，下面是如何将所需的芯片导入proteus中的方法。
+注意：在proteus中添加第三方库需在proteus8.9及之后的版本才可实现，8.9之前只能使用自带元件库或者自行绘制。
+下面呢以NXP的RT1064为例展示如何添加第三方元件库到proteus中。
+1、访问&#34;https://componentsearchengine.com/part-view&#34;在搜索框搜索你所需的芯片或者元件，然后登陆并下载芯片包（如果找不到的话还可以提交信息，一般两个工作日会在邮箱收到绘制好的芯片包），必须科学上网才能注册成功；
+2、解压下载的压缩包，然后打开proteus，下面就该将芯片包导入元件库中；
+3、在proteus菜单栏选择library-&gt;Impart Parts，然后选择select file，找到解压之后的芯片包，然后在proteus文件中找到.pdif文件导入，之后选择Import Part，之后就是傻瓜式的点击Next、OK，最后点击close，这样我们的芯片导入就成功了，我们可以随意调用了。
+参考链接 Proteus元件库中添加第三方的单片机芯片
+</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-03-26 00:24:32 +0800 +0800'>March 26, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to Proteus导入第三方元件" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/stm32/proteus%E5%AF%BC%E5%85%A5%E7%AC%AC%E4%B8%89%E6%96%B9%E5%85%83%E4%BB%B6/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">STM32CubeMX实现串口通信
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> STM32CubeMX实现串口通信 STM32CubeMX版本：6.10
+在安装STM32CubeMX之前需要电脑上有Java环境
+Java下载链接：https://javadl.oracle.com/webapps/download/AutoDL?BundleId=249203_b291ca3e0c8548b5a51d5a5f50063037
+STM32CubeMX下载链接：https://www.st.com/zh/development-tools/stm32cubemx.html
+Keil5(MDK-ARM)下载链接：https://pan.baidu.com/s/1kC7h3ljv1iENa0mSP2a0aQ?pwd=pxsy
+Proteus下载链接：https://mp.weixin.qq.com/s?__biz=MzA4MjU4MTg2Ng==&amp;mid=2247515066&amp;idx=5&amp;sn=ba4b87dad87c1f13ccc595934269bfaa&amp;chksm=9f817bbfa8f6f2a9cd6e6690e6a791ca3fd43f9bddf8ea06d2da4b07c28ce5600d79703d72f5&amp;scene=21#wechat_redirect
+串口调试助手：https://pan.baidu.com/s/1E5SprNfWX1yqPddtvsa8sw?pwd=e6vn
+VSPD下载链接：https://www.xue51.com/soft/9349.html#xzdz
+使用STM32CubeMX 安装固件库 若点击 Manage embedded software packages 后，出现失败，则需要随便点击其它任一选项，进行下载一些文件，比如点击 file-&gt;new project ，等下载后，再进行安装固件库。
+1.进入嵌入式软件包管理界面
+2.如果进入失败，则点击一下旁边的INSTALL/REMOVE，安装嵌入式软件包，如果提示登录的话，就将在ST官网注册的信息输入到CubeMX的登录框内进行登录，然后就可以接着安装了
+然后再次进行第一步的操作，这次就可以进入嵌入式软件包管理界面了，接着选择自己开发板的固件库，我这里是f1的。选择版本安装，我这里已经安装过了。
+工程设置 1.点击 file -&gt; new project 建立工程
+按步骤即可。搜索型号，选择合适的型号进行工程建立
+2.进行系统调试及基准时钟配置。
+点击 System Core下拉栏中的 SYS。选择debug调试接口。我选择 serial Wire
+SW模式就选择serial Wire。JTAG模式就选择JTAG，4pin和5pin的区别多了一个复位引脚
+stlink调试就是SW模式，jlink调试就是JTAG模式
+3.进行时钟RCC选项配置
+点击 System Core下拉栏中的 RCC。可以都选外部晶振Crystal/Ceramic Resonator。
+BYPASS Clock Source（旁路时钟源）
+Crystal/Ceramic Resonator（石英/陶瓷 晶振）
+4.进行系统具体时钟配置
+(1)点击“Clock Configuration”选项栏进入时钟树配置界面。
+...</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-03-26 00:24:32 +0800 +0800'>March 26, 2024</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to STM32CubeMX实现串口通信" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/stm32/stm32cubemx%E5%AE%9E%E7%8E%B0%E4%B8%B2%E5%8F%A3%E9%80%9A%E4%BF%A1/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">STM32仿真环境搭建
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> STM32Cube IDE与MX区别？STM32CubeMX介绍、下载与安装 页面链接：https://blog.csdn.net/chenhuanqiangnihao/article/details/126308350
+安装STM32CubeMX 在安装CubeMX之前先安装java环境
+java下载链接：https://javadl.oracle.com/webapps/download/AutoDL?BundleId=249203_b291ca3e0c8548b5a51d5a5f50063037
+ST官网搜索 STM32CubeMX，下载对应电脑平台的最新版本
+下载页面：https://www.st.com/zh/development-tools/stm32cubemx.html
+安装STM32CubeIDE ST官网搜索 STM32CubeIDE，下载对应电脑平台的最新版本
+下载页面：https://www.st.com/zh/development-tools/stm32cubeide.html
+安装MDK-ARM keil官网点击Download，访问产品下载页面，进入MDK-ARM下载页面，下载MDK539.exe，我当前看到的是MDK539.exe
+下载页面：https://www.keil.com/demo/eval/arm.htm
+安装Proteus 微信公众号搜索软件管家，进入公众号下载目录，找到proteus，下载最高版本
+可通过浏览器打开软件管家软件目录，在页面搜索找到 proteus
+软件管家公众号软件目录：https://mp.weixin.qq.com/s/uaqvED0_vFcqXmgkTlKYpQ
+Proteus 8.15下载链接：https://mp.weixin.qq.com/s?__biz=MzA4MjU4MTg2Ng==&amp;mid=2247515066&amp;idx=5&amp;sn=ba4b87dad87c1f13ccc595934269bfaa&amp;chksm=9f817bbfa8f6f2a9cd6e6690e6a791ca3fd43f9bddf8ea06d2da4b07c28ce5600d79703d72f5&amp;scene=21#wechat_redirect
+</p>
+  </div>
+  <footer class="entry-footer">
+
+<span title='2024-03-26 00:24:32 +0800 +0800'>March 26, 2024</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span></footer>
+  <a class="entry-link" aria-label="post link to STM32仿真环境搭建" href="http://localhost:1313/post/%E7%A8%8B%E5%BA%8F%E5%91%98/stm32/stm32%E4%BB%BF%E7%9C%9F%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="http://localhost:1313/tags/stm32/">
+      «&nbsp;Prev&nbsp;1/2
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Emacs使用org-agenda管理日程 | PaperMod</title>
+<meta name="keywords" content="emacs, org-agenda, gtd">
+<meta name="description" content="
+
+Emacs 使用org-agenda 管理日程
+
+
+如何使用org设置日程上篇已经介绍完，那现在的重点就是如何查看日程，并且真正将org运用到日常工作中来。之前学习org跨越了很长时间，但一直没有落实到日常应用，所以过一阵子就会忘记，得来的教训就是学习任何语言，工具一定要落实在使用中，纸上谈兵要不得。让我们一起开始使用org-agenda查看，管理及运用设置好的日程。
+
+纸上得来终觉浅,绝知此事要躬行.
+
+
+日程 Agenda
+
+
+定义完ToDo之后，使用M-x org-agenda 打开日程buffer，可看到当前排的所有日程，并可以直接进行优先级等操作。那如何归纳整理自己的日程表呢，通常我使用多个文件来代表不同的类型。
+
+
+
+
+日程文件
+
+
+可以针对不同的任务类型，定义多个日程或任务文件，然后将文件加入全局的日程文件列表，统一纳入org的管理。
+
+以下来举例：
+使用C-h v 查看变量org-agenda-flies，当前有一个文件，现在我们再加入另一个
+
+打开org文件，使用org-agenda-file-to-front或者快捷键C-c [ 将当前文件加入到全局列表。这样一来，我们定义的日程就会加入到全局列表，使用emacs统一进行管理了。也可以通过emacs配置文件加入。
+
+然后就可以使用M-x org-agenda a 打开agenda界面了。
+
+
+
+快捷键
+功能
+
+
+
+
+C-c [
+将当前文件加入全局列表
+
+
+
+
+C-c ]
+将当前文件移除全局列表
+
+
+
+
+C-c C-x &lt;
+锁定当前文件即在org agenda的buffer中只显示当前文件的日程（org-agenda-set-restriction-lock）
+
+
+
+
+C-c C-x &gt;
+解锁(org-agenda-remove-restriction-lock)
+
+
+
+
+可以打开speedbar ，在文件上使用&lt; 和&gt; 来锁定和解锁。
+
+
+
+
+日程操作
+
+
+前一章已经介绍过，使用org-agenda打开日程buffer，此时可以选择多种视图方式，以便更加方便的查看日程。
+
+Emacs 内置了多种视图，下面会一一介绍，首先来看都有哪些操作。
+
+
+
+
+视图中的操作
+
+
+其他快捷键及功能：
+
+
+
+快捷键
+功能
+
+
+
+
+b
+daily视图
+
+
+
+
+w
+weekly视图
+
+
+
+
+n/p
+上/下移动光标
+
+
+
+
+N/P
+上/下按日程移动光标
+
+
+
+
+SPC
+在另一缓冲区显示任务在org文件中的定义的位置
+
+
+
+
+TAB
+在另一缓冲区显示任务在org文件中的定义的位置，并且光标跳转至此
+
+
+
+
+L
+显示任务在文件中位置并且光标居中
+
+
+
+
+RET
+在当前buffer打开文件并跳转
+
+
+
+
+F
+打开跟踪模式，即移动光标时，另一buffer显示当前任务的定义处
+
+
+
+
+C-c C-x b
+显示任务及子树，并可以设置层数
+
+
+
+
+C-c C-o
+打开链接
+
+
+
+
+o
+关闭另一个buffer
+
+
+
+
+A
+打开另一种视图并嵌入到当前视图中
+
+
+
+
+v
+弹出多个命令进行选择
+
+
+
+
+f/b
+下一天
+
+
+
+
+.
+跳转至当天
+
+
+
+
+j
+选择日期并跳转
+
+
+
+
+D
+包含日记
+
+
+
+
+r
+刷新agenda buffer
+
+
+
+
+/
+通过tag过滤
+
+
+
+
+&lt;
+通过类型过滤
+
+
+
+
+^
+通过 top headline 过滤
+
+
+
+
+=
+通过模式匹配过滤
+
+
+
+
+丨
+去除所有过滤
+
+
+
+
+t
+改变状态
+
+
+
+
+C-S-Left/C-S-Right
+改变状态
+
+
+
+
+C-k
+删除
+
+
+
+
+C-w
+重新归档某项日程
+
+
+
+
+$
+归档，通常是另一个文件
+
+
+
+
+T
+显示所有tag
+
+
+
+
+:
+设置tag
+
+
+
+
+,
+设置优先级
+
+
+
+
+&#43;/- 或者 S-up/down
+设置优先级
+
+
+
+
+z
+添加note
+
+
+
+
+C-c C-a
+附件
+
+
+
+
+C-c C-s
+安排日程
+
+
+
+
+C-c C-d
+设置deadline
+
+
+
+
+S-Left/Right
+改变日期
+
+
+
+
+&gt;
+改变日期
+
+
+
+
+I
+插入clock
+
+
+
+
+O
+停止上一个clock
+
+
+
+
+X
+取消当前clock
+
+
+
+
+J
+跳转之clock处
+
+
+
+
+M-Up/Down
+拖拽一个日程
+
+
+
+
+m
+mark当前日程
+
+
+
+
+*
+mark所有日程为重点
+
+
+
+
+u
+取消mark当前日程
+
+
+
+
+U
+取消mark所有日程
+
+
+
+
+M-m
+设置/取消当前mark
+
+
+
+
+M-×
+设置/取消所有mark
+
+
+
+
+B
+bulk action
+
+
+
+
+C-x C-w
+导出。可以为.html .pdf .ps .org
+
+
+
+
+q
+退出
+
+
+
+
+x
+退出，包括所有相关打开的buffer
+
+
+
+
+太多了，大家通过帮助自己尝试吧。">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="http://localhost:1313/post/emacs/emacs%E4%BD%BF%E7%94%A8org-agenda%E7%AE%A1%E7%90%86%E6%97%A5%E7%A8%8B/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/post/emacs/emacs%E4%BD%BF%E7%94%A8org-agenda%E7%AE%A1%E7%90%86%E6%97%A5%E7%A8%8B/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="http://localhost:1313/post/emacs/emacs%E4%BD%BF%E7%94%A8org-agenda%E7%AE%A1%E7%90%86%E6%97%A5%E7%A8%8B/">
+  <meta property="og:site_name" content="PaperMod">
+  <meta property="og:title" content="Emacs使用org-agenda管理日程">
+  <meta property="og:description" content="Emacs 使用org-agenda 管理日程 如何使用org设置日程上篇已经介绍完，那现在的重点就是如何查看日程，并且真正将org运用到日常工作中来。之前学习org跨越了很长时间，但一直没有落实到日常应用，所以过一阵子就会忘记，得来的教训就是学习任何语言，工具一定要落实在使用中，纸上谈兵要不得。让我们一起开始使用org-agenda查看，管理及运用设置好的日程。
+纸上得来终觉浅,绝知此事要躬行.
+日程 Agenda 定义完ToDo之后，使用M-x org-agenda 打开日程buffer，可看到当前排的所有日程，并可以直接进行优先级等操作。那如何归纳整理自己的日程表呢，通常我使用多个文件来代表不同的类型。
+日程文件 可以针对不同的任务类型，定义多个日程或任务文件，然后将文件加入全局的日程文件列表，统一纳入org的管理。
+以下来举例： 使用C-h v 查看变量org-agenda-flies，当前有一个文件，现在我们再加入另一个
+打开org文件，使用org-agenda-file-to-front或者快捷键C-c [ 将当前文件加入到全局列表。这样一来，我们定义的日程就会加入到全局列表，使用emacs统一进行管理了。也可以通过emacs配置文件加入。
+然后就可以使用M-x org-agenda a 打开agenda界面了。
+快捷键 功能 C-c [ 将当前文件加入全局列表 C-c ] 将当前文件移除全局列表 C-c C-x &lt; 锁定当前文件即在org agenda的buffer中只显示当前文件的日程（org-agenda-set-restriction-lock） C-c C-x &gt; 解锁(org-agenda-remove-restriction-lock) 可以打开speedbar ，在文件上使用&lt; 和&gt; 来锁定和解锁。
+日程操作 前一章已经介绍过，使用org-agenda打开日程buffer，此时可以选择多种视图方式，以便更加方便的查看日程。
+Emacs 内置了多种视图，下面会一一介绍，首先来看都有哪些操作。
+视图中的操作 其他快捷键及功能：
+快捷键 功能 b daily视图 w weekly视图 n/p 上/下移动光标 N/P 上/下按日程移动光标 SPC 在另一缓冲区显示任务在org文件中的定义的位置 TAB 在另一缓冲区显示任务在org文件中的定义的位置，并且光标跳转至此 L 显示任务在文件中位置并且光标居中 RET 在当前buffer打开文件并跳转 F 打开跟踪模式，即移动光标时，另一buffer显示当前任务的定义处 C-c C-x b 显示任务及子树，并可以设置层数 C-c C-o 打开链接 o 关闭另一个buffer A 打开另一种视图并嵌入到当前视图中 v 弹出多个命令进行选择 f/b 下一天 . 跳转至当天 j 选择日期并跳转 D 包含日记 r 刷新agenda buffer / 通过tag过滤 &lt; 通过类型过滤 ^ 通过 top headline 过滤 = 通过模式匹配过滤 丨 去除所有过滤 t 改变状态 C-S-Left/C-S-Right 改变状态 C-k 删除 C-w 重新归档某项日程 $ 归档，通常是另一个文件 T 显示所有tag : 设置tag , 设置优先级 &#43;/- 或者 S-up/down 设置优先级 z 添加note C-c C-a 附件 C-c C-s 安排日程 C-c C-d 设置deadline S-Left/Right 改变日期 &gt; 改变日期 I 插入clock O 停止上一个clock X 取消当前clock J 跳转之clock处 M-Up/Down 拖拽一个日程 m mark当前日程 * mark所有日程为重点 u 取消mark当前日程 U 取消mark所有日程 M-m 设置/取消当前mark M-× 设置/取消所有mark B bulk action C-x C-w 导出。可以为.html .pdf .ps .org q 退出 x 退出，包括所有相关打开的buffer 太多了，大家通过帮助自己尝试吧。">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="post">
+    <meta property="article:published_time" content="2024-11-26T02:12:09+08:00">
+    <meta property="article:modified_time" content="2024-11-26T02:12:09+08:00">
+    <meta property="article:tag" content="Emacs">
+    <meta property="article:tag" content="Org-Agenda">
+    <meta property="article:tag" content="Gtd">
+      <meta property="og:image" content="http://localhost:1313/images/papermod-cover.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://localhost:1313/images/papermod-cover.png">
+  <meta name="twitter:title" content="Emacs使用org-agenda管理日程">
+  <meta name="twitter:description" content="Emacs 使用org-agenda 管理日程 如何使用org设置日程上篇已经介绍完，那现在的重点就是如何查看日程，并且真正将org运用到日常工作中来。之前学习org跨越了很长时间，但一直没有落实到日常应用，所以过一阵子就会忘记，得来的教训就是学习任何语言，工具一定要落实在使用中，纸上谈兵要不得。让我们一起开始使用org-agenda查看，管理及运用设置好的日程。
+纸上得来终觉浅,绝知此事要躬行.
+日程 Agenda 定义完ToDo之后，使用M-x org-agenda 打开日程buffer，可看到当前排的所有日程，并可以直接进行优先级等操作。那如何归纳整理自己的日程表呢，通常我使用多个文件来代表不同的类型。
+日程文件 可以针对不同的任务类型，定义多个日程或任务文件，然后将文件加入全局的日程文件列表，统一纳入org的管理。
+以下来举例： 使用C-h v 查看变量org-agenda-flies，当前有一个文件，现在我们再加入另一个
+打开org文件，使用org-agenda-file-to-front或者快捷键C-c [ 将当前文件加入到全局列表。这样一来，我们定义的日程就会加入到全局列表，使用emacs统一进行管理了。也可以通过emacs配置文件加入。
+然后就可以使用M-x org-agenda a 打开agenda界面了。
+快捷键 功能 C-c [ 将当前文件加入全局列表 C-c ] 将当前文件移除全局列表 C-c C-x &lt; 锁定当前文件即在org agenda的buffer中只显示当前文件的日程（org-agenda-set-restriction-lock） C-c C-x &gt; 解锁(org-agenda-remove-restriction-lock) 可以打开speedbar ，在文件上使用&lt; 和&gt; 来锁定和解锁。
+日程操作 前一章已经介绍过，使用org-agenda打开日程buffer，此时可以选择多种视图方式，以便更加方便的查看日程。
+Emacs 内置了多种视图，下面会一一介绍，首先来看都有哪些操作。
+视图中的操作 其他快捷键及功能：
+快捷键 功能 b daily视图 w weekly视图 n/p 上/下移动光标 N/P 上/下按日程移动光标 SPC 在另一缓冲区显示任务在org文件中的定义的位置 TAB 在另一缓冲区显示任务在org文件中的定义的位置，并且光标跳转至此 L 显示任务在文件中位置并且光标居中 RET 在当前buffer打开文件并跳转 F 打开跟踪模式，即移动光标时，另一buffer显示当前任务的定义处 C-c C-x b 显示任务及子树，并可以设置层数 C-c C-o 打开链接 o 关闭另一个buffer A 打开另一种视图并嵌入到当前视图中 v 弹出多个命令进行选择 f/b 下一天 . 跳转至当天 j 选择日期并跳转 D 包含日记 r 刷新agenda buffer / 通过tag过滤 &lt; 通过类型过滤 ^ 通过 top headline 过滤 = 通过模式匹配过滤 丨 去除所有过滤 t 改变状态 C-S-Left/C-S-Right 改变状态 C-k 删除 C-w 重新归档某项日程 $ 归档，通常是另一个文件 T 显示所有tag : 设置tag , 设置优先级 &#43;/- 或者 S-up/down 设置优先级 z 添加note C-c C-a 附件 C-c C-s 安排日程 C-c C-d 设置deadline S-Left/Right 改变日期 &gt; 改变日期 I 插入clock O 停止上一个clock X 取消当前clock J 跳转之clock处 M-Up/Down 拖拽一个日程 m mark当前日程 * mark所有日程为重点 u 取消mark当前日程 U 取消mark所有日程 M-m 设置/取消当前mark M-× 设置/取消所有mark B bulk action C-x C-w 导出。可以为.html .pdf .ps .org q 退出 x 退出，包括所有相关打开的buffer 太多了，大家通过帮助自己尝试吧。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/post/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Emacs使用org-agenda管理日程",
+      "item": "http://localhost:1313/post/emacs/emacs%E4%BD%BF%E7%94%A8org-agenda%E7%AE%A1%E7%90%86%E6%97%A5%E7%A8%8B/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Emacs使用org-agenda管理日程",
+  "name": "Emacs使用org-agenda管理日程",
+  "description": " Emacs 使用org-agenda 管理日程 如何使用org设置日程上篇已经介绍完，那现在的重点就是如何查看日程，并且真正将org运用到日常工作中来。之前学习org跨越了很长时间，但一直没有落实到日常应用，所以过一阵子就会忘记，得来的教训就是学习任何语言，工具一定要落实在使用中，纸上谈兵要不得。让我们一起开始使用org-agenda查看，管理及运用设置好的日程。\n纸上得来终觉浅,绝知此事要躬行.\n日程 Agenda 定义完ToDo之后，使用M-x org-agenda 打开日程buffer，可看到当前排的所有日程，并可以直接进行优先级等操作。那如何归纳整理自己的日程表呢，通常我使用多个文件来代表不同的类型。\n日程文件 可以针对不同的任务类型，定义多个日程或任务文件，然后将文件加入全局的日程文件列表，统一纳入org的管理。\n以下来举例： 使用C-h v 查看变量org-agenda-flies，当前有一个文件，现在我们再加入另一个\n打开org文件，使用org-agenda-file-to-front或者快捷键C-c [ 将当前文件加入到全局列表。这样一来，我们定义的日程就会加入到全局列表，使用emacs统一进行管理了。也可以通过emacs配置文件加入。\n然后就可以使用M-x org-agenda a 打开agenda界面了。\n快捷键 功能 C-c [ 将当前文件加入全局列表 C-c ] 将当前文件移除全局列表 C-c C-x \u0026lt; 锁定当前文件即在org agenda的buffer中只显示当前文件的日程（org-agenda-set-restriction-lock） C-c C-x \u0026gt; 解锁(org-agenda-remove-restriction-lock) 可以打开speedbar ，在文件上使用\u0026lt; 和\u0026gt; 来锁定和解锁。\n日程操作 前一章已经介绍过，使用org-agenda打开日程buffer，此时可以选择多种视图方式，以便更加方便的查看日程。\nEmacs 内置了多种视图，下面会一一介绍，首先来看都有哪些操作。\n视图中的操作 其他快捷键及功能：\n快捷键 功能 b daily视图 w weekly视图 n/p 上/下移动光标 N/P 上/下按日程移动光标 SPC 在另一缓冲区显示任务在org文件中的定义的位置 TAB 在另一缓冲区显示任务在org文件中的定义的位置，并且光标跳转至此 L 显示任务在文件中位置并且光标居中 RET 在当前buffer打开文件并跳转 F 打开跟踪模式，即移动光标时，另一buffer显示当前任务的定义处 C-c C-x b 显示任务及子树，并可以设置层数 C-c C-o 打开链接 o 关闭另一个buffer A 打开另一种视图并嵌入到当前视图中 v 弹出多个命令进行选择 f/b 下一天 . 跳转至当天 j 选择日期并跳转 D 包含日记 r 刷新agenda buffer / 通过tag过滤 \u0026lt; 通过类型过滤 ^ 通过 top headline 过滤 = 通过模式匹配过滤 丨 去除所有过滤 t 改变状态 C-S-Left/C-S-Right 改变状态 C-k 删除 C-w 重新归档某项日程 $ 归档，通常是另一个文件 T 显示所有tag : 设置tag , 设置优先级 +/- 或者 S-up/down 设置优先级 z 添加note C-c C-a 附件 C-c C-s 安排日程 C-c C-d 设置deadline S-Left/Right 改变日期 \u0026gt; 改变日期 I 插入clock O 停止上一个clock X 取消当前clock J 跳转之clock处 M-Up/Down 拖拽一个日程 m mark当前日程 * mark所有日程为重点 u 取消mark当前日程 U 取消mark所有日程 M-m 设置/取消当前mark M-× 设置/取消所有mark B bulk action C-x C-w 导出。可以为.html .pdf .ps .org q 退出 x 退出，包括所有相关打开的buffer 太多了，大家通过帮助自己尝试吧。\n",
+  "keywords": [
+    "emacs", "org-agenda", "gtd"
+  ],
+  "articleBody": " Emacs 使用org-agenda 管理日程 如何使用org设置日程上篇已经介绍完，那现在的重点就是如何查看日程，并且真正将org运用到日常工作中来。之前学习org跨越了很长时间，但一直没有落实到日常应用，所以过一阵子就会忘记，得来的教训就是学习任何语言，工具一定要落实在使用中，纸上谈兵要不得。让我们一起开始使用org-agenda查看，管理及运用设置好的日程。\n纸上得来终觉浅,绝知此事要躬行.\n日程 Agenda 定义完ToDo之后，使用M-x org-agenda 打开日程buffer，可看到当前排的所有日程，并可以直接进行优先级等操作。那如何归纳整理自己的日程表呢，通常我使用多个文件来代表不同的类型。\n日程文件 可以针对不同的任务类型，定义多个日程或任务文件，然后将文件加入全局的日程文件列表，统一纳入org的管理。\n以下来举例： 使用C-h v 查看变量org-agenda-flies，当前有一个文件，现在我们再加入另一个\n打开org文件，使用org-agenda-file-to-front或者快捷键C-c [ 将当前文件加入到全局列表。这样一来，我们定义的日程就会加入到全局列表，使用emacs统一进行管理了。也可以通过emacs配置文件加入。\n然后就可以使用M-x org-agenda a 打开agenda界面了。\n快捷键 功能 C-c [ 将当前文件加入全局列表 C-c ] 将当前文件移除全局列表 C-c C-x \u003c 锁定当前文件即在org agenda的buffer中只显示当前文件的日程（org-agenda-set-restriction-lock） C-c C-x \u003e 解锁(org-agenda-remove-restriction-lock) 可以打开speedbar ，在文件上使用\u003c 和\u003e 来锁定和解锁。\n日程操作 前一章已经介绍过，使用org-agenda打开日程buffer，此时可以选择多种视图方式，以便更加方便的查看日程。\nEmacs 内置了多种视图，下面会一一介绍，首先来看都有哪些操作。\n视图中的操作 其他快捷键及功能：\n快捷键 功能 b daily视图 w weekly视图 n/p 上/下移动光标 N/P 上/下按日程移动光标 SPC 在另一缓冲区显示任务在org文件中的定义的位置 TAB 在另一缓冲区显示任务在org文件中的定义的位置，并且光标跳转至此 L 显示任务在文件中位置并且光标居中 RET 在当前buffer打开文件并跳转 F 打开跟踪模式，即移动光标时，另一buffer显示当前任务的定义处 C-c C-x b 显示任务及子树，并可以设置层数 C-c C-o 打开链接 o 关闭另一个buffer A 打开另一种视图并嵌入到当前视图中 v 弹出多个命令进行选择 f/b 下一天 . 跳转至当天 j 选择日期并跳转 D 包含日记 r 刷新agenda buffer / 通过tag过滤 \u003c 通过类型过滤 ^ 通过 top headline 过滤 = 通过模式匹配过滤 丨 去除所有过滤 t 改变状态 C-S-Left/C-S-Right 改变状态 C-k 删除 C-w 重新归档某项日程 $ 归档，通常是另一个文件 T 显示所有tag : 设置tag , 设置优先级 +/- 或者 S-up/down 设置优先级 z 添加note C-c C-a 附件 C-c C-s 安排日程 C-c C-d 设置deadline S-Left/Right 改变日期 \u003e 改变日期 I 插入clock O 停止上一个clock X 取消当前clock J 跳转之clock处 M-Up/Down 拖拽一个日程 m mark当前日程 * mark所有日程为重点 u 取消mark当前日程 U 取消mark所有日程 M-m 设置/取消当前mark M-× 设置/取消所有mark B bulk action C-x C-w 导出。可以为.html .pdf .ps .org q 退出 x 退出，包括所有相关打开的buffer 太多了，大家通过帮助自己尝试吧。\nWeekly/daily 视图 输入M-x org-agenda 时， 选择a 进入此视图。\n在此视图中，操作在上一节介绍过。大家实践一下，通常使用的也就几个功能，碰到需要用的其他，再来查询具体快捷键。\ntodo 视图 输入M-x org-agenda 时， 选择t/T 进入此视图。 t， 列出所有的todo T，可以选择特殊的key来进行过滤。\nTag和属性过滤视图 输入M-x org-agenda 时， 选择m/M 进入此视图。 m， 根据tag进行过滤\n语法：\n‘work’： 选择tag ‘:work:’. ‘work\u0026boss’： 选择tag ‘:work:’ 和 ‘:boss:’. ‘+work-boss’： 选择tag ‘:work:’, 忽略 tag ‘:boss:’. ‘work|laptop’： 选择tag ‘:work:’ 或 ‘:laptop:’. ‘work|laptop+night’：选择有laptop 并且有night的tag 除了tag，还可以使用正则表达式，例如： ‘work+{^boss.*}’ ，选择带有work的tag并且以boss开头\n更多的语法及表达式就不介绍了，有需要时，查文档获取。\nsearch 视图 输入M-x org-agnda 时， 选择s 进入此视图。 根据关键字查找或者正则。\nstuck project视图 输入M-x org-agnda 时， 选择# 进入此视图。 参考了David Allen的GTD方法，一个stuck的project是没有定义下一步action的日程，不会在todo显示\n分类 每个org todo文件都有一个分类，默认就是文件名。\n可以在文件开头加入：\n#+CATEGORY: xxx 可以在某项日程中加入属性：\n:CATEGORY: xxx 之后在检索过滤时，可以根据分类来进行u过滤\nColumn 视图 列模式在上篇文章已经介绍过。 使用C-c C-x C-c 进入列模式。 此处不介绍了。\n格式 导出时，Html等格式可以定义更多的格式，所以Emacs 可以定义更多的格式。\n例如：\n*bold*, /italic/, underlined, =verbatim= and code, 参考链接 Emacs 使用org-agenda 管理日程\n",
+  "wordCount" : "279",
+  "inLanguage": "en",
+  "image": "http://localhost:1313/images/papermod-cover.png","datePublished": "2024-11-26T02:12:09.84+08:00",
+  "dateModified": "2024-11-26T02:12:09.84+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Theme PaperMod"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/post/emacs/emacs%E4%BD%BF%E7%94%A8org-agenda%E7%AE%A1%E7%90%86%E6%97%A5%E7%A8%8B/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PaperMod",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button><span class="nav-sep">|</span>
+                    <ul class="lang-menu">
+                        <li>
+                            <a href="http://localhost:1313/fr/" title="French"
+                                aria-label="French">French</a>
+                        </li>
+                        <li>
+                            <a href="http://localhost:1313/fa/" title="Farsi"
+                                aria-label="Farsi">Farsi</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/adityatelange/hugo-PaperMod/wiki/" title="Docs (Wiki)">
+                    <span>Docs (Wiki)</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <nav class="breadcrumbs" role="navigation" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+            <a href="/post/">Posts</a>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+        <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+</nav>
+    <h1 class="post-title entry-hint-parent">
+      Emacs使用org-agenda管理日程
+    </h1>
+    <div class="post-meta">
+
+<span title='2024-11-26 02:12:09.84 +0800 +0800'>November 26, 2024</span>&nbsp;·&nbsp;<span>2 min</span>&nbsp;·&nbsp;<span>Theme PaperMod</span>&nbsp;|&nbsp;<span>
+        <a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content/post/emacs/Emacs%e4%bd%bf%e7%94%a8org-agenda%e7%ae%a1%e7%90%86%e6%97%a5%e7%a8%8b.org" rel="noopener noreferrer edit" target="_blank">Suggest Changes</a>
+    </span>
+
+</div>
+  </header> 
+
+  <div class="post-content md-content">
+<div id="outline-container-headline-1" class="outline-2">
+<h2 id="headline-1">
+Emacs 使用org-agenda 管理日程
+</h2>
+<div id="outline-text-headline-1" class="outline-text-2">
+<p>如何使用org设置日程上篇已经介绍完，那现在的重点就是如何查看日程，并且真正将org运用到日常工作中来。之前学习org跨越了很长时间，但一直没有落实到日常应用，所以过一阵子就会忘记，得来的教训就是学习任何语言，工具一定要落实在使用中，纸上谈兵要不得。让我们一起开始使用org-agenda查看，管理及运用设置好的日程。</p>
+<p>
+纸上得来终觉浅,绝知此事要躬行.</p>
+<div id="outline-container-headline-2" class="outline-3">
+<h3 id="headline-2">
+日程 Agenda
+</h3>
+<div id="outline-text-headline-2" class="outline-text-3">
+<p>定义完ToDo之后，使用M-x org-agenda 打开日程buffer，可看到当前排的所有日程，并可以直接进行优先级等操作。那如何归纳整理自己的日程表呢，通常我使用多个文件来代表不同的类型。</p>
+</div>
+</div>
+<div id="outline-container-headline-3" class="outline-3">
+<h3 id="headline-3">
+日程文件
+</h3>
+<div id="outline-text-headline-3" class="outline-text-3">
+<p>可以针对不同的任务类型，定义多个日程或任务文件，然后将文件加入全局的日程文件列表，统一纳入org的管理。</p>
+<p>
+以下来举例：
+使用C-h v 查看变量org-agenda-flies，当前有一个文件，现在我们再加入另一个</p>
+<p>
+打开org文件，使用org-agenda-file-to-front或者快捷键C-c [ 将当前文件加入到全局列表。这样一来，我们定义的日程就会加入到全局列表，使用emacs统一进行管理了。也可以通过emacs配置文件加入。</p>
+<p>
+然后就可以使用M-x org-agenda a 打开agenda界面了。</p>
+<table>
+<tbody>
+<tr>
+<td>快捷键</td>
+<td>功能</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-c [</td>
+<td>将当前文件加入全局列表</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-c ]</td>
+<td>将当前文件移除全局列表</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-c C-x &lt;</td>
+<td>锁定当前文件即在org agenda的buffer中只显示当前文件的日程（org-agenda-set-restriction-lock）</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-c C-x &gt;</td>
+<td>解锁(org-agenda-remove-restriction-lock)</td>
+</tr>
+</tbody>
+</table>
+<p>
+可以打开speedbar ，在文件上使用&lt; 和&gt; 来锁定和解锁。</p>
+</div>
+</div>
+<div id="outline-container-headline-4" class="outline-3">
+<h3 id="headline-4">
+日程操作
+</h3>
+<div id="outline-text-headline-4" class="outline-text-3">
+<p>前一章已经介绍过，使用org-agenda打开日程buffer，此时可以选择多种视图方式，以便更加方便的查看日程。</p>
+<p>
+Emacs 内置了多种视图，下面会一一介绍，首先来看都有哪些操作。</p>
+</div>
+</div>
+<div id="outline-container-headline-5" class="outline-3">
+<h3 id="headline-5">
+视图中的操作
+</h3>
+<div id="outline-text-headline-5" class="outline-text-3">
+<p>其他快捷键及功能：</p>
+<table>
+<tbody>
+<tr>
+<td>快捷键</td>
+<td>功能</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>b</td>
+<td>daily视图</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>w</td>
+<td>weekly视图</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>n/p</td>
+<td>上/下移动光标</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>N/P</td>
+<td>上/下按日程移动光标</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>SPC</td>
+<td>在另一缓冲区显示任务在org文件中的定义的位置</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>TAB</td>
+<td>在另一缓冲区显示任务在org文件中的定义的位置，并且光标跳转至此</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>L</td>
+<td>显示任务在文件中位置并且光标居中</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>RET</td>
+<td>在当前buffer打开文件并跳转</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>F</td>
+<td>打开跟踪模式，即移动光标时，另一buffer显示当前任务的定义处</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-c C-x b</td>
+<td>显示任务及子树，并可以设置层数</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-c C-o</td>
+<td>打开链接</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>o</td>
+<td>关闭另一个buffer</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>A</td>
+<td>打开另一种视图并嵌入到当前视图中</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>v</td>
+<td>弹出多个命令进行选择</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>f/b</td>
+<td>下一天</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>.</td>
+<td>跳转至当天</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>j</td>
+<td>选择日期并跳转</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>D</td>
+<td>包含日记</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>r</td>
+<td>刷新agenda buffer</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>/</td>
+<td>通过tag过滤</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>&lt;</td>
+<td>通过类型过滤</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>^</td>
+<td>通过 top headline 过滤</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>=</td>
+<td>通过模式匹配过滤</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>丨</td>
+<td>去除所有过滤</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>t</td>
+<td>改变状态</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-S-Left/C-S-Right</td>
+<td>改变状态</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-k</td>
+<td>删除</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-w</td>
+<td>重新归档某项日程</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>$</td>
+<td>归档，通常是另一个文件</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>T</td>
+<td>显示所有tag</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>:</td>
+<td>设置tag</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>,</td>
+<td>设置优先级</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>+/- 或者 S-up/down</td>
+<td>设置优先级</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>z</td>
+<td>添加note</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-c C-a</td>
+<td>附件</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-c C-s</td>
+<td>安排日程</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-c C-d</td>
+<td>设置deadline</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>S-Left/Right</td>
+<td>改变日期</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>&gt;</td>
+<td>改变日期</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>I</td>
+<td>插入clock</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>O</td>
+<td>停止上一个clock</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>X</td>
+<td>取消当前clock</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>J</td>
+<td>跳转之clock处</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>M-Up/Down</td>
+<td>拖拽一个日程</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>m</td>
+<td>mark当前日程</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>*</td>
+<td>mark所有日程为重点</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>u</td>
+<td>取消mark当前日程</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>U</td>
+<td>取消mark所有日程</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>M-m</td>
+<td>设置/取消当前mark</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>M-×</td>
+<td>设置/取消所有mark</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>B</td>
+<td>bulk action</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>C-x C-w</td>
+<td>导出。可以为.html .pdf .ps .org</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>q</td>
+<td>退出</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td>x</td>
+<td>退出，包括所有相关打开的buffer</td>
+</tr>
+</tbody>
+</table>
+<p>
+太多了，大家通过帮助自己尝试吧。</p>
+</div>
+</div>
+<div id="outline-container-headline-6" class="outline-3">
+<h3 id="headline-6">
+Weekly/daily 视图
+</h3>
+<div id="outline-text-headline-6" class="outline-text-3">
+<p>输入M-x org-agenda 时， 选择a 进入此视图。</p>
+<p>
+在此视图中，操作在上一节介绍过。大家实践一下，通常使用的也就几个功能，碰到需要用的其他，再来查询具体快捷键。</p>
+</div>
+</div>
+<div id="outline-container-headline-7" class="outline-3">
+<h3 id="headline-7">
+todo 视图
+</h3>
+<div id="outline-text-headline-7" class="outline-text-3">
+<p>输入M-x org-agenda 时， 选择t/T 进入此视图。
+t， 列出所有的todo
+T，可以选择特殊的key来进行过滤。</p>
+</div>
+</div>
+<div id="outline-container-headline-8" class="outline-3">
+<h3 id="headline-8">
+Tag和属性过滤视图
+</h3>
+<div id="outline-text-headline-8" class="outline-text-3">
+<p>输入M-x org-agenda 时， 选择m/M 进入此视图。
+m， 根据tag进行过滤</p>
+<p>
+语法：</p>
+<div class="src src-text">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">‘work’： 选择tag ‘:work:’.
+</span></span><span class="line"><span class="cl">‘work&amp;boss’： 选择tag ‘:work:’ 和 ‘:boss:’.
+</span></span><span class="line"><span class="cl">‘+work-boss’： 选择tag ‘:work:’, 忽略 tag ‘:boss:’.
+</span></span><span class="line"><span class="cl">‘work|laptop’： 选择tag ‘:work:’ 或 ‘:laptop:’.
+</span></span><span class="line"><span class="cl">‘work|laptop+night’：选择有laptop 并且有night的tag</span></span></code></pre></div>
+</div>
+<p>
+除了tag，还可以使用正则表达式，例如： ‘work+{^boss.*}’ ，选择带有work的tag并且以boss开头</p>
+<p>
+更多的语法及表达式就不介绍了，有需要时，查文档获取。</p>
+</div>
+</div>
+<div id="outline-container-headline-9" class="outline-3">
+<h3 id="headline-9">
+search 视图
+</h3>
+<div id="outline-text-headline-9" class="outline-text-3">
+<p>输入M-x org-agnda 时， 选择s 进入此视图。
+根据关键字查找或者正则。</p>
+</div>
+</div>
+<div id="outline-container-headline-10" class="outline-3">
+<h3 id="headline-10">
+stuck project视图
+</h3>
+<div id="outline-text-headline-10" class="outline-text-3">
+<p>输入M-x org-agnda 时， 选择# 进入此视图。
+参考了David Allen的GTD方法，一个stuck的project是没有定义下一步action的日程，不会在todo显示</p>
+</div>
+</div>
+<div id="outline-container-headline-11" class="outline-3">
+<h3 id="headline-11">
+分类
+</h3>
+<div id="outline-text-headline-11" class="outline-text-3">
+<p>每个org todo文件都有一个分类，默认就是文件名。</p>
+<p>
+可以在文件开头加入：</p>
+<div class="src src-text">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">#+CATEGORY: xxx</span></span></code></pre></div>
+</div>
+<p>
+可以在某项日程中加入属性：</p>
+<div class="src src-text">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">:CATEGORY: xxx</span></span></code></pre></div>
+</div>
+<p>
+之后在检索过滤时，可以根据分类来进行u过滤</p>
+</div>
+</div>
+<div id="outline-container-headline-12" class="outline-3">
+<h3 id="headline-12">
+Column 视图
+</h3>
+<div id="outline-text-headline-12" class="outline-text-3">
+<p>列模式在上篇文章已经介绍过。
+使用C-c C-x C-c 进入列模式。
+此处不介绍了。</p>
+</div>
+</div>
+<div id="outline-container-headline-13" class="outline-3">
+<h3 id="headline-13">
+格式
+</h3>
+<div id="outline-text-headline-13" class="outline-text-3">
+<p>导出时，Html等格式可以定义更多的格式，所以Emacs 可以定义更多的格式。</p>
+<p>
+例如：</p>
+<div class="src src-text">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">*bold*, /italic/, underlined, =verbatim= and code,</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="outline-container-headline-14" class="outline-3">
+<h3 id="headline-14">
+参考链接
+</h3>
+<div id="outline-text-headline-14" class="outline-text-3">
+<p>
+<a href="https://www.jianshu.com/p/0d1c26abb7e6">Emacs 使用org-agenda 管理日程</a></p>
+</div>
+</div>
+</div>
+</div>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/emacs/">Emacs</a></li>
+      <li><a href="http://localhost:1313/tags/org-agenda/">Org-Agenda</a></li>
+      <li><a href="http://localhost:1313/tags/gtd/">Gtd</a></li>
+    </ul>
+
+
+<ul class="share-buttons">
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Emacs使用org-agenda管理日程 on x"
+            href="https://x.com/intent/tweet/?text=Emacs%e4%bd%bf%e7%94%a8org-agenda%e7%ae%a1%e7%90%86%e6%97%a5%e7%a8%8b&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs%25E4%25BD%25BF%25E7%2594%25A8org-agenda%25E7%25AE%25A1%25E7%2590%2586%25E6%2597%25A5%25E7%25A8%258B%2f&amp;hashtags=emacs%2corg-agenda%2cgtd">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M512 62.554 L 512 449.446 C 512 483.97 483.97 512 449.446 512 L 62.554 512 C 28.03 512 0 483.97 0 449.446 L 0 62.554 C 0 28.03 28.029 0 62.554 0 L 449.446 0 C 483.971 0 512 28.03 512 62.554 Z M 269.951 190.75 L 182.567 75.216 L 56 75.216 L 207.216 272.95 L 63.9 436.783 L 125.266 436.783 L 235.9 310.383 L 332.567 436.783 L 456 436.783 L 298.367 228.367 L 432.367 75.216 L 371.033 75.216 Z M 127.633 110 L 164.101 110 L 383.481 400.065 L 349.5 400.065 Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Emacs使用org-agenda管理日程 on linkedin"
+            href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs%25E4%25BD%25BF%25E7%2594%25A8org-agenda%25E7%25AE%25A1%25E7%2590%2586%25E6%2597%25A5%25E7%25A8%258B%2f&amp;title=Emacs%e4%bd%bf%e7%94%a8org-agenda%e7%ae%a1%e7%90%86%e6%97%a5%e7%a8%8b&amp;summary=Emacs%e4%bd%bf%e7%94%a8org-agenda%e7%ae%a1%e7%90%86%e6%97%a5%e7%a8%8b&amp;source=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs%25E4%25BD%25BF%25E7%2594%25A8org-agenda%25E7%25AE%25A1%25E7%2590%2586%25E6%2597%25A5%25E7%25A8%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Emacs使用org-agenda管理日程 on reddit"
+            href="https://reddit.com/submit?url=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs%25E4%25BD%25BF%25E7%2594%25A8org-agenda%25E7%25AE%25A1%25E7%2590%2586%25E6%2597%25A5%25E7%25A8%258B%2f&title=Emacs%e4%bd%bf%e7%94%a8org-agenda%e7%ae%a1%e7%90%86%e6%97%a5%e7%a8%8b">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Emacs使用org-agenda管理日程 on facebook"
+            href="https://facebook.com/sharer/sharer.php?u=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs%25E4%25BD%25BF%25E7%2594%25A8org-agenda%25E7%25AE%25A1%25E7%2590%2586%25E6%2597%25A5%25E7%25A8%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Emacs使用org-agenda管理日程 on whatsapp"
+            href="https://api.whatsapp.com/send?text=Emacs%e4%bd%bf%e7%94%a8org-agenda%e7%ae%a1%e7%90%86%e6%97%a5%e7%a8%8b%20-%20http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs%25E4%25BD%25BF%25E7%2594%25A8org-agenda%25E7%25AE%25A1%25E7%2590%2586%25E6%2597%25A5%25E7%25A8%258B%2f">
+            <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Emacs使用org-agenda管理日程 on telegram"
+            href="https://telegram.me/share/url?text=Emacs%e4%bd%bf%e7%94%a8org-agenda%e7%ae%a1%e7%90%86%e6%97%a5%e7%a8%8b&amp;url=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs%25E4%25BD%25BF%25E7%2594%25A8org-agenda%25E7%25AE%25A1%25E7%2590%2586%25E6%2597%25A5%25E7%25A8%258B%2f">
+            <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28" height="30px" width="30px" fill="currentColor">
+                <path
+                    d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+            </svg>
+        </a>
+    </li>
+    <li>
+        <a target="_blank" rel="noopener noreferrer" aria-label="share Emacs使用org-agenda管理日程 on ycombinator"
+            href="https://news.ycombinator.com/submitlink?t=Emacs%e4%bd%bf%e7%94%a8org-agenda%e7%ae%a1%e7%90%86%e6%97%a5%e7%a8%8b&u=http%3a%2f%2flocalhost%3a1313%2fpost%2femacs%2femacs%25E4%25BD%25BF%25E7%2594%25A8org-agenda%25E7%25AE%25A1%25E7%2590%2586%25E6%2597%25A5%25E7%25A8%258B%2f">
+            <svg version="1.1" xml:space="preserve" width="30px" height="30px" viewBox="0 0 512 512" fill="currentColor"
+                xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape">
+                <path
+                    d="M449.446 0C483.971 0 512 28.03 512 62.554L512 449.446C512 483.97 483.97 512 449.446 512L62.554 512C28.03 512 0 483.97 0 449.446L0 62.554C0 28.03 28.029 0 62.554 0L449.446 0ZM183.8767 87.9921H121.8427L230.6673 292.4508V424.0079H281.3328V292.4508L390.1575 87.9921H328.1233L256 238.2489z" />
+            </svg>
+        </a>
+    </li>
+</ul>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>© <a href="https://github.com/adityatelange/hugo-PaperMod/graphs/contributors">PaperMod Contributors</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
