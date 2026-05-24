@@ -1817,6 +1817,35 @@
     <loc>https://ynhugo.github.io/p/github_study/</loc>
     <lastmod>2023-07-29T11:15:46+08:00</lastmod>
   </url><url>
+    <loc>https://ynhugo.github.io/archives/</loc>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ynhugo.github.io/page/</loc>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://ynhugo.github.io/zh-cn/page/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://ynhugo.github.io/page/"
+                />
+  </url><url>
+    <loc>https://ynhugo.github.io/about/</loc>
+    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://ynhugo.github.io/zh-cn/%E5%85%B3%E4%BA%8E/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://ynhugo.github.io/about/"
+                />
+  </url><url>
     <loc>https://ynhugo.github.io/p/</loc>
   </url><url>
     <loc>https://ynhugo.github.io/tags/1080/</loc>
@@ -1842,7 +1871,11 @@
   </url><url>
     <loc>https://ynhugo.github.io/tags/kernel/</loc>
   </url><url>
+    <loc>https://ynhugo.github.io/links/</loc>
+  </url><url>
     <loc>https://ynhugo.github.io/p/linux%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E6%9F%A5%E7%9C%8B%E7%89%88%E6%9C%AC/</loc>
+  </url><url>
+    <loc>https://ynhugo.github.io/search/</loc>
   </url><url>
     <loc>https://ynhugo.github.io/search/</loc>
   </url><url>
