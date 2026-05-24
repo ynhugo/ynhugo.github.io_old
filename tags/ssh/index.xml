@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Ssh on Example Site</title>
+        <title>SSH on Example Site</title>
         <link>https://ynhugo.github.io/tags/ssh/</link>
-        <description>Recent content in Ssh on Example Site</description>
+        <description>Recent content in SSH on Example Site</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Example Person</copyright>
