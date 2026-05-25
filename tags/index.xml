@@ -32,6 +32,14 @@
         <description></description>
         </item>
         <item>
+        <title>Software</title>
+        <link>https://ynhugo.github.io/tags/software/</link>
+        <pubDate>Sun, 24 May 2026 01:57:20 +0800</pubDate>
+        
+        <guid>https://ynhugo.github.io/tags/software/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Stack</title>
         <link>https://ynhugo.github.io/tags/stack/</link>
         <pubDate>Sun, 24 May 2026 01:57:20 +0800</pubDate>
@@ -248,7 +256,7 @@
         <description></description>
         </item>
         <item>
-        <title>Ssh</title>
+        <title>SSH</title>
         <link>https://ynhugo.github.io/tags/ssh/</link>
         <pubDate>Sat, 16 May 2026 07:55:19 +0800</pubDate>
         
@@ -744,7 +752,7 @@
         <description></description>
         </item>
         <item>
-        <title>Pytorch</title>
+        <title>PyTorch</title>
         <link>https://ynhugo.github.io/tags/pytorch/</link>
         <pubDate>Thu, 22 Jan 2026 00:37:43 +0800</pubDate>
         
@@ -1016,7 +1024,7 @@
         <description></description>
         </item>
         <item>
-        <title>AI</title>
+        <title>Ai</title>
         <link>https://ynhugo.github.io/tags/ai/</link>
         <pubDate>Mon, 08 Sep 2025 15:57:42 +0800</pubDate>
         
@@ -1512,7 +1520,7 @@
         <description></description>
         </item>
         <item>
-        <title>Gtd</title>
+        <title>GTD</title>
         <link>https://ynhugo.github.io/tags/gtd/</link>
         <pubDate>Sun, 01 Dec 2024 13:55:39 +0800</pubDate>
         
@@ -1752,7 +1760,7 @@
         <description></description>
         </item>
         <item>
-        <title>Vps</title>
+        <title>VPS</title>
         <link>https://ynhugo.github.io/tags/vps/</link>
         <pubDate>Thu, 18 Jul 2024 15:02:58 +0800</pubDate>
         
